@@ -47,6 +47,8 @@ check_android_task:
     ./cc-test-reporter upload-coverage
   lint_script:
     ./gradlew lintDebug
+  detekt_script:
+    ./gradlew detekt
   always:
     wait_for_screenrecord_script: |
       pkill -2 -x adb
