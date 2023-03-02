@@ -32,9 +32,15 @@ fun Cook4MeApp(
 
    NavHost(navController = navController, startDestination = Cook4MeScreen.Start.name) {
        composable(route = Cook4MeScreen.Start.name) {
-           WelcomeScreen(onStartButtonClicked = {
-               viewModel.setName(it)
-               navController.navigate(Cook4MeScreen.Map.name)} )
+           WelcomeScreen(
+               onStartButtonClicked = {
+                   viewModel.setName(it)
+                   navController.navigate(Cook4MeScreen.Profile.name)
+               },
+               onMapButtonClicked = {
+                   navController.navigate(Cook4MeScreen.Map.name)
+               }
+           )
        }
        composable(route = Cook4MeScreen.Profile.name) {
            ProfileScreen(uiState.name)

@@ -6,4 +6,5 @@
     <string name="welcome_screen_button">Start</string>
     <string name="profile_screen_placeholder">Welcome</string>
     <string name="cool_map">Cool Map</string>
+    <string name="welcome_screen_map_button">Cool Map</string>
 </resources>
