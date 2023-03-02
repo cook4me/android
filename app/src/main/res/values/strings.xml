@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">cook4me</string>
     <string name="profile">My profile</string>
+    <string name="firebase">Firebase</string>
+    <string name="get_db_button_message">Get</string>
+    <string name="set_db_button_message">Set</string>
+    <string name="email_input_message">Email</string>
+    <string name="phone_input_message">Password</string>
     <string name="welcome_message">Welcome to a new food experience</string>
     <string name="welcome_screen_name_field">Enter your name</string>
     <string name="welcome_screen_button">Start</string>
