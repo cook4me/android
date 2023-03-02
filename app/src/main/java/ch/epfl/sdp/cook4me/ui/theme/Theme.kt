@@ -29,7 +29,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun Cook4meTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun cook4meTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

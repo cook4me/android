@@ -6,7 +6,7 @@ import androidx.compose.ui.res.stringResource
 import ch.epfl.sdp.cook4me.R
 
 @Composable
-fun ProfileScreen(
+fun profileScreen(
 name: String
 ) {
 Text("${stringResource(R.string.profile_screen_placeholder)} $name")

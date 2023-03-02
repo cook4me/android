@@ -20,7 +20,7 @@ class WelcomeScenarioTest {
     @Test
     fun newUserUsesApp() {
         composeTestRule.setContent {
-            Cook4MeApp()
+            cook4MeApp()
         }
 
         composeTestRule.onNodeWithStringId(R.string.welcome_message).assertIsDisplayed()
