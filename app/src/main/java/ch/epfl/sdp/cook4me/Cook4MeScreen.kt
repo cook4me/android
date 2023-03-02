@@ -13,6 +13,8 @@ import ch.epfl.sdp.cook4me.ui.FirebaseScreen
 import ch.epfl.sdp.cook4me.ui.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.WelcomeScreen
 import ch.epfl.sdp.cook4me.ui.WelcomeViewModel
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 /**
  * enum values that represent the screens in the app
@@ -34,13 +36,16 @@ fun Cook4MeApp(
        composable(route = Cook4MeScreen.Start.name) {
            WelcomeScreen(onStartButtonClicked = {
                viewModel.setName(it)
-               navController.navigate(Cook4MeScreen.Firebase.name)} )
+               navController.navigate(Cook4MeScreen.Profile.name)}
+           , onFirebaseButtonClicked = {
+               navController.navigate(Cook4MeScreen.Firebase.name)
+           })
        }
        composable(route = Cook4MeScreen.Profile.name) {
            ProfileScreen(uiState.name)
        }
        composable(route = Cook4MeScreen.Firebase.name) {
-           FirebaseScreen()
+           FirebaseScreen(Firebase.database.reference)
        }
    }
 }
