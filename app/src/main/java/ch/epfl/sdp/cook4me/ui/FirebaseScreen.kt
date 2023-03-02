@@ -20,7 +20,7 @@ const val GET_DB_BUTTON_TAG = "getDbButton"
 const val SET_DB_BUTTON_TAG = "setDbButton"
 
 @Composable
-fun FirebaseScreen(database: DatabaseReference){
+fun FirebaseScreen(database: DatabaseReference) {
     // add two buttons to get and set values in the database
 
     var emailTextField by remember {
@@ -35,20 +35,22 @@ fun FirebaseScreen(database: DatabaseReference){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Button(onClick = {
-            // get value from database
-            database.child(phoneTextField).get().addOnSuccessListener {
-                emailTextField = it.value.toString()
-            }
-        }, modifier = Modifier.testTag(GET_DB_BUTTON_TAG)
+        Button(
+            onClick = {
+                // get value from database
+                database.child(phoneTextField).get().addOnSuccessListener {
+                    emailTextField = it.value.toString()
+                }
+            }, modifier = Modifier.testTag(GET_DB_BUTTON_TAG)
         ) {
             Text(stringResource(id = R.string.set_db_button_message))
         }
 
-        Button(onClick = {
-            // set value in database
-            database.child(phoneTextField).setValue(emailTextField)
-        }, modifier = Modifier.testTag(SET_DB_BUTTON_TAG)
+        Button(
+            onClick = {
+                // set value in database
+                database.child(phoneTextField).setValue(emailTextField)
+            }, modifier = Modifier.testTag(SET_DB_BUTTON_TAG)
         ) {
             Text(stringResource(id = R.string.set_db_button_message))
         }
@@ -57,11 +59,13 @@ fun FirebaseScreen(database: DatabaseReference){
         TextField(placeholder = {
             Text(stringResource(id = R.string.email_input_message))
         }, value = emailTextField, onValueChange = { emailTextField = it },
-            modifier = Modifier.testTag(EMAIL_TEXT_FIELD_TAG))
+            modifier = Modifier.testTag(EMAIL_TEXT_FIELD_TAG)
+        )
 
         TextField(placeholder = {
             Text(stringResource(id = R.string.phone_input_message))
         }, value = phoneTextField, onValueChange = { phoneTextField = it },
-            modifier = Modifier.testTag(PHONE_TEXT_FIELD_TAG))
+            modifier = Modifier.testTag(PHONE_TEXT_FIELD_TAG)
+        )
     }
 }

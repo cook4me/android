@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -49,7 +48,6 @@ class FirebaseScreenTest {
         // check if the email is the same
         composeTestRule.onNodeWithTag(EMAIL_TEXT_FIELD_TAG).assertTextEquals(email)
     }
-
 
 
 }

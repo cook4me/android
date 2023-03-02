@@ -13,6 +13,7 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
 /**
  * Instrumented test, which will execute on an Android device.
  *
@@ -42,11 +43,12 @@ class WelcomeScreenTest {
         var name = ""
         composeTestRule.setContent {
             WelcomeScreen(
-                onStartButtonClicked = {name = it},
+                onStartButtonClicked = { name = it },
             )
         }
 
-        composeTestRule.onNodeWithStringId(R.string.welcome_screen_name_field).performTextInput("James Bond")
+        composeTestRule.onNodeWithStringId(R.string.welcome_screen_name_field)
+            .performTextInput("James Bond")
         composeTestRule.onNodeWithStringId(R.string.welcome_screen_button).performClick()
         assertThat(name, `is`("James Bond"))
     }

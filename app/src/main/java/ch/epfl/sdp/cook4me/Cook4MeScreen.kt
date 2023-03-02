@@ -32,20 +32,20 @@ fun Cook4MeApp(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-   NavHost(navController = navController, startDestination = Cook4MeScreen.Start.name) {
-       composable(route = Cook4MeScreen.Start.name) {
-           WelcomeScreen(onStartButtonClicked = {
-               viewModel.setName(it)
-               navController.navigate(Cook4MeScreen.Profile.name)}
-           , onFirebaseButtonClicked = {
-               navController.navigate(Cook4MeScreen.Firebase.name)
-           })
-       }
-       composable(route = Cook4MeScreen.Profile.name) {
-           ProfileScreen(uiState.name)
-       }
-       composable(route = Cook4MeScreen.Firebase.name) {
-           FirebaseScreen(Firebase.database.reference)
-       }
-   }
+    NavHost(navController = navController, startDestination = Cook4MeScreen.Start.name) {
+        composable(route = Cook4MeScreen.Start.name) {
+            WelcomeScreen(onStartButtonClicked = {
+                viewModel.setName(it)
+                navController.navigate(Cook4MeScreen.Profile.name)
+            }, onFirebaseButtonClicked = {
+                navController.navigate(Cook4MeScreen.Firebase.name)
+            })
+        }
+        composable(route = Cook4MeScreen.Profile.name) {
+            ProfileScreen(uiState.name)
+        }
+        composable(route = Cook4MeScreen.Firebase.name) {
+            FirebaseScreen(Firebase.database.reference)
+        }
+    }
 }
