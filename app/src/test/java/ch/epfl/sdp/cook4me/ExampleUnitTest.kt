@@ -3,7 +3,6 @@ package ch.epfl.sdp.cook4me
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *

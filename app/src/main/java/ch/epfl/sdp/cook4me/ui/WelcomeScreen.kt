@@ -9,10 +9,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 
 @Composable
-fun welcomeScreen(
+fun WelcomeScreen(
     modifier: Modifier = Modifier,
     onStartButtonClicked: (String) -> Unit,
 ) {
@@ -36,9 +36,12 @@ fun welcomeScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = stringResource(R.string.welcome_message), style = MaterialTheme.typography.h4)
-        TextField(placeholder = {
-            Text(stringResource(R.string.welcome_screen_name_field))
-        }, value = nameTextField, onValueChange = { nameTextField = it })
+        TextField(
+            placeholder = {
+                Text(stringResource(R.string.welcome_screen_name_field))
+            },
+            value = nameTextField, onValueChange = { nameTextField = it }
+        )
         Button(onClick = { onStartButtonClicked(nameTextField) }) {
             Text(stringResource(R.string.welcome_screen_button))
         }
