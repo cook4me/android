@@ -16,6 +16,7 @@ import ch.epfl.sdp.cook4me.ui.WelcomeViewModel
 /**
  * enum values that represent the screens in the app
  */
+
 enum class Cook4MeScreen(@StringRes val title: Int) {
     Start(title = R.string.app_name),
     Profile(title = R.string.profile),
@@ -30,9 +31,12 @@ fun Cook4MeApp(
 
    NavHost(navController = navController, startDestination = Cook4MeScreen.Start.name) {
        composable(route = Cook4MeScreen.Start.name) {
-           WelcomeScreen(onStartButtonClicked = {
-               viewModel.setName(it)
-               navController.navigate(Cook4MeScreen.Profile.name)} )
+           WelcomeScreen(
+               //Navigation only in bottom bar @ the moment
+               onStartButtonClicked = {
+                   viewModel.setName(it)
+                navController.navigate(Cook4MeScreen.Profile.name)}
+         )
        }
        composable(route = Cook4MeScreen.Profile.name) {
            ProfileScreen(uiState.name)

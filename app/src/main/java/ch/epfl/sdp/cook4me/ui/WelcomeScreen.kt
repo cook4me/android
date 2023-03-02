@@ -38,5 +38,6 @@ fun WelcomeScreen(
         Button(onClick = { onStartButtonClicked(nameTextField) }) {
             Text(stringResource(R.string.welcome_screen_button))
         }
+        // button not needed in this moment
     }
 }
