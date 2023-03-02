@@ -26,18 +26,20 @@ fun BottomNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = BottomBarScreen.Home.route)
+        startDestination = BottomBarScreen.Game.route)
     {
-        composable(route = BottomBarScreen.Home.route){
-            ProfileScreen(uiState.name)
-        }
         composable(route = BottomBarScreen.Game.route){
             WelcomeScreen(onStartButtonClicked = {
                 viewModel.setName(it)
                 navController.navigate(Cook4MeScreen.Profile.name)} )
         }
-        composable(route = BottomBarScreen.Post.route){
+        composable(route = BottomBarScreen.Home.route){
             ProfileScreen(uiState.name)
+        }
+        composable(route = BottomBarScreen.Post.route){
+            WelcomeScreen(onStartButtonClicked = {
+                viewModel.setName(it)
+                navController.navigate(Cook4MeScreen.Profile.name)} )
         }
         composable(route = BottomBarScreen.Search.route){
             WelcomeScreen(onStartButtonClicked = {

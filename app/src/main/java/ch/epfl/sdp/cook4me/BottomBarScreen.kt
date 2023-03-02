@@ -9,15 +9,15 @@ sealed class BottomBarScreen(
     val title: String,
     val icon: ImageVector
 ){
-    object Home: BottomBarScreen(
-        route= "home",
-        title= "Home",
-        icon = Icons.Default.Home
-    )
     object Game: BottomBarScreen(
         route= "game",
         title= "Game",
         icon = Icons.Default.ShoppingCart
+    )
+    object Home: BottomBarScreen(
+        route= "home",
+        title= "Home",
+        icon = Icons.Default.Home
     )
     object Post: BottomBarScreen(
         route= "post",

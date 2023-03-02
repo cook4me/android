@@ -25,9 +25,9 @@ fun MainScreen(){
 @Composable
 fun BottomBar(navController: NavHostController){
     val screens = listOf(
+        BottomBarScreen.Game,
         BottomBarScreen.Home,
         BottomBarScreen.Post,
-        BottomBarScreen.Game,
         BottomBarScreen.Profile,
         BottomBarScreen.Search
     )
@@ -52,9 +52,10 @@ fun RowScope.AddItem(
     navController: NavHostController
 ){
     BottomNavigationItem(
-        label = {
-        Text(text = screen.title)
-        },
+        //Decomment to show the labels under the icons on the nav graph
+        //label = {
+        //Text(text = screen.title)
+        //},
         icon = {
          Icon(imageVector = screen.icon,
              contentDescription = "Navigation Icon")
