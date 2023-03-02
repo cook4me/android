@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me
 
-import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
