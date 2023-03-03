@@ -11,8 +11,6 @@ class WelcomeViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(WelcomeUiState())
     val uiState: StateFlow<WelcomeUiState> = _uiState.asStateFlow()
 
-
-
     fun setName(name: String) {
         _uiState.update { currentState ->
             currentState.copy(name = name)

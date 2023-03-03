@@ -38,7 +38,6 @@ class BoredViewModel: ViewModel() {
     val uiState: StateFlow<BoredUiState> = _uiState.asStateFlow()
 
     init {
-        println("init")
         changeActivity("If you're bored, tap the button to find your purpose in life")
     }
 
@@ -48,7 +47,6 @@ class BoredViewModel: ViewModel() {
                 val act = response.body()?.activity
                 if (act != null) {
                     changeActivity(act)
-                    println(act)
                 }
             }
 
