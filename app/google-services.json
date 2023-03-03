@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "399313314257",
+    "firebase_url": "https://sdp-firebase-bootcamp-8f8a5-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "sdp-firebase-bootcamp-8f8a5",
+    "storage_bucket": "sdp-firebase-bootcamp-8f8a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399313314257:android:6c9f2957187258dcdec0f0",
+        "android_client_info": {
+          "package_name": "ch.epfl.sdp.cook4me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399313314257-1slqjjlmr8ti4pom54tn12q8pamkiv90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASErhr1EOXPMkEqQt-QbGGh2dwGoq8DJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399313314257-1slqjjlmr8ti4pom54tn12q8pamkiv90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399313314257:android:c58aaa854742a970dec0f0",
+        "android_client_info": {
+          "package_name": "com.github.dayan9265.firebasemockapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399313314257-1slqjjlmr8ti4pom54tn12q8pamkiv90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASErhr1EOXPMkEqQt-QbGGh2dwGoq8DJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399313314257-1slqjjlmr8ti4pom54tn12q8pamkiv90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
