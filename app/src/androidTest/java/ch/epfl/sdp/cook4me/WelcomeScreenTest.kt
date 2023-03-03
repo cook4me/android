@@ -29,6 +29,7 @@ class WelcomeScreenTest {
         composeTestRule.setContent {
             WelcomeScreen(
                 onStartButtonClicked = {},
+                onMapButtonClicked = {}
             )
         }
 
@@ -43,6 +44,7 @@ class WelcomeScreenTest {
         composeTestRule.setContent {
             WelcomeScreen(
                 onStartButtonClicked = {name = it},
+                onMapButtonClicked = {}
             )
         }
 
