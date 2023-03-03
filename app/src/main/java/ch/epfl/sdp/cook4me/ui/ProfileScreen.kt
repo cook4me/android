@@ -7,7 +7,7 @@ import ch.epfl.sdp.cook4me.R
 
 @Composable
 fun ProfileScreen(
-name: String
+    name: String
 ) {
-Text("${stringResource(R.string.profile_screen_placeholder)} $name")
+    Text("${stringResource(R.string.profile_screen_placeholder)} $name")
 }

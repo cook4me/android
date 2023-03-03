@@ -6,6 +6,8 @@ container:
 
 env:
   CC_TEST_REPORTER_ID: ENCRYPTED[810adb57cea27867b3a3df646f8405adbd768b4c0a8815d6312e07b81f863cde28c534a478272a06653444c79565e6f5]
+  GITHUB_USERNAME: ENCRYPTED[c7138816e29ae53840782306195152fb0cee26a33c7f7c704e7119e9848a9bc4a271920b5e11e98a38a232ccf4a2d9ec]
+  GITHUB_TOKEN: ENCRYPTED[21f03c84e00674f5db068f1429c3df027d0f706895ffaa9f329b17205a4282c6d481707da09fa1d2fc82e42de113665a]
 
 check_android_task:
   name: Run Android tests
@@ -24,6 +26,8 @@ check_android_task:
       -no-snapshot
       -no-window
       -camera-back none
+  prepare_environment_script:
+    sh ./.cirrus/populate_properties.sh
   assemble_instrumented_tests_script: |
     chmod +x gradlew
     ./gradlew assembleDebugAndroidTest
@@ -39,6 +43,8 @@ check_android_task:
     ./cc-test-reporter before-build
   screen_record_background_script:
     for n in $(seq 1 20); do adb exec-out screenrecord --time-limit=180 --output-format=h264 - > $n.h264; done
+  run_ktlint:
+    ./gradlew ktlintFormat
   check_script:
     ./gradlew check connectedCheck
   report_codeclimate_script: |
