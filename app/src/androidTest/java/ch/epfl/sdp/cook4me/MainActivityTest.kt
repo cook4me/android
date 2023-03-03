@@ -1,19 +1,17 @@
 package ch.epfl.sdp.cook4me
 
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.lifecycle.Lifecycle
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
 class MainActivityTest {
-    @get:Rule
-    var testRule = createAndroidComposeRule<MainActivity>()
+    @get:Rule val rule = ActivityScenarioRule(MainActivity::class.java)
 
-    /** We only test on compose level and don't have any logic in the activity.
-     * This placeholder is a workaround to exclude the MainActivity and layout files
-     * from the Jacoco report.
-     */
     @Test
-    fun placeholder() {
-        testRule.activity
+    fun activity_getsCreated() {
+        rule.scenario.moveToState(Lifecycle.State.CREATED)
+        assertTrue(rule.scenario.state.isAtLeast(Lifecycle.State.CREATED))
     }
 }
