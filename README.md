@@ -15,3 +15,13 @@ An app for epfl students to enhance their food experience
 | Haolong Li        | [Tachi-67](https://github.com/Tachi-67) | haolong.li@epfl.ch |
 | Pau Romeu        | [pauromeu](https://github.com/pauromeu) | pau.romeu@epfl.ch |
 | Nino Gerber   | [nino-gerb](https://github.com/nino-gerb) | nino.gerber@epfl.ch |
+
+## Setup
+
+This project depends on a specific release of the Jacoco library, which has been updated to provide coverage support for Jetpack Compose. This release is available on [GitHub](https://github.com/epfl-SDP/jacoco-compose), and requires the use of the GitHub Apache Maven Package Repository. Therefore, you are required to add the following to your `~/.gradle/gradle.properties` file to access the Maven package.
+
+```properties
+githubJacocoUsername=YourGitHubUsername
+# Requires at least the read:packages scope.
+githubJacocoPassword=YourGitHubPersonalAccessToken
+```
