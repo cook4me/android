@@ -6,7 +6,8 @@ container:
 
 env:
   CC_TEST_REPORTER_ID: ENCRYPTED[810adb57cea27867b3a3df646f8405adbd768b4c0a8815d6312e07b81f863cde28c534a478272a06653444c79565e6f5]
-
+  GOOGLE_SERVICES: ENCRYPTED[1b7d054d46d00fca398aa9aba25d6b3e2caceb5c8ddda24a317d18f24b1403e4cab7efee22549a42669f67dddc1ff7c2]
+  
 check_android_task:
   name: Run Android tests
   install_emulator_script:
