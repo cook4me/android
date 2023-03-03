@@ -11,7 +11,7 @@ interface ActivityDao {
     fun getRandom(): List<Activity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(student: Activity)
+    fun insert(activity: Activity)
 
     @Delete
     fun delete(user: Activity)

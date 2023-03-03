@@ -16,10 +16,5 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        val db = Room.databaseBuilder(
-            applicationContext,
-            ActivityDatabase::class.java, "activity_database"
-        ).build()
-
     }
 }
