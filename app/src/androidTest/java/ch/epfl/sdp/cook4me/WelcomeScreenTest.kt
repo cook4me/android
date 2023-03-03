@@ -30,6 +30,7 @@ class WelcomeScreenTest {
         composeTestRule.setContent {
             WelcomeScreen(
                 onStartButtonClicked = {},
+                onFirebaseButtonClicked = {}
             )
         }
 
@@ -44,6 +45,7 @@ class WelcomeScreenTest {
         composeTestRule.setContent {
             WelcomeScreen(
                 onStartButtonClicked = { name = it },
+                onFirebaseButtonClicked = {}
             )
         }
 
@@ -51,5 +53,19 @@ class WelcomeScreenTest {
             .performTextInput("James Bond")
         composeTestRule.onNodeWithStringId(R.string.welcome_screen_button).performClick()
         assertThat(name, `is`("James Bond"))
+    }
+
+    @Test
+    fun firebaseButtonCallsGivenFunction() {
+        var firebaseButtonClicked = false
+        composeTestRule.setContent {
+            WelcomeScreen(
+                onStartButtonClicked = {},
+                onFirebaseButtonClicked = { firebaseButtonClicked = true }
+            )
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.firebase).performClick()
+        assertTrue(firebaseButtonClicked)
     }
 }
