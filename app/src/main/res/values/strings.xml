@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">cook4me</string>
     <string name="profile">My profile</string>
+    <string name="SignIn">Google Sign In</string>
     <string name="welcome_message">Welcome to a new food experience</string>
     <string name="welcome_screen_name_field">Enter your name</string>
     <string name="welcome_screen_button">Start</string>
     <string name="profile_screen_placeholder">Welcome</string>
+    <string name="web_client_id_google_auth">443293437165-uoqjuak8f70mnlo7fou7mho2hm6vbk0e.apps.googleusercontent.com</string>
 </resources>

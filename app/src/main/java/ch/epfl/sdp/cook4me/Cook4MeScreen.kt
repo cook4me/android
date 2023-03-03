@@ -4,12 +4,14 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.ui.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.SignInScreen
 import ch.epfl.sdp.cook4me.ui.WelcomeScreen
 import ch.epfl.sdp.cook4me.ui.WelcomeViewModel
 
@@ -19,6 +21,7 @@ import ch.epfl.sdp.cook4me.ui.WelcomeViewModel
 enum class Cook4MeScreen(@StringRes val title: Int) {
     Start(title = R.string.app_name),
     Profile(title = R.string.profile),
+    SignIn(title = R.string.SignIn)
 }
 
 @Composable
@@ -28,14 +31,17 @@ fun Cook4MeApp(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-   NavHost(navController = navController, startDestination = Cook4MeScreen.Start.name) {
-       composable(route = Cook4MeScreen.Start.name) {
-           WelcomeScreen(onStartButtonClicked = {
-               viewModel.setName(it)
-               navController.navigate(Cook4MeScreen.Profile.name)} )
-       }
-       composable(route = Cook4MeScreen.Profile.name) {
-           ProfileScreen(uiState.name)
-       }
-   }
+    NavHost(navController = navController, startDestination = Cook4MeScreen.Start.name) {
+        composable(route = Cook4MeScreen.Start.name) {
+            SignInScreen()
+            /*WelcomeScreen(
+                onStartButtonClicked = {
+                viewModel.setName(it)
+                navController.navigate(Cook4MeScreen.Profile.name)},
+                onStartSignInButtonClicked = {navController.navigate(Cook4MeScreen.SignIn.name)} )*/
+        }
+        composable(route = Cook4MeScreen.Profile.name) {
+            ProfileScreen(uiState.name)
+        }
+    }
 }

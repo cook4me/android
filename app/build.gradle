@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'jacoco'
+    id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -36,12 +39,17 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
+        kotlin.sourceSets.all {
+            languageSettings.optIn("kotlin.RequiresOptIn")
+        }
     }
     buildFeatures {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0'
+        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerVersion kotlin_version
     }
     packagingOptions {
         resources {
@@ -51,6 +59,26 @@ android {
 }
 
 dependencies {
+    //Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-android-compiler:2.44"
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    //Material
+    implementation "com.google.android.material:material:$material_version"
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation "com.google.firebase:firebase-auth-ktx:21.1.0"
+    implementation "com.google.firebase:firebase-firestore-ktx"
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    //Play Services
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$play_services_version"
+    implementation "com.google.android.gms:play-services-auth:$play_services_auth_version"
+    //Accompanist
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+    //Coil
+    implementation "io.coil-kt:coil-compose:$coil_compose_version"
+
     testImplementation("org.hamcrest:hamcrest:2.2")
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'

@@ -19,6 +19,7 @@ import ch.epfl.sdp.cook4me.R
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
     onStartButtonClicked: (String) -> Unit,
+    onStartSignInButtonClicked: () -> Unit
 ) {
     var nameTextField by remember {
         mutableStateOf("")
@@ -37,6 +38,9 @@ fun WelcomeScreen(
         }, value = nameTextField, onValueChange = { nameTextField = it })
         Button(onClick = { onStartButtonClicked(nameTextField) }) {
             Text(stringResource(R.string.welcome_screen_button))
+        }
+        Button(onClick = { onStartSignInButtonClicked() }) {
+            Text(text = "Go to sign in with Google")
         }
     }
 }
