@@ -1,12 +1,10 @@
 package ch.epfl.sdp.cook4me.ui
 
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import ch.epfl.sdp.cook4me.ui.data.Constant.ServerClient
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun SignInScreen(
@@ -31,8 +29,7 @@ fun SignInScreen(
     val googleSignInState = viewModel.googleState.value
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
             val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
             try {
                 val result = account.getResult(ApiException::class.java)
@@ -42,34 +39,20 @@ fun SignInScreen(
                 print(it)
             }
         }
-
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 30.dp, end = 30.dp),
+    Column(modifier = Modifier.fillMaxSize().padding(start = 30.dp, end = 30.dp),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp),
-            horizontalArrangement = Arrangement.Center
-        ){
+        Row(modifier = Modifier.fillMaxWidth().padding(top = 10.dp),horizontalArrangement = Arrangement.Center){
             Button(onClick = {
                 val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .requestIdToken(ServerClient)
                     .build()
-
                 val googleSignInClient = GoogleSignIn.getClient(context, gso)
-
                 launcher.launch(googleSignInClient.signInIntent)
-
             }) {
-                Text(text = "sign in with Google")
+                Text(text = "Sign in with Google")
             }
-
             LaunchedEffect(key1 = googleSignInState.success) {
                 scope.launch {
                     if (googleSignInState.success != null) {
@@ -78,6 +61,6 @@ fun SignInScreen(
                 }
             }
         }
-
     }
 }
+
