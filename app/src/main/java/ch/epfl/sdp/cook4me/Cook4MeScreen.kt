@@ -33,12 +33,13 @@ fun Cook4MeApp(
 
     NavHost(navController = navController, startDestination = Cook4MeScreen.Start.name) {
         composable(route = Cook4MeScreen.Start.name) {
-            SignInScreen()
-            /*WelcomeScreen(
+            // to call the SignInScreen (google auth.)
+            // SignInScreen()
+            WelcomeScreen(
                 onStartButtonClicked = {
                 viewModel.setName(it)
                 navController.navigate(Cook4MeScreen.Profile.name)},
-                onStartSignInButtonClicked = {navController.navigate(Cook4MeScreen.SignIn.name)} )*/
+                onStartSignInButtonClicked = {navController.navigate(Cook4MeScreen.SignIn.name)} )
         }
         composable(route = Cook4MeScreen.Profile.name) {
             ProfileScreen(uiState.name)
