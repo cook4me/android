@@ -57,18 +57,13 @@ fun SignInScreen(
     val scope = rememberCoroutineScope()
     val launcher = createGoogleSignInLauncher(viewModel = viewModel)
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 30.dp, end = 30.dp),
+        modifier = Modifier.fillMaxSize().padding(start = 30.dp, end = 30.dp),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = {
                 launcher.launch(
-                    GoogleSignIn.getClient(
-                        context,
-                        getGoogleSignInOptions()
-                    ).signInIntent
+                    GoogleSignIn.getClient(context, getGoogleSignInOptions()).signInIntent
                 )
             }
         ) { Text(text = "Sign in with Google") }
