@@ -39,7 +39,6 @@ fun SignInScreen(
                 val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
                 viewModel.googleSignIn(credentials)
             } catch (it: ApiException) {
-                Log.d("launcher!!!!!!!!!!!!!!!!!!!", it.toString())
                 print(it)
             }
         }
@@ -74,13 +73,9 @@ fun SignInScreen(
             LaunchedEffect(key1 = googleSignInState.success) {
                 scope.launch {
                     if (googleSignInState.success != null) {
-                        Toast.makeText(context, "sign in success", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "sign in success！", Toast.LENGTH_LONG).show()
                     }
                 }
-            }
-            LaunchedEffect(key1 = googleSignInState.error) {
-                val error = googleSignInState.error
-                Toast.makeText(context, "ERROR", Toast.LENGTH_LONG).show()
             }
         }
 
