@@ -1,7 +1,10 @@
 package ch.epfl.sdp.cook4me.ui
 
+import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,24 +33,26 @@ fun getGoogleSignInOptions(): GoogleSignInOptions =
         .requestIdToken(ServerClient)
         .build()
 
-
+@Composable
+fun createGoogleSignInLauncher(context: Context, viewModel: SignInViewModel): ActivityResultLauncher<Intent> {
+    return rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+        val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+        try {
+            val result = account.getResult(ApiException::class.java)
+            val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
+            viewModel.googleSignIn(credentials)
+        } catch (it: ApiException) {
+            print(it)
+        }
+    }
+}
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val launcher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            try {
-                val result = account.getResult(ApiException::class.java)
-                val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
-                viewModel.googleSignIn(credentials)
-            } catch (it: ApiException) {
-                print(it)
-            }
-        }
+    val launcher = createGoogleSignInLauncher(context = context, viewModel = viewModel)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,12 +60,7 @@ fun SignInScreen(
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(onClick = {
-            launcher.launch(
-                GoogleSignIn.getClient(
-                    context,
-                    getGoogleSignInOptions()
-                ).signInIntent
-            )
+            launcher.launch(GoogleSignIn.getClient(context, getGoogleSignInOptions()).signInIntent)
         }) { Text(text = "Sign in with Google") }
         LaunchedEffect(key1 = viewModel.googleState.value.success) {
             scope.launch {
