@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui
 
-import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -47,7 +46,6 @@ fun createGoogleSignInLauncher(
             print(it)
         }
     }
-
 
 @Composable
 fun SignInScreen(
