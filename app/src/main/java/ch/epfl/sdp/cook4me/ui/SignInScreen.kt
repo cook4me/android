@@ -22,6 +22,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.launch
 
 
+fun getGoogleSignInOptions(): GoogleSignInOptions {
+    return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestEmail()
+        .requestIdToken(ServerClient)
+        .build()
+}
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
@@ -44,10 +50,7 @@ fun SignInScreen(
     ) {
         Row(modifier = Modifier.fillMaxWidth().padding(top = 10.dp),horizontalArrangement = Arrangement.Center){
             Button(onClick = {
-                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .requestIdToken(ServerClient)
-                    .build()
+                val gso = getGoogleSignInOptions()
                 val googleSignInClient = GoogleSignIn.getClient(context, gso)
                 launcher.launch(googleSignInClient.signInIntent)
             }) {
