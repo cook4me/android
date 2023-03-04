@@ -20,5 +20,4 @@ object AppModule {
     @Singleton
     fun providesRepositoryImpl(firebaseAuth: FirebaseAuth): AuthRepository =
         AuthRepositoryImpl(firebaseAuth)
-
 }

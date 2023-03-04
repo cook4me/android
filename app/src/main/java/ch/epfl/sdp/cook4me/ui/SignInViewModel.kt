@@ -28,9 +28,7 @@ class SignInViewModel @Inject constructor(
 
                 is Resource.Error ->
                     googleStateRec.value = GoogleSIgnInState(error = result.message!!)
-
             }
         }
     }
 }
-

@@ -34,8 +34,10 @@ fun getGoogleSignInOptions(): GoogleSignInOptions =
         .build()
 
 @Composable
-fun createGoogleSignInLauncher(context: Context, viewModel: SignInViewModel): ActivityResultLauncher<Intent> {
-    return rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+fun createGoogleSignInLauncher(
+    viewModel: SignInViewModel
+): ActivityResultLauncher<Intent> =
+    rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
         val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
         try {
             val result = account.getResult(ApiException::class.java)
@@ -45,23 +47,31 @@ fun createGoogleSignInLauncher(context: Context, viewModel: SignInViewModel): Ac
             print(it)
         }
     }
-}
+
+
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val launcher = createGoogleSignInLauncher(context = context, viewModel = viewModel)
+    val launcher = createGoogleSignInLauncher(viewModel = viewModel)
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 30.dp, end = 30.dp),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick = {
-            launcher.launch(GoogleSignIn.getClient(context, getGoogleSignInOptions()).signInIntent)
-        }) { Text(text = "Sign in with Google") }
+        Button(
+            onClick = {
+                launcher.launch(
+                    GoogleSignIn.getClient(
+                        context,
+                        getGoogleSignInOptions()
+                    ).signInIntent
+                )
+            }
+        ) { Text(text = "Sign in with Google") }
         LaunchedEffect(key1 = viewModel.googleState.value.success) {
             scope.launch {
                 if (viewModel.googleState.value.success != null) {

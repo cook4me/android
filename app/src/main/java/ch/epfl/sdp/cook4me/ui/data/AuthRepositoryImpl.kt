@@ -22,5 +22,4 @@ class AuthRepositoryImpl @Inject constructor(
         }.catch {
             emit(Resource.Error(it.message.toString()))
         }
-    }
-
+}
