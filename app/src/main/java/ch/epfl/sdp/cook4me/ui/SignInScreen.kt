@@ -48,19 +48,12 @@ fun SignInScreen(
     Column(modifier = Modifier.fillMaxSize().padding(start = 30.dp, end = 30.dp),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(top = 10.dp),horizontalArrangement = Arrangement.Center){
-            Button(onClick = {
-                val gso = getGoogleSignInOptions()
-                val googleSignInClient = GoogleSignIn.getClient(context, gso)
-                launcher.launch(googleSignInClient.signInIntent)
-            }) {
-                Text(text = "Sign in with Google")
-            }
-            LaunchedEffect(key1 = googleSignInState.success) {
-                scope.launch {
-                    if (googleSignInState.success != null) {
-                        Toast.makeText(context, "sign in success！", Toast.LENGTH_LONG).show()
-                    }
+        Button(onClick = {launcher.launch(GoogleSignIn.getClient(context, getGoogleSignInOptions()).signInIntent)})
+            {Text(text = "Sign in with Google")}
+        LaunchedEffect(key1 = googleSignInState.success) {
+            scope.launch {
+                if (googleSignInState.success != null) {
+                    Toast.makeText(context, "sign in success！", Toast.LENGTH_LONG).show()
                 }
             }
         }
