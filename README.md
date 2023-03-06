@@ -25,3 +25,11 @@ githubJacocoUsername=YourGitHubUsername
 # Requires at least the read:packages scope.
 githubJacocoPassword=YourGitHubPersonalAccessToken
 ```
+
+## Project structure
+This project uses Jetpack Compose and is written in Kotlin. The main packages are organized as follows :
+
+- `ch.epfl.sdp.cook4me.persistence.repository` contains the [repositories](https://martinfowler.com/eaaCatalog/repository.html) (classes which take care of the database access). All the classes have the prefix `Repository`; 
+- `ch.epfl.sdp.cook4me.persistence.model` contains model classes, which represent the stored format; 
+- `ch.epfl.sdp.mobile.application` contains the business logic. All the classes have the prefix `Service`;
+- `ch.epfl.sdp.mobile.ui` contains the user interface (where all the `@Composable` functions live);
