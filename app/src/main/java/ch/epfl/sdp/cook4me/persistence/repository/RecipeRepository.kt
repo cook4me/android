@@ -2,19 +2,27 @@ package ch.epfl.sdp.cook4me.persistence.repository
 
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 const val COLLECTION_PATH = "recipes"
 
 class RecipeRepository(
-    private val store: FirebaseFirestore = Firebase.firestore,
+    private val store: FirebaseFirestore
 ) {
-    suspend fun add(value: Recipe) = store.add(COLLECTION_PATH, value)
+    suspend fun add(value: Recipe) {
+        store.collection(COLLECTION_PATH).add(value).await()
+    }
 
-    suspend fun getAll() = store.getAll<Recipe>(COLLECTION_PATH)
+    suspend fun getAll(): Map<String, Recipe> {
+        val result = store.collection(COLLECTION_PATH).get().await()
+        return result.map { it.id }.zip(result.toObjects(Recipe::class.java)).toMap()
+    }
 
-    suspend fun getById(id: String) = store.getById<Recipe>(COLLECTION_PATH, id)
+    suspend fun getById(id: String) =
+        store.collection(COLLECTION_PATH).document(id).get().await()
+            .toObject(Recipe::class.java)
 
-    suspend fun update(id: String, value: Recipe) = store.update(COLLECTION_PATH, id, value)
+    suspend fun update(id: String, value: Recipe) {
+        store.collection(COLLECTION_PATH).document(id).set(value).await()
+    }
 }
