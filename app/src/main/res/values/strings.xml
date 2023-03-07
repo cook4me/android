@@ -4,5 +4,5 @@
     <string name="welcome_screen_name_field">Enter your name</string>
     <string name="welcome_screen_button">Start</string>
     <string name="profile_screen_placeholder">Welcome</string>
-    <string name="image_selector_add_image">Add an image</string>
+    <string name="image_selector_add_image">+</string>
 </resources>
