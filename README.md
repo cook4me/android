@@ -26,10 +26,17 @@ githubJacocoUsername=YourGitHubUsername
 githubJacocoPassword=YourGitHubPersonalAccessToken
 ```
 As this project uses Google Firebase, you will also need to provide your own google-services.json.
-
 This file can be generated from the Firebase Console (Project -> Project Settings -> Your apps -> SDK setup and configuration -> google-services.json).
+It must be placed at ./app/google-services.json.
 
-It must be placed at ./app/google-services.json
+[firebase emulator](https://firebase.google.com/docs/emulator-suite) is used for some tests. To install it run the following: `curl -sL https://firebase.tools | bash`. To run the tests in android studio execute: `firebase emulators:start`. To run the tests as well as other checks on the cli execute `firebase emulators:exec './gradlew check connectedCheck'`. 
+
+### Static code analysis
+In the CI pipeline we use two static code analysis tools:
+* [detekt](https://detekt.dev/), can be triggered with `./gradlew detekt`
+* [Android Studio lint](https://developer.android.com/studio/write/lint), can be triggered with `./gradlew lintDebug` 
+
+It's recommended to run these two commands locally before pushing a commit or creating a pull request, because the ci is slower. To automatically fix formatting errors discovered by detekt run `./gradlew ktlintFormat`. 
 
 ## Project structure
 This project uses Jetpack Compose and is written in Kotlin. The main packages are organized as follows :
