@@ -6,7 +6,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -54,7 +56,7 @@ fun TupCreationScreen(
         ) {
             ButtonRow(
                 modifier = Modifier.fillMaxSize(),
-                onCancelPressed = { /*TODO*/ },
+                onCancelPressed = {},
                 onDonePressed = {},
             )
         }
@@ -80,7 +82,8 @@ fun TupperwareForm(
     ) {
         Column(
             modifier = modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .padding(10.dp)
         ) {
             FieldText("Add Images")
@@ -88,7 +91,7 @@ fun TupperwareForm(
             Spacer(modifier = Modifier.size(10.dp))
 
             ImageSelector(
-                modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
                 onClickAddImage = { /*TODO*/ },
@@ -103,7 +106,6 @@ fun TupperwareForm(
             TextField(
                 modifier = Modifier
                     .height(50.dp)
-
                     .fillMaxWidth(),
                 textStyle = MaterialTheme.typography.caption,
                 value = nameTextField, onValueChange = { nameTextField = it },
@@ -132,6 +134,18 @@ fun TupperwareForm(
             )
             FieldText("Tags")
             Spacer(modifier = Modifier)
+            TextField(
+                modifier = Modifier
+                    .height(100.dp)
+                    .fillMaxWidth(),
+                textStyle = MaterialTheme.typography.caption,
+                value = nameTextField, onValueChange = { nameTextField = it },
+                shape = RoundedCornerShape(30.dp),
+                colors = textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                ),
+            )
         }
 
     }
