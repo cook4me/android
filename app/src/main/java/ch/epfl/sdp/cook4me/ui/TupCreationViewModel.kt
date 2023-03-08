@@ -25,7 +25,8 @@ class TupCreationViewModel : ViewModel() {
     fun selectImage() {
     }
 
-    fun addImage(uri: Uri?) {
+    fun addImage(uri: Uri) {
+        _images.add(uri)
     }
 
     fun submitForm() {

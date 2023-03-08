@@ -37,7 +37,7 @@ fun ImageSelector(
 ) {
 
     LazyRow(
-        modifier = modifier,
+        modifier = Modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(start = 12.dp, end = 12.dp)
     ) {
@@ -46,16 +46,16 @@ fun ImageSelector(
         }
         item {
             AddPictureElement(
-                modifier = modifier
-                    .fillMaxHeight()
+                modifier = Modifier
+                    .height(200.dp)
                     .width(100.dp),
                 onClickAddImage = onClickAddImage,
             )
         }
         item {
             AddPictureElement(
-                modifier = modifier
-                    .fillMaxHeight()
+                modifier = Modifier
+                    .height(200.dp)
                     .width(100.dp),
                 onClickAddImage = onClickTakePhoto,
                 color = Color.Red,
@@ -75,13 +75,12 @@ fun AddPictureElement(
     color: Color = MaterialTheme.colors.secondary
 ) {
     Card (
-        modifier = modifier,
+        modifier = Modifier,
         elevation = 10.dp,
         shape = RoundedCornerShape(16.dp)
     ){
         Box(
             modifier = modifier
-                .fillMaxHeight()
                 .clickable { onClickAddImage },
             contentAlignment = Alignment.Center
         ) {
@@ -136,7 +135,7 @@ fun ImageElementPreview() {
         R.drawable.placeholder_tupperware2,
     )
     Cook4meTheme{
-        AddPictureElement(modifier = Modifier.height(200.dp).width(100.dp), onClickAddImage = { /*TODO*/ })
+        AddPictureElement(modifier = Modifier.height(200.dp), onClickAddImage = { /*TODO*/ })
     }
 }
 
