@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,19 +18,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ch.epfl.sdp.cook4me.ComposeFileProvider
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
 @Composable
 fun TupCreationScreen(
     modifier: Modifier = Modifier,
+    onSubmit:  () -> Unit,
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
-    tupCreationViewModel: TupCreationViewModel = viewModel()
 ) {
+
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -57,7 +61,10 @@ fun TupCreationScreen(
             ButtonRow(
                 modifier = Modifier.fillMaxSize(),
                 onCancelPressed = {},
-                onDonePressed = {},
+                onDonePressed = {
+
+                                Log.d("Debug", "Hey")
+                },
             )
         }
 
@@ -77,6 +84,38 @@ fun TupperwareForm(
         mutableStateOf("")
     }
 
+    var imageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val images = remember { mutableStateListOf<Uri>() }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            if(uri != null) {
+                Log.i("imagePicker", "Image Added")
+                images.add(uri)
+            } else {
+                Log.i("imagePicker", "Image Not Found")
+            }
+        }
+    )
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            imageUri?.let {
+                if(success){
+                    Log.i("cameraLauncher", "Photo Taken")
+                    images.add(it)
+                }
+            }
+        }
+    )
+
+    val context = LocalContext.current
+
     Box(
         modifier =  modifier
     ) {
@@ -94,9 +133,18 @@ fun TupperwareForm(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
-                onClickAddImage = { /*TODO*/ },
-                onClickTakePhoto = { /*TODO*/ },
-                onClickImage = { /*TODO*/ }
+                onClickAddImage = {
+                    Log.d("Debug", "Image Picked")
+                    imagePicker.launch("image/*")
+                                  },
+                onClickTakePhoto = {
+                    Log.d("Debug", "Image Picked")
+                    val uri = ComposeFileProvider.getImageUri(context)
+                    imageUri = uri
+                    cameraLauncher.launch(uri)
+                },
+                onClickImage = { /*TODO*/ },
+                images = images
             )
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()
@@ -132,8 +180,11 @@ fun TupperwareForm(
                     focusedIndicatorColor = Color.Transparent,
                 ),
             )
+            Spacer(modifier = Modifier.size(10.dp))
+            Cook4MeDivider()
+            Spacer(modifier = Modifier.size(2.dp))
             FieldText("Tags")
-            Spacer(modifier = Modifier)
+            Spacer(modifier = Modifier.size(5.dp))
             TextField(
                 modifier = Modifier
                     .height(100.dp)
@@ -154,6 +205,7 @@ fun TupperwareForm(
 @Composable
 private fun FieldText(text: String = "") {
     Text(
+        modifier = Modifier,
         text = text,
         fontWeight = FontWeight.Bold,
         style = MaterialTheme.typography.h6

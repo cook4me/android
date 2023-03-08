@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 import androidx.compose.foundation.lazy.items
+import coil.compose.AsyncImage
 
 @Composable
 fun ImageSelector(
@@ -33,30 +35,32 @@ fun ImageSelector(
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
     onClickImage: () -> Unit,
-    images: List<Int> = listOf(),
+    images: List<Uri> = listOf(),
+    imageHeight: Dp = 200.dp,
+    imageWidth: Dp = 100.dp,
 ) {
 
     LazyRow(
-        modifier = Modifier,
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(start = 12.dp, end = 12.dp)
     ) {
         items(images) { img ->
-            ImageCard(image = img, onClickImage = onClickImage)
+            ImageCard(modifier=Modifier.height(imageHeight), image = img, onClickImage = onClickImage)
         }
         item {
             AddPictureElement(
                 modifier = Modifier
-                    .height(200.dp)
-                    .width(100.dp),
+                    .height(imageHeight)
+                    .width(imageWidth),
                 onClickAddImage = onClickAddImage,
             )
         }
         item {
             AddPictureElement(
                 modifier = Modifier
-                    .height(200.dp)
-                    .width(100.dp),
+                    .height(imageHeight)
+                    .width(imageWidth),
                 onClickAddImage = onClickTakePhoto,
                 color = Color.Red,
             )
@@ -81,7 +85,7 @@ fun AddPictureElement(
     ){
         Box(
             modifier = modifier
-                .clickable { onClickAddImage },
+                .clickable { onClickAddImage() },
             contentAlignment = Alignment.Center
         ) {
             Box(
@@ -106,19 +110,18 @@ fun AddPictureElement(
 @Composable
 fun ImageCard(
     modifier: Modifier = Modifier,
-    image: Int,
+    image: Uri,
     elevation: Dp = 10.dp,
     shape: Shape = RoundedCornerShape(16.dp),
     onClickImage: () -> Unit
 ) {
-    val img: Painter = painterResource(id = image)
     Card(
         modifier = modifier,
         elevation = elevation,
         shape = shape
     ) {
-        Image(
-            painter = img,
+        AsyncImage(
+            model = image,
             contentDescription = "",
             modifier = Modifier.fillMaxHeight(),
             contentScale = ContentScale.FillHeight
@@ -155,7 +158,7 @@ fun AddImagePreview() {
         }
     }
 }*/
-
+/*
 @Preview("default", showBackground = true)
 @Composable
 fun ImageSelectorPreview() {
@@ -193,4 +196,4 @@ fun ImageSelectorEmptyPreview() {
             onClickImage = {},
         )
     }
-}
+}*/
