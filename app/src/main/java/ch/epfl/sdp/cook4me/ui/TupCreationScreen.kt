@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,9 +28,9 @@ import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 @Composable
 fun TupCreationScreen(
     modifier: Modifier = Modifier,
-    onSubmit:  () -> Unit,
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
+    viewModel: TupCreationViewModel = viewModel(),
 ) {
 
     Column(
@@ -50,7 +49,8 @@ fun TupCreationScreen(
         }
         TupperwareForm(
             modifier = Modifier
-                .weight(1f)
+                .weight(1f),
+            viewModel = viewModel
         )
         Box(
             modifier = Modifier
@@ -61,10 +61,7 @@ fun TupCreationScreen(
             ButtonRow(
                 modifier = Modifier.fillMaxSize(),
                 onCancelPressed = {},
-                onDonePressed = {
-
-                                Log.d("Debug", "Hey")
-                },
+                onDonePressed={viewModel.onSubmit()},
             )
         }
 
@@ -75,6 +72,7 @@ fun TupCreationScreen(
 @Composable
 fun TupperwareForm(
     modifier: Modifier = Modifier,
+    viewModel: TupCreationViewModel,
 ) {
     var nameTextField by remember {
         mutableStateOf("")
@@ -95,7 +93,7 @@ fun TupperwareForm(
         onResult = { uri ->
             if(uri != null) {
                 Log.i("imagePicker", "Image Added")
-                images.add(uri)
+                viewModel.addImage(uri)
             } else {
                 Log.i("imagePicker", "Image Not Found")
             }
@@ -108,7 +106,7 @@ fun TupperwareForm(
             imageUri?.let {
                 if(success){
                     Log.i("cameraLauncher", "Photo Taken")
-                    images.add(it)
+                    viewModel.addImage(imageUri!!)
                 }
             }
         }
@@ -144,7 +142,7 @@ fun TupperwareForm(
                     cameraLauncher.launch(uri)
                 },
                 onClickImage = { /*TODO*/ },
-                images = images
+                images = viewModel.images
             )
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()

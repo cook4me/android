@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.platform.testTag
 import coil.compose.AsyncImage
 
 @Composable
@@ -52,7 +53,8 @@ fun ImageSelector(
             AddPictureElement(
                 modifier = Modifier
                     .height(imageHeight)
-                    .width(imageWidth),
+                    .width(imageWidth)
+                    .testTag("AddImage"),
                 onClickAddImage = onClickAddImage,
             )
         }

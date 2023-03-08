@@ -10,6 +10,8 @@ import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.core.app.ActivityOptionsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.ui.TupCreationScreen
@@ -52,6 +54,9 @@ class TupCreationScenarioTest {
                 )
             }
         }
+
+        composeTestRule.onNodeWithTag("AddImage").performClick()
+
 
     }
 }
