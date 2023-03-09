@@ -11,6 +11,7 @@
         android:theme="@style/Theme.Cook4me"
         tools:targetApi="31">
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

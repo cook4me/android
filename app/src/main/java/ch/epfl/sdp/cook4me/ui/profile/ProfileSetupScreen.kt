@@ -28,20 +28,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 
+@Preview(showBackground = true)
 @Composable
-fun ProfileScreen() {
+fun ProfileSetupScreen() {
     val notification = rememberSaveable { mutableStateOf("") }
     if (notification.value.isNotEmpty()) {
         Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
         notification.value = ""
     }
 
-    var name by rememberSaveable { mutableStateOf("Default Name") }
-    var username by rememberSaveable {
-        mutableStateOf("Default Username")
-    }
+    var username by rememberSaveable { mutableStateOf("User 42") }
+    var favDish by rememberSaveable { mutableStateOf("Pizza") }
+    var allergies by rememberSaveable { mutableStateOf("No Allergies") }
+    var bio by rememberSaveable { mutableStateOf("Hi there I'm a chef") }
 
     Column(
         modifier = Modifier
@@ -61,26 +63,9 @@ fun ProfileScreen() {
                 notification.value = "Saved"
             })
         }
-        ProfileImage()
+        ProfileSetupImage()
 
-        //Textfield for the name
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 4.dp, end = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Name", modifier = Modifier.width(100.dp))
-            TextField(
-                value = "Name",
-                onValueChange = { name = it },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent, textColor = Color.Black
-                )
-            )
-        }
-
-        //Textfield for the Username
+        //Textfield for the username
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,28 +74,74 @@ fun ProfileScreen() {
         ) {
             Text(text = "Username", modifier = Modifier.width(100.dp))
             TextField(
-                value = "Username",
-                onValueChange = { name = it },
+                value = username,
+                onValueChange = { username = it },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent, textColor = Color.Black
                 )
             )
         }
+        //Textfield for the Favorite dish
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp, end = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Favorite dish", modifier = Modifier.width(100.dp))
+            TextField(
+                value = favDish,
+                onValueChange = { favDish = it },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent, textColor = Color.Black
+                )
+            )
+        }
+
+        //Textfield for the Allergies
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp, end = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Allergies", modifier = Modifier.width(100.dp))
+            TextField(
+                value = allergies,
+                onValueChange = { allergies = it },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent, textColor = Color.Black
+                )
+            )
+        }
+
+        //Textfield for the bio
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 4.dp, end = 4.dp),
             verticalAlignment = Alignment.Top
         ) {
-            Text(text = "Bio", modifier = Modifier
-                .width(100.dp)
-                .padding(8.dp))
+            Text(
+                text = "Bio", modifier = Modifier
+                    .width(100.dp)
+                    .padding(top = 8.dp)
+            )
+            TextField(
+                value = bio,
+                onValueChange = { bio = it },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.Transparent, textColor = Color.Black
+                ),
+                singleLine = false,
+                modifier = Modifier.height(150.dp)
+            )
         }
     }
 }
 
 @Composable
-fun ProfileImage() {
+fun ProfileSetupImage() {
     //draws the image of the profile
     val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
