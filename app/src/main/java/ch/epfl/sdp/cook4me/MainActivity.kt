@@ -12,8 +12,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             Cook4meTheme {
                 TupCreationScreen(
-                    onClickAddImage = {},
-                    onClickTakePhoto = {},
                 )
             }
         }

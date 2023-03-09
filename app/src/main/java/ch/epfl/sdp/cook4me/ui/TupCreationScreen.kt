@@ -28,8 +28,6 @@ import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 @Composable
 fun TupCreationScreen(
     modifier: Modifier = Modifier,
-    onClickAddImage: () -> Unit,
-    onClickTakePhoto: () -> Unit,
     viewModel: TupCreationViewModel = viewModel(),
 ) {
 
@@ -74,28 +72,19 @@ fun TupperwareForm(
     modifier: Modifier = Modifier,
     viewModel: TupCreationViewModel,
 ) {
-    var nameTextField by remember {
-        mutableStateOf("")
-    }
-
-    var descTextField by remember {
-        mutableStateOf("")
-    }
-
+    // for now couldn't get rid of it as it is used to get the Uri from the camera
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
+    val titleText by viewModel.titleText
+    val descText by viewModel.descText
 
-    val images = remember { mutableStateListOf<Uri>() }
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             if(uri != null) {
-                Log.i("imagePicker", "Image Added")
                 viewModel.addImage(uri)
-            } else {
-                Log.i("imagePicker", "Image Not Found")
             }
         }
     )
@@ -104,8 +93,7 @@ fun TupperwareForm(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
             imageUri?.let {
-                if(success){
-                    Log.i("cameraLauncher", "Photo Taken")
+                if(success) {
                     viewModel.addImage(imageUri!!)
                 }
             }
@@ -132,11 +120,9 @@ fun TupperwareForm(
                     .fillMaxWidth()
                     .height(200.dp),
                 onClickAddImage = {
-                    Log.d("Debug", "Image Picked")
                     imagePicker.launch("image/*")
-                                  },
+                },
                 onClickTakePhoto = {
-                    Log.d("Debug", "Image Picked")
                     val uri = ComposeFileProvider.getImageUri(context)
                     imageUri = uri
                     cameraLauncher.launch(uri)
@@ -154,12 +140,13 @@ fun TupperwareForm(
                     .height(50.dp)
                     .fillMaxWidth(),
                 textStyle = MaterialTheme.typography.caption,
-                value = nameTextField, onValueChange = { nameTextField = it },
+                value = titleText, onValueChange = { viewModel.updateTitle(it) },
                 shape = RoundedCornerShape(30.dp),
                 colors = textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                 ),
+                singleLine = true,
             )
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()
@@ -171,7 +158,7 @@ fun TupperwareForm(
                     .height(150.dp)
                     .fillMaxWidth(),
                 textStyle = MaterialTheme.typography.caption,
-                value = descTextField, onValueChange = { descTextField = it },
+                value = descText, onValueChange = { viewModel.updateDesc(it) },
                 shape = RoundedCornerShape(30.dp),
                 colors = textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
@@ -188,7 +175,7 @@ fun TupperwareForm(
                     .height(100.dp)
                     .fillMaxWidth(),
                 textStyle = MaterialTheme.typography.caption,
-                value = nameTextField, onValueChange = { nameTextField = it },
+                value = viewModel.tags.joinToString(), onValueChange = { viewModel.updateTags(it) },
                 shape = RoundedCornerShape(30.dp),
                 colors = textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
@@ -215,6 +202,6 @@ private fun FieldText(text: String = "") {
 @Composable
 fun TupCreationScreenPreview() {
     Cook4meTheme {
-        TupCreationScreen(onClickTakePhoto = {}, onClickAddImage = {})
+        TupCreationScreen()
     }
 }

@@ -49,8 +49,6 @@ class TupCreationScenarioTest {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
                 TupCreationScreen(
-                    onClickTakePhoto = {},
-                    onClickAddImage = {},
                 )
             }
         }
