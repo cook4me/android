@@ -1,18 +1,11 @@
 package ch.epfl.sdp.cook4me.ui
 
-import android.content.ClipData.Item
-import android.media.Image
 import android.net.Uri
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,34 +26,27 @@ import coil.compose.rememberAsyncImagePainter
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreen() {
-    val notification = rememberSaveable { mutableStateOf("") }
-    if (notification.value.isNotEmpty()) {
-        Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
-        notification.value = ""
-    }
-
-    var bio by rememberSaveable { mutableStateOf("Hi there I'm a chef") }
-
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            //.verticalScroll(rememberScrollState())
             .padding(8.dp)
+
     ) {
         ProfileImageAndUsername()
 
-
         //Textfield for the Favorite dish
-        favoriteDish()
+        favoriteDish_profileScreen()
 
         //Textfield for the Allergies
-        allergies()
+        allergies_profileScreen()
 
         //Textfield for the bio
-        bio()
+        bio_profileScreen()
 
         //Grid with post within
         PostGrid()
     }
+
 }
 
 @Composable
@@ -98,29 +84,25 @@ fun ProfileImageAndUsername() {
                 .padding(8.dp)
                 .size(100.dp)
         ) {
-            Image(painter = painter, contentDescription = "content")
+            Image(painter = painter, contentDescription = "")
 
         }
-        username()
+        username_profileScreen()
     }
 }
 
 @Composable
-fun username() {
-    var username by rememberSaveable { mutableStateOf("User 42") }
-
+fun username_profileScreen() {
     Text(
-        text = username,
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxSize(),
+        text = stringResource(R.string.default_username),
+        modifier = Modifier,
         fontWeight = FontWeight.Bold,
     )
 }
 
 @Composable
-fun favoriteDish() {
-    var favDish by rememberSaveable { mutableStateOf("Pizza") }
+fun favoriteDish_profileScreen() {
+    var favDish by rememberSaveable { mutableStateOf(R.string.default_favoriteDish) }
 
     Row(
         modifier = Modifier
@@ -128,14 +110,14 @@ fun favoriteDish() {
             .padding(start = 4.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Favorite dish", modifier = Modifier.width(100.dp))
-        Text(text = "Pizza", modifier = Modifier.fillMaxWidth())
+        Text(text = stringResource(R.string.tag_favoriteDish), modifier = Modifier.width(100.dp))
+        Text(text = stringResource(favDish), modifier = Modifier.fillMaxWidth())
     }
 }
 
 @Composable
-fun allergies() {
-    var allergies by rememberSaveable { mutableStateOf("Hazelnut") }
+fun allergies_profileScreen() {
+    var allergies by rememberSaveable { mutableStateOf(R.string.default_allergies) }
 
     Row(
         modifier = Modifier
@@ -143,14 +125,14 @@ fun allergies() {
             .padding(start = 4.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Allergies", modifier = Modifier.width(100.dp))
-        Text(text = allergies, modifier = Modifier.fillMaxWidth())
+        Text(text = stringResource(R.string.tag_allergies), modifier = Modifier.width(100.dp))
+        Text(text = stringResource(allergies), modifier = Modifier.fillMaxWidth())
     }
 }
 
 @Composable
-fun bio() {
-    var bio by rememberSaveable { mutableStateOf("Hi there I'm a chef") }
+fun bio_profileScreen() {
+    var bio by rememberSaveable { mutableStateOf(R.string.default_bio) }
 
     Row(
         modifier = Modifier
@@ -159,13 +141,13 @@ fun bio() {
         verticalAlignment = Alignment.Top
     ) {
         Text(
-            text = "Bio", modifier = Modifier
+            text = stringResource(R.string.tag_bio), modifier = Modifier
                 .width(100.dp)
                 .padding(top = 8.dp)
         )
         Text(
-            text = bio, modifier = Modifier
-                .width(100.dp)
+            text = stringResource(bio), modifier = Modifier
+                .fillMaxWidth()
                 .padding(top = 8.dp)
         )
     }
