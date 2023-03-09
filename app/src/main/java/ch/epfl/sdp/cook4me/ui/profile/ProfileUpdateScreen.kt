@@ -90,8 +90,9 @@ fun bio_profileUpdateScreen() {
 
 @Composable
 fun allergies_profileUpdateScreen() {
+    var allergy = "No Allergies"
     var allergies by rememberSaveable { mutableStateOf(
-        "No Allergies")
+        allergy)
     }
 
     Row(
