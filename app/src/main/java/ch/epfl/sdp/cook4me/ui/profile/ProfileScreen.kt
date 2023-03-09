@@ -28,7 +28,7 @@ fun ProfileScreen() {
     Column(
         modifier = Modifier
             //.verticalScroll(rememberScrollState())
-            .padding(8.dp)
+            .padding(12.dp)
 
     ) {
         //TODO put in logic
@@ -81,9 +81,10 @@ fun ProfileImageAndUsername(painter: AsyncImagePainter) {
 fun username_profileScreen() {
     Text(
         text = stringResource(R.string.default_username),
-        modifier = Modifier,
+        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
         fontWeight = FontWeight.Bold,
-    )
+
+        )
 }
 
 @Composable
@@ -93,11 +94,21 @@ fun favoriteDish_profileScreen() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
+            .padding(start = 8.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = stringResource(R.string.tag_favoriteDish), modifier = Modifier.width(100.dp))
-        Text(text = stringResource(favDish), modifier = Modifier.fillMaxWidth())
+        Text(
+            text = stringResource(R.string.tag_favoriteDish),
+            modifier = Modifier
+                .width(100.dp)
+                .padding(top = 8.dp, bottom = 8.dp)
+        )
+        Text(
+            text = stringResource(favDish),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 8.dp)
+        )
     }
 }
 
@@ -108,11 +119,21 @@ fun allergies_profileScreen() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
+            .padding(start = 8.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = stringResource(R.string.tag_allergies), modifier = Modifier.width(100.dp))
-        Text(text = stringResource(allergies), modifier = Modifier.fillMaxWidth())
+        Text(
+            text = stringResource(R.string.tag_allergies),
+            modifier = Modifier
+                .width(100.dp)
+                .padding(top = 8.dp, bottom = 8.dp)
+        )
+        Text(
+            text = stringResource(allergies),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp, bottom = 8.dp)
+        )
     }
 }
 
@@ -129,7 +150,7 @@ fun bio_profileScreen() {
         Text(
             text = stringResource(R.string.tag_bio), modifier = Modifier
                 .width(100.dp)
-                .padding(top = 8.dp)
+                .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
             text = stringResource(bio), modifier = Modifier

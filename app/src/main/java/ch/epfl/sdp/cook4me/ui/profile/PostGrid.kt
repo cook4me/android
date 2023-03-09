@@ -62,10 +62,6 @@ fun PostDataItem(data: Post) {
                     id = when (data.id) {
                         1L -> R.drawable.carbonara
                         2L -> R.drawable.tiramisu
-                        3L -> R.drawable.guacamole
-                        4L -> R.drawable.tiramisu
-                        5L -> R.drawable.carbonara
-                        6L -> R.drawable.tiramisu
                         else -> R.drawable.guacamole
                     }
                 ),

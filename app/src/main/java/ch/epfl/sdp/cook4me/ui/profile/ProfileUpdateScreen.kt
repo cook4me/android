@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.ui
 
 import android.net.Uri
-import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -22,13 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 
 @Preview(showBackground = true)
@@ -60,14 +62,12 @@ fun ProfileUpdateScreen() {
 
 @Composable
 fun bio_profileUpdateScreen() {
-
     var bio by rememberSaveable { mutableStateOf("Hi there, I am a chef") }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
-        verticalAlignment = Alignment.Top
+            .padding(start = 4.dp, end = 4.dp)
     ) {
         Text(
             text = "Bio", modifier = Modifier
@@ -159,6 +159,12 @@ fun ProfileSetupImage_profileUpdateScreen() {
     ) { uri: Uri? ->
         uri?.let { imageURI.value = it.toString() }
     }
+
+    Image_profileUpdateScreen(painter = painter, launcher =launcher)
+}
+
+@Composable
+fun Image_profileUpdateScreen(painter: AsyncImagePainter, launcher: ManagedActivityResultLauncher<String,Uri?>){
 
     Column(
         modifier = Modifier
