@@ -116,8 +116,9 @@ fun allergies_profileUpdateScreen() {
 
 @Composable
 fun favoriteDish_profileUpdateScreen() {
+    var favDishText = stringResource(R.string.default_favoriteDish)
     var favDish by rememberSaveable {
-        mutableStateOf("Pizza")
+        mutableStateOf(favDishText)
     }
 
     Row(
@@ -222,7 +223,8 @@ fun saveCancelButtons_profileUpdateScreen() {
 
 @Composable
 fun username_profileUpdateScreen() {
-    var username by rememberSaveable { mutableStateOf("User_42") }
+    var usernameText = stringResource(R.string.default_username)
+    var username by rememberSaveable { mutableStateOf(usernameText) }
 
     Row(
         modifier = Modifier
