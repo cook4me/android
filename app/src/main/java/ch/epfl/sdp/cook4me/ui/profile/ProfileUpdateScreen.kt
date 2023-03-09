@@ -62,7 +62,8 @@ fun ProfileUpdateScreen() {
 
 @Composable
 fun bio_profileUpdateScreen() {
-    var bio by rememberSaveable { mutableStateOf("Hi there, I am a chef") }
+    var bioText = stringResource(R.string.default_bio)
+    var bio by rememberSaveable { mutableStateOf(bioText) }
 
     Row(
         modifier = Modifier
@@ -90,7 +91,7 @@ fun bio_profileUpdateScreen() {
 
 @Composable
 fun allergies_profileUpdateScreen() {
-    var allergy = "No Allergies"
+    var allergy = stringResource(R.string.default_allergies)
     var allergies by rememberSaveable { mutableStateOf(
         allergy)
     }
