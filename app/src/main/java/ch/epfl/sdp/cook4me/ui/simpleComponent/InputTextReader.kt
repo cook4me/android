@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.TextField
-import androidx.compose.runtime.Composable
 import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 
 /**
@@ -22,13 +22,17 @@ fun InputTextReader(
     exampleText: String = "",
     onTextChanged: (String) -> Unit
 ) {
+    val text = remember { mutableStateOf(exampleText) }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(question)
         TextField(
-            value = exampleText,
-            onValueChange = onTextChanged,
+            value = text.value,
+            onValueChange = {
+                onTextChanged(it)
+                text.value = it
+            },
             label = { Text(label)},
             modifier = androidx.compose.ui.Modifier.fillMaxWidth()
         )

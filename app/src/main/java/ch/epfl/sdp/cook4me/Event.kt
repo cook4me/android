@@ -29,4 +29,8 @@ class Event {
         return ""
     }
 
+    fun showEventInformation(): String{
+        return "Name: $name\nDescription: $description\nDate: ${dateTime}\nLocation: $location\nMax participants: $maxParticipants\nParticipants: $participants\nCreator: $creator\nId: $id\nIs private: $isPrivate"
+    }
+
 }
