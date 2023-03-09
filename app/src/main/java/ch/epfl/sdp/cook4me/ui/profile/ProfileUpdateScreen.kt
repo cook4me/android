@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -60,7 +61,7 @@ fun ProfileUpdateScreen() {
 @Composable
 fun bio_profileUpdateScreen() {
 
-    var bio by rememberSaveable { mutableStateOf("Hi there I'm a chef") }
+    var bio by rememberSaveable { mutableStateOf("Hi there, I am a chef") }
 
     Row(
         modifier = Modifier
@@ -80,7 +81,9 @@ fun bio_profileUpdateScreen() {
                 backgroundColor = Color.Transparent, textColor = Color.Black
             ),
             singleLine = false,
-            modifier = Modifier.height(150.dp)
+            modifier = Modifier
+                .height(150.dp)
+                .testTag(stringResource(R.string.tag_bio))
         )
     }
 }
@@ -98,6 +101,7 @@ fun allergies_profileUpdateScreen() {
         Text(text = "Allergies", modifier = Modifier.width(100.dp))
         TextField(
             value = allergies,
+            modifier = Modifier.testTag(stringResource(R.string.tag_allergies)),
             onValueChange = { allergies = it },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black
@@ -118,7 +122,9 @@ fun favoriteDish_profileUpdateScreen() {
     ) {
         Text(text = "Favorite dish", modifier = Modifier.width(100.dp))
         TextField(
+
             value = favDish,
+            modifier = Modifier.testTag(stringResource(R.string.tag_favoriteDish)),
             onValueChange = { favDish = it },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black
@@ -129,6 +135,9 @@ fun favoriteDish_profileUpdateScreen() {
 
 @Composable
 fun ProfileSetupImage_profileUpdateScreen() {
+    /**
+     * TODO Put into logic
+     */
     //draws the image of the profile
     val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
@@ -166,6 +175,7 @@ fun ProfileSetupImage_profileUpdateScreen() {
                 painter = painter,
                 contentDescription = null,
                 modifier = Modifier
+                    .testTag("ProfileImage") //TODO
                     .wrapContentSize()
                     .clickable { launcher.launch("image/*") }, //starts the launcher and accept all type of images
                 contentScale = ContentScale.Crop //crops the image into the available space
@@ -177,30 +187,30 @@ fun ProfileSetupImage_profileUpdateScreen() {
 
 @Composable
 fun saveCancelButtons_profileUpdateScreen() {
-    val notification = rememberSaveable { mutableStateOf("") }
-    if (notification.value.isNotEmpty()) {
-        Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
-        notification.value = ""
-    }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = stringResource(R.string.btn_cancel), modifier = Modifier.clickable {
-            notification.value = "cancelled"
-        })
-        Text(text = stringResource(R.string.btn_save), modifier = Modifier.clickable {
-            notification.value = "Saved"
-        })
+        Text(text = stringResource(R.string.btn_cancel), modifier = Modifier
+            .testTag(
+                stringResource(
+                    R.string.btn_save
+                )
+            )
+            .clickable() {
+            })
+        Text(text = stringResource(R.string.btn_save), modifier = Modifier
+            .testTag(stringResource(R.string.btn_cancel))
+            .clickable {
+            })
     }
 }
 
 @Composable
 fun username_profileUpdateScreen() {
-    var username by rememberSaveable { mutableStateOf("User 42") }
+    var username by rememberSaveable { mutableStateOf("User_42") }
 
     Row(
         modifier = Modifier
@@ -210,7 +220,9 @@ fun username_profileUpdateScreen() {
     ) {
         Text(text = "Username", modifier = Modifier.width(100.dp))
         TextField(
+
             value = username,
+            modifier = Modifier.testTag(stringResource(R.string.tag_username)),
             onValueChange = { username = it },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black

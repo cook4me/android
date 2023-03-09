@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.domain.Post
+import coil.compose.AsyncImage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -53,7 +54,6 @@ fun PostGrid() {
 fun PostDataItem(data: Post) {
     Card(modifier = Modifier
         .clickable() {
-            val itemVal = Gson().toJson(data)
         }
         .fillMaxSize(), elevation = 10.dp, shape = RoundedCornerShape(5.dp)) {
         Column(modifier = Modifier) {
