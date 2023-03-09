@@ -72,7 +72,7 @@ fun bio_profileUpdateScreen() {
         Text(
             text = "Bio", modifier = Modifier
                 .width(100.dp)
-                .padding(top = 8.dp)
+                .padding(top = 7.dp)
         )
         TextField(
             value = bio,
@@ -90,7 +90,9 @@ fun bio_profileUpdateScreen() {
 
 @Composable
 fun allergies_profileUpdateScreen() {
-    var allergies by rememberSaveable { mutableStateOf("No Allergies") }
+    var allergies by rememberSaveable { mutableStateOf(
+        "No Allergies")
+    }
 
     Row(
         modifier = Modifier
@@ -112,7 +114,9 @@ fun allergies_profileUpdateScreen() {
 
 @Composable
 fun favoriteDish_profileUpdateScreen() {
-    var favDish by rememberSaveable { mutableStateOf("Pizza") }
+    var favDish by rememberSaveable {
+        mutableStateOf("Pizza")
+    }
 
     Row(
         modifier = Modifier
