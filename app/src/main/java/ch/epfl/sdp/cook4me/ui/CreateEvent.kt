@@ -12,6 +12,9 @@ import ch.epfl.sdp.cook4me.Event
 import ch.epfl.sdp.cook4me.ui.simpleComponent.*
 import java.util.*
 
+/**
+ * Component that shows the form to create an event
+ */
 @Composable
 fun CreateEvent() {
     val event = Event()

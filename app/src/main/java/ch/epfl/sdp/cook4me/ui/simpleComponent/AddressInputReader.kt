@@ -10,7 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 
-
+// TODO: not finished
+/**
+ * A component that asks for an address
+ * @param question the question to be displayed
+ * @param onAddressChanged the function to be called when the address is changed
+ */
 @Composable
 fun AddressInputReader(
     question: String = "What is the location?",

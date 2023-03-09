@@ -11,6 +11,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 
+/**
+ * A simple component that displays a question and a toggle button
+ * @param question the question to be displayed
+ * @param possibilities the two possible answers to the question
+ * @param onToggle the function to be called when the toggle button is changed
+ */
 @Composable
 fun ToggleButtonChoice(
     question: String,

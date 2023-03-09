@@ -7,6 +7,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * A simple component that displays a question and a slider
+ * @param text the question to be displayed
+ * @param min the minimum value of the slider
+ * @param max the maximum value of the slider
+ * @param onValueChange the function to be called when the slider is changed
+ * @param modifier the modifier of the slider
+ */
 @Composable
 fun IntegerSlider(
     modifier: Modifier = Modifier,

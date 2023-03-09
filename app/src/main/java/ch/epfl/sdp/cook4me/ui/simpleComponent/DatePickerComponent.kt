@@ -12,6 +12,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import java.util.*
 
+/**
+ * A component that allows the user to select a date
+ * @param initialDate the initial date to be displayed
+ * @param onDateSelected the function to be called when the date is selected
+ * @param modifier the modifier of the component
+ */
 @Composable
 fun DatePickerComponent(
     initialDate: Calendar,
