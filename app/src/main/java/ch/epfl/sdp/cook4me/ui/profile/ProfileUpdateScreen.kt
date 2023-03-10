@@ -22,12 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
@@ -65,11 +62,7 @@ fun ProfileUpdateScreen() {
 fun bio_profileUpdateScreen() {
 //    var bioText = stringResource(R.string.default_bio)
     var bio by rememberSaveable { mutableStateOf("") }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp)
-    ) {
+    input_row{
         Text(
             text = "Bio", modifier = Modifier
                 .width(100.dp)
@@ -96,12 +89,7 @@ fun allergies_profileUpdateScreen() {
     var allergies by rememberSaveable { mutableStateOf("")
     }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    input_row{
         Text(text = "Allergies", modifier = Modifier.width(100.dp))
         TextField(
             value = allergies,
@@ -122,12 +110,7 @@ fun favoriteDish_profileUpdateScreen() {
         mutableStateOf("")
     }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    input_row {
         Text(text = "Favorite dish", modifier = Modifier.width(100.dp))
         TextField(
             placeholder = {Text(stringResource(R.string.default_favoriteDish
@@ -227,15 +210,10 @@ fun saveCancelButtons_profileUpdateScreen() {
 fun username_profileUpdateScreen() {
     var username by rememberSaveable { mutableStateOf("") }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    input_row()
+       {
         Text(text = "Username", modifier = Modifier.width(100.dp))
         TextField(
-
             value = username,
             modifier = Modifier.testTag(stringResource(R.string.tag_username)),
             placeholder = {Text(stringResource(R.string.default_username))},
@@ -244,6 +222,18 @@ fun username_profileUpdateScreen() {
                 backgroundColor = Color.Transparent, textColor = Color.Black
             )
         )
+    }
+}
+
+@Composable
+private fun input_row(content: @Composable RowScope.() -> Unit){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 4.dp, end = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        content()
     }
 }
 
