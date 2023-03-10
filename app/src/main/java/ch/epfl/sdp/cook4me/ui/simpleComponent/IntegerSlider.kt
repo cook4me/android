@@ -23,6 +23,9 @@ fun IntegerSlider(
     max: Int,
     onValueChange: (Int) -> Unit
 ) {
+    // initial value is min
+    onValueChange(min)
+
     var value by remember { mutableStateOf(min) }
     Text(
         text = "$text:$value",

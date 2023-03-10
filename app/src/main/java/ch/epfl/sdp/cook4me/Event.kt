@@ -2,6 +2,9 @@ package ch.epfl.sdp.cook4me
 
 import java.util.*
 
+/**
+ * Class representing an event where people can meet to eat together
+ */
 class Event {
     var name: String = ""
     var description: String = ""
@@ -29,8 +32,14 @@ class Event {
         return ""
     }
 
+    private fun showDate(): String{
+        val date = "${dateTime.get(Calendar.DAY_OF_MONTH)}/${dateTime.get(Calendar.MONTH)}/${dateTime.get(Calendar.YEAR)}"
+        val time = "${dateTime.get(Calendar.HOUR_OF_DAY)}:${dateTime.get(Calendar.MINUTE)}"
+        return "$date at $time"
+    }
+
     fun showEventInformation(): String{
-        return "Name: $name\nDescription: $description\nDate: ${dateTime}\nLocation: $location\nMax participants: $maxParticipants\nParticipants: $participants\nCreator: $creator\nId: $id\nIs private: $isPrivate"
+        return "Name: $name\nDescription: $description\nDate: ${showDate()}\nLocation: $location\nMax participants: $maxParticipants\nParticipants: $participants\nCreator: $creator\nId: $id\nIs private: $isPrivate"
     }
 
 }
