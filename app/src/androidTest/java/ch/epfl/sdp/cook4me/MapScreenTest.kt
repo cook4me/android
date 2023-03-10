@@ -8,8 +8,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
 import ch.epfl.sdp.cook4me.ui.GoogleMapView
+import ch.epfl.sdp.cook4me.ui.Locations
 import ch.epfl.sdp.cook4me.ui.dummyMarkers
-import ch.epfl.sdp.cook4me.ui.lausanne
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraMoveStartedReason
@@ -30,7 +30,7 @@ class GoogleMapViewTests {
     val composeTestRule = createComposeRule()
 
     private val startingZoom = 10f
-    private val startingPosition = lausanne
+    private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
 
     private fun initMap(content: @Composable () -> Unit = {}) {
