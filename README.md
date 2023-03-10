@@ -15,3 +15,20 @@ An app for epfl students to enhance their food experience
 | Haolong Li        | [Tachi-67](https://github.com/Tachi-67) | haolong.li@epfl.ch |
 | Pau Romeu        | [pauromeu](https://github.com/pauromeu) | pau.romeu@epfl.ch |
 | Nino Gerber   | [nino-gerb](https://github.com/nino-gerb) | nino.gerber@epfl.ch |
+
+## Setup
+
+This project depends on a specific release of the Jacoco library, which has been updated to provide coverage support for Jetpack Compose. This release is available on [GitHub](https://github.com/epfl-SDP/jacoco-compose), and requires the use of the GitHub Apache Maven Package Repository. Therefore, you are required to add the following to your `~/.gradle/gradle.properties` file to access the Maven package.
+
+```properties
+githubJacocoUsername=YourGitHubUsername
+# Requires at least the read:packages scope.
+githubJacocoPassword=YourGitHubPersonalAccessToken
+```
+To create the YourGitHubPersonalAccessToken go to your github profile and to Settings / Developer Settings / Tokens (classic). Click on generate new token (classic). Then add a note, expiration date and click on read:packages. Then copy the generated token to YourGitHubPersonalAccessToken
+
+As this project uses Google Firebase, you will also need to provide your own google-services.json.
+
+This file can be generated from the Firebase Console (Project -> Project Settings -> Your apps -> SDK setup and configuration -> google-services.json).
+
+It must be placed at ./app/google-services.json
