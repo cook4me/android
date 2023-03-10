@@ -26,8 +26,16 @@ class WelcomeScenarioTest {
         composeTestRule.onNodeWithStringId(R.string.welcome_message).assertIsDisplayed()
         composeTestRule.onNodeWithStringId(R.string.welcome_screen_name_field).assertIsDisplayed()
         composeTestRule.onNodeWithStringId(R.string.welcome_screen_button).assertIsDisplayed()
-        composeTestRule.onNodeWithStringId(R.string.welcome_screen_name_field)
-            .performTextInput("James Bond")
+    }
+
+    @Test
+    fun welcomeScreen_checkInputText() {
+        var name = ""
+        composeTestRule.setContent {
+            Cook4MeApp()
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.welcome_screen_name_field).performTextInput("James Bond")
         composeTestRule.onNodeWithStringId(R.string.welcome_screen_button).performClick()
         composeTestRule.onNodeWithText("${composeTestRule.activity.getString(R.string.profile_screen_placeholder)} James Bond")
             .assertIsDisplayed()
