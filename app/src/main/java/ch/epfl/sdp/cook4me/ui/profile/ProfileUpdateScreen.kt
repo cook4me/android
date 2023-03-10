@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
@@ -62,9 +63,8 @@ fun ProfileUpdateScreen() {
 
 @Composable
 fun bio_profileUpdateScreen() {
-    var bioText = stringResource(R.string.default_bio)
-    var bio by rememberSaveable { mutableStateOf(bioText) }
-
+//    var bioText = stringResource(R.string.default_bio)
+    var bio by rememberSaveable { mutableStateOf("") }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -78,6 +78,7 @@ fun bio_profileUpdateScreen() {
         TextField(
             value = bio,
             onValueChange = { bio = it },
+            placeholder = {Text(stringResource(R.string.default_bio))},
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black
             ),
@@ -91,9 +92,8 @@ fun bio_profileUpdateScreen() {
 
 @Composable
 fun allergies_profileUpdateScreen() {
-    var allergy = stringResource(R.string.default_allergies)
-    var allergies by rememberSaveable { mutableStateOf(
-        allergy)
+//    var allergy = stringResource(R.string.default_allergies)
+    var allergies by rememberSaveable { mutableStateOf("")
     }
 
     Row(
@@ -105,6 +105,7 @@ fun allergies_profileUpdateScreen() {
         Text(text = "Allergies", modifier = Modifier.width(100.dp))
         TextField(
             value = allergies,
+            placeholder = {Text(stringResource(R.string.default_allergies))},
             modifier = Modifier.testTag(stringResource(R.string.tag_allergies)),
             onValueChange = { allergies = it },
             colors = TextFieldDefaults.textFieldColors(
@@ -116,9 +117,9 @@ fun allergies_profileUpdateScreen() {
 
 @Composable
 fun favoriteDish_profileUpdateScreen() {
-    var favDishText = stringResource(R.string.default_favoriteDish)
+//    var favDishText = stringResource(R.string.default_favoriteDish)
     var favDish by rememberSaveable {
-        mutableStateOf(favDishText)
+        mutableStateOf("")
     }
 
     Row(
@@ -129,7 +130,8 @@ fun favoriteDish_profileUpdateScreen() {
     ) {
         Text(text = "Favorite dish", modifier = Modifier.width(100.dp))
         TextField(
-
+            placeholder = {Text(stringResource(R.string.default_favoriteDish
+            ))},
             value = favDish,
             modifier = Modifier.testTag(stringResource(R.string.tag_favoriteDish)),
             onValueChange = { favDish = it },
@@ -223,8 +225,7 @@ fun saveCancelButtons_profileUpdateScreen() {
 
 @Composable
 fun username_profileUpdateScreen() {
-    var usernameText = stringResource(R.string.default_username)
-    var username by rememberSaveable { mutableStateOf(usernameText) }
+    var username by rememberSaveable { mutableStateOf("") }
 
     Row(
         modifier = Modifier
@@ -237,6 +238,7 @@ fun username_profileUpdateScreen() {
 
             value = username,
             modifier = Modifier.testTag(stringResource(R.string.tag_username)),
+            placeholder = {Text(stringResource(R.string.default_username))},
             onValueChange = { username = it },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black

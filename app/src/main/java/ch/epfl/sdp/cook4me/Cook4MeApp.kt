@@ -39,7 +39,7 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.Profile.name) {
-            ProfileScreen()
+            ProfileUpdateScreen()
         }
     }
 }
