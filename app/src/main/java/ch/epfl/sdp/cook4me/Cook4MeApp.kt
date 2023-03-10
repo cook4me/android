@@ -45,14 +45,7 @@ fun Cook4MeApp(
                 }
             )
         }
-        composable(route = Screen.Profile.name) {
-            ProfileScreen(name)
-        }
-        composable(route = Screen.CoolMap.name) {
-            GoogleMapView(
-                modifier = Modifier.fillMaxSize(),
-                markers = dummyMarkers
-            )
-        }
+        composable(route = Screen.Profile.name) { ProfileScreen(name) }
+        composable(route = Screen.CoolMap.name) { GoogleMapView(modifier = Modifier.fillMaxSize(), markers = dummyMarkers) }
     }
 }
