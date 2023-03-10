@@ -26,13 +26,8 @@ private enum class Screen {
 }
 
 @Composable
-fun Cook4MeApp(
-    navController: NavHostController = rememberNavController()
-) {
-    var name by remember {
-        mutableStateOf("")
-    }
-
+fun Cook4MeApp(navController: NavHostController = rememberNavController()) {
+    var name by remember { mutableStateOf("") }
     NavHost(navController = navController, startDestination = Screen.Start.name) {
         composable(route = Screen.Start.name) {
             WelcomeScreen(
@@ -40,9 +35,7 @@ fun Cook4MeApp(
                     name = it
                     navController.navigate(Screen.Profile.name)
                 },
-                onMapButtonClicked = {
-                    navController.navigate(Screen.CoolMap.name)
-                }
+                onMapButtonClicked = { navController.navigate(Screen.CoolMap.name) }
             )
         }
         composable(route = Screen.Profile.name) { ProfileScreen(name) }
