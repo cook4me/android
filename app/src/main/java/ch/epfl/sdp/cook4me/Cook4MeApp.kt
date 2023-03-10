@@ -1,17 +1,20 @@
 package ch.epfl.sdp.cook4me
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ch.epfl.sdp.cook4me.ui.MapScreen
+import ch.epfl.sdp.cook4me.ui.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.WelcomeScreen
+import ch.epfl.sdp.cook4me.ui.dummyMarkers
 
 /**
  * enum values that represent the screens in the app
@@ -46,7 +49,10 @@ fun Cook4MeApp(
             ProfileScreen(name)
         }
         composable(route = Screen.CoolMap.name) {
-            MapScreen()
+            GoogleMapView(
+                modifier = Modifier.fillMaxSize(),
+                markers = dummyMarkers
+            )
         }
     }
 }
