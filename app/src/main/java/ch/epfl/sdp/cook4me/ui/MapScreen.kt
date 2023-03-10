@@ -46,8 +46,9 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "BasicMapActivity"
 
-val lausanne = LatLng(46.519962, 6.633597)
-val defaultCameraPosition = CameraPosition.fromLatLngZoom(lausanne, 11f)
+const val ZOOM_DEFAULT_VALUE = 11f
+
+val defaultCameraPosition = CameraPosition.fromLatLngZoom(Locations.LAUSANNE, ZOOM_DEFAULT_VALUE)
 
 data class MarkerData(
     val position: LatLng,
@@ -57,18 +58,18 @@ data class MarkerData(
 
 val dummyMarkers = listOf(
     MarkerData(
-        position = LatLng(46.519653, 6.566736),
+        position = Locations.SATELLITE,
         title = "Satellite EPFL",
         description = "EPFL satellite campus"
     ),
     MarkerData(
-        position = LatLng(46.521076, 6.567368),
+        position = Locations.ROLEX_LEARNING_CENTER,
         title = "EPFL Rolex Learning Center",
         description = "EPFL library and learning center"
     ),
     MarkerData(
-        position = LatLng(46.524135, 6.569507),
-        title = "UNIL Amphipôle",
+        position = Locations.AGE_POLY,
+        title = "UNIL AgePoly",
         description = "UNIL science and research building"
     )
 )
@@ -81,8 +82,7 @@ fun GoogleMapView(
     content: @Composable () -> Unit = {},
     markers: List<MarkerData> = emptyList()
 ) {
-
-    val lausanneState = MarkerState(lausanne)
+    val lausanneState = MarkerState(Locations.LAUSANNE)
 
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var shouldAnimateZoom by remember { mutableStateOf(true) }
