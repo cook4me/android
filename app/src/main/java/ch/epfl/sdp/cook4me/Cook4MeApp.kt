@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.ui.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.ProfileUpdateScreen
 import ch.epfl.sdp.cook4me.ui.WelcomeScreen
 
 /**
@@ -38,7 +39,7 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.Profile.name) {
-            ProfileScreen(name)
+            ProfileUpdateScreen()
         }
     }
 }
