@@ -27,7 +27,7 @@ fun AddressInputReader(
     val zipCode = remember { mutableStateOf("") }
 
     fun fullAddress() : String {
-        return location.value + ", " + city.value + ", " + zipCode.value
+        return location.value + ", " + zipCode.value + " " + city.value
     }
 
     Column(
@@ -47,12 +47,14 @@ fun AddressInputReader(
             TextField(value = city.value, label = {
                 Text("City")
                 onAddressChanged(fullAddress())
-              }, onValueChange = {city.value = it},
+              }, onValueChange = {city.value = it
+                onAddressChanged(fullAddress())},
                 modifier = androidx.compose.ui.Modifier.weight(3f))
             TextField(value =zipCode.value, label = {
                 Text("Zip code")
                 onAddressChanged(fullAddress())
-                                                }, onValueChange = {zipCode.value = it},
+                }, onValueChange = {zipCode.value = it
+                onAddressChanged(fullAddress())},
                 modifier = androidx.compose.ui.Modifier.weight(1f))
         }
     }
