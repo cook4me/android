@@ -30,7 +30,7 @@ fun TimePickerComponent(
     val mTime = remember { mutableStateOf("") }
 
     // Creating a TimePicker dialog
-    val mTimePickerDialog = TimePickerDialog(
+        val mTimePickerDialog = TimePickerDialog(
         mContext,
         {_, mHour : Int, mMinute: Int ->
             mTime.value = "$mHour:$mMinute"
