@@ -25,6 +25,9 @@ githubJacocoUsername=YourGitHubUsername
 # Requires at least the read:packages scope.
 githubJacocoPassword=YourGitHubPersonalAccessToken
 ```
+
+To create the YourGitHubPersonalAccessToken go to your github profile and to Settings / Developer Settings / Tokens (classic). Click on generate new token (classic). Then add a note, expiration date and click on read:packages. Then copy the generated token to YourGitHubPersonalAccessToken
+
 As this project uses Google Firebase, you will also need to provide your own google-services.json.
 This file can be generated from the Firebase Console (Project -> Project Settings -> Your apps -> SDK setup and configuration -> google-services.json).
 It must be placed at ./app/google-services.json.
