@@ -13,6 +13,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import java.util.*
 
+/**
+ * A simple component that allows the user to select a time (hour and minute)
+ * @param onTimeChanged the function to be called when the time is changed
+ */
 @Composable
 fun TimePickerComponent(
     onTimeChanged: (Calendar) -> Unit

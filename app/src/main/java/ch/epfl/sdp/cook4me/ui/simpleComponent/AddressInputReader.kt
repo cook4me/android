@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 
-// TODO: not finished
 /**
  * A component that asks for an address
  * @param question the question to be displayed
