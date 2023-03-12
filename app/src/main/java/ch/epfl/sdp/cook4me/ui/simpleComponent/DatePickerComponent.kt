@@ -15,13 +15,13 @@ import java.util.*
 /**
  * A component that allows the user to select a date
  * @param initialDate the initial date to be displayed
- * @param onDateSelected the function to be called when the date is selected
+ * @param onDateChange the function to be called when the date is selected
  * @param modifier the modifier of the component
  */
 @Composable
 fun DatePickerComponent(
     initialDate: Calendar,
-    onDateSelected: (Calendar) -> Unit,
+    onDateChange: (Calendar) -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -36,7 +36,7 @@ fun DatePickerComponent(
         LocalContext.current,
         { _: DatePicker, mYear_: Int, mMonth_: Int, mDayOfMonth: Int ->
             mDate.value = "$mDayOfMonth/${mMonth_+1}/$mYear_"
-            onDateSelected(Calendar.getInstance().apply {
+            onDateChange(Calendar.getInstance().apply {
                 set(mYear_, mMonth_, mDayOfMonth)
             })
         }, mYear, mMonth, mDay
