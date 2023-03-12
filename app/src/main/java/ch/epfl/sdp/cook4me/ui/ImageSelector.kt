@@ -1,11 +1,11 @@
 package ch.epfl.sdp.cook4me.ui
 
 import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -16,18 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
-import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.platform.testTag
 import coil.compose.AsyncImage
 
 @Composable
@@ -50,7 +45,7 @@ fun ImageSelector(
             ImageCard(modifier=Modifier.height(imageHeight), image = img, onClickImage = onClickImage)
         }
         item {
-            AddPictureElement(
+            AddPictureButton(
                 modifier = Modifier
                     .height(imageHeight)
                     .width(imageWidth)
@@ -59,10 +54,11 @@ fun ImageSelector(
             )
         }
         item {
-            AddPictureElement(
+            AddPictureButton(
                 modifier = Modifier
                     .height(imageHeight)
-                    .width(imageWidth),
+                    .width(imageWidth)
+                    .testTag("takePhoto"),
                 onClickAddImage = onClickTakePhoto,
                 color = Color.Red,
             )
@@ -73,9 +69,8 @@ fun ImageSelector(
 }
 
 
-
 @Composable
-fun AddPictureElement(
+fun AddPictureButton(
     modifier: Modifier = Modifier,
     onClickAddImage: () -> Unit,
     color: Color = MaterialTheme.colors.secondary
@@ -108,7 +103,6 @@ fun AddPictureElement(
     }
 }
 
-
 @Composable
 fun ImageCard(
     modifier: Modifier = Modifier,
@@ -118,7 +112,7 @@ fun ImageCard(
     onClickImage: () -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onClickImage() },
         elevation = elevation,
         shape = shape
     ) {
@@ -130,72 +124,3 @@ fun ImageCard(
         )
     }
 }
-
-@Preview(showBackground = true, backgroundColor = 0)
-@Composable
-fun ImageElementPreview() {
-    val images: List<Int> = listOf(
-        R.drawable.placeholder_tupperware,
-        R.drawable.placeholder_tupperware1,
-        R.drawable.placeholder_tupperware2,
-    )
-    Cook4meTheme{
-        AddPictureElement(modifier = Modifier.height(200.dp), onClickAddImage = { /*TODO*/ })
-    }
-}
-
-/*@Preview(showBackground = true)
-@Composable
-fun AddImagePreview() {
-    Cook4meTheme{
-        Row (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-
-        ) {
-            AddPictureElement(modifier = Modifier.height(200.dp).width(90.dp), onClickAddImage = {}, color = Color.Red)
-            Spacer(modifier = Modifier.size(8.dp))
-            AddPictureElement(modifier = Modifier.height(200.dp).width(90.dp), onClickAddImage = {})
-        }
-    }
-}*/
-/*
-@Preview("default", showBackground = true)
-@Composable
-fun ImageSelectorPreview() {
-    val images: List<Int> = listOf(
-        R.drawable.placeholder_tupperware,
-        R.drawable.placeholder_tupperware1,
-        R.drawable.placeholder_tupperware2,
-        R.drawable.placeholder_tupperware,
-        R.drawable.placeholder_tupperware1,
-        R.drawable.placeholder_tupperware2,
-    )
-
-    Cook4meTheme {
-        ImageSelector(
-            modifier = Modifier.height(200.dp),
-            images = images,
-            onClickAddImage = {},
-            onClickTakePhoto = {},
-            onClickImage = {},
-        )
-    }
-}
-
-@Preview("default", showBackground = true)
-@Composable
-fun ImageSelectorEmptyPreview() {
-    val images: List<Int> = listOf()
-
-    Cook4meTheme {
-        ImageSelector(
-            modifier = Modifier.height(200.dp),
-            images = images,
-            onClickAddImage = {},
-            onClickTakePhoto = {},
-            onClickImage = {},
-        )
-    }
-}*/

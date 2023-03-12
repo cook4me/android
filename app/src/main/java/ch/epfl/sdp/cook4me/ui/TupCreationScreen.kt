@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.ui
 
+import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -18,67 +18,45 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ch.epfl.sdp.cook4me.ComposeFileProvider
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
+import java.io.File
+class ComposeFileProvider : FileProvider(
+    R.xml.filepaths
+) {
+    companion object {
+        fun getImageUri(context: Context): Uri {
+            val directory = File(context.cacheDir, "images")
+            directory.mkdirs()
+            val file = File.createTempFile(
+                "selected_image_",
+                ".jpg",
+                directory,
+            )
+            val authority = context.packageName + ".fileprovider"
+            return getUriForFile(
+                context,
+                authority,
+                file,
+            )
+        }
+    }
+}
 
 @Composable
 fun TupCreationScreen(
     modifier: Modifier = Modifier,
     viewModel: TupCreationViewModel = viewModel(),
 ) {
-
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .background(color = MaterialTheme.colors.primary),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text="Header", style = MaterialTheme.typography.h5, color = Color.White)
-        }
-        TupperwareForm(
-            modifier = Modifier
-                .weight(1f),
-            viewModel = viewModel
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            ButtonRow(
-                modifier = Modifier.fillMaxSize(),
-                onCancelPressed = {},
-                onDonePressed={viewModel.onSubmit()},
-            )
-        }
-
-    }
-
-}
-
-@Composable
-fun TupperwareForm(
-    modifier: Modifier = Modifier,
-    viewModel: TupCreationViewModel,
-) {
-    // for now couldn't get rid of it as it is used to get the Uri from the camera
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
-    val titleText by viewModel.titleText
-    val descText by viewModel.descText
-
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -102,6 +80,67 @@ fun TupperwareForm(
 
     val context = LocalContext.current
 
+    fun onClickAddImage() {
+        imagePicker.launch("image/*")
+    }
+
+    fun onClickTakePhoto() {
+        val uri = ComposeFileProvider.getImageUri(context)
+        imageUri = uri
+        cameraLauncher.launch(uri)
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize(),
+
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .background(color = MaterialTheme.colors.primary),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text="Header", style = MaterialTheme.typography.h5, color = Color.White)
+        }
+        TupperwareForm(
+            modifier = Modifier
+                .weight(1f),
+            onClickAddImage = { onClickAddImage() },
+            onClickTakePhoto = { onClickTakePhoto() },
+            viewModel = viewModel
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            ButtonRow(
+                modifier = Modifier.fillMaxSize(),
+                onCancelPressed = {},
+                onDonePressed={viewModel.onSubmit()},
+            )
+        }
+
+    }
+
+}
+
+
+@Composable
+fun TupperwareForm(
+    modifier: Modifier = Modifier,
+    onClickAddImage: () -> Unit,
+    onClickTakePhoto: () -> Unit,
+    onClickImage: () -> Unit = {},
+    viewModel: TupCreationViewModel,
+) {
+    val titleText by viewModel.titleText
+    val descText by viewModel.descText
+
+
     Box(
         modifier =  modifier
     ) {
@@ -111,7 +150,7 @@ fun TupperwareForm(
                 .verticalScroll(rememberScrollState())
                 .padding(10.dp)
         ) {
-            FieldText("Add Images")
+            FieldText(stringResource(R.string.TupCreateFormAddImage))
 
             Spacer(modifier = Modifier.size(10.dp))
 
@@ -119,21 +158,15 @@ fun TupperwareForm(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
-                onClickAddImage = {
-                    imagePicker.launch("image/*")
-                },
-                onClickTakePhoto = {
-                    val uri = ComposeFileProvider.getImageUri(context)
-                    imageUri = uri
-                    cameraLauncher.launch(uri)
-                },
-                onClickImage = { /*TODO*/ },
+                onClickAddImage = onClickAddImage,
+                onClickTakePhoto = onClickTakePhoto,
+                onClickImage = onClickImage,
                 images = viewModel.images
             )
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()
             Spacer(modifier = Modifier.size(5.dp))
-            FieldText("Tupperware Name")
+            FieldText(stringResource(R.string.TupCreateFormTupName))
             Spacer(modifier = Modifier.size(5.dp))
             TextField(
                 modifier = Modifier
@@ -151,7 +184,7 @@ fun TupperwareForm(
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()
             Spacer(modifier = Modifier.size(2.dp))
-            FieldText("Description")
+            FieldText(stringResource(R.string.TupCreateFormDesc))
             Spacer(modifier = Modifier.size(5.dp))
             TextField(
                 modifier = Modifier
@@ -168,7 +201,7 @@ fun TupperwareForm(
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()
             Spacer(modifier = Modifier.size(2.dp))
-            FieldText("Tags")
+            FieldText(stringResource(R.string.TupCreateFormTags))
             Spacer(modifier = Modifier.size(5.dp))
             TextField(
                 modifier = Modifier

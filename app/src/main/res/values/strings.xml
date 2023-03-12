@@ -5,4 +5,10 @@
     <string name="welcome_screen_button">Start</string>
     <string name="profile_screen_placeholder">Welcome</string>
     <string name="image_selector_add_image">+</string>
+    <string name="TupCreateFormAddImage">Add Images</string>
+    <string name="TupCreateFormTupName">Tupperware Name</string>
+    <string name="TupCreateFormDesc">Description</string>
+    <string name="TupCreateFormTags">Tags</string>
+    <string name="ButtonRowCancel">Cancel</string>
+    <string name="ButtonRowDone">Done</string>
 </resources>
