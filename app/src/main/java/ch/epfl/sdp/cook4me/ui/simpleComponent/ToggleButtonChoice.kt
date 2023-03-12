@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
@@ -40,7 +42,7 @@ fun ToggleButtonChoice(
                     } else {
                         onToggle(possibilities.second)
                     }
-                })
+                }, modifier = Modifier.testTag("switch"))
             Text(if (selected.value) possibilities.first else possibilities.second)
         }
     }
