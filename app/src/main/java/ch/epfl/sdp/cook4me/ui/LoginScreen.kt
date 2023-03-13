@@ -1,28 +1,17 @@
 package ch.epfl.sdp.cook4me.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.util.PasswordField
-import ch.epfl.sdp.cook4me.util.EmailField
-import ch.epfl.sdp.cook4me.util.fieldModifier
-import ch.epfl.sdp.cook4me.util.BasicToolbar
-import ch.epfl.sdp.cook4me.util.basicButton
-import ch.epfl.sdp.cook4me.util.BasicButton
+import ch.epfl.sdp.cook4me.util.*
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.launch
@@ -47,7 +36,7 @@ fun LoginScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        content = {padding ->
+        content = { padding ->
             Column(
                 modifier = modifier
                     .fillMaxWidth()
@@ -58,10 +47,13 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                EmailField(email, {email = it}, Modifier.fieldModifier())
-                PasswordField(password, {password = it}, Modifier.fieldModifier())
+                EmailField(email, { email = it }, Modifier.fieldModifier())
+                PasswordField(password, { password = it }, Modifier.fieldModifier())
 
-                BasicButton(stringResource(R.string.sign_in_screen_sign_in_button), Modifier.basicButton()) {
+                BasicButton(
+                    stringResource(R.string.sign_in_screen_sign_in_button),
+                    Modifier.basicButton()
+                ) {
                     scope.launch {
                         if (!viewModel.isEmailValid(email)) {
                             scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.invalid_email_message))
@@ -71,9 +63,9 @@ fun LoginScreen(
                             try {
                                 viewModel.onSignInClick(email, password)
                                 scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_sign_in_success))
-                            } catch(e: FirebaseAuthInvalidUserException) {
+                            } catch (e: FirebaseAuthInvalidUserException) {
                                 scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_non_exist_user))
-                            } catch(e: FirebaseAuthInvalidCredentialsException) {
+                            } catch (e: FirebaseAuthInvalidCredentialsException) {
                                 scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_wrong_password))
                             }
                         }

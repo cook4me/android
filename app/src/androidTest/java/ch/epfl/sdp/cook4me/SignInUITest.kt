@@ -2,11 +2,9 @@ package ch.epfl.sdp.cook4me
 
 import android.content.Context
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import ch.epfl.sdp.cook4me.ui.LoginScreen
 import org.junit.Before
@@ -15,7 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class SigninTest {
+class SignInUITest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>() // mainactivity? componentactivity?
 
@@ -40,7 +38,7 @@ class SigninTest {
     }
 
     @Test
-    fun invalidEmailTriggersMessageBar() {
+    fun invalidEmailTriggersInvalidEmailMessageBar() {
         composeTestRule.setContent {
             LoginScreen()
         }
@@ -50,7 +48,7 @@ class SigninTest {
     }
 
     @Test
-    fun validEmailWithBlankPasswordTriggersMessageBar() {
+    fun validEmailWithBlankPasswordTriggersBlankPasswordMessageBar() {
         composeTestRule.setContent {
             LoginScreen()
         }
