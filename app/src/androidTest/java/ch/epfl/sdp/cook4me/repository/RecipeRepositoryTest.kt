@@ -57,7 +57,7 @@ class RecipeRepositoryTest {
     }
 
     @Test
-    fun updateExistingRecipe() = runTest {
+    fun updateExistingRecipeKeepOnlyRecentRecipe() = runTest {
         val entryToBeUpdated = Recipe(name = "entryToBeUpdated")
         recipeRepository.add(entryToBeUpdated)
         val allRecipesBeforeUpdate = recipeRepository.getAll()
