@@ -1,12 +1,11 @@
 package ch.epfl.sdp.cook4me.ui
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,46 +41,46 @@ fun LoginScreen(
     }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
     BasicToolbar(stringResource(R.string.sign_in_screen_top_bar_message))
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        content = {padding ->
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState())
+                    .padding(padding),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-        EmailField(email, {email = it}, Modifier.fieldModifier())
-        PasswordField(password, {password = it}, Modifier.fieldModifier())
+                EmailField(email, {email = it}, Modifier.fieldModifier())
+                PasswordField(password, {password = it}, Modifier.fieldModifier())
 
-        BasicButton(stringResource(R.string.sign_in_screen_sign_in_button), Modifier.basicButton()) {
-            scope.launch {
-                if (!viewModel.isEmailValid(email)) {
-                    Toast.makeText(context, context.getString(R.string.invalid_email_message), Toast.LENGTH_LONG)
-                        .show()
-                }
-                else if (viewModel.isPasswordBlank(password)) {
-                    Toast.makeText(context, context.getString(R.string.password_blank), Toast.LENGTH_LONG)
-                        .show()
-                } else {
-                    try {
-                        viewModel.onSignInClick(email, password)
-                        Toast.makeText(context, context.getString(R.string.sign_in_screen_sign_in_success), Toast.LENGTH_LONG)
-                            .show()
-                    } catch(e: FirebaseAuthInvalidUserException) {
-                        Toast.makeText(context, context.getString(R.string.sign_in_screen_non_exist_user), Toast.LENGTH_LONG).show()
-                    } catch(e: FirebaseAuthInvalidCredentialsException) {
-                        Toast.makeText(context, context.getString(R.string.sign_in_screen_wrong_password), Toast.LENGTH_LONG).show()
+                BasicButton(stringResource(R.string.sign_in_screen_sign_in_button), Modifier.basicButton()) {
+                    scope.launch {
+                        if (!viewModel.isEmailValid(email)) {
+                            scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.invalid_email_message))
+                        } else if (viewModel.isPasswordBlank(password)) {
+                            scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.password_blank))
+                        } else {
+                            try {
+                                viewModel.onSignInClick(email, password)
+                                scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_sign_in_success))
+                            } catch(e: FirebaseAuthInvalidUserException) {
+                                scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_non_exist_user))
+                            } catch(e: FirebaseAuthInvalidCredentialsException) {
+                                scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_wrong_password))
+                            }
+                        }
                     }
                 }
             }
         }
-        /*TODO:*/
-//        BasicTextButton("Forgot password? Click to recovery email", Modifier.textButton()) {
-//            viewModel.onForgotPasswordClick()
-//        }
-    }
+    )
+
 }

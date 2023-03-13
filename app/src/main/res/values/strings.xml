@@ -11,4 +11,6 @@
     <string name="sign_in_screen_sign_in_success">Sign in successful!</string>
     <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
+    <string name="TAG_EMAIL_FIELD">EmailField</string>
+    <string name="TAG_PASSWORD_FIELD">PasswordField</string>
 </resources>
