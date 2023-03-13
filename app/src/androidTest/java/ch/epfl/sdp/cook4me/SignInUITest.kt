@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class SignInUITest {
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>() // mainactivity? componentactivity?
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private val testTagEmailField = "EmailField"
     private val testTagPasswordField = "PasswordField"
