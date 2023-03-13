@@ -223,7 +223,7 @@ fun username_profileUpdateScreen() {
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black
             )
-        )J
+        )
     }
 }
 
