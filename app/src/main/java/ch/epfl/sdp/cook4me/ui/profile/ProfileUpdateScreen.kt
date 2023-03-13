@@ -61,13 +61,11 @@ fun bio_profileUpdateScreen() {
     var bio by rememberSaveable { mutableStateOf("") }
     input_row {
         Text(
-            text = "Bio",
-            modifier = Modifier
+            text = "Bio", modifier = Modifier
                 .width(100.dp)
                 .padding(top = 7.dp)
         )
-        TextField(
-            value = bio,
+        TextField(value = bio,
             onValueChange = { bio = it },
             placeholder = { Text(stringResource(R.string.default_bio)) },
             colors = TextFieldDefaults.textFieldColors(
@@ -160,7 +158,9 @@ fun ProfileSetupImage_profileUpdateScreen() {
 }
 
 @Composable
-fun Image_profileUpdateScreen(painter: AsyncImagePainter, launcher: ManagedActivityResultLauncher<String, Uri?>) {
+fun Image_profileUpdateScreen(
+    painter: AsyncImagePainter, launcher: ManagedActivityResultLauncher<String, Uri?>
+) {
 
     Column(
         modifier = Modifier
@@ -169,8 +169,7 @@ fun Image_profileUpdateScreen(painter: AsyncImagePainter, launcher: ManagedActiv
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-            shape = CircleShape,
-            modifier = Modifier
+            shape = CircleShape, modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
         ) {
@@ -196,24 +195,17 @@ fun saveCancelButtons_profileUpdateScreen() {
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = stringResource(R.string.btn_cancel),
-            modifier = Modifier
-                .testTag(
-                    stringResource(
-                        R.string.btn_save
-                    )
+        Text(text = stringResource(R.string.btn_cancel), modifier = Modifier
+            .testTag(
+                stringResource(
+                    R.string.btn_save
                 )
-                .clickable() {
-                }
-        )
-        Text(
-            text = stringResource(R.string.btn_save),
+            )
+            .clickable {})
+        Text(text = stringResource(R.string.btn_save),
             modifier = Modifier
                 .testTag(stringResource(R.string.btn_cancel))
-                .clickable {
-                }
-        )
+                .clickable {})
     }
 }
 
@@ -221,7 +213,7 @@ fun saveCancelButtons_profileUpdateScreen() {
 fun username_profileUpdateScreen() {
     var username by rememberSaveable { mutableStateOf("") }
 
-    input_row() {
+    input_row {
         Text(text = "Username", modifier = Modifier.width(100.dp))
         TextField(
             value = username,
@@ -231,7 +223,7 @@ fun username_profileUpdateScreen() {
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black
             )
-        )
+        )J
     }
 }
 
