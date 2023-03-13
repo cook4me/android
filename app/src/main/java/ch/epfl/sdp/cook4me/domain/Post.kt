@@ -5,4 +5,3 @@ data class Post(
     val name: String,
     val desc: String
 )
-    

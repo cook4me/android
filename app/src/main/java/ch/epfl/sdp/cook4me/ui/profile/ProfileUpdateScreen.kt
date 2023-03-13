@@ -137,7 +137,7 @@ fun ProfileSetupImage_profileUpdateScreen() {
     val painter = rememberAsyncImagePainter(
         if (imageURI.value.isEmpty()) R.drawable.ic_user
         else imageURI.value
-    ) //TODO PUT INTO LOGIC
+    ) // TODO PUT INTO LOGIC
 
     /**
      *Remembers and launches on recomposition
@@ -207,11 +207,14 @@ fun saveCancelButtons_profileUpdateScreen() {
                     R.string.btn_save
                 )
             )
-            .clickable {})
-        Text(text = stringResource(R.string.btn_save),
+            .clickable {}
+        )
+        Text(
+            text = stringResource(R.string.btn_save),
             modifier = Modifier
                 .testTag(stringResource(R.string.btn_cancel))
-                .clickable {})
+                .clickable {}
+        )
     }
 }
 
@@ -222,10 +225,12 @@ fun username_profileUpdateScreen() {
     input_row {
         Text(
             text = "Username",
-            modifier = Modifier.width(100.dp))
+            modifier = Modifier.width(100.dp)
+        )
         TextField(
             value = username,
-            modifier = Modifier.testTag(stringResource(R.string.tag_username)),
+            modifier = Modifier.testTag(stringResource(R.string.tag_username)
+            ),
             placeholder = { Text(stringResource(R.string.default_username)) },
             onValueChange = { username = it },
             colors = TextFieldDefaults.textFieldColors(
