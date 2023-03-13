@@ -10,16 +10,16 @@ data class ProfileData(
     fun getUsername(): String {
         return username
     }
-    fun getFavoriteDish() : String {
+    fun getFavoriteDish(): String {
         return favoriteDish
     }
-    fun getAllergies() : String {
+    fun getAllergies(): String {
         return allergies
     }
-    fun getBio() : String {
+    fun getBio(): String {
         return bio
     }
-    fun getImageURI() : String {
+    fun getImageURI(): String {
         return imageURI
     }
 }

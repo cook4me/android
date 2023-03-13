@@ -1,5 +1,3 @@
-package ch.epfl.sdp.cook4me.ui
-
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -44,17 +42,16 @@ fun ProfileUpdateScreen() {
 
         ProfileSetupImage_profileUpdateScreen()
 
-        //Textfield for the username
+        // Textfield for the username
         username_profileUpdateScreen()
-        //Textfield for the Favorite dish
+        // Textfield for the Favorite dish
         favoriteDish_profileUpdateScreen()
 
-        //Textfield for the Allergies
+        // Textfield for the Allergies
         allergies_profileUpdateScreen()
 
-        //Textfield for the bio
+        // Textfield for the bio
         bio_profileUpdateScreen()
-
     }
 }
 
@@ -62,16 +59,17 @@ fun ProfileUpdateScreen() {
 fun bio_profileUpdateScreen() {
 //    var bioText = stringResource(R.string.default_bio)
     var bio by rememberSaveable { mutableStateOf("") }
-    input_row{
+    input_row {
         Text(
-            text = "Bio", modifier = Modifier
+            text = "Bio",
+            modifier = Modifier
                 .width(100.dp)
                 .padding(top = 7.dp)
         )
         TextField(
             value = bio,
             onValueChange = { bio = it },
-            placeholder = {Text(stringResource(R.string.default_bio))},
+            placeholder = { Text(stringResource(R.string.default_bio)) },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black
             ),
@@ -86,14 +84,15 @@ fun bio_profileUpdateScreen() {
 @Composable
 fun allergies_profileUpdateScreen() {
 //    var allergy = stringResource(R.string.default_allergies)
-    var allergies by rememberSaveable { mutableStateOf("")
+    var allergies by rememberSaveable {
+        mutableStateOf("")
     }
 
-    input_row{
+    input_row {
         Text(text = "Allergies", modifier = Modifier.width(100.dp))
         TextField(
             value = allergies,
-            placeholder = {Text(stringResource(R.string.default_allergies))},
+            placeholder = { Text(stringResource(R.string.default_allergies)) },
             modifier = Modifier.testTag(stringResource(R.string.tag_allergies)),
             onValueChange = { allergies = it },
             colors = TextFieldDefaults.textFieldColors(
@@ -113,8 +112,13 @@ fun favoriteDish_profileUpdateScreen() {
     input_row {
         Text(text = "Favorite dish", modifier = Modifier.width(100.dp))
         TextField(
-            placeholder = {Text(stringResource(R.string.default_favoriteDish
-            ))},
+            placeholder = {
+                Text(
+                    stringResource(
+                        R.string.default_favoriteDish
+                    )
+                )
+            },
             value = favDish,
             modifier = Modifier.testTag(stringResource(R.string.tag_favoriteDish)),
             onValueChange = { favDish = it },
@@ -130,7 +134,7 @@ fun ProfileSetupImage_profileUpdateScreen() {
     /**
      * TODO Put into logic
      */
-    //draws the image of the profile
+    // draws the image of the profile
     val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
         if (imageURI.value.isEmpty()) R.drawable.ic_user
@@ -152,11 +156,11 @@ fun ProfileSetupImage_profileUpdateScreen() {
         uri?.let { imageURI.value = it.toString() }
     }
 
-    Image_profileUpdateScreen(painter = painter, launcher =launcher)
+    Image_profileUpdateScreen(painter = painter, launcher = launcher)
 }
 
 @Composable
-fun Image_profileUpdateScreen(painter: AsyncImagePainter, launcher: ManagedActivityResultLauncher<String,Uri?>){
+fun Image_profileUpdateScreen(painter: AsyncImagePainter, launcher: ManagedActivityResultLauncher<String, Uri?>) {
 
     Column(
         modifier = Modifier
@@ -165,7 +169,8 @@ fun Image_profileUpdateScreen(painter: AsyncImagePainter, launcher: ManagedActiv
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-            shape = CircleShape, modifier = Modifier
+            shape = CircleShape,
+            modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
         ) {
@@ -173,10 +178,10 @@ fun Image_profileUpdateScreen(painter: AsyncImagePainter, launcher: ManagedActiv
                 painter = painter,
                 contentDescription = null,
                 modifier = Modifier
-                    .testTag("ProfileImage") //TODO
+                    .testTag("ProfileImage") // TODO
                     .wrapContentSize()
-                    .clickable { launcher.launch("image/*") }, //starts the launcher and accept all type of images
-                contentScale = ContentScale.Crop //crops the image into the available space
+                    .clickable { launcher.launch("image/*") }, // starts the launcher and accept all type of images
+                contentScale = ContentScale.Crop // crops the image into the available space
             )
         }
         Text(text = "Change profile picture")
@@ -191,18 +196,24 @@ fun saveCancelButtons_profileUpdateScreen() {
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = stringResource(R.string.btn_cancel), modifier = Modifier
-            .testTag(
-                stringResource(
-                    R.string.btn_save
+        Text(
+            text = stringResource(R.string.btn_cancel),
+            modifier = Modifier
+                .testTag(
+                    stringResource(
+                        R.string.btn_save
+                    )
                 )
-            )
-            .clickable() {
-            })
-        Text(text = stringResource(R.string.btn_save), modifier = Modifier
-            .testTag(stringResource(R.string.btn_cancel))
-            .clickable {
-            })
+                .clickable() {
+                }
+        )
+        Text(
+            text = stringResource(R.string.btn_save),
+            modifier = Modifier
+                .testTag(stringResource(R.string.btn_cancel))
+                .clickable {
+                }
+        )
     }
 }
 
@@ -210,13 +221,12 @@ fun saveCancelButtons_profileUpdateScreen() {
 fun username_profileUpdateScreen() {
     var username by rememberSaveable { mutableStateOf("") }
 
-    input_row()
-       {
+    input_row() {
         Text(text = "Username", modifier = Modifier.width(100.dp))
         TextField(
             value = username,
             modifier = Modifier.testTag(stringResource(R.string.tag_username)),
-            placeholder = {Text(stringResource(R.string.default_username))},
+            placeholder = { Text(stringResource(R.string.default_username)) },
             onValueChange = { username = it },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent, textColor = Color.Black
@@ -226,7 +236,7 @@ fun username_profileUpdateScreen() {
 }
 
 @Composable
-private fun input_row(content: @Composable RowScope.() -> Unit){
+private fun input_row(content: @Composable RowScope.() -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -236,6 +246,3 @@ private fun input_row(content: @Composable RowScope.() -> Unit){
         content()
     }
 }
-
-
-

@@ -1,5 +1,3 @@
-package ch.epfl.sdp.cook4me.ui
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -27,11 +25,11 @@ import coil.compose.rememberAsyncImagePainter
 fun ProfileScreen() {
     Column(
         modifier = Modifier
-            //.verticalScroll(rememberScrollState())
+            // .verticalScroll(rememberScrollState())
             .padding(12.dp)
 
     ) {
-        //TODO put in logic
+        // TODO put in logic
         val imageURI = rememberSaveable { mutableStateOf("") }
         val painter = rememberAsyncImagePainter(
             if (imageURI.value.isEmpty()) R.drawable.ic_user
@@ -40,24 +38,23 @@ fun ProfileScreen() {
 
         ProfileImageAndUsername(painter)
 
-        //Textfield for the Favorite dish
+        // Textfield for the Favorite dish
         favoriteDish_profileScreen()
 
-        //Textfield for the Allergies
+        // Textfield for the Allergies
         allergies_profileScreen()
 
-        //Textfield for the bio
+        // Textfield for the bio
         bio_profileScreen()
 
-        //Grid with post within
+        // Grid with post within
         PostGrid()
     }
-
 }
 
 @Composable
 fun ProfileImageAndUsername(painter: AsyncImagePainter) {
-    //draws the image of the profile
+    // draws the image of the profile
     Row(
         modifier = Modifier
             .padding(8.dp)
@@ -65,13 +62,13 @@ fun ProfileImageAndUsername(painter: AsyncImagePainter) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Card(
-            shape = CircleShape, modifier = Modifier
+            shape = CircleShape,
+            modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
                 .testTag(stringResource(R.string.tag_defaultProfilImage))
         ) {
             Image(painter = painter, contentDescription = "")
-
         }
         username_profileScreen()
     }
@@ -84,7 +81,7 @@ fun username_profileScreen() {
         modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
         fontWeight = FontWeight.Bold,
 
-        )
+    )
 }
 
 @Composable
@@ -148,15 +145,16 @@ fun bio_profileScreen() {
         verticalAlignment = Alignment.Top
     ) {
         Text(
-            text = stringResource(R.string.tag_bio), modifier = Modifier
+            text = stringResource(R.string.tag_bio),
+            modifier = Modifier
                 .width(100.dp)
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = stringResource(bio), modifier = Modifier
+            text = stringResource(bio),
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         )
     }
 }
-

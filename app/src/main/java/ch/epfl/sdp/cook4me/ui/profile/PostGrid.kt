@@ -21,10 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.domain.Post
-import coil.compose.AsyncImage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
 
 /***
  * Todo navgation return a string to the navcontroller indicating the location
@@ -49,13 +47,15 @@ fun PostGrid() {
     }
 }
 
-
 @Composable
 fun PostDataItem(data: Post) {
-    Card(modifier = Modifier
-        .clickable() {
-        }
-        .fillMaxSize(), elevation = 10.dp, shape = RoundedCornerShape(5.dp)) {
+    Card(
+        modifier = Modifier
+            .clickable() {
+            }
+            .fillMaxSize(),
+        elevation = 10.dp, shape = RoundedCornerShape(5.dp)
+    ) {
         Column(modifier = Modifier) {
             Image(
                 painter = painterResource(
@@ -75,7 +75,6 @@ fun PostDataItem(data: Post) {
         }
     }
 }
-
 
 fun getJsonDataFromAsset(context: Context, data: String): String {
     return context.assets.open(data).bufferedReader().use { it.readText() }

@@ -1,18 +1,16 @@
 package ch.epfl.sdp.cook4me
 
+import ProfileScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import ch.epfl.sdp.cook4me.ui.ProfileScreen
 import org.junit.Rule
 import org.junit.Test
-
 
 class ProfileScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
 
     @Test
     fun newUserUsesApp() {

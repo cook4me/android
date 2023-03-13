@@ -9,7 +9,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import org.junit.Rule
 import org.junit.Test
 
-
 class PostGridTest {
 
     @ExperimentalFoundationApi

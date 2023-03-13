@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me
 
+import ProfileUpdateScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,8 +10,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ch.epfl.sdp.cook4me.ui.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.ProfileUpdateScreen
 import ch.epfl.sdp.cook4me.ui.WelcomeScreen
 
 /**

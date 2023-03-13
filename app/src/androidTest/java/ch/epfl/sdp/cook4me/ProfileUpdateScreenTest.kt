@@ -1,12 +1,11 @@
 package ch.epfl.sdp.cook4me
 
+import ProfileUpdateScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import ch.epfl.sdp.cook4me.ui.ProfileUpdateScreen
 import org.junit.Rule
 import org.junit.Test
-
 
 class ProfileUpdateScreenTest {
     @get:Rule
@@ -26,7 +25,6 @@ class ProfileUpdateScreenTest {
         composeTestRule.onNodeWithStringId(R.string.default_bio).assertIsDisplayed()
         composeTestRule.onNodeWithStringId(R.string.tag_allergies).assertIsDisplayed()
         composeTestRule.onNodeWithStringId(R.string.default_allergies).assertIsDisplayed()
-
     }
 
     @Test
@@ -56,10 +54,10 @@ class ProfileUpdateScreenTest {
         composeTestRule.onNodeWithTag(allergies).performTextInput(allergiesInput)
         composeTestRule.onNodeWithTag(bio).performTextInput(bioInput)
 
-        //Wait ot be completed
+        // Wait ot be completed
         composeTestRule.waitForIdle()
 
-        //Verify that the text fields display the correct values
+        // Verify that the text fields display the correct values
         composeTestRule.onNodeWithText(usernameInput).assertExists()
         composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
