@@ -13,6 +13,5 @@ fun BasicToolbar(title: String) {
 }
 
 @Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {
-    return if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
-}
+private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
+    if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant

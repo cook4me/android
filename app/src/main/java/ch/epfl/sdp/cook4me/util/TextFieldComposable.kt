@@ -40,7 +40,6 @@ private fun PasswordField(
     onNewValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     OutlinedTextField(
         modifier = modifier
             .testTag(stringResource(R.string.TAG_PASSWORD_FIELD)),

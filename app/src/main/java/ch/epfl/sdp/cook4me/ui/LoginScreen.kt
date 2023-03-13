@@ -59,7 +59,6 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 EmailField(email, { email = it }, Modifier.fieldModifier())
                 PasswordField(password, { password = it }, Modifier.fieldModifier())
 
@@ -69,17 +68,31 @@ fun LoginScreen(
                 ) {
                     scope.launch {
                         if (!viewModel.isEmailValid(email)) {
-                            scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.invalid_email_message))
+                            scaffoldState
+                                .snackbarHostState
+                                .showSnackbar(context.getString(R.string.invalid_email_message))
                         } else if (viewModel.isPasswordBlank(password)) {
                             scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.password_blank))
                         } else {
                             try {
                                 viewModel.onSignInClick(email, password)
-                                scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_sign_in_success))
+                                scaffoldState
+                                    .snackbarHostState
+                                    .showSnackbar(context.getString(R.string.sign_in_screen_sign_in_success))
                             } catch (e: FirebaseAuthInvalidUserException) {
-                                scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_non_exist_user))
+                                scaffoldState
+                                    .snackbarHostState
+                                    .showSnackbar(context.getString(R.string.sign_in_screen_non_exist_user))
+                                // println: for logging the exception
+                                // otherwise detekt triggers SwallowedException message
+                                // refer to: https://detekt.dev/docs/rules/exceptions/
+                                // any suggestions apart from println()?
+                                println(e)
                             } catch (e: FirebaseAuthInvalidCredentialsException) {
-                                scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.sign_in_screen_wrong_password))
+                                scaffoldState
+                                    .snackbarHostState
+                                    .showSnackbar(context.getString(R.string.sign_in_screen_wrong_password))
+                                println(e)
                             }
                         }
                     }

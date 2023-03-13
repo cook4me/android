@@ -10,11 +10,9 @@ class LoginViewModel(
         accountService.authenticate(email, password)
     }
 
-    fun isEmailValid(email: String): Boolean {
-        return accountService.isValidEmail(email)
-    }
+    fun isEmailValid(email: String): Boolean =
+        accountService.isValidEmail(email)
 
-    fun isPasswordBlank(password: String): Boolean {
-        return password.isBlank()
-    }
+    fun isPasswordBlank(password: String): Boolean =
+        password.isBlank()
 }

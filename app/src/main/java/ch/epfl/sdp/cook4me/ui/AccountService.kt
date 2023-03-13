@@ -10,7 +10,6 @@ class AccountService(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password).await()
     }
 
-    fun isValidEmail(email: String): Boolean {
-        return email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
+    fun isValidEmail(email: String): Boolean =
+        email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
