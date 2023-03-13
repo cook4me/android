@@ -8,7 +8,7 @@ env:
   CC_TEST_REPORTER_ID: ENCRYPTED[810adb57cea27867b3a3df646f8405adbd768b4c0a8815d6312e07b81f863cde28c534a478272a06653444c79565e6f5]
   GITHUB_USERNAME: ENCRYPTED[c7138816e29ae53840782306195152fb0cee26a33c7f7c704e7119e9848a9bc4a271920b5e11e98a38a232ccf4a2d9ec]
   GITHUB_TOKEN: ENCRYPTED[21f03c84e00674f5db068f1429c3df027d0f706895ffaa9f329b17205a4282c6d481707da09fa1d2fc82e42de113665a]
-  MAPS_API_KEY: ENCRYPTED[ef9122097ab9052ba4a5dcc4e6614b6d8dc17bc28eb75e772e3f70c3396cba742a432d39eb075730000a8168a73205bb]
+  MAPS_API_KEY: ENCRYPTED[dcc04cf3d0c1d37bbd61632cfeb15c95cab1f7043bec4a373ce661a55c36fb63879426d75425bef7354d2821c345b58a]
   GOOGLE_SERVICES: ENCRYPTED[f1e9a8713bb266b8df59125b59ba22ec996807e701bd80af0dd46123496e66efed08d2de3611f9c1b939f2720982b126]
 
 check_android_task:
@@ -29,6 +29,7 @@ check_android_task:
       -no-window
       -camera-back none
   prepare_environment_script:
+    adb shell svc wifi enable
     sh ./.cirrus/populate_properties.sh
   assemble_instrumented_tests_script: |
     chmod +x gradlew
