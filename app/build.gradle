@@ -76,7 +76,8 @@ configurations.forEach { config ->
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    //noinspection GradleDependency
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1' // get duplication errors if we update it
     implementation 'androidx.activity:activity-compose:1.6.1'
     implementation 'androidx.compose.ui:ui:1.3.3'
     implementation 'androidx.compose.ui:ui-tooling-preview:1.3.3'
@@ -125,8 +126,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
             '**/*_Factory.class',
             '**/*_MembersInjector.class',
     ]
-    def debugTree = fileTree(dir: '$project.buildDir/tmp/kotlin-classes/debug', excludes: fileFilter)
-    def mainSrc = '$project.projectDir/src/main/java'
+    def debugTree = fileTree(dir: project.buildDir + '/tmp/kotlin-classes/debug', excludes: fileFilter)
+    def mainSrc = project.projectDir + '/src/main/java'
 
     sourceDirectories.setFrom(files([mainSrc]))
     classDirectories.setFrom(files([debugTree]))
