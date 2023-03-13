@@ -1,14 +1,11 @@
 package ch.epfl.sdp.cook4me.application
 
 import android.net.Uri
-import ch.epfl.sdp.cook4me.persistence.model.Recipe
-import ch.epfl.sdp.cook4me.persistence.repository.COLLECTION_PATH
-import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
+import android.util.Log
 
-class TupperwareService(
-) {
+open class TupperwareService {
 
-    fun submitForm(
+    open fun submitForm(
         title: String,
         desc: String,
         tags: List<String>,

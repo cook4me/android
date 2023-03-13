@@ -1,11 +1,12 @@
 package ch.epfl.sdp.cook4me.ui
 
-import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -13,47 +14,29 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults.textFieldColors
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.TupperwareService
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
-import java.io.File
-class ComposeFileProvider : FileProvider(
-    R.xml.filepaths
-) {
-    companion object {
-        fun getImageUri(context: Context): Uri {
-            val directory = File(context.cacheDir, "images")
-            directory.mkdirs()
-            val file = File.createTempFile(
-                "selected_image_",
-                ".jpg",
-                directory,
-            )
-            val authority = context.packageName + ".fileprovider"
-            return getUriForFile(
-                context,
-                authority,
-                file,
-            )
-        }
-    }
-}
 
 @Composable
-fun TupCreationScreen(
-    modifier: Modifier = Modifier,
-    viewModel: TupCreationViewModel = viewModel(),
+fun TupCreationScreenWithState(
+    viewModel: TupCreationViewModel = viewModel(factory = TupCreationViewModelFactory(
+        TupperwareService()
+    ))
 ) {
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -62,7 +45,7 @@ fun TupCreationScreen(
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
-            if(uri != null) {
+            if (uri != null) {
                 viewModel.addImage(uri)
             }
         }
@@ -72,7 +55,7 @@ fun TupCreationScreen(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
             imageUri?.let {
-                if(success) {
+                if (success) {
                     viewModel.addImage(imageUri!!)
                 }
             }
@@ -91,6 +74,21 @@ fun TupCreationScreen(
         cameraLauncher.launch(uri)
     }
 
+    TupCreationScreen(
+        onClickAddImage = { onClickAddImage() },
+        onClickTakePhoto = { onClickTakePhoto() },
+        viewModel = viewModel
+    )
+}
+
+@Composable
+fun TupCreationScreen(
+    modifier: Modifier = Modifier,
+    onClickAddImage: () -> Unit,
+    onClickTakePhoto: () -> Unit,
+    onClickImage: () -> Unit = {},
+    viewModel: TupCreationViewModel = viewModel(),
+) {
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -103,13 +101,14 @@ fun TupCreationScreen(
                 .background(color = MaterialTheme.colors.primary),
             contentAlignment = Alignment.Center
         ) {
-            Text(text="Header", style = MaterialTheme.typography.h5, color = Color.White)
+            Text(text = "Header", style = MaterialTheme.typography.h5, color = Color.White)
         }
         TupperwareForm(
             modifier = Modifier
                 .weight(1f),
             onClickAddImage = { onClickAddImage() },
             onClickTakePhoto = { onClickTakePhoto() },
+            onClickImage = onClickImage,
             viewModel = viewModel
         )
         Box(
@@ -121,14 +120,11 @@ fun TupCreationScreen(
             ButtonRow(
                 modifier = Modifier.fillMaxSize(),
                 onCancelPressed = {},
-                onDonePressed={viewModel.onSubmit()},
+                onDonePressed = { viewModel.onSubmit() },
             )
         }
-
     }
-
 }
-
 
 @Composable
 fun TupperwareForm(
@@ -140,10 +136,10 @@ fun TupperwareForm(
 ) {
     val titleText by viewModel.titleText
     val descText by viewModel.descText
-
+    val formError by viewModel.formError
 
     Box(
-        modifier =  modifier
+        modifier = modifier
     ) {
         Column(
             modifier = modifier
@@ -173,9 +169,10 @@ fun TupperwareForm(
                 modifier = Modifier
                     .height(50.dp)
                     .fillMaxWidth()
-                    .testTag("TitleTextField"),
+                    .semantics { contentDescription = "TitleTextField" },
                 textStyle = MaterialTheme.typography.caption,
                 value = titleText, onValueChange = { viewModel.updateTitle(it) },
+                isError = formError,
                 shape = RoundedCornerShape(30.dp),
                 colors = textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
@@ -192,9 +189,10 @@ fun TupperwareForm(
                 modifier = Modifier
                     .height(150.dp)
                     .fillMaxWidth()
-                    .testTag("DescriptionTextField"),
+                    .semantics { contentDescription = "DescriptionTextField" },
                 textStyle = MaterialTheme.typography.caption,
                 value = descText, onValueChange = { viewModel.updateDesc(it) },
+                isError = formError,
                 shape = RoundedCornerShape(30.dp),
                 colors = textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
@@ -210,9 +208,10 @@ fun TupperwareForm(
                 modifier = Modifier
                     .height(100.dp)
                     .fillMaxWidth()
-                    .testTag("TagsTextField"),
+                    .semantics { contentDescription = "TagsTextField" },
                 textStyle = MaterialTheme.typography.caption,
                 value = viewModel.tags.joinToString(), onValueChange = { viewModel.updateTags(it) },
+                isError = formError,
                 shape = RoundedCornerShape(30.dp),
                 colors = textFieldColors(
                     unfocusedIndicatorColor = Color.Transparent,
@@ -220,7 +219,6 @@ fun TupperwareForm(
                 ),
             )
         }
-
     }
 }
 
@@ -234,11 +232,13 @@ private fun FieldText(text: String = "") {
     )
 }
 
-
 @Preview("default", showBackground = true)
 @Composable
 fun TupCreationScreenPreview() {
     Cook4meTheme {
-        TupCreationScreen()
+        TupCreationScreen(
+            onClickTakePhoto = {},
+            onClickAddImage = {},
+        )
     }
 }

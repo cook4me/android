@@ -32,7 +32,7 @@ fun ButtonRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start=padding, end=padding),
+                .padding(start = padding, end = padding),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(
@@ -68,14 +68,14 @@ fun ButtonRowPreview() {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-        ) { Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomStart
         ) {
-            ButtonRow(modifier = Modifier.height(80.dp), onCancelPressed = { /*TODO*/ }) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomStart
+            ) {
+                ButtonRow(modifier = Modifier.height(80.dp), onCancelPressed = {}) {
+                }
             }
-        }
-
         }
     }
 }

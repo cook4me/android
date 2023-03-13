@@ -4,7 +4,7 @@ import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-const val COLLECTION_PATH = "recipes"
+private const val COLLECTION_PATH = "recipes"
 
 class RecipeRepository(
     private val store: FirebaseFirestore

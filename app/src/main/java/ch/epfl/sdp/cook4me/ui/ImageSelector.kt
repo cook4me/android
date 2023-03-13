@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -38,14 +37,13 @@ fun ImageSelector(
     imageHeight: Dp = 200.dp,
     imageWidth: Dp = 100.dp,
 ) {
-
     LazyRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(start = 12.dp, end = 12.dp)
     ) {
         items(images) { img ->
-            ImageCard(modifier=Modifier.height(imageHeight), image = img, onClickImage = onClickImage)
+            ImageCard(modifier = Modifier.height(imageHeight), image = img, onClickImage = onClickImage)
         }
         item {
             AddPictureButton(
@@ -66,11 +64,8 @@ fun ImageSelector(
                 color = Color.Red,
             )
         }
-
     }
-
 }
-
 
 @Composable
 fun AddPictureButton(
@@ -78,11 +73,11 @@ fun AddPictureButton(
     onClickAddImage: () -> Unit,
     color: Color = MaterialTheme.colors.secondary
 ) {
-    Card (
+    Card(
         modifier = Modifier,
         elevation = 10.dp,
         shape = RoundedCornerShape(16.dp)
-    ){
+    ) {
         Box(
             modifier = modifier
                 .clickable { onClickAddImage() },
@@ -102,7 +97,6 @@ fun AddPictureButton(
                 )
             }
         }
-
     }
 }
 
@@ -114,7 +108,6 @@ fun ImageCard(
     shape: Shape = RoundedCornerShape(16.dp),
     onClickImage: () -> Unit
 ) {
-    val i = LocalContext.current.packageName.toString()
     Card(
         modifier = modifier.clickable { onClickImage() }
             .testTag("image"),

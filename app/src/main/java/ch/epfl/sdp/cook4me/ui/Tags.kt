@@ -1,10 +1,6 @@
 package ch.epfl.sdp.cook4me.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -36,38 +32,8 @@ fun Tag(
     }
 }
 
-@Composable
-fun Tags(
-    tags: List<String>,
-    modifier: Modifier = Modifier,
-    text: String = "",
-    color: Color = defaultTagColor,
-    textColor: Color = defaultTextColor,
-    elevation: Dp = 0.dp
-) {
-    Column {
-        tags.map {
-
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun TagPreview() {
-    val tags: List<String> = listOf(
-        "pizza",
-        "vegan",
-        "italian-mexican",
-        "borderline-criminal",
-        "fucking-delicious-my-dude",
-        "contains-peanuts",
-        "sausage",
-        "healthy",
-        "fitness"
-    )
-    Row(
-    ) {
-
-    }
+    Tag(text = "Pizza")
 }
