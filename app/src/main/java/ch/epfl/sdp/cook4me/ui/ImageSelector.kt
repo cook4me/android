@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 @Composable
 fun ImageSelector(
@@ -111,15 +114,20 @@ fun ImageCard(
     shape: Shape = RoundedCornerShape(16.dp),
     onClickImage: () -> Unit
 ) {
+    val i = LocalContext.current.packageName.toString()
     Card(
-        modifier = modifier.clickable { onClickImage() },
+        modifier = modifier.clickable { onClickImage() }
+            .testTag("image"),
         elevation = elevation,
         shape = shape
     ) {
         AsyncImage(
-            model = image,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(image)
+                .build(),
             contentDescription = "",
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxHeight(),
             contentScale = ContentScale.FillHeight
         )
     }

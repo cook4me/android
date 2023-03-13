@@ -7,14 +7,16 @@ import androidx.lifecycle.ViewModel
 import ch.epfl.sdp.cook4me.application.TupperwareService
 
 
-class TupCreationViewModel : ViewModel() {
-    private val service = TupperwareService()
+class TupCreationViewModel(private val service: TupperwareService) : ViewModel(
+
+) {
 
 
     private var _titleText = mutableStateOf("")
     private var _descText = mutableStateOf("")
     private var _tags = mutableStateListOf<String>()
     private val _images = mutableStateListOf<Uri>()
+    private val _formError = mutableStateOf(false)
 
     val titleText: State<String> = _titleText
     val descText: State<String> = _descText
@@ -38,12 +40,16 @@ class TupCreationViewModel : ViewModel() {
     }
 
     fun onSubmit() {
-        service.submitForm(
-            _titleText.value,
-            _descText.value,
-            _tags,
-            _images,
-        )
+        if (_titleText.value == "" || _descText.value == "" || _images.isEmpty()) {
+            _formError.value = true
+        } else {
+            service.submitForm(
+                _titleText.value,
+                _descText.value,
+                _tags,
+                _images,
+            )
+        }
     }
 
     fun onClickImage() {

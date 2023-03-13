@@ -4,5 +4,5 @@ data class Tupperware (
     val name: String = "",
     val desc: String = "",
     val tags: String = "",
-    val photo: String = ""
+    val photos: String = ""
 )

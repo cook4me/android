@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -171,7 +172,8 @@ fun TupperwareForm(
             TextField(
                 modifier = Modifier
                     .height(50.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .testTag("TitleTextField"),
                 textStyle = MaterialTheme.typography.caption,
                 value = titleText, onValueChange = { viewModel.updateTitle(it) },
                 shape = RoundedCornerShape(30.dp),
@@ -189,7 +191,8 @@ fun TupperwareForm(
             TextField(
                 modifier = Modifier
                     .height(150.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .testTag("DescriptionTextField"),
                 textStyle = MaterialTheme.typography.caption,
                 value = descText, onValueChange = { viewModel.updateDesc(it) },
                 shape = RoundedCornerShape(30.dp),
@@ -206,7 +209,8 @@ fun TupperwareForm(
             TextField(
                 modifier = Modifier
                     .height(100.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .testTag("TagsTextField"),
                 textStyle = MaterialTheme.typography.caption,
                 value = viewModel.tags.joinToString(), onValueChange = { viewModel.updateTags(it) },
                 shape = RoundedCornerShape(30.dp),
