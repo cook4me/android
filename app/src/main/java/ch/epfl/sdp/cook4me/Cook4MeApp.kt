@@ -11,7 +11,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.ui.LoginScreen
 import ch.epfl.sdp.cook4me.ui.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.WelcomeScreen
 
 /**
  * enum values that represent the screens in the app

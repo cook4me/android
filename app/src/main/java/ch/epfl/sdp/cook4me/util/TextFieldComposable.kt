@@ -15,7 +15,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import ch.epfl.sdp.cook4me.R
 
-
 @Composable
 fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
@@ -51,5 +50,5 @@ private fun PasswordField(
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = PasswordVisualTransformation()
-        )
+    )
 }

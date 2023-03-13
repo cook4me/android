@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.util
 
-
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -12,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 fun BasicToolbar(title: String) {
     TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
 }
-
 
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color {

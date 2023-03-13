@@ -10,7 +10,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.ui.LoginScreen
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,9 +18,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.isA
 import org.junit.After
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,11 +34,11 @@ class SignInFunctionalityTest {
     private lateinit var context: Context
     private val testTagEmailField = "EmailField"
     private val testTagPasswordField = "PasswordField"
-//TODO: restrict security rule only to these tests
-//TODO: generalize helper function
+// TODO: restrict security rule only to these tests
+// TODO: generalize helper function
 
     // special thanks to @bu-da for the kind helps
-   @Before
+    @Before
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         Firebase.auth.useEmulator("10.0.2.2", 9099)
@@ -59,8 +56,6 @@ class SignInFunctionalityTest {
         }
     }
 
-
-
     @Test
     fun validUserSignInSuccessfully() = runTest {
         auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
@@ -69,7 +64,7 @@ class SignInFunctionalityTest {
 
     @Test
     fun invalidUserSignInTriggersException() = runTest {
-        assertThrowsAsync{
+        assertThrowsAsync {
             auth.signInWithEmailAndPassword("mrinvalid@epfl.ch", "hahaha").await()
         }
     }
@@ -108,7 +103,7 @@ class SignInFunctionalityTest {
     }
 }
 
-//inline fun <reified T> assertThrowsAsync(crossinline f: suspend () -> Unit) {
+// inline fun <reified T> assertThrowsAsync(crossinline f: suspend () -> Unit) {
 //    try {
 //        runBlocking {
 //            f()
@@ -120,7 +115,7 @@ class SignInFunctionalityTest {
 //        }
 //    }
 //
-//}
+// }
 
 fun assertThrowsAsync(f: suspend () -> Unit) {
     try {
@@ -128,8 +123,9 @@ fun assertThrowsAsync(f: suspend () -> Unit) {
             f()
         }
     } catch (
-        e: Exception) {
+        e: Exception
+    ) {
         return
     }
-throw AssertionError("no exception was thrown")
+    throw AssertionError("no exception was thrown")
 }

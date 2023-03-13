@@ -1,21 +1,34 @@
 package ch.epfl.sdp.cook4me.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.util.*
+import ch.epfl.sdp.cook4me.util.BasicButton
+import ch.epfl.sdp.cook4me.util.BasicToolbar
+import ch.epfl.sdp.cook4me.util.EmailField
+import ch.epfl.sdp.cook4me.util.PasswordField
+import ch.epfl.sdp.cook4me.util.basicButton
+import ch.epfl.sdp.cook4me.util.fieldModifier
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun LoginScreen(
@@ -74,5 +87,4 @@ fun LoginScreen(
             }
         }
     )
-
 }
