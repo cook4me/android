@@ -40,6 +40,7 @@ class SignInFunctionalityTest {
 //TODO: restrict security rule only to these tests
 //TODO: generalize helper function
 
+    // special thanks to @bu-da for the kind helps
    @Before
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
