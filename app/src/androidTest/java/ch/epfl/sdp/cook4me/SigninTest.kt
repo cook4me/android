@@ -1,11 +1,15 @@
 package ch.epfl.sdp.cook4me
 
+import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import ch.epfl.sdp.cook4me.ui.LoginScreen
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +23,11 @@ class SigninTest {
     private val testTagPasswordField = "PasswordField"
     private val invalidEmail = "invalidemail"
     private val validEmail = "bababa@epfl.ch"
-
+    private lateinit var context: Context
+    @Before
+    fun setUp() {
+        context = getInstrumentation().targetContext
+    }
     @Test
     fun uiIsDisplayed() {
         composeTestRule.setContent {
@@ -38,6 +46,16 @@ class SigninTest {
         }
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput(invalidEmail)
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
-        composeTestRule.onNodeWithStringId(R.string.invalid_email_message).assertIsDisplayed()
+        composeTestRule.onNodeWithText(context.getString(R.string.invalid_email_message)).assertIsDisplayed()
+    }
+
+    @Test
+    fun validEmailWithBlankPasswordTriggersMessageBar() {
+        composeTestRule.setContent {
+            LoginScreen()
+        }
+        composeTestRule.onNodeWithTag(testTagEmailField).performTextInput(validEmail)
+        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.password_blank)).assertIsDisplayed()
     }
 }
