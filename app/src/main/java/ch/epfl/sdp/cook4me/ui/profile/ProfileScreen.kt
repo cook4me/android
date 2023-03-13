@@ -81,7 +81,7 @@ fun username_profileScreen() {
         modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
         fontWeight = FontWeight.Bold,
 
-    )
+        )
 }
 
 @Composable
