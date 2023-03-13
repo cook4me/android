@@ -32,7 +32,6 @@ import coil.compose.rememberAsyncImagePainter
 @Preview(showBackground = true)
 @Composable
 fun ProfileUpdateScreen() {
-
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -57,7 +56,6 @@ fun ProfileUpdateScreen() {
 
 @Composable
 fun bio_profileUpdateScreen() {
-//    var bioText = stringResource(R.string.default_bio)
     var bio by rememberSaveable { mutableStateOf("") }
     input_row {
         Text(
@@ -65,11 +63,13 @@ fun bio_profileUpdateScreen() {
                 .width(100.dp)
                 .padding(top = 7.dp)
         )
-        TextField(value = bio,
+        TextField(
+            value = bio,
             onValueChange = { bio = it },
             placeholder = { Text(stringResource(R.string.default_bio)) },
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent, textColor = Color.Black
+                backgroundColor = Color.Transparent,
+                textColor = Color.Black
             ),
             singleLine = false,
             modifier = Modifier
@@ -81,20 +81,22 @@ fun bio_profileUpdateScreen() {
 
 @Composable
 fun allergies_profileUpdateScreen() {
-//    var allergy = stringResource(R.string.default_allergies)
     var allergies by rememberSaveable {
         mutableStateOf("")
     }
 
     input_row {
-        Text(text = "Allergies", modifier = Modifier.width(100.dp))
+        Text(
+            text = "Allergies",
+            modifier = Modifier.width(100.dp))
         TextField(
             value = allergies,
             placeholder = { Text(stringResource(R.string.default_allergies)) },
             modifier = Modifier.testTag(stringResource(R.string.tag_allergies)),
             onValueChange = { allergies = it },
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent, textColor = Color.Black
+                backgroundColor = Color.Transparent,
+                textColor = Color.Black
             )
         )
     }
@@ -102,13 +104,14 @@ fun allergies_profileUpdateScreen() {
 
 @Composable
 fun favoriteDish_profileUpdateScreen() {
-//    var favDishText = stringResource(R.string.default_favoriteDish)
     var favDish by rememberSaveable {
         mutableStateOf("")
     }
 
     input_row {
-        Text(text = "Favorite dish", modifier = Modifier.width(100.dp))
+        Text(
+            text = "Favorite dish",
+            modifier = Modifier.width(100.dp))
         TextField(
             placeholder = {
                 Text(
@@ -121,7 +124,8 @@ fun favoriteDish_profileUpdateScreen() {
             modifier = Modifier.testTag(stringResource(R.string.tag_favoriteDish)),
             onValueChange = { favDish = it },
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent, textColor = Color.Black
+                backgroundColor = Color.Transparent,
+                textColor = Color.Black
             )
         )
     }
@@ -129,15 +133,11 @@ fun favoriteDish_profileUpdateScreen() {
 
 @Composable
 fun ProfileSetupImage_profileUpdateScreen() {
-    /**
-     * TODO Put into logic
-     */
-    // draws the image of the profile
     val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
         if (imageURI.value.isEmpty()) R.drawable.ic_user
         else imageURI.value
-    )
+    ) //TODO PUT INTO LOGIC
 
     /**
      *Remembers and launches on recomposition
@@ -154,12 +154,15 @@ fun ProfileSetupImage_profileUpdateScreen() {
         uri?.let { imageURI.value = it.toString() }
     }
 
-    Image_profileUpdateScreen(painter = painter, launcher = launcher)
+    Image_profileUpdateScreen(
+        painter = painter,
+        launcher = launcher)
 }
 
 @Composable
 fun Image_profileUpdateScreen(
-    painter: AsyncImagePainter, launcher: ManagedActivityResultLauncher<String, Uri?>
+    painter: AsyncImagePainter,
+    launcher: ManagedActivityResultLauncher<String, Uri?>
 ) {
 
     Column(
@@ -169,7 +172,8 @@ fun Image_profileUpdateScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-            shape = CircleShape, modifier = Modifier
+            shape = CircleShape,
+            modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
         ) {
@@ -195,7 +199,9 @@ fun saveCancelButtons_profileUpdateScreen() {
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = stringResource(R.string.btn_cancel), modifier = Modifier
+        Text(
+            text = stringResource(R.string.btn_cancel),
+            modifier = Modifier
             .testTag(
                 stringResource(
                     R.string.btn_save
@@ -214,7 +220,9 @@ fun username_profileUpdateScreen() {
     var username by rememberSaveable { mutableStateOf("") }
 
     input_row {
-        Text(text = "Username", modifier = Modifier.width(100.dp))
+        Text(
+            text = "Username",
+            modifier = Modifier.width(100.dp))
         TextField(
             value = username,
             modifier = Modifier.testTag(stringResource(R.string.tag_username)),
