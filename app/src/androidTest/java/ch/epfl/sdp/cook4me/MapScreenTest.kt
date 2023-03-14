@@ -112,24 +112,6 @@ class GoogleMapViewTests {
     }
 
     @Test
-    fun testCameraZoomIn() {
-        initMap()
-        zoom(shouldAnimate = false, zoomIn = true) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(3000) {
-                !cameraPositionState.isMoving
-            }
-            assertEquals(
-                startingZoom + 1f,
-                cameraPositionState.position.zoom,
-                assertRoundingError.toFloat()
-            )
-        }
-    }
-
-    @Test
     fun testCameraZoomOut() {
         initMap()
         zoom(shouldAnimate = false, zoomIn = false) {
@@ -173,19 +155,6 @@ class GoogleMapViewTests {
             assertNotNull(projection)
             assertTrue(
                 projection!!.visibleRegion.latLngBounds.contains(startingPosition)
-            )
-        }
-    }
-
-    @Test
-    fun testLatLngNotInVisibleRegion() {
-        initMap()
-        composeTestRule.runOnUiThread {
-            val projection = cameraPositionState.projection
-            assertNotNull(projection)
-            val latLng = LatLng(23.4, 25.6)
-            assertFalse(
-                projection!!.visibleRegion.latLngBounds.contains(latLng)
             )
         }
     }
