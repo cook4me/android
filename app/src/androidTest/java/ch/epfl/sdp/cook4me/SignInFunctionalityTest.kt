@@ -34,7 +34,6 @@ class SignInFunctionalityTest {
     private lateinit var context: Context
     private val testTagEmailField = "EmailField"
     private val testTagPasswordField = "PasswordField"
-// TODO: restrict security rule only to these tests
 // TODO: generalize helper function
 
     // special thanks to @bu-da for the kind helps
