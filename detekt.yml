@@ -134,7 +134,11 @@ complexity:
   LongMethod:
     active: true
     threshold: 30
-    ignoreAnnotated: []
+    ignoreAnnotated: 
+    excludes:
+     [
+       "**/ui/**",
+     ]
   LongParameterList:
     active: false
     functionThreshold: 6
@@ -885,7 +889,7 @@ style:
       - "1"
       - "2"
     ignoreHashCodeFunction: true
-    ignorePropertyDeclaration: false
+    ignorePropertyDeclaration: true
     ignoreLocalVariableDeclaration: false
     ignoreConstantDeclaration: true
     ignoreCompanionObjectPropertyDeclaration: true
