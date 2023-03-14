@@ -4,9 +4,7 @@ import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.TupperwareService
 import kotlinx.coroutines.launch
@@ -37,35 +35,20 @@ class TupCreationViewModel(private val service: TupperwareService) : ViewModel()
         _descText.value = desc
     }
 
-    fun updateTags(tags: String) {
-        _tags = tags.split(" ,.'\"", ignoreCase = false) as SnapshotStateList<String>
-    }
+    // TODO implement tags
 
     fun onSubmit() {
-        if (_titleText.value.isEmpty() || _descText.value.isEmpty() || _images.isEmpty()) {
+        if (_titleText.value.isBlank() || _descText.value.isBlank() || _images.isEmpty()) {
             _formError.value = true
         } else {
             viewModelScope.launch {
-                // TODO error handling
                 service.submitForm(
                     _titleText.value,
                     _descText.value,
                     _tags,
-                    _images.map { uri -> uri.toString() },
+                    _images.map { uri -> uri.toString() } // TODO pass actual images
                 )
             }
         }
-    }
-}
-
-@Suppress("UNCHECKED_CAST")
-class TupCreationViewModelFactory(private val service: TupperwareService) :
-    ViewModelProvider.NewInstanceFactory() {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TupCreationViewModel::class.java))
-            return TupCreationViewModel(service) as T
-
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

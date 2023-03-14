@@ -1,6 +1,13 @@
 package ch.epfl.sdp.cook4me.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults.buttonColors
@@ -41,7 +48,7 @@ fun ButtonRow(
                     .height(40.dp),
                 onClick = onCancelPressed,
                 shape = buttonShape,
-                colors = buttonColors(backgroundColor = Color(0.6f, 0.1f, 0.1f, 1f)),
+                colors = buttonColors(backgroundColor = Color(red = 0.6f, green = 0.1f, blue = 0.1f, alpha = 1.0f)),
             ) {
                 Text(text = stringResource(R.string.ButtonRowCancel), color = Color.White)
             }

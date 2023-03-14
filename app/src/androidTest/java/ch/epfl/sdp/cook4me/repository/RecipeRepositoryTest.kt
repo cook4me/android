@@ -17,7 +17,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-const val COLLECTION_PATH = "recipes"
+private const val COLLECTION_PATH = "recipes"
 
 @ExperimentalCoroutinesApi
 class RecipeRepositoryTest {
@@ -57,7 +57,7 @@ class RecipeRepositoryTest {
     }
 
     @Test
-    fun updateExistingRecipe() = runTest {
+    fun updateExistingRecipeKeepOnlyRecentRecipe() = runTest {
         val entryToBeUpdated = Recipe(name = "entryToBeUpdated")
         recipeRepository.add(entryToBeUpdated)
         val allRecipesBeforeUpdate = recipeRepository.getAll()

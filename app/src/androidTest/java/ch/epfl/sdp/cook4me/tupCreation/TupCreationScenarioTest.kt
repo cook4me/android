@@ -11,17 +11,23 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
 import androidx.core.app.ActivityOptionsCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.TupCreationScreenWithState
 import ch.epfl.sdp.cook4me.ui.TupCreationViewModel
-import ch.epfl.sdp.cook4me.ui.TupCreationViewModelFactory
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -86,7 +92,7 @@ class TupCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                TupCreationScreenWithState(viewModel = viewModel(factory = TupCreationViewModelFactory(mockService)))
+                TupCreationScreenWithState(TupCreationViewModel(mockService))
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -102,7 +108,7 @@ class TupCreationScenarioTest {
     @Test
     fun descriptionFieldIsDisplayed() {
         composeTestRule.setContent {
-            TupCreationScreenWithState(TupCreationViewModel(service = mockService))
+            TupCreationScreenWithState(TupCreationViewModel(mockService))
         }
         composeTestRule.onNodeWithText(text = "Description").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("DescriptionTextField").assertIsDisplayed()
@@ -110,7 +116,7 @@ class TupCreationScenarioTest {
     @Test
     fun titleFieldIsDisplayed() {
         composeTestRule.setContent {
-            TupCreationScreenWithState(viewModel = viewModel(factory = TupCreationViewModelFactory(mockService)))
+            TupCreationScreenWithState(TupCreationViewModel(mockService))
         }
         composeTestRule.onNodeWithText(text = "Tupperware Name").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("TitleTextField").assertIsDisplayed()
@@ -120,7 +126,7 @@ class TupCreationScenarioTest {
     fun tagsFieldIsDisplayed() {
 
         composeTestRule.setContent {
-            TupCreationScreenWithState(viewModel = viewModel(factory = TupCreationViewModelFactory(mockService)))
+            TupCreationScreenWithState(TupCreationViewModel(mockService))
         }
         composeTestRule.onNodeWithContentDescription("TagsTextField").performScrollTo()
         composeTestRule.onNodeWithText(text = "Tags").assertIsDisplayed()
@@ -131,7 +137,7 @@ class TupCreationScenarioTest {
     fun headerIsDisplayed() {
 
         composeTestRule.setContent {
-            TupCreationScreenWithState(viewModel(factory = TupCreationViewModelFactory(mockService)))
+            TupCreationScreenWithState(TupCreationViewModel(mockService))
         }
         composeTestRule.onNodeWithText(text = "Header").assertIsDisplayed()
     }
@@ -140,7 +146,7 @@ class TupCreationScenarioTest {
     fun buttonRowIsDisplayed() {
 
         composeTestRule.setContent {
-            TupCreationScreenWithState(viewModel(factory = TupCreationViewModelFactory(mockService)))
+            TupCreationScreenWithState(TupCreationViewModel(mockService))
         }
         composeTestRule.onNodeWithText(text = "Cancel").assertIsDisplayed()
         composeTestRule.onNodeWithText(text = "Done").assertIsDisplayed()
@@ -161,7 +167,7 @@ class TupCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                TupCreationScreenWithState(viewModel(factory = TupCreationViewModelFactory(mockService)))
+                TupCreationScreenWithState(TupCreationViewModel(mockService))
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -188,7 +194,7 @@ class TupCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                TupCreationScreenWithState(viewModel(factory = TupCreationViewModelFactory(mockService)))
+                TupCreationScreenWithState(TupCreationViewModel(mockService))
             }
         }
 
@@ -213,7 +219,7 @@ class TupCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                TupCreationScreenWithState(viewModel(factory = TupCreationViewModelFactory(mockService)))
+                TupCreationScreenWithState(TupCreationViewModel(mockService))
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -237,7 +243,7 @@ class TupCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                TupCreationScreenWithState(viewModel(factory = TupCreationViewModelFactory(mockService)))
+                TupCreationScreenWithState(TupCreationViewModel(mockService))
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
