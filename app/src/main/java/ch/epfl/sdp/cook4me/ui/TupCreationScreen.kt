@@ -5,8 +5,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -15,8 +13,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,19 +24,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.application.TupperwareService
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
 @Composable
 fun TupCreationScreenWithState(
-    viewModel: TupCreationViewModel = viewModel(factory = TupCreationViewModelFactory(
-        TupperwareService()
-    ))
+    viewModel: TupCreationViewModel
 ) {
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -147,7 +145,7 @@ fun TupperwareForm(
                 .verticalScroll(rememberScrollState())
                 .padding(10.dp)
         ) {
-            FieldText(stringResource(R.string.TupCreateFormAddImage))
+            CustomTitleText(stringResource(R.string.TupCreateFormAddImage))
 
             Spacer(modifier = Modifier.size(10.dp))
 
@@ -163,67 +161,77 @@ fun TupperwareForm(
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()
             Spacer(modifier = Modifier.size(5.dp))
-            FieldText(stringResource(R.string.TupCreateFormTupName))
+            CustomTitleText(stringResource(R.string.TupCreateFormTupName))
             Spacer(modifier = Modifier.size(5.dp))
-            TextField(
+            CustomTextField(
                 modifier = Modifier
                     .height(50.dp)
-                    .fillMaxWidth()
-                    .semantics { contentDescription = "TitleTextField" },
-                textStyle = MaterialTheme.typography.caption,
+                    .fillMaxWidth(),
+                contentDescription = "TitleTextField",
                 value = titleText, onValueChange = { viewModel.updateTitle(it) },
                 isError = formError,
-                shape = RoundedCornerShape(30.dp),
-                colors = textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                ),
                 singleLine = true,
             )
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()
             Spacer(modifier = Modifier.size(2.dp))
-            FieldText(stringResource(R.string.TupCreateFormDesc))
+            CustomTitleText(stringResource(R.string.TupCreateFormDesc))
             Spacer(modifier = Modifier.size(5.dp))
-            TextField(
+            CustomTextField(
                 modifier = Modifier
                     .height(150.dp)
-                    .fillMaxWidth()
-                    .semantics { contentDescription = "DescriptionTextField" },
-                textStyle = MaterialTheme.typography.caption,
+                    .fillMaxWidth(),
+                contentDescription = "DescriptionTextField",
                 value = descText, onValueChange = { viewModel.updateDesc(it) },
                 isError = formError,
-                shape = RoundedCornerShape(30.dp),
-                colors = textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                ),
             )
             Spacer(modifier = Modifier.size(10.dp))
             Cook4MeDivider()
             Spacer(modifier = Modifier.size(2.dp))
-            FieldText(stringResource(R.string.TupCreateFormTags))
+            CustomTitleText(stringResource(R.string.TupCreateFormTags))
             Spacer(modifier = Modifier.size(5.dp))
-            TextField(
+            CustomTextField(
                 modifier = Modifier
                     .height(100.dp)
-                    .fillMaxWidth()
-                    .semantics { contentDescription = "TagsTextField" },
-                textStyle = MaterialTheme.typography.caption,
+                    .fillMaxWidth(),
                 value = viewModel.tags.joinToString(), onValueChange = { viewModel.updateTags(it) },
+                contentDescription = "TagsTextField",
                 isError = formError,
-                shape = RoundedCornerShape(30.dp),
-                colors = textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                ),
             )
         }
     }
 }
 
 @Composable
-private fun FieldText(text: String = "") {
+private fun CustomTextField(
+    modifier: Modifier = Modifier,
+    contentDescription: String,
+    value: String = "",
+    onValueChange: (String) -> Unit,
+    singleLine: Boolean = false,
+    isError: Boolean = false
+) {
+    val stateDescription = if (isError) { "Error" } else { "" }
+
+    TextField(
+        modifier = modifier.semantics {
+            this.contentDescription = contentDescription
+            this.stateDescription = stateDescription
+        },
+        textStyle = MaterialTheme.typography.caption,
+        value = value, onValueChange = onValueChange,
+        isError = isError,
+        shape = RoundedCornerShape(30.dp),
+        singleLine = singleLine,
+        colors = textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+        ),
+    )
+}
+
+@Composable
+private fun CustomTitleText(text: String = "") {
     Text(
         modifier = Modifier,
         text = text,

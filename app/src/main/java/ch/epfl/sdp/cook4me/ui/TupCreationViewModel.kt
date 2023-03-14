@@ -1,17 +1,17 @@
 package ch.epfl.sdp.cook4me.ui
 
 import android.net.Uri
-import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.TupperwareService
+import kotlinx.coroutines.launch
 
-class TupCreationViewModel(private val service: TupperwareService = TupperwareService()) : ViewModel() {
+class TupCreationViewModel(private val service: TupperwareService) : ViewModel() {
 
     private var _titleText = mutableStateOf("")
     private var _descText = mutableStateOf("")
@@ -42,21 +42,25 @@ class TupCreationViewModel(private val service: TupperwareService = TupperwareSe
     }
 
     fun onSubmit() {
-        if (_titleText.value == "" || _descText.value == "" || _images.isEmpty()) {
+        if (_titleText.value.isEmpty() || _descText.value.isEmpty() || _images.isEmpty()) {
             _formError.value = true
         } else {
-            service.submitForm(
-                _titleText.value,
-                _descText.value,
-                _tags,
-                _images,
-            )
+            viewModelScope.launch {
+                // TODO error handling
+                service.submitForm(
+                    _titleText.value,
+                    _descText.value,
+                    _tags,
+                    _images.map { uri -> uri.toString() },
+                )
+            }
         }
     }
 }
 
-class TupCreationViewModelFactory(private val service: TupperwareService)
-    : ViewModelProvider.NewInstanceFactory() {
+@Suppress("UNCHECKED_CAST")
+class TupCreationViewModelFactory(private val service: TupperwareService) :
+    ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TupCreationViewModel::class.java))
