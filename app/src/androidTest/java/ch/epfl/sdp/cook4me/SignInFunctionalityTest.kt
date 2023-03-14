@@ -2,9 +2,11 @@ package ch.epfl.sdp.cook4me
 
 import android.content.Context
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -75,8 +77,8 @@ class SignInFunctionalityTest {
         }
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("harry.potter@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
-        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button)
-        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_sign_in_success))
+        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_sign_in_success)).assertIsDisplayed()
     }
 
     @Test
@@ -86,8 +88,8 @@ class SignInFunctionalityTest {
         }
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("mr.nonexist@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
-        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button)
-        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_non_exist_user))
+        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_non_exist_user)).assertIsDisplayed()
     }
 
     @Test
@@ -97,8 +99,8 @@ class SignInFunctionalityTest {
         }
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("harry.potter@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("1234567")
-        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button)
-        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_wrong_password))
+        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_wrong_password)).assertIsDisplayed()
     }
 }
 
