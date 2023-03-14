@@ -2,9 +2,10 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'jacoco'
-    id "org.jlleitschuh.gradle.ktlint" version "10.0.0"
-    id "io.gitlab.arturbosch.detekt" version "1.20.0"
+    id 'org.jlleitschuh.gradle.ktlint' version '10.0.0'
+    id 'io.gitlab.arturbosch.detekt' version '1.20.0'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -12,13 +13,13 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "ch.epfl.sdp.cook4me"
+        applicationId 'ch.epfl.sdp.cook4me'
         minSdk 24
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables {
             useSupportLibrary true
         }
@@ -54,47 +55,57 @@ android {
         }
     }
     testCoverage {
-        jacocoVersion = "0.8.8-SNAPSHOT"
+        jacocoVersion = '0.8.8-SNAPSHOT'
     }
 }
 
 detekt {
-    config = files("../detekt.yml")
+    config = files('../detekt.yml')
 }
 
 jacoco {
-    toolVersion = "0.8.8-SNAPSHOT"
+    toolVersion = '0.8.8-SNAPSHOT'
 }
 
 configurations.forEach { config ->
     config.resolutionStrategy {
         eachDependency(p -> {
-            if (p.getRequested().getGroup().equals("org.jacoco")) {
-                p.useVersion("0.8.8-SNAPSHOT")
+            if (p.getRequested().getGroup().equals('org.jacoco')) {
+                p.useVersion('0.8.8-SNAPSHOT')
             }
         })
     }
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.0")
-    testImplementation("org.hamcrest:hamcrest:2.2")
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    //noinspection GradleDependency
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1' // get duplication errors if we update it
     implementation 'androidx.activity:activity-compose:1.6.1'
-    implementation "androidx.compose.ui:ui:1.3.3"
-    implementation "androidx.compose.ui:ui-tooling-preview:1.3.3"
+    implementation 'androidx.compose.ui:ui:1.3.3'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.3.3'
     implementation 'androidx.compose.material:material:1.3.1'
     implementation 'com.google.maps.android:maps-compose:2.11.0'
+    
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'androidx.navigation:navigation-compose:2.5.3'
+
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
     testImplementation 'junit:junit:4.13.2'
+    testImplementation('org.hamcrest:hamcrest:2.2')
+
+    detektPlugins('io.gitlab.arturbosch.detekt:detekt-formatting:1.18.0')
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.3.3"
-    androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
-    debugImplementation "androidx.compose.ui:ui-tooling:1.3.3"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:1.3.3"
-    implementation "androidx.navigation:navigation-compose:2.5.3"
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.3.3'
+    androidTestImplementation 'androidx.navigation:navigation-testing:2.5.3'
+
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.3.3'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.3.3'
 }
 
 tasks.withType(Test) {
@@ -116,10 +127,10 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
             '**/*Test*.*',
             'android/**/*.*',
             // Exclude Hilt generated classes
-            "**/*Hilt*.*",
-            "hilt_aggregated_deps/**",
-            "**/*_Factory.class",
-            "**/*_MembersInjector.class",
+            '**/*Hilt*.*',
+            'hilt_aggregated_deps/**',
+            '**/*_Factory.class',
+            '**/*_MembersInjector.class',
     ]
     def debugTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"

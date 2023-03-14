@@ -28,6 +28,8 @@ check_android_task:
       -camera-back none
   prepare_environment_script:
     sh ./.cirrus/populate_properties.sh
+  download_firebase_emulator_script: |
+    curl -Lo ./firebase_bin https://firebase.tools/bin/linux/latest
   assemble_instrumented_tests_script: |
     chmod +x gradlew
     ./gradlew assembleDebugAndroidTest
@@ -45,8 +47,9 @@ check_android_task:
     for n in $(seq 1 20); do adb exec-out screenrecord --time-limit=180 --output-format=h264 - > $n.h264; done
   run_ktlint:
     ./gradlew ktlintFormat
-  check_script:
-    ./gradlew check connectedCheck
+  check_script: |
+    chmod +x firebase_bin
+    ./firebase_bin emulators:exec './gradlew check connectedCheck'
   report_codeclimate_script: |
     export JACOCO_SOURCE_PATH=app/src/main/java/
     ./cc-test-reporter format-coverage ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml --input-type jacoco

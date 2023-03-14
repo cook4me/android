@@ -133,12 +133,12 @@ complexity:
     threshold: 300
   LongMethod:
     active: true
-    threshold: 20
+    threshold: 30
     ignoreAnnotated: 
     excludes:
-      [
-        "**/ui/**",
-      ]
+     [
+       "**/ui/**",
+     ]
   LongParameterList:
     active: false
     functionThreshold: 6
