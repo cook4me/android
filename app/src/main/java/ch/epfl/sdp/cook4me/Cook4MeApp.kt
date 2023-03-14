@@ -9,8 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ch.epfl.sdp.cook4me.ui.LoginScreen
 import ch.epfl.sdp.cook4me.ui.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.WelcomeScreen
 
 /**
  * enum values that represent the screens in the app
@@ -30,13 +30,12 @@ fun Cook4MeApp(
 
     NavHost(navController = navController, startDestination = Screen.Start.name) {
         composable(route = Screen.Start.name) {
-            /*WelcomeScreen(
+            WelcomeScreen(
                 onStartButtonClicked = {
                     name = it
                     navController.navigate(Screen.Profile.name)
                 }
-            )*/
-            LoginScreen()
+            )
         }
         composable(route = Screen.Profile.name) {
             ProfileScreen(name)
