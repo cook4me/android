@@ -91,8 +91,6 @@ fun GoogleMapView(
         mutableStateOf(MapProperties(mapType = MapType.NORMAL))
     }
     var mapVisible by remember { mutableStateOf(true) }
-    Log.d("GoogleMapView", "map visible: " + mapVisible)
-    Log.d("GoogleMapView", "API KEY:" + MAPS_API_KEY)
     if (mapVisible) {
         GoogleMap(
             modifier = modifier,
@@ -124,7 +122,7 @@ fun GoogleMapView(
                     onClick = markerClick,
                     tag = marker.title,
                 ) {
-                    Text(marker.description ?: "Title", color = Color.Cyan)
+                    Text(marker.description, color = Color.Cyan)
                 }
             }
             content()
