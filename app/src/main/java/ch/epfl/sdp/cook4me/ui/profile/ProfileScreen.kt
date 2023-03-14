@@ -37,8 +37,11 @@ fun ProfileScreen() {
         // TODO put in logic
         val imageURI = rememberSaveable { mutableStateOf("") }
         val painter = rememberAsyncImagePainter(
-            if (imageURI.value.isEmpty()) R.drawable.ic_user
-            else imageURI.value
+            if (imageURI.value.isEmpty()) {
+                R.drawable.ic_user
+            } else {
+                imageURI.value
+            }
         )
 
         ProfileImageAndUsername(painter)
@@ -85,7 +88,6 @@ fun username_profileScreen() {
         text = stringResource(R.string.default_username),
         modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
         fontWeight = FontWeight.Bold,
-
     )
 }
 

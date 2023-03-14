@@ -147,8 +147,11 @@ fun favoriteDish_profileUpdateScreen() {
 fun ProfileSetupImage_profileUpdateScreen() {
     val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
-        if (imageURI.value.isEmpty()) R.drawable.ic_user
-        else imageURI.value
+        if (imageURI.value.isEmpty()) {
+            R.drawable.ic_user
+        } else {
+            imageURI.value
+        }
     ) // TODO PUT INTO LOGIC
 
     /**
@@ -177,7 +180,6 @@ fun Image_profileUpdateScreen(
     painter: AsyncImagePainter,
     launcher: ManagedActivityResultLauncher<String, Uri?>
 ) {
-
     Column(
         modifier = Modifier
             .padding(8.dp)
