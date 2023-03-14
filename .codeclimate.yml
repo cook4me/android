@@ -2,3 +2,7 @@ version: "2"
 checks:
   method-lines:
     enabled: false # we already check line count with detekt
+exclude_patterns:
+- "**/test/"
+- "**/androidTest/"
+- "**test
