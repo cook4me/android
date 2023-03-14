@@ -53,8 +53,8 @@ class TupRepositoryTest {
         )
         tupperwareRepository.add(newEntry1)
         tupperwareRepository.add(newEntry2)
-        val allRecipes = tupperwareRepository.getAll()
-        MatcherAssert.assertThat(allRecipes.values, Matchers.containsInAnyOrder(newEntry1, newEntry2))
+        val allTupperware = tupperwareRepository.getAll()
+        MatcherAssert.assertThat(allTupperware.values, Matchers.containsInAnyOrder(newEntry1, newEntry2))
     }
 
     @Test
@@ -63,16 +63,16 @@ class TupRepositoryTest {
             name = "title", desc = "desc", tags = listOf("Pizza", "Italian"), photos = listOf("Uri")
         )
         tupperwareRepository.add(entryToBeUpdated)
-        val allRecipesBeforeUpdate = tupperwareRepository.getAll()
+        val allTupperwareBeforeUpdate = tupperwareRepository.getAll()
         val updatedEntry = entryToBeUpdated.copy(name = "updated")
-        tupperwareRepository.update(allRecipesBeforeUpdate.keys.first(), updatedEntry)
-        val allRecipesAfterUpdate = tupperwareRepository.getAll()
-        MatcherAssert.assertThat(allRecipesAfterUpdate.values, Matchers.contains(updatedEntry))
-        MatcherAssert.assertThat(allRecipesAfterUpdate.values, Matchers.not(Matchers.contains(entryToBeUpdated)))
+        tupperwareRepository.update(allTupperwareBeforeUpdate.keys.first(), updatedEntry)
+        val allTupperwareAfterUpdate = tupperwareRepository.getAll()
+        MatcherAssert.assertThat(allTupperwareAfterUpdate.values, Matchers.contains(updatedEntry))
+        MatcherAssert.assertThat(allTupperwareAfterUpdate.values, Matchers.not(Matchers.contains(entryToBeUpdated)))
     }
 
     @Test
-    fun getRecipeById() = runTest {
+    fun getTupperwareById() = runTest {
         tupperwareRepository.add(
             Tupperware(
                 name = "title0", desc = "desc0", tags = listOf("Pizza", "Hungarian"), photos = listOf("Uri0")
@@ -88,8 +88,8 @@ class TupRepositoryTest {
                 name = "title2", desc = "desc2", tags = listOf("Langosh", "Hungarian"), photos = listOf("Uri2")
             )
         )
-        val allRecipes = tupperwareRepository.getAll()
-        val actual = tupperwareRepository.getById(allRecipes.keys.first())
-        MatcherAssert.assertThat(actual, Matchers.`is`(allRecipes.values.first()))
+        val allTupperware = tupperwareRepository.getAll()
+        val actual = tupperwareRepository.getById(allTupperware.keys.first())
+        MatcherAssert.assertThat(actual, Matchers.`is`(allTupperware.values.first()))
     }
 }
