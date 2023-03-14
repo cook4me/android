@@ -61,7 +61,6 @@ fun LoginScreen(
             ) {
                 EmailField(email, { email = it }, Modifier.fieldModifier())
                 PasswordField(password, { password = it }, Modifier.fieldModifier())
-
                 BasicButton(
                     stringResource(R.string.sign_in_screen_sign_in_button),
                     Modifier.basicButton()

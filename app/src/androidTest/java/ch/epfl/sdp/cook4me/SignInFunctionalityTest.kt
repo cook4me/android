@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -78,6 +79,11 @@ class SignInFunctionalityTest {
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("harry.potter@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithText(context.getString(R.string.sign_in_screen_sign_in_success))
+                .fetchSemanticsNodes().size == 1
+        }
         composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_sign_in_success)).assertIsDisplayed()
     }
 
@@ -89,6 +95,11 @@ class SignInFunctionalityTest {
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("mr.nonexist@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithText(context.getString(R.string.sign_in_screen_non_exist_user))
+                .fetchSemanticsNodes().size == 1
+        }
         composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_non_exist_user)).assertIsDisplayed()
     }
 
@@ -100,6 +111,11 @@ class SignInFunctionalityTest {
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("harry.potter@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("1234567")
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithText(context.getString(R.string.sign_in_screen_wrong_password))
+                .fetchSemanticsNodes().size == 1
+        }
         composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_wrong_password)).assertIsDisplayed()
     }
 }
