@@ -1,5 +1,10 @@
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -81,7 +86,7 @@ fun username_profileScreen() {
         modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
         fontWeight = FontWeight.Bold,
 
-        )
+    )
 }
 
 @Composable

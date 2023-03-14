@@ -4,7 +4,16 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -59,7 +68,8 @@ fun bio_profileUpdateScreen() {
     var bio by rememberSaveable { mutableStateOf("") }
     input_row {
         Text(
-            text = "Bio", modifier = Modifier
+            text = "Bio",
+            modifier = Modifier
                 .width(100.dp)
                 .padding(top = 7.dp)
         )
@@ -88,7 +98,8 @@ fun allergies_profileUpdateScreen() {
     input_row {
         Text(
             text = "Allergies",
-            modifier = Modifier.width(100.dp))
+            modifier = Modifier.width(100.dp)
+        )
         TextField(
             value = allergies,
             placeholder = { Text(stringResource(R.string.default_allergies)) },
@@ -111,7 +122,8 @@ fun favoriteDish_profileUpdateScreen() {
     input_row {
         Text(
             text = "Favorite dish",
-            modifier = Modifier.width(100.dp))
+            modifier = Modifier.width(100.dp)
+        )
         TextField(
             placeholder = {
                 Text(
@@ -156,7 +168,8 @@ fun ProfileSetupImage_profileUpdateScreen() {
 
     Image_profileUpdateScreen(
         painter = painter,
-        launcher = launcher)
+        launcher = launcher
+    )
 }
 
 @Composable
@@ -202,12 +215,12 @@ fun saveCancelButtons_profileUpdateScreen() {
         Text(
             text = stringResource(R.string.btn_cancel),
             modifier = Modifier
-            .testTag(
-                stringResource(
-                    R.string.btn_save
+                .testTag(
+                    stringResource(
+                        R.string.btn_save
+                    )
                 )
-            )
-            .clickable {}
+                .clickable {}
         )
         Text(
             text = stringResource(R.string.btn_save),
@@ -229,7 +242,8 @@ fun username_profileUpdateScreen() {
         )
         TextField(
             value = username,
-            modifier = Modifier.testTag(stringResource(R.string.tag_username)
+            modifier = Modifier.testTag(
+                stringResource(R.string.tag_username)
             ),
             placeholder = { Text(stringResource(R.string.default_username)) },
             onValueChange = { username = it },
