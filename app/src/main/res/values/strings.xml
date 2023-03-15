@@ -4,15 +4,6 @@
     <string name="welcome_screen_name_field">Enter your name</string>
     <string name="welcome_screen_button">Start</string>
     <string name="profile_screen_placeholder">Welcome</string>
-    <string name="sign_in_screen_top_bar_message">Enter your login details</string>
-    <string name="sign_in_screen_sign_in_button">Sign in</string>
-    <string name="invalid_email_message">Invalid email!</string>
-    <string name="password_blank">Password cannot be blank!</string>
-    <string name="sign_in_screen_sign_in_success">Sign in successful!</string>
-    <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
-    <string name="sign_in_screen_wrong_password">Wrong password!</string>
-    <string name="TAG_EMAIL_FIELD">EmailField</string>
-    <string name="TAG_PASSWORD_FIELD">PasswordField</string>
     <string name="image_uri">images/*</string>
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
