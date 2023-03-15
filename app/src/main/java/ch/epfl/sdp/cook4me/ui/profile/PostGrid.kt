@@ -58,23 +58,28 @@ fun PostDataItem(data: Post) {
         elevation = 10.dp, shape = RoundedCornerShape(5.dp)
     ) {
         Column(modifier = Modifier) {
-            Image(
-                painter = painterResource(
-                    id = when (data.id) {
-                        1L -> R.drawable.carbonara
-                        2L -> R.drawable.tiramisu
-                        else -> R.drawable.guacamole
-                    }
-                ),
-                contentDescription = "Grid Image",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.CenterHorizontally)
-                    .clip(RoundedCornerShape(10.dp)),
-                alignment = Alignment.Center
-            )
+            ImageSelection(data = data)
         }
     }
+}
+
+@Composable
+fun ImageSelection(data: Post){
+    Image(
+        painter = painterResource(
+            id = when (data.id) {
+                1L -> R.drawable.carbonara
+                2L -> R.drawable.tiramisu
+                else -> R.drawable.guacamole
+            }
+        ),
+        contentDescription = "Grid Image",
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(10.dp)),
+        alignment = Alignment.Center
+
+    )
 }
 
 fun getJsonDataFromAsset(context: Context, data: String) =

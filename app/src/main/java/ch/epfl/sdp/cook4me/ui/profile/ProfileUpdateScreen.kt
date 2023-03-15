@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,7 +37,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import coil.compose.AsyncImagePainter
+import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.rememberAsyncImagePainter
+import org.w3c.dom.Text
 
 @Preview(showBackground = true)
 @Composable
@@ -135,13 +138,18 @@ fun favoriteDish_profileUpdateScreen() {
             value = favDish,
             modifier = Modifier.testTag(stringResource(R.string.tag_favoriteDish)),
             onValueChange = { favDish = it },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                textColor = Color.Black
-            )
+            colors = colorsTextfield_profilUpdateScreen()
         )
     }
 }
+
+@Composable
+fun colorsTextfield_profilUpdateScreen():TextFieldColors{
+    return TextFieldDefaults.textFieldColors(
+        backgroundColor = Color.Transparent,
+        textColor = Color.Black)
+}
+
 
 @Composable
 fun ProfileSetupImage_profileUpdateScreen() {
@@ -152,9 +160,9 @@ fun ProfileSetupImage_profileUpdateScreen() {
         } else {
             imageURI.value
         }
-    ) // TODO PUT INTO LOGIC
-
+    )
     /**
+     * TODO PUT INTO LOGIC
      *Remembers and launches on recomposition
      *takes a contract and a on result function
      *contract = the action we want to take & Input/Output of the action
@@ -192,18 +200,25 @@ fun Image_profileUpdateScreen(
                 .padding(8.dp)
                 .size(100.dp)
         ) {
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = Modifier
-                    .testTag("ProfileImage") // TODO
-                    .wrapContentSize()
-                    .clickable { launcher.launch("image/*") }, // starts the launcher and accept all type of images
-                contentScale = ContentScale.Crop // crops the image into the available space
-            )
+            ProfileUpdateImage_profileUpdateScreen(painter,launcher)
         }
         Text(text = "Change profile picture")
     }
+}
+
+@Composable
+fun ProfileUpdateImage_profileUpdateScreen(
+    painter: AsyncImagePainter,
+    launcher: ManagedActivityResultLauncher<String, Uri?>) {
+    Image(
+        painter = painter,
+        contentDescription = null,
+        modifier = Modifier
+            .testTag("ProfileImage") // TODO
+            .wrapContentSize()
+            .clickable { launcher.launch("image/*") }, // starts the launcher and accept all type of images
+        contentScale = ContentScale.Crop // crops the image into the available space
+    )
 }
 
 @Composable
@@ -214,23 +229,21 @@ fun saveCancelButtons_profileUpdateScreen() {
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = stringResource(R.string.btn_cancel),
-            modifier = Modifier
-                .testTag(
-                    stringResource(
-                        R.string.btn_save
-                    )
-                )
-                .clickable {}
-        )
-        Text(
-            text = stringResource(R.string.btn_save),
-            modifier = Modifier
-                .testTag(stringResource(R.string.btn_cancel))
-                .clickable {}
-        )
+        text_buttons(nameBtn = stringResource(R.string.btn_cancel))
+
+        text_buttons(nameBtn = stringResource(R.string.btn_save))
+
     }
+}
+
+@Composable
+fun text_buttons(nameBtn: String){
+    Text(
+        text = nameBtn,
+        modifier = Modifier
+            .testTag(nameBtn)
+            .clickable {}
+    )
 }
 
 @Composable
