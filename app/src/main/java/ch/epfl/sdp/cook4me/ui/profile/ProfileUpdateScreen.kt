@@ -52,13 +52,22 @@ fun ProfileUpdateScreen() {
         ProfileSetupImage_profileUpdateScreen()
 
         // Textfield for the username
-        columnTextBtn_profileUpdateScreen(stringResource(R.string.tag_username), stringResource(R.string.default_username))
+        columnTextBtn_profileUpdateScreen(
+            stringResource(R.string.tag_username),
+            stringResource(R.string.default_username)
+        )
 
         // Textfield for the Favorite dish
-        columnTextBtn_profileUpdateScreen(stringResource(R.string.tag_favoriteDish), stringResource(R.string.default_favoriteDish))
+        columnTextBtn_profileUpdateScreen(
+            stringResource(R.string.tag_favoriteDish),
+            stringResource(R.string.default_favoriteDish)
+        )
 
         // Textfield for the Allergies
-        columnTextBtn_profileUpdateScreen(stringResource(R.string.tag_allergies), stringResource(R.string.default_allergies))
+        columnTextBtn_profileUpdateScreen(
+            stringResource(R.string.tag_allergies),
+            stringResource(R.string.default_allergies)
+        )
 
         // Textfield for the bio
         bio_profileUpdateScreen()
@@ -93,10 +102,10 @@ fun bio_profileUpdateScreen() {
 
 @Composable
 fun columnTextBtn_profileUpdateScreen(
-    displayLabel:String,
-    defaultText:String
+    displayLabel: String,
+    defaultText: String
 ) {
-     var textInputVariable by rememberSaveable {
+    var textInputVariable by rememberSaveable {
         mutableStateOf("")
     }
 
@@ -120,12 +129,11 @@ fun columnTextBtn_profileUpdateScreen(
 }
 
 @Composable
-fun colorsTextfield_profilUpdateScreen(): TextFieldColors {
-    return TextFieldDefaults.textFieldColors(
+fun colorsTextfield_profilUpdateScreen(): TextFieldColors =
+    TextFieldDefaults.textFieldColors(
         backgroundColor = Color.Transparent,
         textColor = Color.Black
     )
-}
 
 @Composable
 fun ProfileSetupImage_profileUpdateScreen() {
@@ -137,6 +145,7 @@ fun ProfileSetupImage_profileUpdateScreen() {
             imageURI.value
         }
     )
+
     /**
      * TODO PUT INTO LOGIC
      *Remembers and launches on recomposition
@@ -220,29 +229,6 @@ fun text_buttons(nameBtn: String) {
             .testTag(nameBtn)
             .clickable {}
     )
-}
-
-@Composable
-fun username_profileUpdateScreen() {
-    var username by rememberSaveable { mutableStateOf("") }
-
-    input_row {
-        Text(
-            text = "Username",
-            modifier = Modifier.width(100.dp)
-        )
-        TextField(
-            value = username,
-            modifier = Modifier.testTag(
-                stringResource(R.string.tag_username)
-            ),
-            placeholder = { Text(stringResource(R.string.default_username)) },
-            onValueChange = { username = it },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent, textColor = Color.Black
-            )
-        )
-    }
 }
 
 @Composable
