@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Cook4Me</string>
-    <string name="welcome_screen_name_field">Enter your name</string>
     <string name="sign_in_screen_top_bar_message">Enter your login details</string>
     <string name="sign_in_screen_sign_in_button">Sign in</string>
     <string name="invalid_email_message">Invalid email!</string>
@@ -9,4 +8,11 @@
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
     <string name="TAG_EMAIL_FIELD">EmailField</string>
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
+    <string name="image_selector_add_image">+</string>
+    <string name="TupCreateFormAddImage">Add Images</string>
+    <string name="TupCreateFormTupName">Tupperware Name</string>
+    <string name="TupCreateFormDesc">Description</string>
+    <string name="TupCreateFormTags">Tags</string>
+    <string name="ButtonRowCancel">Cancel</string>
+    <string name="ButtonRowDone">Done</string>
 </resources>
