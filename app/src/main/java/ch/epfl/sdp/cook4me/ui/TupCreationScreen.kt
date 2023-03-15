@@ -41,7 +41,7 @@ import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
 @Composable
 fun TupCreationScreenWithState(
-    viewModel: TupCreationViewModel
+    viewModel: TupCreationViewModel = viewModel()
 ) {
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -61,7 +61,7 @@ fun TupCreationScreenWithState(
         onResult = { success ->
             imageUri?.let {
                 if (success) {
-                    viewModel.addImage(imageUri!!)
+                    viewModel.addImage(it)
                 }
             }
         }

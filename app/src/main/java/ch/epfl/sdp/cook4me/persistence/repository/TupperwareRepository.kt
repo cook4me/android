@@ -7,7 +7,7 @@ import kotlinx.coroutines.tasks.await
 private const val COLLECTION_PATH = "tupperwares"
 
 class TupperwareRepository(
-    private val store: FirebaseFirestore
+    private val store: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
 
     suspend fun add(value: Tupperware) {

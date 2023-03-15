@@ -7,7 +7,7 @@ import kotlinx.coroutines.tasks.await
 private const val COLLECTION_PATH = "recipes"
 
 class RecipeRepository(
-    private val store: FirebaseFirestore
+    private val store: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
     suspend fun add(value: Recipe) {
         store.collection(COLLECTION_PATH).add(value).await()
