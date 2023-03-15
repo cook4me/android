@@ -37,9 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import coil.compose.AsyncImagePainter
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import coil.compose.rememberAsyncImagePainter
-import org.w3c.dom.Text
 
 @Preview(showBackground = true)
 @Composable
@@ -54,12 +52,13 @@ fun ProfileUpdateScreen() {
         ProfileSetupImage_profileUpdateScreen()
 
         // Textfield for the username
-        username_profileUpdateScreen()
+        columnTextBtn_profileUpdateScreen(stringResource(R.string.tag_username), stringResource(R.string.default_username))
+
         // Textfield for the Favorite dish
-        favoriteDish_profileUpdateScreen()
+        columnTextBtn_profileUpdateScreen(stringResource(R.string.tag_favoriteDish), stringResource(R.string.default_favoriteDish))
 
         // Textfield for the Allergies
-        allergies_profileUpdateScreen()
+        columnTextBtn_profileUpdateScreen(stringResource(R.string.tag_allergies), stringResource(R.string.default_allergies))
 
         // Textfield for the bio
         bio_profileUpdateScreen()
@@ -93,63 +92,40 @@ fun bio_profileUpdateScreen() {
 }
 
 @Composable
-fun allergies_profileUpdateScreen() {
-    var allergies by rememberSaveable {
+fun columnTextBtn_profileUpdateScreen(
+    displayLabel:String,
+    defaultText:String
+) {
+     var textInputVariable by rememberSaveable {
         mutableStateOf("")
     }
 
     input_row {
         Text(
-            text = "Allergies",
-            modifier = Modifier.width(100.dp)
-        )
-        TextField(
-            value = allergies,
-            placeholder = { Text(stringResource(R.string.default_allergies)) },
-            modifier = Modifier.testTag(stringResource(R.string.tag_allergies)),
-            onValueChange = { allergies = it },
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                textColor = Color.Black
-            )
-        )
-    }
-}
-
-@Composable
-fun favoriteDish_profileUpdateScreen() {
-    var favDish by rememberSaveable {
-        mutableStateOf("")
-    }
-
-    input_row {
-        Text(
-            text = "Favorite dish",
+            text = displayLabel,
             modifier = Modifier.width(100.dp)
         )
         TextField(
             placeholder = {
                 Text(
-                    stringResource(
-                        R.string.default_favoriteDish
-                    )
+                    defaultText
                 )
             },
-            value = favDish,
-            modifier = Modifier.testTag(stringResource(R.string.tag_favoriteDish)),
-            onValueChange = { favDish = it },
+            value = textInputVariable,
+            modifier = Modifier.testTag(displayLabel),
+            onValueChange = { textInputVariable = it },
             colors = colorsTextfield_profilUpdateScreen()
         )
     }
 }
 
 @Composable
-fun colorsTextfield_profilUpdateScreen():TextFieldColors{
+fun colorsTextfield_profilUpdateScreen(): TextFieldColors {
     return TextFieldDefaults.textFieldColors(
         backgroundColor = Color.Transparent,
-        textColor = Color.Black)
+        textColor = Color.Black
+    )
 }
-
 
 @Composable
 fun ProfileSetupImage_profileUpdateScreen() {
@@ -200,7 +176,7 @@ fun Image_profileUpdateScreen(
                 .padding(8.dp)
                 .size(100.dp)
         ) {
-            ProfileUpdateImage_profileUpdateScreen(painter,launcher)
+            ProfileUpdateImage_profileUpdateScreen(painter, launcher)
         }
         Text(text = "Change profile picture")
     }
@@ -209,7 +185,8 @@ fun Image_profileUpdateScreen(
 @Composable
 fun ProfileUpdateImage_profileUpdateScreen(
     painter: AsyncImagePainter,
-    launcher: ManagedActivityResultLauncher<String, Uri?>) {
+    launcher: ManagedActivityResultLauncher<String, Uri?>
+) {
     Image(
         painter = painter,
         contentDescription = null,
@@ -232,12 +209,11 @@ fun saveCancelButtons_profileUpdateScreen() {
         text_buttons(nameBtn = stringResource(R.string.btn_cancel))
 
         text_buttons(nameBtn = stringResource(R.string.btn_save))
-
     }
 }
 
 @Composable
-fun text_buttons(nameBtn: String){
+fun text_buttons(nameBtn: String) {
     Text(
         text = nameBtn,
         modifier = Modifier

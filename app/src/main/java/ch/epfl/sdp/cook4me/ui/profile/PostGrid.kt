@@ -64,7 +64,7 @@ fun PostDataItem(data: Post) {
 }
 
 @Composable
-fun ImageSelection(data: Post){
+fun ImageSelection(data: Post) {
     Image(
         painter = painterResource(
             id = when (data.id) {
