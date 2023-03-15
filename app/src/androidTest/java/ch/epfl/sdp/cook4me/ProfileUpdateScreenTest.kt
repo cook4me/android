@@ -17,7 +17,7 @@ class ProfileUpdateScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun newUserUsesApp() {
+    fun testDefaultValuesAreDisplayed() {
         composeTestRule.setContent {
             ProfileUpdateScreen()
         }
@@ -70,7 +70,7 @@ class ProfileUpdateScreenTest {
     }
 
     @Test
-    fun clicking_save_button() {
+    fun clickingSaveButton() {
         composeTestRule.setContent {
             ProfileUpdateScreen()
         }
@@ -83,7 +83,7 @@ class ProfileUpdateScreenTest {
     }
 
     @Test
-    fun clicking_cancel_button() {
+    fun clickingCancelButton() {
         composeTestRule.setContent {
             ProfileUpdateScreen()
         }

@@ -18,7 +18,7 @@ class PostGridTest {
         val composeTestRule = createComposeRule()
 
         @Test
-        fun postGrid_showsCorrectImages() {
+        fun testShowsCorrectImages() {
             // Launch the composable
             composeTestRule.setContent {
                 PostGrid()

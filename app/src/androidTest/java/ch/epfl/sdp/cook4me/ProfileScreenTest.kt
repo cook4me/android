@@ -13,7 +13,7 @@ class ProfileScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun newUserUsesApp() {
+    fun testDefaultValuesAreDisplayed() {
         composeTestRule.setContent {
             ProfileScreen()
         }
