@@ -34,6 +34,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = LoginViewModel(),
+    onSuccessfulLogin: () -> Unit
 ) {
     var email by remember {
         mutableStateOf("")
@@ -75,9 +76,7 @@ fun LoginScreen(
                         } else {
                             try {
                                 viewModel.onSignInClick(email, password)
-                                scaffoldState
-                                    .snackbarHostState
-                                    .showSnackbar(context.getString(R.string.sign_in_screen_sign_in_success))
+                                onSuccessfulLogin()
                             } catch (e: FirebaseAuthInvalidUserException) {
                                 scaffoldState
                                     .snackbarHostState

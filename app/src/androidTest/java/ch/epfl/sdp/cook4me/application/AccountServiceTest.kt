@@ -3,7 +3,7 @@ package ch.epfl.sdp.cook4me.application
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ch.epfl.sdp.cook4me.assertThrowsAsync
+import assertThrowsAsync
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

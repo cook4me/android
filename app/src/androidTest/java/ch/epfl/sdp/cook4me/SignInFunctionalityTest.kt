@@ -11,6 +11,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import assertThrowsAsync
 import ch.epfl.sdp.cook4me.ui.LoginScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,6 +23,7 @@ import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.junit.After
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,9 +39,7 @@ class SignInFunctionalityTest {
     private lateinit var context: Context
     private val testTagEmailField = "EmailField"
     private val testTagPasswordField = "PasswordField"
-// TODO: generalize helper function
 
-    // special thanks to @bu-da for the kind helps
     @Before
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -73,24 +73,23 @@ class SignInFunctionalityTest {
 
     @Test
     fun logInScreenValidUserWithCorrectPasswordSignInSuccessfully() = runTest {
+        var wasCalled = false
         composeTestRule.setContent {
-            LoginScreen()
+            LoginScreen { wasCalled = true }
         }
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("harry.potter@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
         composeTestRule.waitUntil(timeoutMillis = 5000) {
-            composeTestRule
-                .onAllNodesWithText(context.getString(R.string.sign_in_screen_sign_in_success))
-                .fetchSemanticsNodes().size == 1
+            wasCalled
         }
-        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_sign_in_success)).assertIsDisplayed()
+        assertTrue(wasCalled)
     }
 
     @Test
     fun logInScreenNonExistUserSignInShowsNonExistUserMessage() = runTest {
         composeTestRule.setContent {
-            LoginScreen()
+            LoginScreen {}
         }
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("mr.nonexist@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
@@ -106,7 +105,7 @@ class SignInFunctionalityTest {
     @Test
     fun logInScreenValidUserWithWrongPasswordShowsWrongPasswordMessage() = runTest {
         composeTestRule.setContent {
-            LoginScreen()
+            LoginScreen {}
         }
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("harry.potter@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("1234567")
@@ -118,31 +117,4 @@ class SignInFunctionalityTest {
         }
         composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_wrong_password)).assertIsDisplayed()
     }
-}
-
-// inline fun <reified T> assertThrowsAsync(crossinline f: suspend () -> Unit) {
-//    try {
-//        runBlocking {
-//            f()
-//        }
-//    } catch (
-//        e: Exception) {
-//        if (e !is T) {
-//            AssertionError("object is not of type ${T::class.java}")
-//        }
-//    }
-//
-// }
-
-fun assertThrowsAsync(f: suspend () -> Unit) {
-    try {
-        runBlocking {
-            f()
-        }
-    } catch (
-        e: Exception
-    ) {
-        return
-    }
-    throw AssertionError("no exception was thrown")
 }

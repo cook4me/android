@@ -1,44 +1,33 @@
 package ch.epfl.sdp.cook4me
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ch.epfl.sdp.cook4me.ui.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.WelcomeScreen
+import ch.epfl.sdp.cook4me.ui.LoginScreen
+import ch.epfl.sdp.cook4me.ui.SwipeScreen
 
 /**
  * enum values that represent the screens in the app
  */
 private enum class Screen {
-    Start,
-    Profile
+    Login,
+    SwipeScreen
 }
 
 @Composable
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
 ) {
-    var name by remember {
-        mutableStateOf("")
-    }
-
-    NavHost(navController = navController, startDestination = Screen.Start.name) {
-        composable(route = Screen.Start.name) {
-            WelcomeScreen(
-                onStartButtonClicked = {
-                    name = it
-                    navController.navigate(Screen.Profile.name)
-                }
+    NavHost(navController = navController, startDestination = Screen.Login.name) {
+        composable(route = Screen.Login.name) {
+            LoginScreen(
+                onSuccessfulLogin = { navController.navigate(Screen.SwipeScreen.name) }
             )
         }
-        composable(route = Screen.Profile.name) {
-            ProfileScreen(name)
+        composable(route = Screen.SwipeScreen.name) {
+            SwipeScreen()
         }
     }
 }
