@@ -17,7 +17,7 @@ class ProfileScreenTest {
         composeTestRule.setContent {
             ProfileScreen()
         }
-        val imageTag = composeTestRule.activity.getString(R.string.tag_defaultProfilImage)
+        val imageTag = composeTestRule.activity.getString(R.string.tag_defaultProfileImage)
 
         composeTestRule.onNodeWithStringId(R.string.default_username).assertIsDisplayed()
         composeTestRule.onNodeWithStringId(R.string.tag_favoriteDish).assertIsDisplayed()

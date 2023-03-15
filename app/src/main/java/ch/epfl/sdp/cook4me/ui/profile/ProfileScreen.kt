@@ -74,7 +74,7 @@ fun ProfileImageAndUsername(painter: AsyncImagePainter) {
             modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
-                .testTag(stringResource(R.string.tag_defaultProfilImage))
+                .testTag(stringResource(R.string.tag_defaultProfileImage))
         ) {
             Image(painter = painter, contentDescription = "")
         }
