@@ -12,10 +12,10 @@
     <string name="city_label">City</string>
     <string name="zip_code_label">Zip code</string>
     <!--  DatePicker  -->
-    <string name="selected_date_text">Selected Date</string>
+    <string name="selected_date_text">Selected Date: </string>
     <string name="select_date_button">Select Date</string>
     <!--  TimePicker  -->
-    <string name="selected_time_text">Selected Time</string>
+    <string name="selected_time_text">Selected Time: </string>
     <string name="select_time_button">Select Time</string>
 
     <!--  Event  -->

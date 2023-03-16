@@ -31,7 +31,7 @@ fun IntegerSlider(
 
     val value = remember { mutableStateOf(min) }
     Text(
-        text = "$text:$value",
+        text = "$text:${value.value}",
         modifier = Modifier.padding(horizontal = 16.dp),
     )
     Slider(

@@ -28,7 +28,7 @@ class IntegerSliderTest {
     }
 
     @Test
-    fun integerSlider_updatesValue_whenDragged() {
+    fun integerSliderUpdatesValueWhenDragged() {
         var value = 0
         composeTestRule.setContent {
             IntegerSlider(

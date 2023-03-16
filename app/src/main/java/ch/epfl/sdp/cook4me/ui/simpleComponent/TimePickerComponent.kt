@@ -54,7 +54,7 @@ fun TimePickerComponent(
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         // Display selected time
-        Text(text = "${stringResource(id = R.string.selected_date_text)}: ${mTime.value}")
+        Text(text = "${stringResource(id = R.string.selected_date_text)}${mTime.value}")
         Spacer(modifier = Modifier.size(8.dp))
 
         // On button click, TimePicker is
