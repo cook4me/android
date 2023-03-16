@@ -5,6 +5,7 @@ import androidx.compose.material.Slider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 /**
@@ -39,6 +40,6 @@ fun IntegerSlider(
         },
         valueRange = min.toFloat()..max.toFloat(),
         steps = (max - min),
-        modifier = modifier
+        modifier = modifier.testTag("slider")
     )
 }
