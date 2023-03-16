@@ -13,6 +13,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 
+const val CITYWIDTHRATIO = 3f
+const val ZIPCODEWIDTHRATIO = 1f
+
 /**
  * A component that asks for an address
  * @param question the question to be displayed
@@ -59,7 +62,7 @@ fun AddressInputReader(
                     city.value = it
                     onAddressChanged(fullAddress())
                 },
-                modifier = androidx.compose.ui.Modifier.weight(3f)
+                modifier = androidx.compose.ui.Modifier.weight(CITYWIDTHRATIO)
             )
             TextField(
                 value = zipCode.value,
@@ -71,7 +74,7 @@ fun AddressInputReader(
                     zipCode.value = it
                     onAddressChanged(fullAddress())
                 },
-                modifier = androidx.compose.ui.Modifier.weight(1f)
+                modifier = androidx.compose.ui.Modifier.weight(ZIPCODEWIDTHRATIO)
             )
         }
     }

@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me
 
-import java.util.*
-
+import java.util.Calendar
+import java.util.Locale
 
 /**
  * Class representing an event where people can meet to eat together
@@ -42,10 +42,10 @@ class Event {
      */
     private fun showDate(): String {
         // make that there is always 2 digits
-        val month = String.format(Locale.ENGLISH,"%02d", dateTime.get(Calendar.MONTH) + 1)
-        val day = String.format(Locale.ENGLISH,"%02d", dateTime.get(Calendar.DAY_OF_MONTH))
-        val hour = String.format(Locale.ENGLISH,"%02d", dateTime.get(Calendar.HOUR_OF_DAY))
-        val minute = String.format(Locale.ENGLISH,"%02d", dateTime.get(Calendar.MINUTE))
+        val month = String.format(Locale.ENGLISH, "%02d", dateTime.get(Calendar.MONTH) + 1)
+        val day = String.format(Locale.ENGLISH, "%02d", dateTime.get(Calendar.DAY_OF_MONTH))
+        val hour = String.format(Locale.ENGLISH, "%02d", dateTime.get(Calendar.HOUR_OF_DAY))
+        val minute = String.format(Locale.ENGLISH, "%02d", dateTime.get(Calendar.MINUTE))
         val date = "$day/$month/${dateTime.get(Calendar.YEAR)}"
         val time = "$hour:$minute"
         return "$date at $time"
@@ -55,5 +55,7 @@ class Event {
      * @return a string representing the event information
      */
     fun showEventInformation(): String =
-        "Name: $name\nDescription: $description\nDate: ${showDate()}\nLocation: $location\nMax participants: $maxParticipants\nParticipants: $participants\nCreator: $creator\nId: $id\nIs private: $isPrivate"
+        "Name: $name\nDescription: $description\nDate: ${showDate()}\nLocation: $location\n" +
+            "Max participants: $maxParticipants\nParticipants: $participants\n" +
+            "Creator: $creator\nId: $id\nIs private: $isPrivate"
 }

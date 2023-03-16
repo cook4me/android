@@ -41,7 +41,7 @@ fun IntegerSlider(
             onValueChange(newValue.toInt())
         },
         valueRange = min.toFloat()..max.toFloat(),
-        steps = (max - min),
+        steps = max - min,
         modifier = modifier.testTag("slider")
     )
 }
