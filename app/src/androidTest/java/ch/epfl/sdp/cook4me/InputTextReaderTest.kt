@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.ui.simpleComponent.InputTextReader
@@ -42,7 +43,9 @@ class InputTextReaderTest {
             )
         }
 
-        composeTestRule.onNodeWithText("example").performTextInput("new text")
+        // clean the text
+        composeTestRule.onNodeWithText("example").performTextClearance()
+        composeTestRule.onNodeWithText("").performTextInput("new text")
         assertEquals("new text", text)
     }
 }
