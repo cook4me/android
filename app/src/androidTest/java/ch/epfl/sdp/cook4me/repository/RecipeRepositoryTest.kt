@@ -17,7 +17,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-const val COLLECTION_PATH = "recipes"
+private const val COLLECTION_PATH = "recipes"
 
 @ExperimentalCoroutinesApi
 class RecipeRepositoryTest {

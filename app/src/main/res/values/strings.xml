@@ -6,4 +6,37 @@
     <string name="profile_screen_placeholder">Welcome</string>
     <string name="cool_map">Cool Map</string>
     <string name="welcome_screen_map_button">Cool Map</string>
+
+    <string name="image_selector_add_image">+</string>
+    <string name="TupCreateFormAddImage">Add Images</string>
+    <string name="TupCreateFormTupName">Tupperware Name</string>
+    <string name="TupCreateFormDesc">Description</string>
+    <string name="TupCreateFormTags">Tags</string>
+    <string name="ButtonRowCancel">Cancel</string>
+    <string name="ButtonRowDone">Done</string>
+    <string name="image_uri">images/*</string>
+    <string name="tag_allergies">Allergies</string>
+    <string name="tag_favoriteDish">Favorite dish</string>
+    <string name="tag_username">Username</string>
+    <string name="tag_bio">Bio</string>
+    <string name="tag_defaultProfileImage">defaultProfilImage</string>
+    <string name="default_username">User_42</string>
+    <string name="default_favoriteDish">Pizza</string>
+    <string name="default_allergies">No Allergies</string>
+    <string name="default_bio">Hi there, I am a chef</string>
+    <string name="btn_save">save</string>
+    <string name="btn_cancel">cancel</string>
+    <string name="msg_cancelled">cancelled</string>
+    <string name="msg_saved">saved</string>
+
+
+    <string name="sign_in_screen_top_bar_message">Enter your login details</string>
+    <string name="sign_in_screen_sign_in_button">Sign in</string>
+    <string name="invalid_email_message">Invalid email!</string>
+    <string name="password_blank">Password cannot be blank!</string>
+    <string name="sign_in_screen_sign_in_success">Sign in successful!</string>
+    <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
+    <string name="sign_in_screen_wrong_password">Wrong password!</string>
+    <string name="TAG_EMAIL_FIELD">EmailField</string>
+    <string name="TAG_PASSWORD_FIELD">PasswordField</string>
 </resources>
