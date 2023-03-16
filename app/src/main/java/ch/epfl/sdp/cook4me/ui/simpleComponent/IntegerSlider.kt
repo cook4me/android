@@ -3,7 +3,9 @@ package ch.epfl.sdp.cook4me.ui.simpleComponent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
@@ -27,15 +29,15 @@ fun IntegerSlider(
     // initial value is min
     onValueChange(min)
 
-    var value by remember { mutableStateOf(min) }
+    val value = remember { mutableStateOf(min) }
     Text(
         text = "$text:$value",
         modifier = Modifier.padding(horizontal = 16.dp),
     )
     Slider(
-        value = value.toFloat(),
+        value = value.value.toFloat(),
         onValueChange = { newValue ->
-            value = newValue.toInt()
+            value.value = newValue.toInt()
             onValueChange(newValue.toInt())
         },
         valueRange = min.toFloat()..max.toFloat(),

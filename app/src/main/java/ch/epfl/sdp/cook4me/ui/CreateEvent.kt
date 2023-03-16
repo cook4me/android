@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui
 
+import java.util.Calendar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,8 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.Event
-import ch.epfl.sdp.cook4me.ui.simpleComponent.*
-import java.util.*
+import ch.epfl.sdp.cook4me.ui.simpleComponent.AddressInputReader
+import ch.epfl.sdp.cook4me.ui.simpleComponent.DatePickerComponent
+import ch.epfl.sdp.cook4me.ui.simpleComponent.InputTextReader
+import ch.epfl.sdp.cook4me.ui.simpleComponent.IntegerSlider
+import ch.epfl.sdp.cook4me.ui.simpleComponent.TimePickerComponent
+import ch.epfl.sdp.cook4me.ui.simpleComponent.ToggleButtonChoice
+
 
 /**
  * Component that shows the form to create an event

@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import java.util.*
+import java.util.Calendar
 
 /**
  * A simple component that allows the user to select a time (hour and minute)

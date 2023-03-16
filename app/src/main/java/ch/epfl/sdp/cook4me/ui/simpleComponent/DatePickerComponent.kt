@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.simpleComponent
 
 import android.app.DatePickerDialog
+import java.util.Calendar
 import android.widget.DatePicker
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import java.util.*
 
 /**
  * A component that allows the user to select a date
