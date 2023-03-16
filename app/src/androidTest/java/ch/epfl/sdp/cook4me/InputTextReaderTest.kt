@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.ui.simpleComponent.InputTextReader
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,6 +43,6 @@ class InputTextReaderTest {
         }
 
         composeTestRule.onNodeWithText("example").performTextInput("new text")
-        assert(text == "new text")
+        assertEquals("new text", text)
     }
 }
