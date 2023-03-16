@@ -8,8 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.OverviewScreen
+import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
@@ -43,7 +43,8 @@ fun Cook4MeApp(
                 onMapClick = { navController.navigate(Screen.Map.name) },
                 onProfileClick = { navController.navigate(Screen.ProfileScreen.name) },
                 onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
-                onAddTupperwareClick = { navController.navigate(Screen.TupCreationScreen.name) })
+                onAddTupperwareClick = { navController.navigate(Screen.TupCreationScreen.name) }
+            )
         }
         composable(route = Screen.Map.name) {
             GoogleMapView(modifier = Modifier.fillMaxSize(), markers = dummyMarkers)

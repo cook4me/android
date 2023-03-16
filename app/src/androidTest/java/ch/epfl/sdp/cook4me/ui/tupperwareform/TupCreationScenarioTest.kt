@@ -26,8 +26,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.TupCreationScreenWithState
-import ch.epfl.sdp.cook4me.ui.TupCreationViewModel
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
