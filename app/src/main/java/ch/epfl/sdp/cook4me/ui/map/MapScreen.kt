@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -91,8 +90,6 @@ fun GoogleMapView(
         mutableStateOf(MapProperties(mapType = MapType.NORMAL))
     }
     var mapVisible by remember { mutableStateOf(true) }
-    Log.d("GoogleMapView", "map visible: " + mapVisible)
-    Log.d("GoogleMapView", "API KEY:" + MAPS_API_KEY)
     if (mapVisible) {
         GoogleMap(
             modifier = modifier,

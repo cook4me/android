@@ -33,6 +33,13 @@ It must be placed at ./app/google-services.json.
 
 [firebase emulator](https://firebase.google.com/docs/emulator-suite) is used for some tests. To install it run the following: `curl -sL https://firebase.tools | bash`. To run the tests in android studio execute: `firebase emulators:start`. To run the tests as well as other checks on the cli execute `firebase emulators:exec './gradlew check connectedCheck'`. 
 
+As this project integrates Google Maps, a Google Maps API key is needed and needs to be added to the local.properties file.
+
+```properties
+MAPS_API_KEY=KEYVALUE
+```
+
+
 ### Static code analysis
 In the CI pipeline we use two static code analysis tools:
 * [detekt](https://detekt.dev/), can be triggered with `./gradlew detekt`
