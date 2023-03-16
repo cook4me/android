@@ -16,8 +16,11 @@ class Event {
     var id: String = ""
     var isPrivate: Boolean = false
 
+    /**
+     * @return a boolean indicating if the event is valid
+     */
     fun isValidEvent(): Boolean {
-        return name.isNotEmpty() && description.isNotEmpty() && location.isNotEmpty() && maxParticipants > 1
+        return eventProblem().isEmpty()
     }
 
     /**
@@ -29,15 +32,27 @@ class Event {
         if (description.isEmpty()) return "Description is empty"
         if (location.isEmpty()) return "Location is empty"
         if (maxParticipants < 2) return "Max participants is less than 2"
+        if (dateTime.before(Calendar.getInstance())) return "Date is in the past"
         return ""
     }
 
+    /**
+     * @return a string representing the date and time of the event
+     */
     private fun showDate(): String{
-        val date = "${dateTime.get(Calendar.DAY_OF_MONTH)}/${dateTime.get(Calendar.MONTH)}/${dateTime.get(Calendar.YEAR)}"
-        val time = "${dateTime.get(Calendar.HOUR_OF_DAY)}:${dateTime.get(Calendar.MINUTE)}"
+        // make that there is always 2 digits
+        val month = String.format("%02d", dateTime.get(Calendar.MONTH)+1)
+        val day = String.format("%02d", dateTime.get(Calendar.DAY_OF_MONTH))
+        val hour = String.format("%02d", dateTime.get(Calendar.HOUR_OF_DAY))
+        val minute = String.format("%02d", dateTime.get(Calendar.MINUTE))
+        val date = "${day}/${month}/${dateTime.get(Calendar.YEAR)}"
+        val time = "${hour}:${minute}"
         return "$date at $time"
     }
 
+    /**
+     * @return a string representing the event information
+     */
     fun showEventInformation(): String{
         return "Name: $name\nDescription: $description\nDate: ${showDate()}\nLocation: $location\nMax participants: $maxParticipants\nParticipants: $participants\nCreator: $creator\nId: $id\nIs private: $isPrivate"
     }
