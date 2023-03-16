@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.ui.tupperwareform
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

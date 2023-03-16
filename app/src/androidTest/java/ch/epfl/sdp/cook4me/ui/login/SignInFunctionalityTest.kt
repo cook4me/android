@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me
+package ch.epfl.sdp.cook4me.ui.login
 
 import android.content.Context
 import androidx.activity.ComponentActivity
@@ -12,7 +12,8 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import assertThrowsAsync
-import ch.epfl.sdp.cook4me.ui.LoginScreen
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

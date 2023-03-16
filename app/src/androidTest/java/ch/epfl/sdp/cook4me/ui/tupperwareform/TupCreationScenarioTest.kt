@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.tupCreation
+package ch.epfl.sdp.cook4me.ui.tupperwareform
 
 import android.app.Activity
 import android.content.Intent

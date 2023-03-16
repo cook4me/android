@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me
+package ch.epfl.sdp.cook4me.ui.login
 
 import android.content.Context
 import androidx.activity.ComponentActivity
@@ -10,7 +10,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import ch.epfl.sdp.cook4me.ui.LoginScreen
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

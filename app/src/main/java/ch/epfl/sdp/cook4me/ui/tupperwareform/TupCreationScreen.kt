@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.ui.tupperwareform
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

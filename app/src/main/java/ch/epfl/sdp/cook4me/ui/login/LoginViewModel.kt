@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.ui.login
 
 import androidx.lifecycle.ViewModel
 import ch.epfl.sdp.cook4me.application.AccountService
