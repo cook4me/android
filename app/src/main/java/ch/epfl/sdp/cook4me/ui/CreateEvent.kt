@@ -32,12 +32,10 @@ fun CreateEvent() {
     }
     val endMsg = remember { mutableStateOf("") }
 
-    fun updateDate(calendar: Calendar) {
-        event.value.dateTime.set(
-            calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-    }
+    fun updateDate(calendar: Calendar) = event.value.dateTime.set(
+        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
 
     fun updateTime(calendar: Calendar) {
         event.value.dateTime.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
