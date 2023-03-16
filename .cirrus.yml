@@ -45,8 +45,6 @@ check_android_task:
     ./cc-test-reporter before-build
   screen_record_background_script:
     for n in $(seq 1 20); do adb exec-out screenrecord --time-limit=180 --output-format=h264 - > $n.h264; done
-  run_ktlint:
-    ./gradlew ktlintFormat
   check_script: |
     chmod +x firebase_bin
     ./firebase_bin emulators:exec './gradlew check connectedCheck'
@@ -70,4 +68,7 @@ check_android_task:
       format: junit
     androidtest_artifacts:
       path: "./app/build/outputs/**/*.xml"
+      format: junit
+    androidtest_error_logs_artifacts:
+      path: "./app/build/reports/androidTests/connected/index.html"
       format: junit
