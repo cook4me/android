@@ -8,18 +8,17 @@ env:
   CC_TEST_REPORTER_ID: ENCRYPTED[810adb57cea27867b3a3df646f8405adbd768b4c0a8815d6312e07b81f863cde28c534a478272a06653444c79565e6f5]
   GITHUB_USERNAME: ENCRYPTED[c7138816e29ae53840782306195152fb0cee26a33c7f7c704e7119e9848a9bc4a271920b5e11e98a38a232ccf4a2d9ec]
   GITHUB_TOKEN: ENCRYPTED[21f03c84e00674f5db068f1429c3df027d0f706895ffaa9f329b17205a4282c6d481707da09fa1d2fc82e42de113665a]
+  MAPS_API_KEY: ENCRYPTED[dcc04cf3d0c1d37bbd61632cfeb15c95cab1f7043bec4a373ce661a55c36fb63879426d75425bef7354d2821c345b58a]
   GOOGLE_SERVICES: ENCRYPTED[f1e9a8713bb266b8df59125b59ba22ec996807e701bd80af0dd46123496e66efed08d2de3611f9c1b939f2720982b126]
 
 check_android_task:
   name: Run Android tests
   install_emulator_script:
-    sdkmanager --install "system-images;android-30;google_apis;x86"
-  create_avd_script:
-    echo no | avdmanager create avd --force
+    sdkmanager --install "system-images;android-30;google_apis_playstore;x86_64"
+  create_avd_script: echo no | avdmanager create avd --force
       --name emulator
-      --package "system-images;android-30;google_apis;x86"
-  start_avd_background_script:
-    $ANDROID_HOME/emulator/emulator
+      --package "system-images;android-30;google_apis_playstore;x86_64"
+  start_avd_background_script: $ANDROID_HOME/emulator/emulator
       -avd emulator
       -no-audio
       -no-boot-anim
@@ -46,8 +45,6 @@ check_android_task:
     ./cc-test-reporter before-build
   screen_record_background_script:
     for n in $(seq 1 20); do adb exec-out screenrecord --time-limit=180 --output-format=h264 - > $n.h264; done
-  run_ktlint:
-    ./gradlew ktlintFormat
   check_script: |
     chmod +x firebase_bin
     ./firebase_bin emulators:exec './gradlew check connectedCheck'
@@ -72,3 +69,6 @@ check_android_task:
     androidtest_artifacts:
       path: "./app/build/outputs/**/*.xml"
       format: junit
+    androidtest_error_logs_artifacts:
+      path: "./app/build/reports/androidTests/connected/index.html"
+      type: text/html
