@@ -38,14 +38,22 @@ class Event {
     }
 
     /**
+     * @param number the number to format
+     * @return a string representing the number with 2 digits
+     */
+    private fun getTwoDigits(number: Int): String {
+        return String.format(Locale.ENGLISH, "%02d", number)
+    }
+
+    /**
      * @return a string representing the date and time of the event
      */
     private fun showDate(): String {
         // make that there is always 2 digits
-        val month = String.format(Locale.ENGLISH, "%02d", dateTime.get(Calendar.MONTH) + 1)
-        val day = String.format(Locale.ENGLISH, "%02d", dateTime.get(Calendar.DAY_OF_MONTH))
-        val hour = String.format(Locale.ENGLISH, "%02d", dateTime.get(Calendar.HOUR_OF_DAY))
-        val minute = String.format(Locale.ENGLISH, "%02d", dateTime.get(Calendar.MINUTE))
+        val month = getTwoDigits(dateTime.get(Calendar.MONTH) + 1)
+        val day = getTwoDigits(dateTime.get(Calendar.DAY_OF_MONTH))
+        val hour = getTwoDigits(dateTime.get(Calendar.HOUR_OF_DAY))
+        val minute = getTwoDigits(dateTime.get(Calendar.MINUTE))
         val date = "$day/$month/${dateTime.get(Calendar.YEAR)}"
         val time = "$hour:$minute"
         return "$date at $time"

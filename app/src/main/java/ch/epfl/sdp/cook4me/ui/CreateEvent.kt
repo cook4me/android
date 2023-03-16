@@ -32,9 +32,23 @@ fun CreateEvent() {
     }
     val endMsg = remember { mutableStateOf("") }
 
+    fun updateDate(calendar: Calendar){
+        event.value.dateTime.set(
+            calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+    fun updateTime(calendar: Calendar){
+        event.value.dateTime.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
+        event.value.dateTime.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
+    }
+
     Column(
         verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
-        modifier = Modifier.verticalScroll(rememberScrollState()).padding(10.dp)
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(10.dp)
     ) {
         InputTextReader(question = "Name of the event?", onTextChanged = { event.value.name = it })
         InputTextReader(question = "Description of the event?", onTextChanged = { event.value.description = it })
@@ -51,22 +65,14 @@ fun CreateEvent() {
                 event.value.isPrivate = it == "Subscriber only"
             }
         )
-        // submit button
         DatePickerComponent(
             initialDate = Calendar.getInstance(),
-            onDateChange = {
-                event.value.dateTime.set(
-                    it.get(Calendar.YEAR), it.get(Calendar.MONTH),
-                    it.get(Calendar.DAY_OF_MONTH)
-                )
-            }
+            onDateChange = { updateDate(it) }
         )
         TimePickerComponent(
-            onTimeChanged = {
-                event.value.dateTime.set(Calendar.HOUR_OF_DAY, it.get(Calendar.HOUR_OF_DAY))
-                event.value.dateTime.set(Calendar.MINUTE, it.get(Calendar.MINUTE))
-            }
+            onTimeChanged = { updateTime(it) }
         )
+        // submit button
         Button(
             onClick = {
                 endMsg.value = if (event.value.isValidEvent()) {
