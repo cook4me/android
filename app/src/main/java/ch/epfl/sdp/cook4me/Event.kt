@@ -41,9 +41,7 @@ class Event {
      * @param number the number to format
      * @return a string representing the number with 2 digits
      */
-    private fun getTwoDigits(number: Int): String {
-        return String.format(Locale.ENGLISH, "%02d", number)
-    }
+    private fun getTwoDigits(number: Int): String = String.format(Locale.ENGLISH, "%02d", number)
 
     /**
      * @return a string representing the date and time of the event
