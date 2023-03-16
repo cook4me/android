@@ -43,27 +43,34 @@ fun AddressInputReader(
                 location.value = it
                 onAddressChanged(fullAddress())
             },
-            modifier = androidx.compose.ui.Modifier.fillMaxWidth())
+            modifier = androidx.compose.ui.Modifier.fillMaxWidth()
+        )
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // weight is used to make the text field take 3/4 of the space
-            TextField(value = city.value, label = {
-                Text(stringResource(id = R.string.city_label))
-                onAddressChanged(fullAddress())
-            }, onValueChange = {
-                city.value = it
-                onAddressChanged(fullAddress())
-            },
+            TextField(
+                value = city.value,
+                label = {
+                    Text(stringResource(id = R.string.city_label))
+                    onAddressChanged(fullAddress())
+                },
+                onValueChange = {
+                    city.value = it
+                    onAddressChanged(fullAddress())
+                },
                 modifier = androidx.compose.ui.Modifier.weight(3f)
             )
-            TextField(value = zipCode.value, label = {
-                Text(stringResource(id = R.string.zip_code_label))
-                onAddressChanged(fullAddress())
-            }, onValueChange = {
-                zipCode.value = it
-                onAddressChanged(fullAddress())
-            },
+            TextField(
+                value = zipCode.value,
+                label = {
+                    Text(stringResource(id = R.string.zip_code_label))
+                    onAddressChanged(fullAddress())
+                },
+                onValueChange = {
+                    zipCode.value = it
+                    onAddressChanged(fullAddress())
+                },
                 modifier = androidx.compose.ui.Modifier.weight(1f)
             )
         }

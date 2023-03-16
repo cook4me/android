@@ -34,15 +34,18 @@ fun ToggleButtonChoice(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Switch(checked = selected.value, onCheckedChange =
-            {
-                selected.value = it
-                if (it) {
-                    onToggle(possibilities.first)
-                } else {
-                    onToggle(possibilities.second)
-                }
-            }, modifier = Modifier.testTag("switch")
+            Switch(
+                checked = selected.value,
+                onCheckedChange =
+                {
+                    selected.value = it
+                    if (it) {
+                        onToggle(possibilities.first)
+                    } else {
+                        onToggle(possibilities.second)
+                    }
+                },
+                modifier = Modifier.testTag("switch")
             )
             Text(if (selected.value) possibilities.first else possibilities.second)
         }

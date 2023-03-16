@@ -46,8 +46,8 @@ class Event {
         val day = String.format("%02d", dateTime.get(Calendar.DAY_OF_MONTH))
         val hour = String.format("%02d", dateTime.get(Calendar.HOUR_OF_DAY))
         val minute = String.format("%02d", dateTime.get(Calendar.MINUTE))
-        val date = "${day}/${month}/${dateTime.get(Calendar.YEAR)}"
-        val time = "${hour}:${minute}"
+        val date = "$day/$month/${dateTime.get(Calendar.YEAR)}"
+        val time = "$hour:$minute"
         return "$date at $time"
     }
 
@@ -57,5 +57,4 @@ class Event {
     fun showEventInformation(): String {
         return "Name: $name\nDescription: $description\nDate: ${showDate()}\nLocation: $location\nMax participants: $maxParticipants\nParticipants: $participants\nCreator: $creator\nId: $id\nIs private: $isPrivate"
     }
-
 }

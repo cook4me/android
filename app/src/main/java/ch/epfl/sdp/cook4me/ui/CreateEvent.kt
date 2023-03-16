@@ -25,30 +25,35 @@ fun CreateEvent() {
     val event = remember {
         mutableStateOf(Event())
     }
-    val endMsg = remember { mutableStateOf("")}
+    val endMsg = remember { mutableStateOf("") }
 
-    Column (
+    Column(
         verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
         modifier = Modifier.verticalScroll(rememberScrollState()).padding(10.dp)
     ) {
-        InputTextReader(question = "Name of the event?", onTextChanged = {event.value.name = it})
-        InputTextReader(question = "Description of the event?", onTextChanged = {event.value.description = it})
-        AddressInputReader(onAddressChanged = {event.value.location = it})
-        IntegerSlider(text = "Number of people to invite", min = 2, max = 16, onValueChange = {event.value.maxParticipants=it}, modifier = Modifier.fillMaxWidth())
-        ToggleButtonChoice(question = "Who can see the event", possibilities = Pair("Everyone","Subscriber only"), onToggle = {event.value.isPrivate = it == "Subscriber only"})
+        InputTextReader(question = "Name of the event?", onTextChanged = { event.value.name = it })
+        InputTextReader(question = "Description of the event?", onTextChanged = { event.value.description = it })
+        AddressInputReader(onAddressChanged = { event.value.location = it })
+        IntegerSlider(text = "Number of people to invite", min = 2, max = 16, onValueChange = { event.value.maxParticipants = it }, modifier = Modifier.fillMaxWidth())
+        ToggleButtonChoice(question = "Who can see the event", possibilities = Pair("Everyone", "Subscriber only"), onToggle = { event.value.isPrivate = it == "Subscriber only" })
         // submit button
-        DatePickerComponent(initialDate = Calendar.getInstance(), onDateChange = {event.value.dateTime.set(it.get(Calendar.YEAR), it.get(Calendar.MONTH), it.get(Calendar.DAY_OF_MONTH))})
-        TimePickerComponent(onTimeChanged = {
-            event.value.dateTime.set(Calendar.HOUR_OF_DAY, it.get(Calendar.HOUR_OF_DAY))
-            event.value.dateTime.set(Calendar.MINUTE, it.get(Calendar.MINUTE))
-        })
-        Button(onClick = {
-            endMsg.value = if (event.value.isValidEvent()) {
-                event.value.showEventInformation()
-            } else {
-                event.value.eventProblem()
+        DatePickerComponent(initialDate = Calendar.getInstance(), onDateChange = { event.value.dateTime.set(it.get(Calendar.YEAR), it.get(Calendar.MONTH), it.get(Calendar.DAY_OF_MONTH)) })
+        TimePickerComponent(
+            onTimeChanged = {
+                event.value.dateTime.set(Calendar.HOUR_OF_DAY, it.get(Calendar.HOUR_OF_DAY))
+                event.value.dateTime.set(Calendar.MINUTE, it.get(Calendar.MINUTE))
             }
-        }, modifier = Modifier.align(Alignment.End)) {
+        )
+        Button(
+            onClick = {
+                endMsg.value = if (event.value.isValidEvent()) {
+                    event.value.showEventInformation()
+                } else {
+                    event.value.eventProblem()
+                }
+            },
+            modifier = Modifier.align(Alignment.End)
+        ) {
             Text(text = "Submit")
         }
         Text(text = endMsg.value)

@@ -42,15 +42,17 @@ fun TimePickerComponent(
         mContext,
         { _, mHour: Int, mMinute: Int ->
             mTime.value = "$mHour:$mMinute"
-            onTimeChanged(Calendar.getInstance().apply {
-                set(Calendar.HOUR_OF_DAY, mHour)
-                set(Calendar.MINUTE, mMinute)
-            })
-        }, mHour, mMinute, false
+            onTimeChanged(
+                Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, mHour)
+                    set(Calendar.MINUTE, mMinute)
+                }
+            )
+        },
+        mHour, mMinute, false
     )
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-
         // Display selected time
         Text(text = "${stringResource(id = R.string.selected_date_text)}: ${mTime.value}")
         Spacer(modifier = Modifier.size(8.dp))
@@ -60,6 +62,5 @@ fun TimePickerComponent(
         Button(onClick = { mTimePickerDialog.show() }) {
             Text(text = stringResource(id = R.string.select_time_button))
         }
-
     }
 }
