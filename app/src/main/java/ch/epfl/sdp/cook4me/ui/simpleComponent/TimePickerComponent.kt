@@ -40,12 +40,12 @@ fun TimePickerComponent(
     // Creating a TimePicker dialog
     val mTimePickerDialog = TimePickerDialog(
         mContext,
-        { _, mHour: Int, mMinute: Int ->
-            mTime.value = "$mHour:$mMinute"
+        { _, mHour_: Int, mMinute_: Int ->
+            mTime.value = "$mHour_:$mMinute_"
             onTimeChanged(
                 Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, mHour)
-                    set(Calendar.MINUTE, mMinute)
+                    set(Calendar.HOUR_OF_DAY, mHour_)
+                    set(Calendar.MINUTE, mMinute_)
                 }
             )
         },
