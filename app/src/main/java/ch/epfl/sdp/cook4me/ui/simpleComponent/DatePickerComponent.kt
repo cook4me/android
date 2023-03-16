@@ -9,7 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.R
 import java.util.*
 
 /**
@@ -45,13 +47,13 @@ fun DatePickerComponent(
     Row(modifier = modifier,
     verticalAlignment = Alignment.CenterVertically) {
         Text(
-            text = "Selected Date: ${mDate.value}"
+            text = "${stringResource(id = R.string.selected_date_text)}: ${mDate.value}"
         )
         Spacer(modifier = Modifier.height(8.dp))
         Button(onClick = {
             mDatePickerDialog.show()
         }) {
-            Text(text = "Select Date")
+            Text(text = stringResource(id = R.string.select_date_button))
         }
     }
 }

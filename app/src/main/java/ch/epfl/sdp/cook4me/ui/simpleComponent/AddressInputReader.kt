@@ -9,7 +9,9 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.R
 
 /**
  * A component that asks for an address
@@ -34,7 +36,7 @@ fun AddressInputReader(
     ) {
         Text(question)
         // make the text field take the whole space
-        TextField(value = location.value, label = { Text("Street address") }, onValueChange = {
+        TextField(value = location.value, label = { Text(stringResource(id = R.string.street_address_label)) }, onValueChange = {
             location.value = it
             onAddressChanged(fullAddress())
         }
@@ -44,13 +46,13 @@ fun AddressInputReader(
         ){
             // weight is used to make the text field take 3/4 of the space
             TextField(value = city.value, label = {
-                Text("City")
+                Text(stringResource(id =R.string.city_label))
                 onAddressChanged(fullAddress())
               }, onValueChange = {city.value = it
                 onAddressChanged(fullAddress())},
                 modifier = androidx.compose.ui.Modifier.weight(3f))
             TextField(value =zipCode.value, label = {
-                Text("Zip code")
+                Text(stringResource(id = R.string.zip_code_label))
                 onAddressChanged(fullAddress())
                 }, onValueChange = {zipCode.value = it
                 onAddressChanged(fullAddress())},

@@ -24,9 +24,9 @@ class AddressInputReaderTest {
         }
 
         composeTestRule.onNodeWithText("question").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Street address").assertIsDisplayed()
-        composeTestRule.onNodeWithText("City").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Zip code").assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.street_address_label).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.city_label).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.zip_code_label).assertIsDisplayed()
     }
 
     @Test
@@ -36,9 +36,9 @@ class AddressInputReaderTest {
             AddressInputReader(question = "question", onAddressChanged = {address = it})
         }
 
-        composeTestRule.onNodeWithText("Street address").performTextInput("street")
-        composeTestRule.onNodeWithText("City").performTextInput("city")
-        composeTestRule.onNodeWithText("Zip code").performTextInput("zip")
+        composeTestRule.onNodeWithStringId(R.string.street_address_label).performTextInput("street")
+        composeTestRule.onNodeWithStringId(R.string.city_label).performTextInput("city")
+        composeTestRule.onNodeWithStringId(R.string.zip_code_label).performTextInput("zip")
 
         assert(address == "street, zip city")
     }

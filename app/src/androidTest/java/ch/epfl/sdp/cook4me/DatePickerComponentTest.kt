@@ -3,7 +3,6 @@ package ch.epfl.sdp.cook4me
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.ui.simpleComponent.DatePickerComponent
 import org.junit.Rule
@@ -23,7 +22,7 @@ class DatePickerComponentTest {
             DatePickerComponent(initialDate = Calendar.getInstance(), onDateChange = {})
         }
 
-        composeTestRule.onNodeWithText("Selected Date: ").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Select Date").assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.selected_date_text).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.select_date_button).assertIsDisplayed()
     }
 }

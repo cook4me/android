@@ -4,4 +4,25 @@
     <string name="welcome_screen_name_field">Enter your name</string>
     <string name="welcome_screen_button">Start</string>
     <string name="profile_screen_placeholder">Welcome</string>
+
+    <!-- ui/simpleComponent strings   -->
+
+    <!-- AddressInput   -->
+    <string name="street_address_label">Street address</string>
+    <string name="city_label">City</string>
+    <string name="zip_code_label">Zip code</string>
+    <!--  DatePicker  -->
+    <string name="selected_date_text">Selected Date</string>
+    <string name="select_date_button">Select Date</string>
+    <!--  TimePicker  -->
+    <string name="selected_time_text">Selected Time</string>
+    <string name="select_time_button">Select Time</string>
+
+    <!--  Event  -->
+    <string name="empty_name_error_msg">Name is empty</string>
+    <string name="empty_description_error_msg">Description is empty</string>
+    <string name="empty_location_error_msg">Location is empty</string>
+    <string name="max_participants_too_low_error_msg">Max participants is less than 2</string>
+    <string name="date_in_past_error_msg">Date is in the past</string>
+
 </resources>

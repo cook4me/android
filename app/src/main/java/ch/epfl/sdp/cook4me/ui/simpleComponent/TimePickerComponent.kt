@@ -10,8 +10,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import java.util.*
+import ch.epfl.sdp.cook4me.R
 
 /**
  * A simple component that allows the user to select a time (hour and minute)
@@ -48,14 +50,13 @@ fun TimePickerComponent(
     Row(verticalAlignment = Alignment.CenterVertically) {
 
         // Display selected time
-        Text(text = "Selected Time: ${mTime.value}")
-
+        Text(text = "${stringResource(id = R.string.selected_date_text)}: ${mTime.value}")
         Spacer(modifier = Modifier.size(8.dp))
 
         // On button click, TimePicker is
         // displayed, user can select a time
         Button(onClick = { mTimePickerDialog.show() }) {
-            Text(text = "Select time")
+            Text(text = stringResource(id = R.string.select_time_button))
         }
 
     }

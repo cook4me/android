@@ -23,6 +23,7 @@ class Event {
         return eventProblem().isEmpty()
     }
 
+    // TODO: get strings from resources or return strings id?
     /**
      * @return a string describing the problem with the creation of the event
      *         if the event is valid, return an empty string
