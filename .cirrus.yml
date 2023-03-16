@@ -71,4 +71,4 @@ check_android_task:
       format: junit
     androidtest_error_logs_artifacts:
       path: "./app/build/reports/androidTests/connected/index.html"
-      format: junit
+      type: text/html
