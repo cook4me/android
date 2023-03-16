@@ -17,7 +17,7 @@ class TimePickerComponentTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun defaultInformationIsDisplayed(){
+    fun defaultInformationIsDisplayed() {
         composeTestRule.setContent {
             TimePickerComponent(onTimeChanged = {})
         }

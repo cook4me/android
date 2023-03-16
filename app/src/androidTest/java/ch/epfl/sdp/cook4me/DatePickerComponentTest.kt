@@ -17,7 +17,7 @@ class DatePickerComponentTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun defaultInformationIsDisplayed(){
+    fun defaultInformationIsDisplayed() {
         composeTestRule.setContent {
             DatePickerComponent(initialDate = Calendar.getInstance(), onDateChange = {})
         }

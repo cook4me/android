@@ -32,7 +32,7 @@ class EventTest {
     }
 
     @Test
-    fun showEventInformationDisplaysCorrectInformation(){
+    fun showEventInformationDisplaysCorrectInformation() {
         // 01/01/2000 at 00:00
         mockEvent.dateTime.set(2000, 0, 1, 0, 0)
         var expected = """

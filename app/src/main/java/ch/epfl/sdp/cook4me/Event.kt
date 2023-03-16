@@ -28,7 +28,7 @@ class Event {
      * @return a string describing the problem with the creation of the event
      *         if the event is valid, return an empty string
      */
-    fun eventProblem(): String{
+    fun eventProblem(): String {
         if (name.isEmpty()) return "Name is empty"
         if (description.isEmpty()) return "Description is empty"
         if (location.isEmpty()) return "Location is empty"
@@ -40,9 +40,9 @@ class Event {
     /**
      * @return a string representing the date and time of the event
      */
-    private fun showDate(): String{
+    private fun showDate(): String {
         // make that there is always 2 digits
-        val month = String.format("%02d", dateTime.get(Calendar.MONTH)+1)
+        val month = String.format("%02d", dateTime.get(Calendar.MONTH) + 1)
         val day = String.format("%02d", dateTime.get(Calendar.DAY_OF_MONTH))
         val hour = String.format("%02d", dateTime.get(Calendar.HOUR_OF_DAY))
         val minute = String.format("%02d", dateTime.get(Calendar.MINUTE))
@@ -54,7 +54,7 @@ class Event {
     /**
      * @return a string representing the event information
      */
-    fun showEventInformation(): String{
+    fun showEventInformation(): String {
         return "Name: $name\nDescription: $description\nDate: ${showDate()}\nLocation: $location\nMax participants: $maxParticipants\nParticipants: $participants\nCreator: $creator\nId: $id\nIs private: $isPrivate"
     }
 

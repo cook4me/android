@@ -18,9 +18,9 @@ class InputTextReaderTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun questionLabelAndExampleTextIsDisplayed(){
+    fun questionLabelAndExampleTextIsDisplayed() {
         composeTestRule.setContent {
-            InputTextReader(question = "question", label= "label",
+            InputTextReader(question = "question", label = "label",
                 exampleText = "example", onTextChanged = {})
         }
 
@@ -30,11 +30,11 @@ class InputTextReaderTest {
     }
 
     @Test
-    fun onTextChangedIsCalledWhenTextIsChanged(){
+    fun onTextChangedIsCalledWhenTextIsChanged() {
         var text = ""
         composeTestRule.setContent {
-            InputTextReader(question = "question", label= "label",
-                exampleText = "example", onTextChanged = {text = it})
+            InputTextReader(question = "question", label = "label",
+                exampleText = "example", onTextChanged = { text = it })
         }
 
         composeTestRule.onNodeWithText("example").performTextInput("new text")

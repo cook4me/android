@@ -25,24 +25,25 @@ fun ToggleButtonChoice(
     possibilities: Pair<String, String>,
     onToggle: (String) -> Unit,
 ) {
-    val selected = remember { mutableStateOf(true)}
+    val selected = remember { mutableStateOf(true) }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(question)
-        Row (
+        Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
-                ){
+        ) {
             Switch(checked = selected.value, onCheckedChange =
-                {
-                    selected.value = it
-                    if (it) {
-                        onToggle(possibilities.first)
-                    } else {
-                        onToggle(possibilities.second)
-                    }
-                }, modifier = Modifier.testTag("switch"))
+            {
+                selected.value = it
+                if (it) {
+                    onToggle(possibilities.first)
+                } else {
+                    onToggle(possibilities.second)
+                }
+            }, modifier = Modifier.testTag("switch")
+            )
             Text(if (selected.value) possibilities.first else possibilities.second)
         }
     }

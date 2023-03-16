@@ -21,13 +21,13 @@ import ch.epfl.sdp.cook4me.R
 @Composable
 fun AddressInputReader(
     question: String = "What is the location?",
-    onAddressChanged : (String) -> Unit = {}
-){
+    onAddressChanged: (String) -> Unit = {}
+) {
     val location = remember { mutableStateOf("") }
     val city = remember { mutableStateOf("") }
     val zipCode = remember { mutableStateOf("") }
 
-    fun fullAddress() : String {
+    fun fullAddress(): String {
         return location.value + ", " + zipCode.value + " " + city.value
     }
 
@@ -36,27 +36,36 @@ fun AddressInputReader(
     ) {
         Text(question)
         // make the text field take the whole space
-        TextField(value = location.value, label = { Text(stringResource(id = R.string.street_address_label)) }, onValueChange = {
-            location.value = it
-            onAddressChanged(fullAddress())
-        }
-            , modifier = androidx.compose.ui.Modifier.fillMaxWidth())
-        Row (
+        TextField(
+            value = location.value,
+            label = { Text(stringResource(id = R.string.street_address_label)) },
+            onValueChange = {
+                location.value = it
+                onAddressChanged(fullAddress())
+            },
+            modifier = androidx.compose.ui.Modifier.fillMaxWidth())
+        Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ){
+        ) {
             // weight is used to make the text field take 3/4 of the space
             TextField(value = city.value, label = {
-                Text(stringResource(id =R.string.city_label))
+                Text(stringResource(id = R.string.city_label))
                 onAddressChanged(fullAddress())
-              }, onValueChange = {city.value = it
-                onAddressChanged(fullAddress())},
-                modifier = androidx.compose.ui.Modifier.weight(3f))
-            TextField(value =zipCode.value, label = {
+            }, onValueChange = {
+                city.value = it
+                onAddressChanged(fullAddress())
+            },
+                modifier = androidx.compose.ui.Modifier.weight(3f)
+            )
+            TextField(value = zipCode.value, label = {
                 Text(stringResource(id = R.string.zip_code_label))
                 onAddressChanged(fullAddress())
-                }, onValueChange = {zipCode.value = it
-                onAddressChanged(fullAddress())},
-                modifier = androidx.compose.ui.Modifier.weight(1f))
+            }, onValueChange = {
+                zipCode.value = it
+                onAddressChanged(fullAddress())
+            },
+                modifier = androidx.compose.ui.Modifier.weight(1f)
+            )
         }
     }
 }

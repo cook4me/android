@@ -19,9 +19,12 @@ class ToggleButtonChoiceTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun defaultInformationIsDisplayed(){
+    fun defaultInformationIsDisplayed() {
         composeTestRule.setContent {
-            ToggleButtonChoice(question = "question", possibilities = Pair("option1", "option2"), onToggle = {})
+            ToggleButtonChoice(
+                question = "question",
+                possibilities = Pair("option1", "option2"),
+                onToggle = {})
         }
 
         composeTestRule.onNodeWithText("question").assertIsDisplayed()
@@ -29,10 +32,13 @@ class ToggleButtonChoiceTest {
     }
 
     @Test
-    fun onToggleIsCalledWhenSwitchIsPressed(){
+    fun onToggleIsCalledWhenSwitchIsPressed() {
         var toggle = ""
         composeTestRule.setContent {
-            ToggleButtonChoice(question = "question", possibilities = Pair("option1", "option2"), onToggle = {toggle = it})
+            ToggleButtonChoice(
+                question = "question",
+                possibilities = Pair("option1", "option2"),
+                onToggle = { toggle = it })
         }
 
         composeTestRule.onNodeWithTag("switch").performClick()

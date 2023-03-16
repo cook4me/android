@@ -2,10 +2,14 @@ package ch.epfl.sdp.cook4me.ui.simpleComponent
 
 import android.app.DatePickerDialog
 import android.widget.DatePicker
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,15 +41,17 @@ fun DatePickerComponent(
     val mDatePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _: DatePicker, mYear_: Int, mMonth_: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth_+1}/$mYear_"
+            mDate.value = "$mDayOfMonth/${mMonth_ + 1}/$mYear_"
             onDateChange(Calendar.getInstance().apply {
                 set(mYear_, mMonth_, mDayOfMonth)
             })
         }, mYear, mMonth, mDay
     )
 
-    Row(modifier = modifier,
-    verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(
             text = "${stringResource(id = R.string.selected_date_text)}: ${mDate.value}"
         )

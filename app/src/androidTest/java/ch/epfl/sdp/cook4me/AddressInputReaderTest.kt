@@ -18,7 +18,7 @@ class AddressInputReaderTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun defaultInformationIsDisplayed(){
+    fun defaultInformationIsDisplayed() {
         composeTestRule.setContent {
             AddressInputReader(question = "question", onAddressChanged = {})
         }
@@ -30,10 +30,10 @@ class AddressInputReaderTest {
     }
 
     @Test
-    fun onAddressChangedIsCalledWhenTextIsChanged(){
+    fun onAddressChangedIsCalledWhenTextIsChanged() {
         var address = ""
         composeTestRule.setContent {
-            AddressInputReader(question = "question", onAddressChanged = {address = it})
+            AddressInputReader(question = "question", onAddressChanged = { address = it })
         }
 
         composeTestRule.onNodeWithStringId(R.string.street_address_label).performTextInput("street")

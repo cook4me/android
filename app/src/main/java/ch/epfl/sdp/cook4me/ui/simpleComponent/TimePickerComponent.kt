@@ -1,7 +1,9 @@
 package ch.epfl.sdp.cook4me.ui.simpleComponent
 
 import android.app.TimePickerDialog
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import java.util.*
 import ch.epfl.sdp.cook4me.R
+import java.util.*
 
 /**
  * A simple component that allows the user to select a time (hour and minute)
@@ -36,9 +38,9 @@ fun TimePickerComponent(
     val mTime = remember { mutableStateOf("") }
 
     // Creating a TimePicker dialog
-        val mTimePickerDialog = TimePickerDialog(
+    val mTimePickerDialog = TimePickerDialog(
         mContext,
-        {_, mHour : Int, mMinute: Int ->
+        { _, mHour: Int, mMinute: Int ->
             mTime.value = "$mHour:$mMinute"
             onTimeChanged(Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, mHour)
