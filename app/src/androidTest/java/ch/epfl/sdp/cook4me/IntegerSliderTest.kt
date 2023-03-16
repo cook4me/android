@@ -16,7 +16,7 @@ class IntegerSliderTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun defaultInformationIsDisplayed(){
+    fun defaultInformationIsDisplayed() {
         composeTestRule.setContent {
             IntegerSlider(text = "text", min = 0, max = 10, onValueChange = {})
         }

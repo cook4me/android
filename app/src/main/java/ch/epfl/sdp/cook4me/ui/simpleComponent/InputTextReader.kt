@@ -3,9 +3,11 @@ package ch.epfl.sdp.cook4me.ui.simpleComponent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.TextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.material.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 
 /**
@@ -18,7 +20,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun InputTextReader(
     question: String,
-    label : String = "",
+    label: String = "",
     exampleText: String = "",
     onTextChanged: (String) -> Unit
 ) {
@@ -33,7 +35,7 @@ fun InputTextReader(
                 onTextChanged(it)
                 text.value = it
             },
-            label = { Text(label)},
+            label = { Text(label) },
             modifier = androidx.compose.ui.Modifier.fillMaxWidth()
         )
     }
