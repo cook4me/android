@@ -30,16 +30,6 @@ fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier =
 
 @Composable
 fun PasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
-    PasswordField(value, "Password", onNewValue, modifier)
-}
-
-@Composable
-private fun PasswordField(
-    value: String,
-    placeholder: String,
-    onNewValue: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
     OutlinedTextField(
         modifier = modifier
             .testTag(stringResource(R.string.TAG_PASSWORD_FIELD)),

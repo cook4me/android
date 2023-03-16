@@ -124,7 +124,7 @@ fun GoogleMapView(
                     onClick = markerClick,
                     tag = marker.title,
                 ) {
-                    Text(marker.description ?: "Title", color = Color.Cyan)
+                    Text(marker.description, color = Color.Cyan)
                 }
             }
             content()
