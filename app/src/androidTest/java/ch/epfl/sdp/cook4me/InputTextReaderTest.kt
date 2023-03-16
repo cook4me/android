@@ -20,8 +20,10 @@ class InputTextReaderTest {
     @Test
     fun questionLabelAndExampleTextIsDisplayed() {
         composeTestRule.setContent {
-            InputTextReader(question = "question", label = "label",
-                exampleText = "example", onTextChanged = {})
+            InputTextReader(
+                question = "question", label = "label",
+                exampleText = "example", onTextChanged = {}
+            )
         }
 
         composeTestRule.onNodeWithText("question").assertIsDisplayed()
@@ -33,13 +35,13 @@ class InputTextReaderTest {
     fun onTextChangedIsCalledWhenTextIsChanged() {
         var text = ""
         composeTestRule.setContent {
-            InputTextReader(question = "question", label = "label",
-                exampleText = "example", onTextChanged = { text = it })
+            InputTextReader(
+                question = "question", label = "label",
+                exampleText = "example", onTextChanged = { text = it }
+            )
         }
 
         composeTestRule.onNodeWithText("example").performTextInput("new text")
         assert(text == "new text")
     }
-
-
 }

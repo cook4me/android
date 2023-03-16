@@ -24,7 +24,8 @@ class ToggleButtonChoiceTest {
             ToggleButtonChoice(
                 question = "question",
                 possibilities = Pair("option1", "option2"),
-                onToggle = {})
+                onToggle = {}
+            )
         }
 
         composeTestRule.onNodeWithText("question").assertIsDisplayed()
@@ -38,7 +39,8 @@ class ToggleButtonChoiceTest {
             ToggleButtonChoice(
                 question = "question",
                 possibilities = Pair("option1", "option2"),
-                onToggle = { toggle = it })
+                onToggle = { toggle = it }
+            )
         }
 
         composeTestRule.onNodeWithTag("switch").performClick()

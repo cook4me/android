@@ -1,11 +1,9 @@
 package ch.epfl.sdp.cook4me
 
-
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.util.*
-
 
 class EventTest {
 
