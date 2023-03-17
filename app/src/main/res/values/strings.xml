@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Cook4Me</string>
-
+    <string name="welcome_message">Welcome to a new food experience</string>
+    <string name="welcome_screen_name_field">Enter your name</string>
+    <string name="welcome_screen_button">Start</string>
+    <string name="profile_screen_placeholder">Welcome</string>
     <!-- ui/simpleComponent strings   -->
 
     <!-- AddressInput   -->
