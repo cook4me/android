@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import ch.epfl.sdp.cook4me.ui.simpleComponent.DatePickerComponent
 import org.junit.Rule
 import org.junit.Test

@@ -138,6 +138,7 @@ complexity:
     excludes:
      [
        "**/ui/**",
+       "**/Cook4MeApp.kt"
      ]
   LongParameterList:
     active: false
