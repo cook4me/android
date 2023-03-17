@@ -41,7 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 
 @Preview(showBackground = true)
 @Composable
-fun ProfileUpdateScreen() {
+fun EditProfileScreen() {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())

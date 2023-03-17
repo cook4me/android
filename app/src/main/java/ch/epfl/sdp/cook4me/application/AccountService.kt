@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.application
 
 import android.util.Patterns
 import com.google.firebase.auth.FirebaseAuth

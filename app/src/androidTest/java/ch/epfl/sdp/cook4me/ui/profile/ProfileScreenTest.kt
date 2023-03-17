@@ -1,10 +1,11 @@
-package ch.epfl.sdp.cook4me
+package ch.epfl.sdp.cook4me.ui.profile
 
-import ProfileScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Rule
 import org.junit.Test
 

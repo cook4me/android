@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.tupCreation
+package ch.epfl.sdp.cook4me.ui.tupperwareform
 
 import ch.epfl.sdp.cook4me.application.TupperwareService
 

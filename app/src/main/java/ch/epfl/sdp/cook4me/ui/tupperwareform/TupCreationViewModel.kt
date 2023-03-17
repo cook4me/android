@@ -1,6 +1,7 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.ui.tupperwareform
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +10,18 @@ import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.TupperwareService
 import kotlinx.coroutines.launch
 
-class TupCreationViewModel(private val service: TupperwareService) : ViewModel() {
+class MockTupperwareService : TupperwareService {
+    override suspend fun submitForm(
+        title: String,
+        desc: String,
+        tags: List<String>,
+        photos: List<String>,
+    ) {
+        Log.d("Debug", "$title\n$desc")
+    }
+}
+
+class TupCreationViewModel(private val service: TupperwareService = MockTupperwareService()) : ViewModel() {
 
     private var _titleText = mutableStateOf("")
     private var _descText = mutableStateOf("")

@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.ui.tupperwareform
 
 import android.content.Context
 import android.net.Uri

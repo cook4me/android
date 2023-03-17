@@ -1,6 +1,7 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.ui.login
 
 import androidx.lifecycle.ViewModel
+import ch.epfl.sdp.cook4me.application.AccountService
 
 class LoginViewModel(
     private val accountService: AccountService = AccountService(),

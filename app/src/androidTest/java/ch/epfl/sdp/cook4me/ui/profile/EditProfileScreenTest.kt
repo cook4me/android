@@ -1,6 +1,6 @@
-package ch.epfl.sdp.cook4me
+package ch.epfl.sdp.cook4me.ui.profile
 
-import ProfileUpdateScreen
+import EditProfileScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -9,17 +9,19 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Rule
 import org.junit.Test
 
-class ProfileUpdateScreenTest {
+class EditProfileScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
     fun testDefaultValuesAreDisplayed() {
         composeTestRule.setContent {
-            ProfileUpdateScreen()
+            EditProfileScreen()
         }
 
         composeTestRule.onNodeWithStringId(R.string.tag_username).assertIsDisplayed()
@@ -45,7 +47,7 @@ class ProfileUpdateScreenTest {
         val allergiesInput = "Hazelnut"
         val bioInput = "Gourmet"
 
-        composeTestRule.setContent { ProfileUpdateScreen() }
+        composeTestRule.setContent { EditProfileScreen() }
 
         // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
@@ -72,7 +74,7 @@ class ProfileUpdateScreenTest {
     @Test
     fun clickingSaveButton() {
         composeTestRule.setContent {
-            ProfileUpdateScreen()
+            EditProfileScreen()
         }
 
         // Find the save button by its content description
@@ -85,7 +87,7 @@ class ProfileUpdateScreenTest {
     @Test
     fun clickingCancelButton() {
         composeTestRule.setContent {
-            ProfileUpdateScreen()
+            EditProfileScreen()
         }
 
         // Find the cancel button by its content description

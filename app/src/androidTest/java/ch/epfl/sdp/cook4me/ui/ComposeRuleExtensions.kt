@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.epfl.sdp.cook4me
+package ch.epfl.sdp.cook4me.ui
 
 import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes

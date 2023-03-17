@@ -1,3 +1,5 @@
+package ch.epfl.sdp.cook4me.ui
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,9 +9,9 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
-import ch.epfl.sdp.cook4me.ui.GoogleMapView
-import ch.epfl.sdp.cook4me.ui.Locations
-import ch.epfl.sdp.cook4me.ui.dummyMarkers
+import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
+import ch.epfl.sdp.cook4me.ui.map.Locations
+import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraMoveStartedReason

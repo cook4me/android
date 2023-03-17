@@ -1,7 +1,8 @@
-package ch.epfl.sdp.cook4me
+package ch.epfl.sdp.cook4me.ui
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import ch.epfl.sdp.cook4me.MainActivity
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
