@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ch.epfl.sdp.cook4me.ui.CreateEvent
 import ch.epfl.sdp.cook4me.ui.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
@@ -21,11 +22,12 @@ import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationViewModel
  */
 private enum class Screen {
     Login,
-    TupCreationScreen,
+    CreateTupperwareScreen,
     OverviewScreen,
     ProfileScreen,
     EditProfileScreen,
-    Map
+    Map,
+    CreateEventScreen
 }
 
 @Composable
@@ -43,7 +45,8 @@ fun Cook4MeApp(
                 onMapClick = { navController.navigate(Screen.Map.name) },
                 onProfileClick = { navController.navigate(Screen.ProfileScreen.name) },
                 onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
-                onAddTupperwareClick = { navController.navigate(Screen.TupCreationScreen.name) }
+                onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
+                onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
             )
         }
         composable(route = Screen.Map.name) {
@@ -55,8 +58,11 @@ fun Cook4MeApp(
         composable(route = Screen.EditProfileScreen.name) {
             EditProfileScreen()
         }
-        composable(route = Screen.TupCreationScreen.name) {
+        composable(route = Screen.CreateTupperwareScreen.name) {
             TupCreationScreenWithState(TupCreationViewModel())
+        }
+        composable(route = Screen.CreateEventScreen.name) {
+            CreateEvent()
         }
     }
 }
