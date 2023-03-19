@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me
 
 import EditProfileScreen
+import SignUpScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,14 +28,15 @@ private enum class Screen {
     ProfileScreen,
     EditProfileScreen,
     Map,
-    CreateEventScreen
+    CreateEventScreen,
+    SignUpScreen
 }
 
 @Composable
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = Screen.Login.name) {
+    NavHost(navController = navController, startDestination = Screen.SignUpScreen.name) {
         composable(route = Screen.Login.name) {
             LoginScreen(
                 onSuccessfulLogin = { navController.navigate(Screen.OverviewScreen.name) }
@@ -63,6 +65,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateEventScreen.name) {
             CreateEvent()
+        }
+        composable(route = Screen.SignUpScreen.name) {
+            SignUpScreen()
         }
     }
 }

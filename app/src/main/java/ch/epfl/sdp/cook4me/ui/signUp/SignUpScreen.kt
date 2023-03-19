@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -33,6 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
@@ -41,40 +44,43 @@ import coil.compose.rememberAsyncImagePainter
 
 @Preview(showBackground = true)
 @Composable
-fun EditProfileScreen() {
+fun SignUpScreen() {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(8.dp)
     ) {
         saveCancelButtons()
-        ProfileSetupImage_profileUpdateScreen()
 
-        // Textfield for the usernaame
-        columnTextBtn_profileUpdateScreen(
+        ProfileSetupImage_SignUpScreen()
+
+        // Textfield for the username
+        columnTextBtn_SignUpScreen(
             stringResource(R.string.tag_username),
             stringResource(R.string.default_username)
         )
 
+        Password_signUpScreen()
+
         // Textfield for the Favorite dish
-        columnTextBtn_profileUpdateScreen(
+        columnTextBtn_SignUpScreen(
             stringResource(R.string.tag_favoriteDish),
             stringResource(R.string.default_favoriteDish)
         )
 
         // Textfield for the Allergies
-        columnTextBtn_profileUpdateScreen(
+        columnTextBtn_SignUpScreen(
             stringResource(R.string.tag_allergies),
             stringResource(R.string.default_allergies)
         )
 
         // Textfield for the bio
-        bio_profileUpdateScreen()
+        bio_SignUpScreen()
     }
 }
 
 @Composable
-fun bio_profileUpdateScreen() {
+fun bio_SignUpScreen() {
     var bio by rememberSaveable { mutableStateOf("") }
     input_row {
         Text(
@@ -87,7 +93,10 @@ fun bio_profileUpdateScreen() {
             value = bio,
             onValueChange = { bio = it },
             placeholder = { Text(stringResource(R.string.default_bio)) },
-            colors = colorsTextfield_profilUpdateScreen(),
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = Color.Transparent,
+                textColor = Color.Black
+            ),
             singleLine = false,
             modifier = Modifier
                 .height(150.dp)
@@ -96,9 +105,28 @@ fun bio_profileUpdateScreen() {
     }
 }
 
+@Composable
+fun Password_signUpScreen() {
+    var password by rememberSaveable { mutableStateOf("") }
+
+    input_row {
+        Text(stringResource(R.string.tag_password), modifier = Modifier.width(100.dp))
+        TextField(
+            value = password,
+            modifier = Modifier.testTag(stringResource(R.string.tag_password)),
+            onValueChange = { password = it },
+            placeholder = { Text(stringResource(R.string.default_password)) },
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            colors = colorsTextfield_SignUpScreen()
+        )
+    }
+
+}
+
 
 @Composable
-fun columnTextBtn_profileUpdateScreen(
+fun columnTextBtn_SignUpScreen(
     displayLabel: String,
     defaultText: String
 ) {
@@ -120,20 +148,20 @@ fun columnTextBtn_profileUpdateScreen(
             value = textInputVariable,
             modifier = Modifier.testTag(displayLabel),
             onValueChange = { textInputVariable = it },
-            colors = colorsTextfield_profilUpdateScreen()
+            colors = colorsTextfield_SignUpScreen()
         )
     }
 }
 
 @Composable
-fun colorsTextfield_profilUpdateScreen(): TextFieldColors =
+fun colorsTextfield_SignUpScreen(): TextFieldColors =
     TextFieldDefaults.textFieldColors(
         backgroundColor = Color.Transparent,
         textColor = Color.Black
     )
 
 @Composable
-fun ProfileSetupImage_profileUpdateScreen() {
+fun ProfileSetupImage_SignUpScreen() {
     val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
         if (imageURI.value.isEmpty()) {
@@ -166,7 +194,7 @@ fun ProfileSetupImage_profileUpdateScreen() {
 }
 
 @Composable
-fun Image_profileUpdateScreen(
+fun Image_SignUpScreen(
     painter: AsyncImagePainter,
     launcher: ManagedActivityResultLauncher<String, Uri?>
 ) {
@@ -189,7 +217,7 @@ fun Image_profileUpdateScreen(
 }
 
 @Composable
-fun ProfileUpdateImage_profileUpdateScreen(
+fun ProfileUpdateImage_SignUpScreen(
     painter: AsyncImagePainter,
     launcher: ManagedActivityResultLauncher<String, Uri?>
 ) {
@@ -219,6 +247,16 @@ private fun saveCancelButtons() {
 }
 
 @Composable
+private fun text_buttons(nameBtn: String) {
+    Text(
+        text = nameBtn,
+        modifier = Modifier
+            .testTag(nameBtn)
+            .clickable {}
+    )
+}
+
+@Composable
 private fun input_row(content: @Composable RowScope.() -> Unit) {
     Row(
         modifier = Modifier
@@ -228,14 +266,4 @@ private fun input_row(content: @Composable RowScope.() -> Unit) {
     ) {
         content()
     }
-}
-
-@Composable
-private fun text_buttons(nameBtn: String) {
-    Text(
-        text = nameBtn,
-        modifier = Modifier
-            .testTag(nameBtn)
-            .clickable {}
-    )
 }
