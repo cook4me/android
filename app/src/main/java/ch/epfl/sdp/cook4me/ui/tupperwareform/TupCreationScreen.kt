@@ -13,12 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,14 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.simpleComponent.CustomTextField
+import ch.epfl.sdp.cook4me.ui.simpleComponent.CustomTitleText
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
 @Composable
@@ -210,43 +205,6 @@ fun TupperwareForm(
     }
 }
 
-@Composable
-private fun CustomTextField(
-    modifier: Modifier = Modifier,
-    contentDescription: String,
-    value: String = "",
-    onValueChange: (String) -> Unit,
-    singleLine: Boolean = false,
-    isError: Boolean = false
-) {
-    val stateDescription = if (isError) { "Error" } else { "" }
-
-    TextField(
-        modifier = modifier.semantics {
-            this.contentDescription = contentDescription
-            this.stateDescription = stateDescription
-        },
-        textStyle = MaterialTheme.typography.caption,
-        value = value, onValueChange = onValueChange,
-        isError = isError,
-        shape = RoundedCornerShape(30.dp),
-        singleLine = singleLine,
-        colors = textFieldColors(
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-        ),
-    )
-}
-
-@Composable
-private fun CustomTitleText(text: String = "") {
-    Text(
-        modifier = Modifier,
-        text = text,
-        fontWeight = FontWeight.Bold,
-        style = MaterialTheme.typography.h6
-    )
-}
 
 @Preview("default", showBackground = true)
 @Composable

@@ -56,4 +56,15 @@
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
     <string name="TAG_EMAIL_FIELD">EmailField</string>
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
+    <string name="ingredientsTextFieldContentDesc">Ingredients Text field</string>
+    <string name="ingredientsTextFieldPlaceholder">Add ingredients</string>
+    <string name="RecipePreparationTitle">Preparation</string>
+    <string name="RecipeStepsTextFieldPlaceholder">Add recipe steps</string>
+    <string name="RecipeStepsTextFieldDesc">Recipe steps text field</string>
+    <string name="RecipeNameTextFieldDesc">Recipe name text field</string>
+    <string name="RecipeCreationRecipeTitle">Recipe name</string>
+    <string name="RecipeNameTextFieldPlaceholder">Add recipe name</string>
+    <string name="RecipeCreationIngredientsTitle">Ingredients</string>
+    <string name="RecipeCreationScreenServingsTitle">Serves</string>
+    <string name="RecipeCreationDifficultyTitle">Difficulty</string>
 </resources>
