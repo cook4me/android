@@ -57,4 +57,5 @@
     <string name="TAG_EMAIL_FIELD">EmailField</string>
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
     <string name="Overview_Screen_Tag">OverviewScreen</string>
+    <string name="Login_Screen_Tag">LoginScreen</string>
 </resources>

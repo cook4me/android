@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.util.BasicButton
@@ -53,6 +54,7 @@ fun LoginScreen(
         content = { padding ->
             Column(
                 modifier = modifier
+                    .testTag(stringResource(R.string.Login_Screen_Tag))
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())

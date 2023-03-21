@@ -65,4 +65,18 @@ class SignInPersistTest {
         }
         composeTestRule.onNodeWithText(context.getString(R.string.Overview_Screen_Tag)).assertIsDisplayed()
     }
+
+    @Test
+    fun whenNoUserSignedInAppNavigatesToLoginScreen() = runTest {
+        auth.signOut()
+        composeTestRule.setContent {
+            Cook4MeApp()
+        }
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithText(context.getString(R.string.Login_Screen_Tag))
+                .fetchSemanticsNodes().size == 1
+        }
+        composeTestRule.onNodeWithText(context.getString(R.string.Login_Screen_Tag)).assertIsDisplayed()
+    }
 }
