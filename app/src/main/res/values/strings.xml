@@ -56,4 +56,5 @@
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
     <string name="TAG_EMAIL_FIELD">EmailField</string>
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
+    <string name="Overview_Screen_Tag">OverviewScreen</string>
 </resources>

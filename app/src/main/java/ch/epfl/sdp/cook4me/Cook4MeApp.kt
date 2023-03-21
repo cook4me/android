@@ -2,7 +2,7 @@ package ch.epfl.sdp.cook4me
 
 import EditProfileScreen
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,6 +16,8 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationScreenWithState
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 /**
  * enum values that represent the screens in the app
@@ -34,7 +36,19 @@ private enum class Screen {
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = Screen.Login.name) {
+    // initialize the auth object for authtication matters
+    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    // the current logged in user, if no user is logged in, then return null
+    val currentUser: FirebaseUser? = auth.currentUser
+    // depending on if current user exists, choose different start destination of the app.
+    val startScreen: String = if(currentUser != null) {
+        // already signed in, switch to overview screen
+        Screen.OverviewScreen.name
+    } else {
+        // not signed in yet, navigate to sign in screen
+        Screen.Login.name
+    }
+    NavHost(navController = navController, startDestination = startScreen) {
         composable(route = Screen.Login.name) {
             LoginScreen(
                 onSuccessfulLogin = { navController.navigate(Screen.OverviewScreen.name) }
