@@ -26,18 +26,17 @@ fun IntegerSlider(
     max: Int,
     onValueChange: (Int) -> Unit
 ) {
-    // initial value is min
     onValueChange(min)
 
-    val value = remember { mutableStateOf(min) }
+    val valueChosen = remember { mutableStateOf(min) }
     Text(
-        text = "$text:${value.value}",
+        text = "$text:${valueChosen.value}",
         modifier = Modifier.padding(horizontal = 16.dp),
     )
     Slider(
-        value = value.value.toFloat(),
+        value = valueChosen.value.toFloat(),
         onValueChange = { newValue ->
-            value.value = newValue.toInt()
+            valueChosen.value = newValue.toInt()
             onValueChange(newValue.toInt())
         },
         valueRange = min.toFloat()..max.toFloat(),

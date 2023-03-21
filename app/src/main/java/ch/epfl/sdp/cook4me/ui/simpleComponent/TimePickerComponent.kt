@@ -26,40 +26,35 @@ fun TimePickerComponent(
     onTimeChanged: (Calendar) -> Unit
 ) {
     // code taken from https://www.geeksforgeeks.org/time-picker-in-android-using-jetpack-compose/
-    // Fetching local context
     val mContext = LocalContext.current
 
-    // Declaring and initializing a calendar
-    val mCalendar = Calendar.getInstance()
-    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
-    val mMinute = mCalendar[Calendar.MINUTE]
+    val calendar = Calendar.getInstance()
+    val hour = calendar[Calendar.HOUR_OF_DAY]
+    val minute = calendar[Calendar.MINUTE]
 
-    // Value for storing time as a string
-    val mTime = remember { mutableStateOf("") }
+    val time = remember { mutableStateOf("") }
 
-    // Creating a TimePicker dialog
-    val mTimePickerDialog = TimePickerDialog(
+    val timePickerDialog = TimePickerDialog(
         mContext,
-        { _, mHour_: Int, mMinute_: Int ->
-            mTime.value = "$mHour_:$mMinute_"
+        { _, hour_: Int, minute_: Int ->
+            time.value = "$hour_:$minute_"
             onTimeChanged(
                 Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, mHour_)
-                    set(Calendar.MINUTE, mMinute_)
+                    set(Calendar.HOUR_OF_DAY, hour_)
+                    set(Calendar.MINUTE, minute_)
                 }
             )
         },
-        mHour, mMinute, false
+        hour, minute, false
     )
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        // Display selected time
-        Text(text = "${stringResource(id = R.string.selected_time_text)}${mTime.value}")
+        Text(text = "${stringResource(id = R.string.selected_time_text)}${time.value}")
         Spacer(modifier = Modifier.size(8.dp))
 
         // On button click, TimePicker is
         // displayed, user can select a time
-        Button(onClick = { mTimePickerDialog.show() }) {
+        Button(onClick = { timePickerDialog.show() }) {
             Text(text = stringResource(id = R.string.select_time_button))
         }
     }

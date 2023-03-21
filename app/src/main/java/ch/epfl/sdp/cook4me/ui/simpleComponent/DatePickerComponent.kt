@@ -31,23 +31,23 @@ fun DatePickerComponent(
     modifier: Modifier = Modifier,
 ) {
     // code inspired from https://www.geeksforgeeks.org/date-picker-in-android-using-jetpack-compose/
-    val mDate = remember { mutableStateOf("") }
+    val date = remember { mutableStateOf("") }
 
-    val mYear = initialDate.get(Calendar.YEAR)
-    val mMonth = initialDate.get(Calendar.MONTH)
-    val mDay = initialDate.get(Calendar.DAY_OF_MONTH)
+    val year = initialDate.get(Calendar.YEAR)
+    val month = initialDate.get(Calendar.MONTH)
+    val day = initialDate.get(Calendar.DAY_OF_MONTH)
 
-    val mDatePickerDialog = DatePickerDialog(
+    val datePickerDialog = DatePickerDialog(
         LocalContext.current,
-        { _: DatePicker, mYear_: Int, mMonth_: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth_ + 1}/$mYear_"
+        { _: DatePicker, year_: Int, month_: Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/${month_ + 1}/$year_"
             onDateChange(
                 Calendar.getInstance().apply {
-                    set(mYear_, mMonth_, mDayOfMonth)
+                    set(year_, month_, dayOfMonth)
                 }
             )
         },
-        mYear, mMonth, mDay
+        year, month, day
     )
 
     Row(
@@ -55,12 +55,12 @@ fun DatePickerComponent(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "${stringResource(id = R.string.selected_date_text)}${mDate.value}"
+            text = "${stringResource(id = R.string.selected_date_text)}${date.value}"
         )
         Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = {
-                mDatePickerDialog.show()
+                datePickerDialog.show()
             }
         ) {
             Text(text = stringResource(id = R.string.select_date_button))

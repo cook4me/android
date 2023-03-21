@@ -4,34 +4,33 @@ import java.util.Calendar
 import java.util.Locale
 
 /**
- * Class representing an event where people can meet to eat together
+ * Data class representing an event where people can meet to eat together
  */
-class Event {
-    var name: String = ""
-    var description: String = ""
-    var dateTime: Calendar = Calendar.getInstance()
-    var location: String = ""
-    var maxParticipants: Int = 0
-    var participants: List<String> = listOf()
-    var creator: String = ""
-    var id: String = ""
-    var isPrivate: Boolean = false
+data class Event(var name: String = "",
+                 var description: String = "",
+                 var dateTime: Calendar = Calendar.getInstance(),
+                 var location: String = "",
+                 var maxParticipants: Int = 0,
+                 var participants: List<String> = listOf(),
+                 var creator: String = "",
+                 var id: String = "",
+                 var isPrivate: Boolean = false) {
 
     /**
      * @return a boolean indicating if the event is valid
      */
-    fun isValidEvent(): Boolean = eventProblem().isEmpty()
+    fun isValidEvent(): Boolean = eventProblem()==null
 
     // TODO: get strings from resources or return strings id?
     /**
      * @return a string describing the problem with the creation of the event
      *         if the event is valid, return an empty string
      */
-    fun eventProblem(): String {
-        var errorMsg = ""
-        if (name.isEmpty()) errorMsg = "Name is empty"
-        if (description.isEmpty()) errorMsg = "Description is empty"
-        if (location.isEmpty()) errorMsg = "Location is empty"
+    fun eventProblem(): String? {
+        var errorMsg: String?  = null
+        if (name.isBlank()) errorMsg = "Name is empty"
+        if (description.isBlank()) errorMsg = "Description is empty"
+        if (location.isBlank()) errorMsg = "Location is empty"
         if (maxParticipants < 2) errorMsg = "Max participants is less than 2"
         if (dateTime.before(Calendar.getInstance())) errorMsg = "Date is in the past"
         return errorMsg

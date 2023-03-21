@@ -23,7 +23,8 @@ class ToggleButtonChoiceTest {
         composeTestRule.setContent {
             ToggleButtonChoice(
                 question = "question",
-                possibilities = Pair("option1", "option2"),
+                answerChecked = "option1",
+                answerUnchecked = "option2",
                 onToggle = {}
             )
         }
@@ -38,7 +39,8 @@ class ToggleButtonChoiceTest {
         composeTestRule.setContent {
             ToggleButtonChoice(
                 question = "question",
-                possibilities = Pair("option1", "option2"),
+                answerChecked = "option1",
+                answerUnchecked = "option2",
                 onToggle = { toggle = it }
             )
         }

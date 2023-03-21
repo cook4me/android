@@ -14,17 +14,15 @@ import androidx.compose.ui.unit.dp
  * A simple component that displays a question and a text field
  * @param question the question to be displayed
  * @param label the label of the text field
- * @param exampleText the example text to be displayed in the text field
  * @param onTextChanged the function to be called when the text field is changed
  */
 @Composable
 fun InputTextReader(
     question: String,
     label: String = "",
-    exampleText: String = "",
     onTextChanged: (String) -> Unit
 ) {
-    val text = remember { mutableStateOf(exampleText) }
+    val text = remember { mutableStateOf("") }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
