@@ -53,8 +53,10 @@ fun CreateEventScreen() {
             .verticalScroll(rememberScrollState())
             .padding(10.dp)
     ) {
-        InputField(question = stringResource(R.string.ask_event_name),
-            onTextChanged = { event.value = event.value.copy(name = it) })
+        InputField(
+            question = stringResource(R.string.ask_event_name),
+            onTextChanged = { event.value = event.value.copy(name = it) }
+        )
         InputField(
             question = stringResource(R.string.ask_event_description),
             onTextChanged = { event.value = event.value.copy(description = it) }

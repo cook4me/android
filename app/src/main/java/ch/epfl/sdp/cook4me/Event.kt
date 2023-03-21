@@ -16,17 +16,17 @@ data class Event(
     val creator: String = "",
     val id: String = "",
     val isPrivate: Boolean = false
-){
+) {
     val dateAsFormattingDate: String
-      get() {  // make that there is always 2 digits
-        val month = getTwoDigits(dateTime.get(Calendar.MONTH) + 1)
-        val day = getTwoDigits(dateTime.get(Calendar.DAY_OF_MONTH))
-        val hour = getTwoDigits(dateTime.get(Calendar.HOUR_OF_DAY))
-        val minute = getTwoDigits(dateTime.get(Calendar.MINUTE))
-        val date = "$day/$month/${dateTime.get(Calendar.YEAR)}"
-        val time = "$hour:$minute"
-        return "$date at $time"
-    }
+        get() { // make that there is always 2 digits
+            val month = getTwoDigits(dateTime.get(Calendar.MONTH) + 1)
+            val day = getTwoDigits(dateTime.get(Calendar.DAY_OF_MONTH))
+            val hour = getTwoDigits(dateTime.get(Calendar.HOUR_OF_DAY))
+            val minute = getTwoDigits(dateTime.get(Calendar.MINUTE))
+            val date = "$day/$month/${dateTime.get(Calendar.YEAR)}"
+            val time = "$hour:$minute"
+            return "$date at $time"
+        }
 }
 
 /**
