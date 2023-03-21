@@ -72,7 +72,6 @@ class SignUpScreenTest {
         composeTestRule.onNodeWithTag(email).performTextInput(emailInput)
         composeTestRule.onNodeWithTag(password).performTextInput(paswwordInput)
 
-
         // Wait ot be completed
         composeTestRule.waitForIdle()
 
@@ -88,9 +87,8 @@ class SignUpScreenTest {
     @Test
     fun clickingSaveButton() {
         composeTestRule.setContent {
-            EditProfileScreen()
+            SignUpScreen()
         }
-
         // Find the save button by its content description
         val saveBtn = composeTestRule.activity.getString(R.string.btn_save)
 
@@ -101,9 +99,8 @@ class SignUpScreenTest {
     @Test
     fun clickingCancelButton() {
         composeTestRule.setContent {
-            EditProfileScreen()
+            SignUpScreen()
         }
-
         // Find the cancel button by its content description
         val cancelBtn = composeTestRule.activity.getString(R.string.btn_cancel)
 
