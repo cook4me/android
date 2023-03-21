@@ -33,21 +33,21 @@ fun DatePickerComponent(
     // code inspired from https://www.geeksforgeeks.org/date-picker-in-android-using-jetpack-compose/
     val date = remember { mutableStateOf("") }
 
-    val year = initialDate.get(Calendar.YEAR)
-    val month = initialDate.get(Calendar.MONTH)
-    val day = initialDate.get(Calendar.DAY_OF_MONTH)
+    val initialYear = initialDate.get(Calendar.YEAR)
+    val initialMonth = initialDate.get(Calendar.MONTH)
+    val initialDay = initialDate.get(Calendar.DAY_OF_MONTH)
 
     val datePickerDialog = DatePickerDialog(
         LocalContext.current,
-        { _: DatePicker, year_: Int, month_: Int, dayOfMonth: Int ->
-            date.value = "$dayOfMonth/${month_ + 1}/$year_"
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/${month + 1}/$year"
             onDateChange(
                 Calendar.getInstance().apply {
-                    set(year_, month_, dayOfMonth)
+                    set(year, month, dayOfMonth)
                 }
             )
         },
-        year, month, day
+        initialYear, initialMonth, initialDay
     )
 
     Row(

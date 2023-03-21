@@ -7,21 +7,24 @@ import java.util.Calendar
 
 class EventTest {
 
-    private val event = Event()
+    private var event = Event()
 
     @Before
     fun init() {
-        event.name = "name"
-        event.description = "description"
-        event.dateTime = Calendar.getInstance()
+        val dateTime = Calendar.getInstance()
         // to ensure event is in the future
-        event.dateTime.set(Calendar.YEAR, event.dateTime.get(Calendar.YEAR) + 1)
-        event.location = "location"
-        event.maxParticipants = 10
-        event.participants = listOf("participant1", "participant2")
-        event.id = "id"
-        event.isPrivate = true
-        event.creator = "creator"
+        dateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR) + 1)
+        event = Event(
+            name = "name",
+            description = "description",
+            dateTime = dateTime,
+            location = "location",
+            maxParticipants = 10,
+            participants = listOf("participant1", "participant2"),
+            id = "id",
+            isPrivate = true,
+            creator = "creator"
+        )
     }
 
     @Test
@@ -51,7 +54,7 @@ class EventTest {
 
     @Test
     fun eventWithEmptyNameIsInvalid() {
-        event.name = ""
+        event = event.copy(name = "")
         assert(!event.isValidEvent())
         val errorMsg = "Name is empty"
         assertEquals(errorMsg, event.eventProblem())
@@ -59,7 +62,7 @@ class EventTest {
 
     @Test
     fun eventWithEmptyDescriptionIsInvalid() {
-        event.description = ""
+        event = event.copy(description = "")
         assert(!event.isValidEvent())
         val errorMsg = "Description is empty"
         assertEquals(errorMsg, event.eventProblem())
@@ -67,7 +70,7 @@ class EventTest {
 
     @Test
     fun eventWithEmptyLocationIsInvalid() {
-        event.location = ""
+        event = event.copy(location = "")
         assert(!event.isValidEvent())
         val errorMsg = "Location is empty"
         assertEquals(errorMsg, event.eventProblem())
@@ -75,7 +78,7 @@ class EventTest {
 
     @Test
     fun eventWithMaxParticipantsLessThan2IsInvalid() {
-        event.maxParticipants = 1
+        event = event.copy(maxParticipants = 1)
         assert(!event.isValidEvent())
         val errorMsg = "Max participants is less than 2"
         assertEquals(errorMsg, event.eventProblem())
@@ -83,8 +86,9 @@ class EventTest {
 
     @Test
     fun eventWithDateInThePastIsInvalid() {
-        event.dateTime = Calendar.getInstance()
-        event.dateTime.add(Calendar.HOUR_OF_DAY, -1)
+        val pastDateTime = Calendar.getInstance()
+        pastDateTime.add(Calendar.HOUR_OF_DAY, -1)
+        event = event.copy(dateTime = pastDateTime)
         assert(!event.isValidEvent())
         val errorMsg = "Date is in the past"
         assertEquals(errorMsg, event.eventProblem())

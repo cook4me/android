@@ -16,7 +16,18 @@ data class Event(
     val creator: String = "",
     val id: String = "",
     val isPrivate: Boolean = false
-)
+){
+    val dateAsFormattingDate: String
+      get() {  // make that there is always 2 digits
+        val month = getTwoDigits(dateTime.get(Calendar.MONTH) + 1)
+        val day = getTwoDigits(dateTime.get(Calendar.DAY_OF_MONTH))
+        val hour = getTwoDigits(dateTime.get(Calendar.HOUR_OF_DAY))
+        val minute = getTwoDigits(dateTime.get(Calendar.MINUTE))
+        val date = "$day/$month/${dateTime.get(Calendar.YEAR)}"
+        val time = "$hour:$minute"
+        return "$date at $time"
+    }
+}
 
 /**
  * @return a boolean indicating if the event is valid
@@ -44,23 +55,9 @@ fun Event.eventProblem(): String? {
 private fun getTwoDigits(number: Int): String = String.format(Locale.ENGLISH, "%02d", number)
 
 /**
- * @return a string representing the date and time of the event
- */
-private fun Event.showDate(): String {
-    // make that there is always 2 digits
-    val month = getTwoDigits(dateTime.get(Calendar.MONTH) + 1)
-    val day = getTwoDigits(dateTime.get(Calendar.DAY_OF_MONTH))
-    val hour = getTwoDigits(dateTime.get(Calendar.HOUR_OF_DAY))
-    val minute = getTwoDigits(dateTime.get(Calendar.MINUTE))
-    val date = "$day/$month/${dateTime.get(Calendar.YEAR)}"
-    val time = "$hour:$minute"
-    return "$date at $time"
-}
-
-/**
  * @return a string representing the event information
  */
 fun Event.showEventInformation(): String =
-    "Name: $name\nDescription: $description\nDate: ${showDate()}\nLocation: $location\n" +
+    "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\nLocation: $location\n" +
         "Max participants: $maxParticipants\nParticipants: $participants\n" +
         "Creator: $creator\nId: $id\nIs private: $isPrivate"

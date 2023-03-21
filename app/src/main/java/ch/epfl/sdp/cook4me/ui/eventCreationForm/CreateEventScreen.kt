@@ -21,7 +21,7 @@ import ch.epfl.sdp.cook4me.eventProblem
 import ch.epfl.sdp.cook4me.isValidEvent
 import ch.epfl.sdp.cook4me.showEventInformation
 import ch.epfl.sdp.cook4me.ui.simpleComponent.DatePickerComponent
-import ch.epfl.sdp.cook4me.ui.simpleComponent.InputTextReader
+import ch.epfl.sdp.cook4me.ui.simpleComponent.InputField
 import ch.epfl.sdp.cook4me.ui.simpleComponent.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.simpleComponent.TimePickerComponent
 import ch.epfl.sdp.cook4me.ui.simpleComponent.ToggleButtonChoice
@@ -53,15 +53,16 @@ fun CreateEventScreen() {
             .verticalScroll(rememberScrollState())
             .padding(10.dp)
     ) {
-        InputTextReader(question = stringResource(R.string.ask_event_name), onTextChanged = { event.value.name = it })
-        InputTextReader(
+        InputField(question = stringResource(R.string.ask_event_name),
+            onTextChanged = { event.value = event.value.copy(name = it) })
+        InputField(
             question = stringResource(R.string.ask_event_description),
-            onTextChanged = { event.value.description = it }
+            onTextChanged = { event.value = event.value.copy(description = it) }
         )
-        AddressField(onAddressChanged = { event.value.location = it })
+        AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
         IntegerSlider(
             text = stringResource(R.string.ask_event_number_participants), min = 2, max = 16,
-            onValueChange = { event.value.maxParticipants = it },
+            onValueChange = { event.value = event.value.copy(maxParticipants = it) },
             modifier = Modifier.fillMaxWidth()
         )
         ToggleButtonChoice(
@@ -69,7 +70,7 @@ fun CreateEventScreen() {
             answerChecked = stringResource(R.string.event_visibility_everyone),
             answerUnchecked = stringResource(R.string.event_visibility_subscriber_only),
             onToggle = {
-                event.value.isPrivate = it == "Subscriber only"
+                event.value = event.value.copy(isPrivate = it == "Subscriber only")
             }
         )
         DatePickerComponent(

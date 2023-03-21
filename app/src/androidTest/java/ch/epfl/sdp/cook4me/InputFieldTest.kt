@@ -6,14 +6,14 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ch.epfl.sdp.cook4me.ui.simpleComponent.InputTextReader
+import ch.epfl.sdp.cook4me.ui.simpleComponent.InputField
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class InputTextReaderTest {
+class InputFieldTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -21,7 +21,7 @@ class InputTextReaderTest {
     @Test
     fun questionLabelAndExampleTextIsDisplayed() {
         composeTestRule.setContent {
-            InputTextReader(
+            InputField(
                 question = "question", label = "label",
                 onTextChanged = {}
             )
@@ -35,7 +35,7 @@ class InputTextReaderTest {
     fun onTextChangedIsCalledWhenTextIsChanged() {
         var text = ""
         composeTestRule.setContent {
-            InputTextReader(
+            InputField(
                 question = "question", label = "label",
                 onTextChanged = { text = it }
             )
