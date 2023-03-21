@@ -1,13 +1,17 @@
 package ch.epfl.sdp.cook4me.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.Locations
@@ -63,91 +67,28 @@ class GoogleMapViewTests {
     }
 
     @Test
+    fun testThreeDefaultMarkersAreThere() {
+        initMap()
+        composeTestRule.onRoot().printToLog("MAP ROOT")
+
+        val rootNode = composeTestRule.onNodeWithTag("GoogleMapView").fetchSemanticsNode()
+
+        Log.d("ROOT", rootNode.toString())
+        //
+
+        composeTestRule.onNodeWithText("Marker position is lat/lng: (46.5199621,6.6335976)", useUnmergedTree = true).assertIsDisplayed()
+    }
+
+
+    @Test
     fun testStartingCameraPosition() {
         initMap()
         startingPosition.assertEquals(cameraPositionState.position.target)
     }
 
-    @Test
-    fun testCameraReportsMoving() {
-        initMap()
-        assertEquals(CameraMoveStartedReason.NO_MOVEMENT_YET, cameraPositionState.cameraMoveStartedReason)
-        zoom(shouldAnimate = true, zoomIn = true) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            assertTrue(cameraPositionState.isMoving)
-            assertEquals(CameraMoveStartedReason.DEVELOPER_ANIMATION, cameraPositionState.cameraMoveStartedReason)
-        }
-    }
 
-    @Test
-    fun testCameraReportsNotMoving() {
-        initMap()
-        zoom(shouldAnimate = true, zoomIn = true) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(5000) {
-                !cameraPositionState.isMoving
-            }
-            assertFalse(cameraPositionState.isMoving)
-        }
-    }
 
-    @Test
-    fun testCameraZoomInAnimation() {
-        initMap()
-        zoom(shouldAnimate = true, zoomIn = true) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(3000) {
-                !cameraPositionState.isMoving
-            }
-            assertEquals(
-                startingZoom + 1f,
-                cameraPositionState.position.zoom,
-                assertRoundingError.toFloat()
-            )
-        }
-    }
 
-    @Test
-    fun testCameraZoomOut() {
-        initMap()
-        zoom(shouldAnimate = false, zoomIn = false) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(3000) {
-                !cameraPositionState.isMoving
-            }
-            assertEquals(
-                startingZoom - 1f,
-                cameraPositionState.position.zoom,
-                assertRoundingError.toFloat()
-            )
-        }
-    }
-
-    @Test
-    fun testCameraZoomOutAnimation() {
-        initMap()
-        zoom(shouldAnimate = true, zoomIn = false) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(3000) {
-                !cameraPositionState.isMoving
-            }
-            assertEquals(
-                startingZoom - 1f,
-                cameraPositionState.position.zoom,
-                assertRoundingError.toFloat()
-            )
-        }
-    }
 
     @Test
     fun testLatLngInVisibleRegion() {
@@ -159,23 +100,6 @@ class GoogleMapViewTests {
                 projection!!.visibleRegion.latLngBounds.contains(startingPosition)
             )
         }
-    }
-
-    private fun zoom(
-        shouldAnimate: Boolean,
-        zoomIn: Boolean,
-        assertionBlock: () -> Unit
-    ) {
-        if (!shouldAnimate) {
-            composeTestRule.onNodeWithTag("cameraAnimations")
-                .assertIsDisplayed()
-                .performClick()
-        }
-        composeTestRule.onNodeWithText(if (zoomIn) "+" else "-")
-            .assertIsDisplayed()
-            .performClick()
-
-        assertionBlock()
     }
 }
 

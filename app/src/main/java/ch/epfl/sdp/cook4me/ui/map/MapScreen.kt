@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.ui.map.Locations.LAUSANNE
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -37,6 +38,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerInfoWindowContent
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -89,6 +91,7 @@ fun GoogleMapView(
     var mapProperties by remember {
         mutableStateOf(MapProperties(mapType = MapType.NORMAL))
     }
+    var selectedMarkerTitle by remember { mutableStateOf("") }
     var mapVisible by remember { mutableStateOf(true) }
     if (mapVisible) {
         GoogleMap(
@@ -98,30 +101,18 @@ fun GoogleMapView(
             uiSettings = uiSettings,
             onMapLoaded = {
                 onMapLoaded.invoke()
-                Log.d("GoogleMapView", "Google Map is loaded!!!!")
             },
-            onPOIClick = {
-                Log.d(TAG, "POI clicked: ${it.name}")
-            }
         ) {
-            // Drawing on the map is accomplished with a child-based API
-            val markerClick: (Marker) -> Boolean = {
-                Log.d(TAG, "${it.title} was clicked")
-                cameraPositionState.projection?.let { projection ->
-                    Log.d(TAG, "The current projection is: $projection")
-                }
-                false
-            }
             markers.forEach { marker ->
-                Log.d("GoogleMapView", "MARKER:" + marker.title + " " + marker.position)
                 val markerState = rememberMarkerState(position = marker.position)
                 MarkerInfoWindowContent(
                     state = markerState,
                     title = marker.title,
-                    onClick = markerClick,
+                    onClick = {selectedMarkerTitle = marker.title
+                              false},
                     tag = marker.title,
                 ) {
-                    Text(marker.description, color = Color.Cyan)
+                    Text(marker.description)
                 }
             }
             content()
@@ -142,43 +133,7 @@ fun GoogleMapView(
                     cameraPositionState.position = defaultCameraPosition
                 }
             )
-            MapButton(
-                text = "Toggle Map",
-                onClick = { mapVisible = !mapVisible },
-                modifier = Modifier.testTag("toggleMapVisibility"),
-            )
         }
-        val coroutineScope = rememberCoroutineScope()
-        ZoomControls(
-            shouldAnimateZoom,
-            uiSettings.zoomControlsEnabled,
-            onZoomOut = {
-                if (shouldAnimateZoom) {
-                    coroutineScope.launch {
-                        cameraPositionState.animate(CameraUpdateFactory.zoomOut())
-                    }
-                } else {
-                    cameraPositionState.move(CameraUpdateFactory.zoomOut())
-                }
-            },
-            onZoomIn = {
-                if (shouldAnimateZoom) {
-                    coroutineScope.launch {
-                        cameraPositionState.animate(CameraUpdateFactory.zoomIn())
-                    }
-                } else {
-                    cameraPositionState.move(CameraUpdateFactory.zoomIn())
-                }
-                ticker++
-            },
-            onCameraAnimationCheckedChange = {
-                shouldAnimateZoom = it
-            },
-            onZoomControlsCheckedChange = {
-                uiSettings = uiSettings.copy(zoomControlsEnabled = it)
-            }
-        )
-        DebugView(cameraPositionState, lausanneState)
     }
 }
 
@@ -203,34 +158,6 @@ private fun MapTypeButton(type: MapType, onClick: () -> Unit) =
     MapButton(text = type.toString(), onClick = onClick)
 
 @Composable
-private fun ZoomControls(
-    isCameraAnimationChecked: Boolean,
-    isZoomControlsEnabledChecked: Boolean,
-    onZoomOut: () -> Unit,
-    onZoomIn: () -> Unit,
-    onCameraAnimationCheckedChange: (Boolean) -> Unit,
-    onZoomControlsCheckedChange: (Boolean) -> Unit,
-) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        MapButton("-", onClick = { onZoomOut() })
-        MapButton("+", onClick = { onZoomIn() })
-        Column(verticalArrangement = Arrangement.Center) {
-            Text(text = "Camera Animations On?")
-            Switch(
-                isCameraAnimationChecked,
-                onCheckedChange = onCameraAnimationCheckedChange,
-                modifier = Modifier.testTag("cameraAnimations"),
-            )
-            Text(text = "Zoom Controls On?")
-            Switch(
-                isZoomControlsEnabledChecked,
-                onCheckedChange = onZoomControlsCheckedChange
-            )
-        }
-    }
-}
-
-@Composable
 private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(
         modifier = modifier.padding(4.dp),
@@ -247,7 +174,8 @@ private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Mo
 @Composable
 private fun DebugView(
     cameraPositionState: CameraPositionState,
-    markerState: MarkerState
+    markerState: MarkerState,
+    selectedMarkerTitle: String
 ) {
     Column(
         Modifier
@@ -257,6 +185,7 @@ private fun DebugView(
         val moving =
             if (cameraPositionState.isMoving) "moving" else "not moving"
         Text(text = "Camera is $moving")
+        Text(text = "Marker selected: ${selectedMarkerTitle}")
         Text(text = "Camera position is ${cameraPositionState.position}")
         Spacer(modifier = Modifier.height(4.dp))
         val dragging =
