@@ -2,7 +2,7 @@ package ch.epfl.sdp.cook4me
 
 import EditProfileScreen
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -36,12 +36,12 @@ private enum class Screen {
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
 ) {
-    // initialize the auth object for authtication matters
+    // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     // the current logged in user, if no user is logged in, then return null
     val currentUser: FirebaseUser? = auth.currentUser
     // depending on if current user exists, choose different start destination of the app.
-    val startScreen: String = if(currentUser != null) {
+    val startScreen: String = if (currentUser != null) {
         // already signed in, switch to overview screen
         Screen.OverviewScreen.name
     } else {
