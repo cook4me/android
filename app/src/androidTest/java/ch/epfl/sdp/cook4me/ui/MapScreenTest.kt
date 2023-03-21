@@ -1,9 +1,11 @@
 package ch.epfl.sdp.cook4me.ui
 
+import android.icu.util.UniversalTimeScale.toLong
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -30,7 +32,10 @@ import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import ch.epfl.sdp.cook4me.R
 
+private const val MAPS_MOVING_TIMEOUT = 1000.toLong()
+private const val MAPS_LOADING_TIMEOUT = 5000.toLong()
 class GoogleMapViewTests {
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -38,6 +43,7 @@ class GoogleMapViewTests {
     private val startingZoom = 10f
     private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
+
 
     private fun initMap(content: @Composable () -> Unit = {}) {
         check(hasValidApiKey) { "Maps API key not specified" }
@@ -52,7 +58,7 @@ class GoogleMapViewTests {
                 }
             )
         }
-        val mapLoaded = countDownLatch.await(10, TimeUnit.SECONDS)
+        val mapLoaded = countDownLatch.await(MAPS_LOADING_TIMEOUT, TimeUnit.SECONDS)
         assertTrue("Map loaded", mapLoaded)
     }
 
@@ -67,28 +73,28 @@ class GoogleMapViewTests {
     }
 
     @Test
-    fun testThreeDefaultMarkersAreThere() {
+    fun testUniversitiesButtonsSetCameraPosition() {
+        fun checkCameraPosition(name: String, location: LatLng) {
+            composeTestRule.onNodeWithText(name).performClick()
+            composeTestRule.waitUntil(MAPS_MOVING_TIMEOUT) {
+                cameraPositionState.isMoving
+            }
+            composeTestRule.waitUntil(MAPS_LOADING_TIMEOUT) {
+                !cameraPositionState.isMoving
+            }
+            location.assertEquals(cameraPositionState.position.target)
+        }
+
         initMap()
-        composeTestRule.onRoot().printToLog("MAP ROOT")
-
-        val rootNode = composeTestRule.onNodeWithTag("GoogleMapView").fetchSemanticsNode()
-
-        Log.d("ROOT", rootNode.toString())
-        //
-
-        composeTestRule.onNodeWithText("Marker position is lat/lng: (46.5199621,6.6335976)", useUnmergedTree = true).assertIsDisplayed()
+        checkCameraPosition(name = "EPFL", Locations.EPFL)
+        checkCameraPosition(name = "UNIL", Locations.UNIL)
     }
-
 
     @Test
     fun testStartingCameraPosition() {
         initMap()
         startingPosition.assertEquals(cameraPositionState.position.target)
     }
-
-
-
-
 
     @Test
     fun testLatLngInVisibleRegion() {

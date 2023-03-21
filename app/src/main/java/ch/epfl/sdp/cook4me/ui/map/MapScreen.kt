@@ -25,8 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.map.Locations.EPFL
 import ch.epfl.sdp.cook4me.ui.map.Locations.LAUSANNE
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -47,7 +50,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "BasicMapActivity"
 
-const val ZOOM_DEFAULT_VALUE = 11f
+const val ZOOM_DEFAULT_VALUE = 15f
 
 val defaultCameraPosition = CameraPosition.fromLatLngZoom(Locations.LAUSANNE, ZOOM_DEFAULT_VALUE)
 
@@ -83,14 +86,11 @@ fun GoogleMapView(
     content: @Composable () -> Unit = {},
     markers: List<MarkerData> = emptyList()
 ) {
-    val lausanneState = MarkerState(Locations.LAUSANNE)
-
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
-    var shouldAnimateZoom by remember { mutableStateOf(true) }
-    var ticker by remember { mutableStateOf(0) }
     var mapProperties by remember {
         mutableStateOf(MapProperties(mapType = MapType.NORMAL))
     }
+    var onClickUniversity = {uniLocation: LatLng -> cameraPositionState.position = CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)}
     var selectedMarkerTitle by remember { mutableStateOf("") }
     var mapVisible by remember { mutableStateOf(true) }
     if (mapVisible) {
@@ -127,11 +127,12 @@ fun GoogleMapView(
         )
         Row {
             MapButton(
-                text = "Reset Map",
-                onClick = {
-                    mapProperties = mapProperties.copy(mapType = MapType.NORMAL)
-                    cameraPositionState.position = defaultCameraPosition
-                }
+                text = stringResource(R.string.EPFL),
+                onClick = { onClickUniversity(Locations.EPFL) }
+            )
+            MapButton(
+                text = stringResource(R.string.UNIL),
+                onClick = { onClickUniversity(Locations.UNIL) }
             )
         }
     }
