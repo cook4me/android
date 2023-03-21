@@ -49,7 +49,7 @@ fun Cook4MeApp(
                 onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
                 onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name)}
+                onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
         composable(route = Screen.Map.name) {

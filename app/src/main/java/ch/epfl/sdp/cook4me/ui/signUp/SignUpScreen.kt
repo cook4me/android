@@ -128,7 +128,6 @@ fun Password_signUpScreen() {
             colors = colorsTextfield_SignUpScreen()
         )
     }
-
 }
 
 @Composable
