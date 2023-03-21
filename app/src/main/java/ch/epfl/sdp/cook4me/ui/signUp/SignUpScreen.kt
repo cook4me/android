@@ -54,13 +54,20 @@ fun SignUpScreen() {
 
         ProfileSetupImage_SignUpScreen()
 
+        // Textfield for the email
+        columnTextBtn_SignUpScreen(
+            stringResource(R.string.tag_email),
+            stringResource(R.string.default_email)
+        )
+
+        // Password field
+        Password_signUpScreen()
+
         // Textfield for the username
         columnTextBtn_SignUpScreen(
             stringResource(R.string.tag_username),
             stringResource(R.string.default_username)
         )
-
-        Password_signUpScreen()
 
         // Textfield for the Favorite dish
         columnTextBtn_SignUpScreen(
@@ -123,7 +130,6 @@ fun Password_signUpScreen() {
     }
 
 }
-
 
 @Composable
 fun columnTextBtn_SignUpScreen(
