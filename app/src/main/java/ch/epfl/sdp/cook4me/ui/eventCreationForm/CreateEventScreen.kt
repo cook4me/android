@@ -17,6 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.Event
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.eventProblem
+import ch.epfl.sdp.cook4me.isValidEvent
+import ch.epfl.sdp.cook4me.showEventInformation
 import ch.epfl.sdp.cook4me.ui.simpleComponent.DatePickerComponent
 import ch.epfl.sdp.cook4me.ui.simpleComponent.InputTextReader
 import ch.epfl.sdp.cook4me.ui.simpleComponent.IntegerSlider
@@ -51,7 +54,10 @@ fun CreateEventScreen() {
             .padding(10.dp)
     ) {
         InputTextReader(question = stringResource(R.string.ask_event_name), onTextChanged = { event.value.name = it })
-        InputTextReader(question = stringResource(R.string.ask_event_description), onTextChanged = { event.value.description = it })
+        InputTextReader(
+            question = stringResource(R.string.ask_event_description),
+            onTextChanged = { event.value.description = it }
+        )
         AddressField(onAddressChanged = { event.value.location = it })
         IntegerSlider(
             text = stringResource(R.string.ask_event_number_participants), min = 2, max = 16,
