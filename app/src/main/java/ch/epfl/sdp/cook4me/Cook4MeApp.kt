@@ -48,6 +48,7 @@ fun Cook4MeApp(
         // not signed in yet, navigate to sign in screen
         Screen.Login.name
     }
+
     NavHost(navController = navController, startDestination = startScreen) {
         composable(route = Screen.Login.name) {
             LoginScreen(
