@@ -36,7 +36,7 @@ private enum class Screen {
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = Screen.SignUpScreen.name) {
+    NavHost(navController = navController, startDestination = Screen.OverviewScreen.name) {
         composable(route = Screen.Login.name) {
             LoginScreen(
                 onSuccessfulLogin = { navController.navigate(Screen.OverviewScreen.name) }
@@ -49,6 +49,7 @@ fun Cook4MeApp(
                 onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
                 onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
+                onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name)}
             )
         }
         composable(route = Screen.Map.name) {
