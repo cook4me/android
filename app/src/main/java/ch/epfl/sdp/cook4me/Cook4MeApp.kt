@@ -14,6 +14,7 @@ import ch.epfl.sdp.cook4me.ui.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
+import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationScreenWithState
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationViewModel
@@ -56,10 +57,10 @@ fun Cook4MeApp(
             GoogleMapView(modifier = Modifier.fillMaxSize(), markers = dummyMarkers)
         }
         composable(route = Screen.ProfileScreen.name) {
-            ProfileScreen()
+            ProfileScreen(ProfileCreationViewModel())
         }
         composable(route = Screen.EditProfileScreen.name) {
-            EditProfileScreen()
+            EditProfileScreen(ProfileCreationViewModel())
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
             TupCreationScreenWithState(TupCreationViewModel())

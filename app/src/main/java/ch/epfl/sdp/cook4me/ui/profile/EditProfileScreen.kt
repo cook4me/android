@@ -26,22 +26,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 
-@Preview(showBackground = true)
 @Composable
-fun EditProfileScreen() {
+fun EditProfileScreen(
+    viewModel: ProfileCreationViewModel
+) {
+    val username by viewModel.username
+    val favoriteDish by viewModel.favoriteDish
+    val allergies by viewModel.allergies
+    val bio by viewModel.bio
+
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -53,72 +58,79 @@ fun EditProfileScreen() {
         // Textfield for the usernaame
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_username),
-            stringResource(R.string.default_username)
+            username,
+            viewModel::addUsername,
         )
 
         // Textfield for the Favorite dish
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_favoriteDish),
-            stringResource(R.string.default_favoriteDish)
+            favoriteDish,
+            viewModel::addFavoriteDish,
         )
 
-        // Textfield for the Allergies
+        // Textfield for theusername Allergies
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_allergies),
-            stringResource(R.string.default_allergies)
+            allergies,
+            viewModel::addAllergies,
         )
 
         // Textfield for the bio
-        bio_profileUpdateScreen()
+        bio_profileUpdateScreen(
+            stringResource(R.string.tag_bio),
+            bio,
+            viewModel::addBio,
+        )
     }
 }
 
 @Composable
-fun bio_profileUpdateScreen() {
-    var bio by rememberSaveable { mutableStateOf("") }
+fun bio_profileUpdateScreen(
+    displayLabel: String,
+    inputText: String,
+    change: (String) -> Unit
+) {
     input_row {
         Text(
-            text = "Bio",
+            text = displayLabel,
             modifier = Modifier
                 .width(100.dp)
                 .padding(top = 7.dp)
         )
         TextField(
-            value = bio,
-            onValueChange = { bio = it },
+            value = inputText,
+            onValueChange =  {change(it)},
             placeholder = { Text(stringResource(R.string.default_bio)) },
             colors = colorsTextfield_profilUpdateScreen(),
             singleLine = false,
             modifier = Modifier
                 .height(150.dp)
-                .testTag(stringResource(R.string.tag_bio))
+                .testTag(displayLabel)
         )
     }
 }
 
 @Composable
 fun columnTextBtn_profileUpdateScreen(
-    displayLabel: String,
-    defaultText: String
+    label: String,
+    inputText: String,
+    change: (String) -> Unit
 ) {
-    var textInputVariable by rememberSaveable {
-        mutableStateOf("")
-    }
-
     input_row {
         Text(
-            text = displayLabel,
+            text = label,
             modifier = Modifier.width(100.dp)
         )
         TextField(
             placeholder = {
                 Text(
-                    defaultText
+                    inputText
                 )
             },
-            value = textInputVariable,
-            modifier = Modifier.testTag(displayLabel),
-            onValueChange = { textInputVariable = it },
+            value = inputText,
+            modifier = Modifier.testTag(label),
+            onValueChange =  {change(it)},
             colors = colorsTextfield_profilUpdateScreen()
         )
     }
