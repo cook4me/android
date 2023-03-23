@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.dp
  * @param question the question to be displayed
  * @param answerChecked the text to be displayed when the toggle button is checked (default)
  * @param answerUnchecked the text to be displayed when the toggle button is unchecked
- * @param onToggle the function to be called when the toggle button is changed
+ * @param onToggle the function to be called when the toggle button is changed (default is true)
  */
 @Composable
 fun ToggleButtonChoice(
     question: String,
     answerChecked: String,
     answerUnchecked: String,
-    onToggle: (String) -> Unit,
+    onToggle: (Boolean) -> Unit,
 ) {
     val checked = remember { mutableStateOf(true) }
     Column(
@@ -41,11 +41,7 @@ fun ToggleButtonChoice(
                 onCheckedChange =
                 {
                     checked.value = it
-                    if (it) {
-                        onToggle(answerChecked)
-                    } else {
-                        onToggle(answerUnchecked)
-                    }
+                    onToggle(it)
                 },
                 modifier = Modifier.testTag("switch")
             )

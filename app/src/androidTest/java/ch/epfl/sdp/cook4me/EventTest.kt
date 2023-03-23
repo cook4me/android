@@ -29,7 +29,7 @@ class EventTest {
 
     @Test
     fun eventWithValidInformationIsValid() {
-        assert(event.isValidEvent())
+        assert(event.isValidEvent)
     }
 
     @Test
@@ -48,40 +48,40 @@ class EventTest {
             Is private: true"""
         // remove all the spaces
         expected = expected.replace("\\s".toRegex(), "")
-        val actual = event.showEventInformation().replace("\\s".toRegex(), "")
+        val actual = event.eventInformation.replace("\\s".toRegex(), "")
         assertEquals(expected, actual)
     }
 
     @Test
     fun eventWithEmptyNameIsInvalid() {
         event = event.copy(name = "")
-        assert(!event.isValidEvent())
+        assert(!event.isValidEvent)
         val errorMsg = "Name is empty"
-        assertEquals(errorMsg, event.eventProblem())
+        assertEquals(errorMsg, event.eventProblem)
     }
 
     @Test
     fun eventWithEmptyDescriptionIsInvalid() {
         event = event.copy(description = "")
-        assert(!event.isValidEvent())
+        assert(!event.isValidEvent)
         val errorMsg = "Description is empty"
-        assertEquals(errorMsg, event.eventProblem())
+        assertEquals(errorMsg, event.eventProblem)
     }
 
     @Test
     fun eventWithEmptyLocationIsInvalid() {
         event = event.copy(location = "")
-        assert(!event.isValidEvent())
+        assert(!event.isValidEvent)
         val errorMsg = "Location is empty"
-        assertEquals(errorMsg, event.eventProblem())
+        assertEquals(errorMsg, event.eventProblem)
     }
 
     @Test
     fun eventWithMaxParticipantsLessThan2IsInvalid() {
         event = event.copy(maxParticipants = 1)
-        assert(!event.isValidEvent())
+        assert(!event.isValidEvent)
         val errorMsg = "Max participants is less than 2"
-        assertEquals(errorMsg, event.eventProblem())
+        assertEquals(errorMsg, event.eventProblem)
     }
 
     @Test
@@ -89,8 +89,8 @@ class EventTest {
         val pastDateTime = Calendar.getInstance()
         pastDateTime.add(Calendar.HOUR_OF_DAY, -1)
         event = event.copy(dateTime = pastDateTime)
-        assert(!event.isValidEvent())
+        assert(!event.isValidEvent)
         val errorMsg = "Date is in the past"
-        assertEquals(errorMsg, event.eventProblem())
+        assertEquals(errorMsg, event.eventProblem)
     }
 }

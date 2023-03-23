@@ -29,23 +29,23 @@ fun TimePickerComponent(
     val mContext = LocalContext.current
 
     val calendar = Calendar.getInstance()
-    val hour = calendar[Calendar.HOUR_OF_DAY]
-    val minute = calendar[Calendar.MINUTE]
+    val initialHour = calendar[Calendar.HOUR_OF_DAY]
+    val initialMinute = calendar[Calendar.MINUTE]
 
     val time = remember { mutableStateOf("") }
 
     val timePickerDialog = TimePickerDialog(
         mContext,
-        { _, hour_: Int, minute_: Int ->
-            time.value = "$hour_:$minute_"
+        { _, hour: Int, minute: Int ->
+            time.value = "$hour:$minute"
             onTimeChanged(
                 Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, hour_)
-                    set(Calendar.MINUTE, minute_)
+                    set(Calendar.HOUR_OF_DAY, hour)
+                    set(Calendar.MINUTE, minute)
                 }
             )
         },
-        hour, minute, false
+        initialHour, initialMinute, false
     )
 
     Row(verticalAlignment = Alignment.CenterVertically) {

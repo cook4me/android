@@ -17,9 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.Event
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.eventProblem
-import ch.epfl.sdp.cook4me.isValidEvent
-import ch.epfl.sdp.cook4me.showEventInformation
 import ch.epfl.sdp.cook4me.ui.simpleComponent.DatePickerComponent
 import ch.epfl.sdp.cook4me.ui.simpleComponent.InputField
 import ch.epfl.sdp.cook4me.ui.simpleComponent.IntegerSlider
@@ -72,7 +69,7 @@ fun CreateEventScreen() {
             answerChecked = stringResource(R.string.event_visibility_everyone),
             answerUnchecked = stringResource(R.string.event_visibility_subscriber_only),
             onToggle = {
-                event.value = event.value.copy(isPrivate = it == "Subscriber only")
+                event.value = event.value.copy(isPrivate = it)
             }
         )
         DatePickerComponent(
@@ -84,10 +81,10 @@ fun CreateEventScreen() {
         )
         Button(
             onClick = {
-                endMsg.value = if (event.value.isValidEvent()) {
-                    event.value.showEventInformation()
+                endMsg.value = if (event.value.isValidEvent) {
+                    event.value.eventInformation
                 } else {
-                    event.value.eventProblem()?.let { "Error: $it" } ?: "Error"
+                    event.value.eventProblem?.let { "Error: $it" } ?: "Error"
                 }
             },
             modifier = Modifier.align(Alignment.End)

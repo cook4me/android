@@ -27,25 +27,25 @@ data class Event(
             val time = "$hour:$minute"
             return "$date at $time"
         }
-}
 
-/**
- * @return a boolean indicating if the event is valid
- */
-fun Event.isValidEvent(): Boolean = eventProblem() == null
+    val eventProblem: String?
+        get() {
+            var errorMsg: String? = null
+            if (name.isBlank()) errorMsg = "Name is empty"
+            if (description.isBlank()) errorMsg = "Description is empty"
+            if (location.isBlank()) errorMsg = "Location is empty"
+            if (maxParticipants < 2) errorMsg = "Max participants is less than 2"
+            if (dateTime.before(Calendar.getInstance())) errorMsg = "Date is in the past"
+            return errorMsg
+        }
 
-/**
- * @return a string describing the problem with the creation of the event
- *         if the event is valid, return an empty string
- */
-fun Event.eventProblem(): String? {
-    var errorMsg: String? = null
-    if (name.isBlank()) errorMsg = "Name is empty"
-    if (description.isBlank()) errorMsg = "Description is empty"
-    if (location.isBlank()) errorMsg = "Location is empty"
-    if (maxParticipants < 2) errorMsg = "Max participants is less than 2"
-    if (dateTime.before(Calendar.getInstance())) errorMsg = "Date is in the past"
-    return errorMsg
+    val isValidEvent: Boolean
+        get() = eventProblem == null
+
+    val eventInformation: String
+        get() = "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\n" +
+            "Location: $location\n Max participants: $maxParticipants\nParticipants: $participants\n" +
+            "Creator: $creator\nId: $id\nIs private: $isPrivate"
 }
 
 /**
@@ -53,11 +53,3 @@ fun Event.eventProblem(): String? {
  * @return a string representing the number with 2 digits
  */
 private fun getTwoDigits(number: Int): String = String.format(Locale.ENGLISH, "%02d", number)
-
-/**
- * @return a string representing the event information
- */
-fun Event.showEventInformation(): String =
-    "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\nLocation: $location\n" +
-        "Max participants: $maxParticipants\nParticipants: $participants\n" +
-        "Creator: $creator\nId: $id\nIs private: $isPrivate"
