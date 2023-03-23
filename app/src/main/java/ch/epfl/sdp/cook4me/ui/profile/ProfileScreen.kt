@@ -26,13 +26,14 @@ import ch.epfl.sdp.cook4me.R
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 
+@Preview(showBackground = true)
 @Composable
-fun ProfileScreen(
-    viewModel: ProfileCreationViewModel
-) {
+fun ProfileScreen() {
     Column(
         modifier = Modifier
+            // .verticalScroll(rememberScrollState())
             .padding(12.dp)
+
     ) {
         // TODO put in logic
         val imageURI = rememberSaveable { mutableStateOf("") }
