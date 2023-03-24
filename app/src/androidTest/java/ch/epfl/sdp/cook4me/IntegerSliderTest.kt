@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.ui.simpleComponent.IntegerSlider
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,8 +49,8 @@ class IntegerSliderTest {
                 durationMillis = 2000
             )
         }
-        // Verify the updated value
-        print(value)
+
         composeTestRule.onNodeWithText("Slider Value:10").assertExists()
+        assertEquals(10, value)
     }
 }

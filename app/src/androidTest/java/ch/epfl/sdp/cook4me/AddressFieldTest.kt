@@ -6,14 +6,14 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.ui.eventCreationForm.AddressField
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
-import ch.epfl.sdp.cook4me.ui.simpleComponent.AddressInputReader
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class AddressInputReaderTest {
+class AddressFieldTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -21,7 +21,7 @@ class AddressInputReaderTest {
     @Test
     fun defaultInformationIsDisplayed() {
         composeTestRule.setContent {
-            AddressInputReader(question = "question", onAddressChanged = {})
+            AddressField(question = "question", onAddressChanged = {})
         }
 
         composeTestRule.onNodeWithText("question").assertIsDisplayed()
@@ -34,7 +34,7 @@ class AddressInputReaderTest {
     fun onAddressChangedIsCalledWhenTextIsChanged() {
         var address = ""
         composeTestRule.setContent {
-            AddressInputReader(question = "question", onAddressChanged = { address = it })
+            AddressField(question = "question", onAddressChanged = { address = it })
         }
 
         composeTestRule.onNodeWithStringId(R.string.street_address_label).performTextInput("street")

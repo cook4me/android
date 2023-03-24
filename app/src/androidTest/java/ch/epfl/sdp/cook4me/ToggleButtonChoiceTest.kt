@@ -23,7 +23,8 @@ class ToggleButtonChoiceTest {
         composeTestRule.setContent {
             ToggleButtonChoice(
                 question = "question",
-                possibilities = Pair("option1", "option2"),
+                answerChecked = "option1",
+                answerUnchecked = "option2",
                 onToggle = {}
             )
         }
@@ -34,18 +35,19 @@ class ToggleButtonChoiceTest {
 
     @Test
     fun onToggleIsCalledWhenSwitchIsPressed() {
-        var toggle = ""
+        var toggle = true
         composeTestRule.setContent {
             ToggleButtonChoice(
                 question = "question",
-                possibilities = Pair("option1", "option2"),
+                answerChecked = "option1",
+                answerUnchecked = "option2",
                 onToggle = { toggle = it }
             )
         }
 
         composeTestRule.onNodeWithTag("switch").performClick()
-        assert(toggle == "option2")
+        assert(!toggle)
         composeTestRule.onNodeWithTag("switch").performClick()
-        assert(toggle == "option1")
+        assert(toggle)
     }
 }

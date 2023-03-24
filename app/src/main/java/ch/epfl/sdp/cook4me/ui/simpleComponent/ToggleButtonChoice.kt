@@ -16,16 +16,18 @@ import androidx.compose.ui.unit.dp
 /**
  * A simple component that displays a question and a toggle button
  * @param question the question to be displayed
- * @param possibilities the two possible answers to the question
- * @param onToggle the function to be called when the toggle button is changed
+ * @param answerChecked the text to be displayed when the toggle button is checked (default)
+ * @param answerUnchecked the text to be displayed when the toggle button is unchecked
+ * @param onToggle the function to be called when the toggle button is changed (default is true)
  */
 @Composable
 fun ToggleButtonChoice(
     question: String,
-    possibilities: Pair<String, String>,
-    onToggle: (String) -> Unit,
+    answerChecked: String,
+    answerUnchecked: String,
+    onToggle: (Boolean) -> Unit,
 ) {
-    val selected = remember { mutableStateOf(true) }
+    val checked = remember { mutableStateOf(true) }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -35,19 +37,15 @@ fun ToggleButtonChoice(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Switch(
-                checked = selected.value,
+                checked = checked.value,
                 onCheckedChange =
                 {
-                    selected.value = it
-                    if (it) {
-                        onToggle(possibilities.first)
-                    } else {
-                        onToggle(possibilities.second)
-                    }
+                    checked.value = it
+                    onToggle(it)
                 },
                 modifier = Modifier.testTag("switch")
             )
-            Text(if (selected.value) possibilities.first else possibilities.second)
+            Text(if (checked.value) answerChecked else answerUnchecked)
         }
     }
 }
