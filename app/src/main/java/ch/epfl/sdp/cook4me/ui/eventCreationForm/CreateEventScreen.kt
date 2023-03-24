@@ -17,18 +17,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.Event
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.EventFormService
 import ch.epfl.sdp.cook4me.ui.simpleComponent.DatePickerComponent
 import ch.epfl.sdp.cook4me.ui.simpleComponent.InputField
 import ch.epfl.sdp.cook4me.ui.simpleComponent.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.simpleComponent.TimePickerComponent
 import ch.epfl.sdp.cook4me.ui.simpleComponent.ToggleButtonChoice
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 /**
  * Component that shows the form to create an event
+ * @param eventService the service that will be used to create the event
  */
 @Composable
-fun CreateEventScreen() {
+fun CreateEventScreen(
+    eventService: EventFormService
+) {
     val event = remember {
         mutableStateOf(Event())
     }
@@ -81,10 +87,10 @@ fun CreateEventScreen() {
         )
         Button(
             onClick = {
-                endMsg.value = if (event.value.isValidEvent) {
-                    event.value.eventInformation
-                } else {
-                    event.value.eventProblem?.let { "Error: $it" } ?: "Error"
+                runBlocking{
+                    launch {
+                        endMsg.value = eventService.submitForm(event.value) ?: ""
+                    }
                 }
             },
             modifier = Modifier.align(Alignment.End)
