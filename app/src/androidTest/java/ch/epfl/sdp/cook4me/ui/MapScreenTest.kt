@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -17,14 +16,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraMoveStartedReason
 import com.google.maps.android.compose.CameraPositionState
 import io.mockk.Ordering
-import io.mockk.confirmVerified
 import io.mockk.spyk
 import io.mockk.verify
-import io.mockk.verifyOrder
-import io.mockk.verifySequence
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -60,12 +54,14 @@ class GoogleMapViewTests {
 
     @Before
     fun setUp() {
-        cameraPositionState = spyk(CameraPositionState(
-            position = CameraPosition.fromLatLngZoom(
-                startingPosition,
-                startingZoom
+        cameraPositionState = spyk(
+            CameraPositionState(
+                position = CameraPosition.fromLatLngZoom(
+                    startingPosition,
+                    startingZoom
+                )
             )
-        ))
+        )
     }
 
     @Test
