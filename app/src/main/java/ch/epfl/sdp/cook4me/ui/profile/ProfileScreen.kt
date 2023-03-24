@@ -1,3 +1,5 @@
+package ch.epfl.sdp.cook4me.ui.profile
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.profile.PostGrid
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 
