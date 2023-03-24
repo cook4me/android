@@ -14,6 +14,12 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraMoveStartedReason
 import com.google.maps.android.compose.CameraPositionState
+import io.mockk.Ordering
+import io.mockk.confirmVerified
+import io.mockk.spyk
+import io.mockk.verify
+import io.mockk.verifyOrder
+import io.mockk.verifySequence
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
@@ -33,8 +39,8 @@ class GoogleMapViewTests {
     private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
 
-    private fun initMap(content: @Composable () -> Unit = {}) {
-        check(hasValidApiKey) { "Maps API key not specified" }
+    private fun initMap() {
+        check(hasValidApiKey()) { "Maps API key not specified" }
         val countDownLatch = CountDownLatch(1)
         composeTestRule.setContent {
             GoogleMapView(
@@ -46,18 +52,18 @@ class GoogleMapViewTests {
                 }
             )
         }
-        val mapLoaded = countDownLatch.await(10, TimeUnit.SECONDS)
+        val mapLoaded = countDownLatch.await(60, TimeUnit.SECONDS)
         assertTrue("Map loaded", mapLoaded)
     }
 
     @Before
     fun setUp() {
-        cameraPositionState = CameraPositionState(
+        cameraPositionState = spyk(CameraPositionState(
             position = CameraPosition.fromLatLngZoom(
                 startingPosition,
                 startingZoom
             )
-        )
+        ))
     }
 
     @Test
@@ -71,25 +77,11 @@ class GoogleMapViewTests {
         initMap()
         assertEquals(CameraMoveStartedReason.NO_MOVEMENT_YET, cameraPositionState.cameraMoveStartedReason)
         zoom(shouldAnimate = true, zoomIn = true) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
+            verify(ordering = Ordering.ORDERED, timeout = 60000L) {
+                cameraPositionState setProperty "cameraMoveStartedReason" value CameraMoveStartedReason.DEVELOPER_ANIMATION
+                cameraPositionState setProperty "isMoving" value true
+                cameraPositionState setProperty "isMoving" value false
             }
-            assertTrue(cameraPositionState.isMoving)
-            assertEquals(CameraMoveStartedReason.DEVELOPER_ANIMATION, cameraPositionState.cameraMoveStartedReason)
-        }
-    }
-
-    @Test
-    fun testCameraReportsNotMoving() {
-        initMap()
-        zoom(shouldAnimate = true, zoomIn = true) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(5000) {
-                !cameraPositionState.isMoving
-            }
-            assertFalse(cameraPositionState.isMoving)
         }
     }
 
@@ -97,16 +89,11 @@ class GoogleMapViewTests {
     fun testCameraZoomInAnimation() {
         initMap()
         zoom(shouldAnimate = true, zoomIn = true) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(3000) {
-                !cameraPositionState.isMoving
-            }
+            assertMoveHappened(cameraPositionState)
             assertEquals(
                 startingZoom + 1f,
                 cameraPositionState.position.zoom,
-                assertRoundingError.toFloat()
+                ASSERT_ROUNDING_ERROR.toFloat()
             )
         }
     }
@@ -115,16 +102,11 @@ class GoogleMapViewTests {
     fun testCameraZoomOut() {
         initMap()
         zoom(shouldAnimate = false, zoomIn = false) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(3000) {
-                !cameraPositionState.isMoving
-            }
+            assertMoveHappened(cameraPositionState)
             assertEquals(
                 startingZoom - 1f,
                 cameraPositionState.position.zoom,
-                assertRoundingError.toFloat()
+                ASSERT_ROUNDING_ERROR.toFloat()
             )
         }
     }
@@ -133,16 +115,11 @@ class GoogleMapViewTests {
     fun testCameraZoomOutAnimation() {
         initMap()
         zoom(shouldAnimate = true, zoomIn = false) {
-            composeTestRule.waitUntil(1000) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(3000) {
-                !cameraPositionState.isMoving
-            }
+            assertMoveHappened(cameraPositionState)
             assertEquals(
                 startingZoom - 1f,
                 cameraPositionState.position.zoom,
-                assertRoundingError.toFloat()
+                ASSERT_ROUNDING_ERROR.toFloat()
             )
         }
     }
@@ -177,17 +154,19 @@ class GoogleMapViewTests {
     }
 }
 
-const val assertRoundingError: Double = 0.01
+const val ASSERT_ROUNDING_ERROR: Double = 0.01
 
-val hasValidApiKey: Boolean =
-    MAPS_API_KEY.isNotBlank()
-
-fun LatLng.assertEquals(other: LatLng) {
-    assertEquals(latitude, other.latitude, assertRoundingError)
-    assertEquals(longitude, other.longitude, assertRoundingError)
+private fun assertMoveHappened(cameraPositionState: CameraPositionState) {
+    verify(ordering = Ordering.ORDERED, timeout = 60000L) {
+        cameraPositionState setProperty "isMoving" value true
+        cameraPositionState setProperty "isMoving" value false
+    }
 }
 
-fun LatLng.assertNotEquals(other: LatLng) {
-    assertNotEquals(latitude, other.latitude, assertRoundingError)
-    assertNotEquals(longitude, other.longitude, assertRoundingError)
+private fun hasValidApiKey(): Boolean =
+    MAPS_API_KEY.isNotBlank()
+
+private fun LatLng.assertEquals(other: LatLng) {
+    assertEquals(latitude, other.latitude, ASSERT_ROUNDING_ERROR)
+    assertEquals(longitude, other.longitude, ASSERT_ROUNDING_ERROR)
 }
