@@ -23,12 +23,11 @@ private val dropDownMenuCornerSize = 8.dp
 fun CustomDropDownMenu(
     modifier: Modifier = Modifier,
     options: List<String> = listOf(),
-    defaultValue: String = "",
     textStyle: TextStyle = MaterialTheme.typography.body1,
+    value: String = "",
     onValueChange: (String) -> Unit = {},
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(defaultValue) }
 
     Box(
         modifier = modifier
@@ -41,9 +40,9 @@ fun CustomDropDownMenu(
         ) {
             CustomTextField(
                 shape = RoundedCornerShape(dropDownMenuCornerSize),
-                value = selectedText,
+                value = value,
                 readOnly = true,
-                //trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                // trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier,
                 contentDescription = "",
                 textStyle = textStyle,
@@ -58,7 +57,6 @@ fun CustomDropDownMenu(
                     DropdownMenuItem(
                         content = { Text(text = item) },
                         onClick = {
-                            selectedText = item
                             onValueChange(item)
                             expanded = false
                         }

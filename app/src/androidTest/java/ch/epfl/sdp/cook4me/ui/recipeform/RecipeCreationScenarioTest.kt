@@ -61,5 +61,4 @@ class RecipeCreationScenarioTest {
     fun recipeTitleIsDisplayed() {
         assert(false)
     }
-
 }

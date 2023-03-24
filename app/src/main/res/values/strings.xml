@@ -67,4 +67,5 @@
     <string name="RecipeCreationIngredientsTitle">Ingredients</string>
     <string name="RecipeCreationScreenServingsTitle">Serves</string>
     <string name="RecipeCreationDifficultyTitle">Difficulty</string>
+    <string name="RecipeCreationCookingTimeEntryTitle">Cooking Time</string>
 </resources>

@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.tupperwareform
+package ch.epfl.sdp.cook4me.ui.imageSelection
 
 import android.net.Uri
 import androidx.compose.foundation.background

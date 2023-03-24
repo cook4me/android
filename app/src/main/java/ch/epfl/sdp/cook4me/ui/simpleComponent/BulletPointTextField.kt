@@ -40,7 +40,7 @@ class GenericSeparators {
          * 2. item2
          * 3. etc...
          */
-        val EnumeratedList = generateSequence(1) { it + 1 }.map{ "$it. " }
+        val EnumeratedList = generateSequence(1) { it + 1 }.map { "$it. " }
     }
 }
 
@@ -60,11 +60,11 @@ class ListVisualTransformation(
 
         return TransformedText(
             AnnotatedString(formattedText),
-            object: OffsetMapping {
+            object : OffsetMapping {
                 private fun offsetDueToSeparator(nbOfLinesBeforeCursor: Int): Int {
                     return separator.take(nbOfLinesBeforeCursor + 1)
-                        .map {separator -> separator.length}
-                        .reduce{ x, y -> x+ y }
+                        .map { separator -> separator.length }
+                        .reduce { x, y -> x + y }
                 }
 
                 override fun originalToTransformed(offset: Int): Int {
@@ -73,7 +73,7 @@ class ListVisualTransformation(
                     }
                     val nbOfLinesBeforeCursor = text
                         .dropLast(text.length - offset)
-                        .count {it == '\n'}
+                        .count { it == '\n' }
 
                     return offset + offsetDueToSeparator(nbOfLinesBeforeCursor)
                 }
@@ -101,7 +101,6 @@ class ListVisualTransformation(
 
 private val defaultShape = RoundedCornerShape(8.dp)
 
-
 /**
  * Text field where input is automatically formatted as "bullet points" at each newline.
  * The "bullet point" style can be changed through the separators parameter.
@@ -111,7 +110,7 @@ private val defaultShape = RoundedCornerShape(8.dp)
 fun BulletPointTextField(
     modifier: Modifier = Modifier,
     placeholder: (@Composable () -> Unit)? = null,
-    onValueChange: (String) ->  Unit,
+    onValueChange: (String) -> Unit,
     separators: Sequence<String> = GenericSeparators.BulletSeparator,
     contentDescription: String,
     shape: Shape = defaultShape
@@ -143,7 +142,7 @@ fun BulletPointTextField(
 fun IngredientEntry() {
     Cook4meTheme {
         Box(modifier = Modifier.fillMaxSize()) {
-            BulletPointTextField(contentDescription = "",onValueChange = {}, modifier = Modifier.fillMaxWidth())
+            BulletPointTextField(contentDescription = "", onValueChange = {}, modifier = Modifier.fillMaxWidth())
         }
     }
 }

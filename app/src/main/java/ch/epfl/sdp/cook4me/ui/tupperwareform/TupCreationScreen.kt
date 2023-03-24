@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
 import ch.epfl.sdp.cook4me.ui.simpleComponent.CustomTextField
 import ch.epfl.sdp.cook4me.ui.simpleComponent.CustomTitleText
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
@@ -204,7 +205,6 @@ fun TupperwareForm(
         }
     }
 }
-
 
 @Preview("default", showBackground = true)
 @Composable

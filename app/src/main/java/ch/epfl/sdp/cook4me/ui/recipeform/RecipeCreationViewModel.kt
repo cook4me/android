@@ -2,7 +2,7 @@ package ch.epfl.sdp.cook4me.ui.recipeform
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.State
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -24,30 +24,53 @@ class MockRecipeService : RecipeService {
     }
 }
 
-class RecipeCreationViewModel(private val recipeService: RecipeService = MockRecipeService()): ViewModel() {
-    //Elements where UI state is handled by UI internally
+class RecipeCreationViewModel(
+    private val recipeService: RecipeService = MockRecipeService(),
+) : ViewModel() {
+    // Elements where UI state is handled by UI internally
     private data class RecipeForm(
         val name: String = "",
         val ingredients: String = "",
         val servings: Int = 0,
         val preparationSteps: String = "",
-        val difficulty: String = "",
-        val prepTime: String = "",
     )
     private var _recipeForm = RecipeForm()
-    //Elements for which UI state is handled externally
+
+    val cookingTimeOptions = listOf(
+        "5min",
+        "10min",
+        "15min",
+        "30min",
+        "45min",
+        "1h",
+        "1h15",
+        "1h30",
+        "2h00",
+        "2h30",
+        "3h00",
+        "3h30",
+        "4h00",
+        "4h30",
+    )
+
+    val difficultyOptions = listOf("Easy", "Medium", "Hard")
+    // Elements for which UI state is handled from viewModel
     private val _images = mutableStateListOf<Uri>()
     private var _formError = mutableStateOf(false)
+    private var _cookingTime = mutableStateOf(cookingTimeOptions[3])
+    private var _difficulty = mutableStateOf(difficultyOptions[0])
 
     val images: List<Uri> = _images
-    val formError: State<Boolean> = _formError
+    val cookingTime: MutableState<String> = _cookingTime
+    val difficulty: MutableState<String> = _difficulty
+
 
     fun updateIngredients(ingredients: String) {
-        _recipeForm = _recipeForm.copy(ingredients=ingredients)
+        _recipeForm = _recipeForm.copy(ingredients = ingredients)
     }
 
     fun updateRecipeName(name: String) {
-        _recipeForm = _recipeForm.copy(name=name)
+        _recipeForm = _recipeForm.copy(name = name)
     }
 
     fun updateServings(servings: String) {
@@ -59,34 +82,35 @@ class RecipeCreationViewModel(private val recipeService: RecipeService = MockRec
     }
 
     fun updateSteps(steps: String) {
-        _recipeForm = _recipeForm.copy(preparationSteps=steps)
+        _recipeForm = _recipeForm.copy(preparationSteps = steps)
     }
-    fun updateDifficulty(difficulty: String) {
-        _recipeForm = _recipeForm.copy(difficulty=difficulty)
-    }
-
-    fun updatePrepTime(prepTime: String) {
-        _recipeForm = _recipeForm.copy(prepTime = prepTime)
+    fun changeDifficulty(difficulty: String) {
+        _difficulty.value = difficulty
     }
 
-    fun updateImages(image: Uri) {
+    fun changeCookingTime(cookingTime: String) {
+        _cookingTime.value = cookingTime
+    }
+
+    fun addImage(image: Uri) {
         _images.add(image)
     }
 
     private fun recipeIsValid(): Boolean {
         if (_recipeForm.name.isBlank()) return false
-        if (_recipeForm.difficulty.isBlank()) return false
+        if (_difficulty.value.isBlank()) return false
         if (_recipeForm.servings < 0 || _recipeForm.servings > 99) return false
         if (_recipeForm.ingredients.isBlank()) return false
         if (_recipeForm.preparationSteps.isBlank()) return false
-        if (_recipeForm.prepTime.isBlank()) return false
+        if (_cookingTime.value.isBlank()) return false
         return true
     }
 
     fun onSubmit() {
-        Log.d("Debug",
+        Log.d(
+            "Debug",
             "${_recipeForm.name}\n${_recipeForm.ingredients}\n${_recipeForm.preparationSteps}" +
-                    "\n${_recipeForm.difficulty}\n${_recipeForm.servings}\n${_recipeForm.prepTime}"
+                "\n${_difficulty.value}\n${_recipeForm.servings}\n${_cookingTime.value}"
         )
         if (recipeIsValid()) {
             _formError.value = false
@@ -96,8 +120,8 @@ class RecipeCreationViewModel(private val recipeService: RecipeService = MockRec
                     _recipeForm.ingredients.lines().filter { it.isNotBlank() },
                     _recipeForm.servings,
                     _recipeForm.preparationSteps.lines().filter { it.isNotBlank() },
-                    _recipeForm.difficulty,
-                    _recipeForm.prepTime,
+                    _difficulty.value,
+                    _cookingTime.value,
                     _images.map { it.toString() }
                 )
             }
