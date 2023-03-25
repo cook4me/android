@@ -41,11 +41,6 @@ class TupperwareCreationScenarioTest {
 
     @Test
     fun submittingValidTupFormShouldOutputCorrectTupperwareObject() {
-        val title = "Pizza"
-        val desc = "Yeah the photo is not lying it's not good..."
-        val tags = listOf<String>()
-        val images = listOf(testUri.toString())
-
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
@@ -113,11 +108,6 @@ class TupperwareCreationScenarioTest {
     // no title or no image or no description
     @Test
     fun tupperwareFormWithNoTitleShouldNotBeSubmittable() {
-        val title = "Pizza"
-        val desc = "Yeah the photo is not lying it's not good..."
-        val tags = listOf<String>()
-        val images = listOf(testUri.toString())
-
         val hasTextFieldError = SemanticsMatcher.expectValue(
             SemanticsProperties.StateDescription, "Error"
         )
@@ -139,11 +129,6 @@ class TupperwareCreationScenarioTest {
 
     @Test
     fun tupperwareFormWithNoImageShouldNotBeSubmittable() {
-        val title = "Pizza"
-        val desc = "Yeah the photo is not lying it's not good..."
-        val tags = listOf<String>()
-        val images = listOf(testUri.toString())
-
         val hasTextFieldError = SemanticsMatcher.expectValue(
             SemanticsProperties.StateDescription, "Error"
         )
@@ -163,11 +148,6 @@ class TupperwareCreationScenarioTest {
 
     @Test
     fun tupperwareFormWithNoDescriptionShouldNotBeSubmittable() {
-        val title = "Pizza"
-        val desc = "Yeah the photo is not lying it's not good..."
-        val tags = listOf<String>()
-        val images = listOf(testUri.toString())
-
         val hasTextFieldError = SemanticsMatcher.expectValue(
             SemanticsProperties.StateDescription, "Error"
         )
@@ -189,11 +169,6 @@ class TupperwareCreationScenarioTest {
 
     @Test
     fun addingImageFromGalleryShouldDisplayImage() {
-        val title = "Pizza"
-        val desc = "Yeah the photo is not lying it's not good..."
-        val tags = listOf<String>()
-        val images = listOf(testUri.toString())
-
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
