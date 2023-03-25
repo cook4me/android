@@ -28,7 +28,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 const val STARTING_ZOOM = 10f
-const val ASSERT_ROUNDING_ERROR  = 0.01
+const val ASSERT_ROUNDING_ERROR = 0.01
 const val ONE_MINUTE_IN_MILLISECONDS = 60000L
 
 class GoogleMapViewTests {
@@ -105,7 +105,7 @@ class GoogleMapViewTests {
         zoom(shouldAnimate = false, zoomIn = false) {
             assertMoveHappened(cameraPositionState)
             assertEquals(
-               STARTING_ZOOM - 1f,
+                STARTING_ZOOM - 1f,
                 cameraPositionState.position.zoom,
                 ASSERT_ROUNDING_ERROR.toFloat()
             )
