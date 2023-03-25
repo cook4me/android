@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
 import coil.compose.AsyncImagePainter
@@ -52,7 +53,7 @@ fun EditProfileScreen(
             .verticalScroll(rememberScrollState())
             .padding(8.dp)
     ) {
-        saveCancelButtons()
+        saveCancelButtons(viewModel::onSubmit)
         ProfileSetupImage_profileUpdateScreen()
 
         // Textfield for the usernaame
@@ -215,16 +216,16 @@ fun ProfileUpdateImage_profileUpdateScreen(
 }
 
 @Composable
-private fun saveCancelButtons() {
+private fun saveCancelButtons(onSummit: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        text_buttons(nameBtn = stringResource(R.string.btn_cancel))
+        text_buttons(onClick = {}, nameBtn = stringResource(R.string.btn_cancel))
 
-        text_buttons(nameBtn = stringResource(R.string.btn_save))
+        text_buttons(onClick = onSummit, nameBtn = stringResource(R.string.btn_save))
     }
 }
 
@@ -241,11 +242,11 @@ private fun input_row(content: @Composable RowScope.() -> Unit) {
 }
 
 @Composable
-private fun text_buttons(nameBtn: String) {
+private fun text_buttons(onClick: () -> Unit,nameBtn: String) {
     Text(
         text = nameBtn,
         modifier = Modifier
             .testTag(nameBtn)
-            .clickable {}
+                .clickable(onClick = {onClick()})
     )
 }
