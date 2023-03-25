@@ -7,21 +7,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.epfl.sdp.cook4me.application.TupperwareService
 import kotlinx.coroutines.launch
 
-class MockTupperwareService : TupperwareService {
-    override suspend fun submitForm(
-        title: String,
-        desc: String,
-        tags: List<String>,
-        photos: List<String>,
-    ) {
-        Log.d("Debug", "$title\n$desc")
-    }
-}
-
-class TupCreationViewModel(private val service: TupperwareService = MockTupperwareService()) : ViewModel() {
+class TupCreationViewModel :
+    ViewModel() {
 
     private var _titleText = mutableStateOf("")
     private var _descText = mutableStateOf("")
@@ -54,12 +43,14 @@ class TupCreationViewModel(private val service: TupperwareService = MockTupperwa
             _formError.value = true
         } else {
             viewModelScope.launch {
-                service.submitForm(
-                    _titleText.value,
-                    _descText.value,
-                    _tags,
-                    _images.map { uri -> uri.toString() } // TODO pass actual images
-                )
+                // TODO: outcomment
+//                repository.add(
+//                    Tupperware(
+//                        title = _titleText.value,
+//                        description = _descText.value,
+//                        images = _images.map { uri -> uri.toString() })
+//                )
+                Log.d("Debug", "$_titleText\n$_descText")
             }
         }
     }

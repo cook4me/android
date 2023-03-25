@@ -45,16 +45,17 @@ class TupperwareServiceTest {
 
     @Test
     fun submittingTupShouldAddTupInRepository() = runTest {
-        val tupperwareService = TupperwareServiceWithRepository(tupperwareRepository)
 
         val tupperware = Tupperware(
-            name = "title2", desc = "desc2", tags = listOf("Langosh", "Hungarian"), photos = listOf("Uri")
+            title = "title2", description = "desc2", tags = listOf("Langosh", "Hungarian"), images = listOf("Uri")
         )
-        tupperwareService.submitForm(
-            tupperware.name,
-            tupperware.desc,
-            tupperware.tags,
-            tupperware.photos
+        tupperwareRepository.add(
+            Tupperware(
+                tupperware.title,
+                tupperware.description,
+                tupperware.tags,
+                tupperware.images
+            )
         )
         val allTupperwares = tupperwareRepository.getAll()
         MatcherAssert.assertThat(allTupperwares.values, Matchers.containsInAnyOrder(tupperware))
