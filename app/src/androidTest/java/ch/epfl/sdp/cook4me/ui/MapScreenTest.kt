@@ -27,11 +27,14 @@ import org.junit.Test
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+const val STARTING_ZOOM = 10f
+const val ASSERT_ROUNDING_ERROR  = 0.01
+const val ONE_MINUTE_IN_MILLISECONDS = 60000L
+
 class GoogleMapViewTests {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val startingZoom = 10f
     private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
 
@@ -58,7 +61,7 @@ class GoogleMapViewTests {
             CameraPositionState(
                 position = CameraPosition.fromLatLngZoom(
                     startingPosition,
-                    startingZoom
+                    STARTING_ZOOM
                 )
             )
         )
@@ -75,7 +78,7 @@ class GoogleMapViewTests {
         initMap()
         assertEquals(CameraMoveStartedReason.NO_MOVEMENT_YET, cameraPositionState.cameraMoveStartedReason)
         zoom(shouldAnimate = true, zoomIn = true) {
-            verify(ordering = Ordering.ORDERED, timeout = 60000L) {
+            verify(ordering = Ordering.ORDERED, timeout = ONE_MINUTE_IN_MILLISECONDS) {
                 cameraPositionState setProperty "cameraMoveStartedReason" value CameraMoveStartedReason.DEVELOPER_ANIMATION
                 cameraPositionState setProperty "isMoving" value true
                 cameraPositionState setProperty "isMoving" value false
@@ -89,7 +92,7 @@ class GoogleMapViewTests {
         zoom(shouldAnimate = true, zoomIn = true) {
             assertMoveHappened(cameraPositionState)
             assertEquals(
-                startingZoom + 1f,
+                STARTING_ZOOM + 1f,
                 cameraPositionState.position.zoom,
                 ASSERT_ROUNDING_ERROR.toFloat()
             )
@@ -102,7 +105,7 @@ class GoogleMapViewTests {
         zoom(shouldAnimate = false, zoomIn = false) {
             assertMoveHappened(cameraPositionState)
             assertEquals(
-                startingZoom - 1f,
+               STARTING_ZOOM - 1f,
                 cameraPositionState.position.zoom,
                 ASSERT_ROUNDING_ERROR.toFloat()
             )
@@ -115,7 +118,7 @@ class GoogleMapViewTests {
         zoom(shouldAnimate = true, zoomIn = false) {
             assertMoveHappened(cameraPositionState)
             assertEquals(
-                startingZoom - 1f,
+                STARTING_ZOOM - 1f,
                 cameraPositionState.position.zoom,
                 ASSERT_ROUNDING_ERROR.toFloat()
             )
@@ -152,10 +155,8 @@ class GoogleMapViewTests {
     }
 }
 
-const val ASSERT_ROUNDING_ERROR: Double = 0.01
-
 private fun assertMoveHappened(cameraPositionState: CameraPositionState) {
-    verify(ordering = Ordering.ORDERED, timeout = 60000L) {
+    verify(ordering = Ordering.ORDERED, timeout = ONE_MINUTE_IN_MILLISECONDS) {
         cameraPositionState setProperty "isMoving" value true
         cameraPositionState setProperty "isMoving" value false
     }
