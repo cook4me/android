@@ -40,23 +40,27 @@ const val MAP_SCREEN_PROPORTION = 0.8f
 data class MarkerData(
     val position: LatLng,
     val title: String,
+    val id: String,
     val description: String
 )
 
 val dummyMarkers = listOf(
     MarkerData(
         position = Locations.SATELLITE,
+        id = "satellite",
         title = "Satellite EPFL",
         description = "EPFL satellite campus"
     ),
     MarkerData(
         position = Locations.ROLEX_LEARNING_CENTER,
         title = "EPFL Rolex Learning Center",
+        id = "rolex_learning_center",
         description = "EPFL library and learning center"
     ),
     MarkerData(
         position = Locations.AGE_POLY,
         title = "UNIL AgePoly",
+        id = "agepoly",
         description = "UNIL science and research building"
     )
 )
@@ -67,7 +71,8 @@ fun GoogleMapView(
     cameraPositionState: CameraPositionState = rememberCameraPositionState(),
     onMapLoaded: () -> Unit = {},
     content: @Composable () -> Unit = {},
-    markers: List<MarkerData> = emptyList()
+    markers: List<MarkerData> = emptyList(),
+    selectedEventId: String = ""
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
@@ -77,8 +82,8 @@ fun GoogleMapView(
         uniLocation: LatLng ->
         cameraPositionState.position = CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
-    var selectedMarkerTitle by remember { mutableStateOf("") }
-
+    var selectedMarker by remember { mutableStateOf(findMarkerById(markers, selectedEventId)) }
+    var navigateToEvent by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -107,17 +112,24 @@ fun GoogleMapView(
                 .padding(start = 16.dp, end = 16.dp)
         ) {
             Row {
-                if (selectedMarkerTitle != "") {
-                    Text(
-                        text = "Location: $selectedMarkerTitle",
-                    )
+                if (selectedMarker != null) {
+                    Column {
+                        Text(
+                            text = "Location: ${selectedMarker!!.title}",
+                        )
+                        if (navigateToEvent) {
+                            Text(
+                                text = "Navigate to event with id: ${selectedMarker!!.id}",
+                            )
+                        }
+                    }
                     Button(
                         modifier = modifier.padding(4.dp),
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = MaterialTheme.colors.onPrimary,
                             contentColor = MaterialTheme.colors.primary
                         ),
-                        onClick = { }
+                        onClick = { navigateToEvent = !navigateToEvent }
                     ) {
                         Text(text = "Explore event", style = MaterialTheme.typography.body1)
                     }
@@ -137,13 +149,13 @@ fun GoogleMapView(
                 onMapLoaded.invoke()
             },
         ) {
-            markers.forEach { marker ->
+            markers.map { marker ->
                 val markerState = rememberMarkerState(position = marker.position)
                 MarkerInfoWindowContent(
                     state = markerState,
                     title = marker.title,
                     onClick = {
-                        selectedMarkerTitle = marker.title
+                        selectedMarker = marker
                         false
                     },
                     tag = marker.title,
@@ -155,6 +167,8 @@ fun GoogleMapView(
         }
     }
 }
+fun findMarkerById(markers: List<MarkerData>, markerId: String): MarkerData? =
+    markers.find { marker -> marker.id == markerId }
 
 @Composable
 private fun MapTypeControls(
@@ -195,6 +209,6 @@ private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Mo
 fun GoogleMapViewPreview() {
     GoogleMapView(
         modifier = Modifier.fillMaxSize(),
-        markers = dummyMarkers
+        markers = dummyMarkers,
     )
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
@@ -36,7 +37,7 @@ class GoogleMapViewTests {
     private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
 
-    private fun initMap(content: @Composable () -> Unit = {}) {
+    private fun initMap(content: @Composable () -> Unit = {}, selectedEventId: String = "") {
         check(hasValidApiKey) { "Maps API key not specified" }
         val countDownLatch = CountDownLatch(1)
         composeTestRule.setContent {
@@ -46,7 +47,8 @@ class GoogleMapViewTests {
                 cameraPositionState = cameraPositionState,
                 onMapLoaded = {
                     countDownLatch.countDown()
-                }
+                },
+                selectedEventId = selectedEventId
             )
         }
         val mapLoaded = countDownLatch.await(MAPS_LOADING_TIMEOUT, TimeUnit.SECONDS)
@@ -64,10 +66,23 @@ class GoogleMapViewTests {
     }
 
     @Test
-    fun printScreenRootDebug() {
+    fun testEventInformationIsDisplayedWhenEventSelected() {
+        initMap(selectedEventId = dummyMarkers[0].id)
+        composeTestRule.onNodeWithText("Location: ${dummyMarkers[0].title}").assertIsDisplayed()
+    }
+
+    @Test
+    fun testNoEventIsDisplayedWhenNoEventIsSelected() {
         initMap()
-        checkCameraPosition(nodeText = "EPFL", Locations.EPFL)
-        composeTestRule.onRoot().printToLog("[DEBUG] ROOT")
+        composeTestRule.onNodeWithText("Select an event").assertIsDisplayed()
+    }
+
+    @Test
+    fun testEventButtonClickNavigatesToEventScreen() {
+        initMap(selectedEventId = dummyMarkers[0].id)
+        composeTestRule.onNodeWithText("Explore event").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Explore event").performClick()
+        composeTestRule.onNodeWithText("Navigate to event with id: ${dummyMarkers[0].id}").assertIsDisplayed()
     }
 
     @Test
