@@ -41,6 +41,10 @@ class TupperwareCreationScenarioTest {
 
     @Test
     fun submittingValidTupFormShouldOutputCorrectTupperwareObject() {
+        val expectedTitle = "Pizza"
+        val expectedDescription = "Yeah the photo is not lying it's not good..."
+        val expectedTags = listOf<String>()
+        val expectedImages = listOf(testUri.toString())
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
@@ -51,10 +55,11 @@ class TupperwareCreationScenarioTest {
         composeTestRule.waitUntilDisplayed(hasTestTag("image"))
         composeTestRule.onNodeWithTag("image", useUnmergedTree = true).assertIsDisplayed()
 
-        composeTestRule.onNodeWithContentDescription("TitleTextField").performTextInput("Pizza")
+        composeTestRule.onNodeWithContentDescription("TitleTextField").performTextInput(expectedTitle)
         composeTestRule.onNodeWithContentDescription("DescriptionTextField")
-            .performTextInput("Yeah the photo is not lying it's not good...")
+            .performTextInput(expectedDescription)
         composeTestRule.onNodeWithText("Done").performClick()
+
     }
 
     @Test
