@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.map
 
-import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -10,21 +9,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,6 +36,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
 const val ZOOM_DEFAULT_VALUE = 15f
+const val MAP_SCREEN_PROPORTION = 0.8f
 data class MarkerData(
     val position: LatLng,
     val title: String,
@@ -83,7 +79,7 @@ fun GoogleMapView(
     }
     var selectedMarkerTitle by remember { mutableStateOf("") }
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp, horizontal = 16.dp)
@@ -107,7 +103,7 @@ fun GoogleMapView(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.2f)
+                .fillMaxHeight(1 - MAP_SCREEN_PROPORTION)
                 .padding(start = 16.dp, end = 16.dp)
         ) {
             Row {
@@ -121,7 +117,7 @@ fun GoogleMapView(
                             backgroundColor = MaterialTheme.colors.onPrimary,
                             contentColor = MaterialTheme.colors.primary
                         ),
-                        onClick = {  }
+                        onClick = { }
                     ) {
                         Text(text = "Explore event", style = MaterialTheme.typography.body1)
                     }
@@ -130,11 +126,10 @@ fun GoogleMapView(
                     text = "Select an event"
                 )
             }
-
         }
         GoogleMap(
             modifier = modifier
-                .fillMaxHeight(0.2f),
+                .fillMaxHeight(MAP_SCREEN_PROPORTION),
             cameraPositionState = cameraPositionState,
             properties = mapProperties,
             uiSettings = uiSettings,

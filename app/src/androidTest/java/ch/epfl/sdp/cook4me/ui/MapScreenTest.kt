@@ -3,9 +3,12 @@ package ch.epfl.sdp.cook4me.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.Locations
@@ -61,21 +64,23 @@ class GoogleMapViewTests {
     }
 
     @Test
-    fun testUniversitiesButtonsSetCameraPosition() {
-        fun checkCameraPosition(name: String, location: LatLng) {
-            composeTestRule.onNodeWithText(name).performClick()
-            composeTestRule.waitUntil(MAPS_MOVING_TIMEOUT) {
-                cameraPositionState.isMoving
-            }
-            composeTestRule.waitUntil(MAPS_LOADING_TIMEOUT) {
-                !cameraPositionState.isMoving
-            }
-            location.assertEquals(cameraPositionState.position.target)
-        }
-
+    fun printScreenRootDebug() {
         initMap()
-        checkCameraPosition(name = "EPFL", Locations.EPFL)
-        checkCameraPosition(name = "UNIL", Locations.UNIL)
+        checkCameraPosition(nodeText = "EPFL", Locations.EPFL)
+        composeTestRule.onRoot().printToLog("[DEBUG] ROOT")
+    }
+
+    @Test
+    fun testNoEventSelectedWhenStartingScreen() {
+        initMap()
+        composeTestRule.onNodeWithText("Select an event").assertIsDisplayed()
+    }
+
+    @Test
+    fun testUniversitiesButtonsSetCameraPosition() {
+        initMap()
+        checkCameraPosition(nodeText = "EPFL", Locations.EPFL)
+        checkCameraPosition(nodeText = "UNIL", Locations.UNIL)
     }
 
     @Test
@@ -95,7 +100,21 @@ class GoogleMapViewTests {
             )
         }
     }
+
+    fun checkCameraPosition(nodeText: String, location: LatLng) {
+        composeTestRule.onNodeWithText(nodeText).performClick()
+        composeTestRule.waitUntil(MAPS_MOVING_TIMEOUT) {
+            cameraPositionState.isMoving
+        }
+        composeTestRule.waitUntil(MAPS_LOADING_TIMEOUT) {
+            !cameraPositionState.isMoving
+        }
+        location.assertEquals(cameraPositionState.position.target)
+    }
 }
+
+
+
 
 const val assertRoundingError: Double = 0.01
 
