@@ -43,8 +43,6 @@ class TupperwareCreationScenarioTest {
     fun submittingValidTupFormShouldOutputCorrectTupperwareObject() {
         val expectedTitle = "Pizza"
         val expectedDescription = "Yeah the photo is not lying it's not good..."
-        val expectedTags = listOf<String>()
-        val expectedImages = listOf(testUri.toString())
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
@@ -59,7 +57,6 @@ class TupperwareCreationScenarioTest {
         composeTestRule.onNodeWithContentDescription("DescriptionTextField")
             .performTextInput(expectedDescription)
         composeTestRule.onNodeWithText("Done").performClick()
-
     }
 
     @Test
