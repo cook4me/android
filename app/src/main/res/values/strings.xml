@@ -5,13 +5,7 @@
     <string name="navigate_to_edit_profile">Edit profile</string>
     <string name="navigate_to_add_tupperware">Add tupperware</string>
     <string name="navigate_to_add_event">Add event</string>
-    <!-- ui/simpleComponent strings   -->
 
-    <!-- AddressInput   -->
-    <string name="address_default_question">What is the location?</string>
-    <string name="street_address_label">Street address</string>
-    <string name="city_label">City</string>
-    <string name="zip_code_label">Zip code</string>
     <!--  DatePicker  -->
     <string name="selected_date_text">Selected Date: </string>
     <string name="select_date_button">Select Date</string>
@@ -27,6 +21,23 @@
     <string name="event_visibility_everyone">Everyone</string>
     <string name="event_visibility_subscriber_only">Subscriber only</string>
     <string name="event_submit_button_test">Submit</string>
+
+    <!-- AddressInput   -->
+    <string name="address_default_question">What is the location?</string>
+    <string name="street_address_label">Street address</string>
+    <string name="city_label">City</string>
+    <string name="zip_code_label">Zip code</string>
+
+    <!-- Login Screen -->
+    <string name="sign_in_screen_top_bar_message">Enter your login details</string>
+    <string name="sign_in_screen_sign_in_button">Sign in</string>
+    <string name="invalid_email_message">Invalid email!</string>
+    <string name="password_blank">Password cannot be blank!</string>
+    <string name="sign_in_screen_sign_in_success">Sign in successful!</string>
+    <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
+    <string name="sign_in_screen_wrong_password">Wrong password!</string>
+    <string name="TAG_EMAIL_FIELD">EmailField</string>
+    <string name="TAG_PASSWORD_FIELD">PasswordField</string>
 
     <string name="cool_map">Cool Map</string>
     <string name="image_selector_add_image">+</string>
@@ -50,13 +61,4 @@
     <string name="btn_cancel">cancel</string>
     <string name="msg_cancelled">cancelled</string>
     <string name="msg_saved">saved</string>
-    <string name="sign_in_screen_top_bar_message">Enter your login details</string>
-    <string name="sign_in_screen_sign_in_button">Sign in</string>
-    <string name="invalid_email_message">Invalid email!</string>
-    <string name="password_blank">Password cannot be blank!</string>
-    <string name="sign_in_screen_sign_in_success">Sign in successful!</string>
-    <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
-    <string name="sign_in_screen_wrong_password">Wrong password!</string>
-    <string name="TAG_EMAIL_FIELD">EmailField</string>
-    <string name="TAG_PASSWORD_FIELD">PasswordField</string>
 </resources>

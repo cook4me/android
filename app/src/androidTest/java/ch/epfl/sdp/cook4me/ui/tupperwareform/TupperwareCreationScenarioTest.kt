@@ -59,7 +59,6 @@ class TupperwareCreationScenarioTest {
         composeTestRule.onNodeWithContentDescription("DescriptionTextField")
             .performTextInput(expectedDescription)
         composeTestRule.onNodeWithText("Done").performClick()
-
     }
 
     @Test

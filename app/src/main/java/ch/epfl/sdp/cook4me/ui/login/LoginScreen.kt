@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.login
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,14 +22,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.EmailField
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
+import ch.epfl.sdp.cook4me.ui.common.form.state.EmailState
+import ch.epfl.sdp.cook4me.ui.common.form.state.PasswordState
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.launch
@@ -36,15 +41,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = LoginViewModel(),
+    accountService: AccountService = AccountService(),
     onSuccessfulLogin: () -> Unit
 ) {
-    var email by remember {
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
+    val emailState = remember { EmailState() }
+    val passwordState = remember { PasswordState() }
     var inProgress by remember {
         mutableStateOf(false)
     }
@@ -67,40 +68,69 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                EmailField(email, { email = it }, Modifier.fieldModifier())
-                PasswordField(password, { password = it }, Modifier.fieldModifier())
+                EmailField(
+                    emailState.text,
+                    emailState.showErrors(),
+                    { emailState.text = it },
+                    Modifier
+                        .fieldModifier()
+                        .onFocusChanged { focusState ->
+                            emailState.onFocusChange(focusState.isFocused)
+                            if (!focusState.isFocused) {
+                                emailState.enableShowErrors()
+                            }
+                        }
+                )
+                PasswordField(
+                    passwordState.text,
+                    passwordState.showErrors(),
+                    { passwordState.text = it },
+                    Modifier
+                        .fieldModifier()
+                        .onFocusChanged { focusState ->
+                            passwordState.onFocusChange(focusState.isFocused)
+                            if (!focusState.isFocused) {
+                                passwordState.enableShowErrors()
+                            }
+                        }
+                )
                 LoadingButton(
-                    stringResource(R.string.sign_in_screen_sign_in_button),
-                    Modifier.fillMaxWidth().padding(16.dp, 8.dp),
+                    R.string.sign_in_screen_sign_in_button,
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp, 8.dp),
                     inProgress
                 ) {
                     scope.launch {
-                        if (!viewModel.isEmailValid(email)) {
+                        if (!emailState.isValid) {
                             scaffoldState
                                 .snackbarHostState
-                                .showSnackbar(context.getString(R.string.invalid_email_message))
-                        } else if (viewModel.isPasswordBlank(password)) {
+                                .showSnackbar(emailState.getErrorMessage(context))
+
+                        } else if (passwordState.isValid) {
                             scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.password_blank))
                         } else {
                             try {
                                 inProgress = true
-                                viewModel.onSignInClick(email, password)
+                                accountService.authenticate(emailState.text, passwordState.text)
                                 onSuccessfulLogin()
                             } catch (e: FirebaseAuthInvalidUserException) {
                                 scaffoldState
                                     .snackbarHostState
                                     .showSnackbar(context.getString(R.string.sign_in_screen_non_exist_user))
-                                // println: for logging the exception
-                                // otherwise detekt triggers SwallowedException message
-                                // refer to: https://detekt.dev/docs/rules/exceptions/
-                                // any suggestions apart from println()?
-                                println(e)
+                                Log.d(
+                                    context.getString(R.string.sign_in_screen_non_exist_user),
+                                    e.stackTraceToString()
+                                )
                             } catch (e: FirebaseAuthInvalidCredentialsException) {
                                 scaffoldState
                                     .snackbarHostState
                                     .showSnackbar(context.getString(R.string.sign_in_screen_wrong_password))
                                 inProgress = false
-                                println(e)
+                                Log.d(
+                                    context.getString(R.string.sign_in_screen_wrong_password),
+                                    e.stackTraceToString()
+                                )
                             }
                         }
                     }
@@ -111,7 +141,9 @@ fun LoginScreen(
 }
 
 private fun Modifier.fieldModifier(): Modifier =
-    this.fillMaxWidth().padding(16.dp, 4.dp)
+    this
+        .fillMaxWidth()
+        .padding(16.dp, 4.dp)
 
 @Composable
 private fun BasicToolbar(title: String) {

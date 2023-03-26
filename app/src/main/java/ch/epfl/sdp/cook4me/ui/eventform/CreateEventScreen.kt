@@ -79,8 +79,8 @@ fun CreateEventScreen() {
         )
 
         FormButtons(
-            onCancelText = stringResource(R.string.ButtonRowCancel),
-            onSaveText = stringResource(R.string.ButtonRowDone),
+            onCancelText = R.string.ButtonRowCancel,
+            onSaveText = R.string.ButtonRowDone,
             onCancelClick = { /*TODO*/ },
             onSaveClick = {
                 endMsg.value = if (event.value.isValidEvent) {

@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
+import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
 @Composable
@@ -118,8 +119,8 @@ fun CreateTupperwareScreen(
             viewModel = viewModel
         )
         FormButtons(
-            onCancelText = stringResource(R.string.ButtonRowCancel),
-            onSaveText = stringResource(R.string.ButtonRowDone),
+            onCancelText = R.string.ButtonRowCancel,
+            onSaveText = R.string.ButtonRowDone,
             onCancelClick = { /*TODO*/ },
             onSaveClick = { viewModel.onSubmit() }
         )
@@ -165,7 +166,7 @@ fun TupperwareForm(
             Spacer(modifier = Modifier.size(5.dp))
             CustomTitleText(stringResource(R.string.TupCreateFormTupName))
             Spacer(modifier = Modifier.size(5.dp))
-            CustomTextField(
+            InputField(
                 modifier = Modifier
                     .height(50.dp)
                     .fillMaxWidth(),
@@ -203,38 +204,6 @@ fun TupperwareForm(
             )
         }
     }
-}
-
-@Composable
-private fun CustomTextField(
-    modifier: Modifier = Modifier,
-    contentDescription: String,
-    value: String = "",
-    onValueChange: (String) -> Unit,
-    singleLine: Boolean = false,
-    isError: Boolean = false
-) {
-    val stateDescription = if (isError) {
-        "Error"
-    } else {
-        ""
-    }
-
-    TextField(
-        modifier = modifier.semantics {
-            this.contentDescription = contentDescription
-            this.stateDescription = stateDescription
-        },
-        textStyle = MaterialTheme.typography.caption,
-        value = value, onValueChange = onValueChange,
-        isError = isError,
-        shape = RoundedCornerShape(30.dp),
-        singleLine = singleLine,
-        colors = textFieldColors(
-            unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-        ),
-    )
 }
 
 @Composable

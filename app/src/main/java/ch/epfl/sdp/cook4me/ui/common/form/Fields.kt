@@ -30,47 +30,49 @@ import ch.epfl.sdp.cook4me.R
  */
 @Composable
 fun InputField(
+    value: String,
     question: String,
     label: String = "",
     onTextChanged: (String) -> Unit
 ) {
-    val text = remember { mutableStateOf("") }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(question)
         TextField(
-            value = text.value,
+            value = value,
             onValueChange = {
                 onTextChanged(it)
-                text.value = it
+                value = it
             },
             label = { Text(label) },
-            modifier = androidx.compose.ui.Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
 @Composable
-fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+fun EmailField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
         singleLine = true,
         modifier = modifier
             .testTag(stringResource(R.string.TAG_EMAIL_FIELD)),
         value = value,
         onValueChange = { onNewValue(it) },
+        isError = isError,
         placeholder = { Text("Email") },
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
     )
 }
 
 @Composable
-fun PasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+fun PasswordField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
         modifier = modifier
             .testTag(stringResource(R.string.TAG_PASSWORD_FIELD)),
         value = value,
         onValueChange = { onNewValue(it) },
+        isError = isError,
         placeholder = { Text(text = "Password") },
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
