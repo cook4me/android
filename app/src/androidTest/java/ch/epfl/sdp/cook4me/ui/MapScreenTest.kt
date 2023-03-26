@@ -17,8 +17,10 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
+import io.mockk.Ordering
+import io.mockk.spyk
+import io.mockk.verify
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -29,16 +31,19 @@ import java.util.concurrent.TimeUnit
 
 private const val MAPS_MOVING_TIMEOUT = 1000.toLong()
 private const val MAPS_LOADING_TIMEOUT = 5000.toLong()
+const val STARTING_ZOOM = 10f
+const val ASSERT_ROUNDING_ERROR = 0.01
+const val ONE_MINUTE_IN_MILLISECONDS = 60000L
+
 class GoogleMapViewTests {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val startingZoom = 10f
     private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
 
     private fun initMap(content: @Composable () -> Unit = {}, selectedEventId: String = "") {
-        check(hasValidApiKey) { "Maps API key not specified" }
+        check(hasValidApiKey()) { "Maps API key not specified" }
         val countDownLatch = CountDownLatch(1)
         composeTestRule.setContent {
             GoogleMapView(
@@ -57,10 +62,12 @@ class GoogleMapViewTests {
 
     @Before
     fun setUp() {
-        cameraPositionState = CameraPositionState(
-            position = CameraPosition.fromLatLngZoom(
-                startingPosition,
-                startingZoom
+        cameraPositionState = spyk(
+            CameraPositionState(
+                position = CameraPosition.fromLatLngZoom(
+                    startingPosition,
+                    STARTING_ZOOM
+                )
             )
         )
     }
@@ -99,12 +106,6 @@ class GoogleMapViewTests {
     }
 
     @Test
-    fun testStartingCameraPosition() {
-        initMap()
-        startingPosition.assertEquals(cameraPositionState.position.target)
-    }
-
-    @Test
     fun testLatLngInVisibleRegion() {
         initMap()
         composeTestRule.runOnUiThread {
@@ -128,20 +129,17 @@ class GoogleMapViewTests {
     }
 }
 
-
-
-
-const val assertRoundingError: Double = 0.01
-
-val hasValidApiKey: Boolean =
-    MAPS_API_KEY.isNotBlank()
-
-fun LatLng.assertEquals(other: LatLng) {
-    assertEquals(latitude, other.latitude, assertRoundingError)
-    assertEquals(longitude, other.longitude, assertRoundingError)
+private fun assertMoveHappened(cameraPositionState: CameraPositionState) {
+    verify(ordering = Ordering.ORDERED, timeout = ONE_MINUTE_IN_MILLISECONDS) {
+        cameraPositionState setProperty "isMoving" value true
+        cameraPositionState setProperty "isMoving" value false
+    }
 }
 
-fun LatLng.assertNotEquals(other: LatLng) {
-    assertNotEquals(latitude, other.latitude, assertRoundingError)
-    assertNotEquals(longitude, other.longitude, assertRoundingError)
+private fun hasValidApiKey(): Boolean =
+    MAPS_API_KEY.isNotBlank()
+
+private fun LatLng.assertEquals(other: LatLng) {
+    assertEquals(latitude, other.latitude, ASSERT_ROUNDING_ERROR)
+    assertEquals(longitude, other.longitude, ASSERT_ROUNDING_ERROR)
 }

@@ -8,6 +8,7 @@
     <!-- ui/simpleComponent strings   -->
 
     <!-- AddressInput   -->
+    <string name="address_default_question">What is the location?</string>
     <string name="street_address_label">Street address</string>
     <string name="city_label">City</string>
     <string name="zip_code_label">Zip code</string>
@@ -28,6 +29,15 @@
     <string name="empty_location_error_msg">Location is empty</string>
     <string name="max_participants_too_low_error_msg">Max participants is less than 2</string>
     <string name="date_in_past_error_msg">Date is in the past</string>
+    
+    <!--  CreateEventScreen  -->
+    <string name="ask_event_name">Name of the event?</string>
+    <string name="ask_event_description">Description of the event?</string>
+    <string name="ask_event_number_participants">Number of people?</string>
+    <string name="ask_event_visibility">Who can see the event</string>
+    <string name="event_visibility_everyone">Everyone</string>
+    <string name="event_visibility_subscriber_only">Subscriber only</string>
+    <string name="event_submit_button_test">Submit</string>
 
     <string name="cool_map">Cool Map</string>
     <string name="image_selector_add_image">+</string>
