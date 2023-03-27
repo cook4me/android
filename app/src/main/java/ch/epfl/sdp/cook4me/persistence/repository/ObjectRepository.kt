@@ -3,7 +3,7 @@ package ch.epfl.sdp.cook4me.persistence.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-class ObjectRepository(
+open class ObjectRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val objectPath: String = ""
 ) {

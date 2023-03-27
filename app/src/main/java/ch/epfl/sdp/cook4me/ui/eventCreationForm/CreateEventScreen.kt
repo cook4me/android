@@ -33,7 +33,7 @@ import java.util.Calendar
  */
 @Composable
 fun CreateEventScreen(
-    eventService: EventFormService
+    eventService: EventFormService = EventFormService(),
 ) {
     val event = remember {
         mutableStateOf(Event())
