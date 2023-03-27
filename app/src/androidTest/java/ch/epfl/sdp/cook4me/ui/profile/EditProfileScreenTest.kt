@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
-import EditProfileScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -77,11 +76,7 @@ class EditProfileScreenTest {
             EditProfileScreen()
         }
 
-        // Find the save button by its content description
-        val saveBtn = composeTestRule.activity.getString(R.string.btn_save)
-
-        // Click the save button
-        composeTestRule.onNodeWithTag(saveBtn).performClick()
+        composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
     }
 
     @Test
@@ -90,10 +85,6 @@ class EditProfileScreenTest {
             EditProfileScreen()
         }
 
-        // Find the cancel button by its content description
-        val cancelBtn = composeTestRule.activity.getString(R.string.btn_cancel)
-
-        // Click the cancel button
-        composeTestRule.onNodeWithTag(cancelBtn).performClick()
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
     }
 }

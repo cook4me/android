@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me
 
-import EditProfileScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,12 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.ui.OverviewScreen
-import ch.epfl.sdp.cook4me.ui.eventCreationForm.CreateEventScreen
+import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
+import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationScreenWithState
+import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreenWithState
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationViewModel
 
 /**
@@ -34,7 +34,7 @@ private enum class Screen {
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = Screen.Login.name) {
+    NavHost(navController = navController, startDestination = Screen.OverviewScreen.name) {
         composable(route = Screen.Login.name) {
             LoginScreen(
                 onSuccessfulLogin = { navController.navigate(Screen.OverviewScreen.name) }
@@ -59,7 +59,7 @@ fun Cook4MeApp(
             EditProfileScreen()
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
-            TupCreationScreenWithState(TupCreationViewModel())
+            CreateTupperwareScreenWithState(TupCreationViewModel())
         }
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()
