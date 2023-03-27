@@ -31,9 +31,9 @@ import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.EmailField
+import ch.epfl.sdp.cook4me.ui.common.form.EmailState
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
-import ch.epfl.sdp.cook4me.ui.common.form.state.EmailState
-import ch.epfl.sdp.cook4me.ui.common.form.state.PasswordState
+import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.launch
@@ -44,13 +44,14 @@ fun LoginScreen(
     accountService: AccountService = AccountService(),
     onSuccessfulLogin: () -> Unit
 ) {
-    val emailState = remember { EmailState() }
-    val passwordState = remember { PasswordState() }
+    val context = LocalContext.current
+    val emailState = remember { EmailState(context.getString(R.string.invalid_email_message)) }
+    val passwordState =
+        remember { RequiredTextFieldState(context.getString(R.string.password_blank)) }
     var inProgress by remember {
         mutableStateOf(false)
     }
 
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
@@ -74,11 +75,8 @@ fun LoginScreen(
                     { emailState.text = it },
                     Modifier
                         .fieldModifier()
-                        .onFocusChanged { focusState ->
-                            emailState.onFocusChange(focusState.isFocused)
-                            if (!focusState.isFocused) {
-                                emailState.enableShowErrors()
-                            }
+                        .onFocusChanged {
+                            emailState.onFocusChange(it.isFocused)
                         }
                 )
                 PasswordField(
@@ -87,11 +85,8 @@ fun LoginScreen(
                     { passwordState.text = it },
                     Modifier
                         .fieldModifier()
-                        .onFocusChanged { focusState ->
-                            passwordState.onFocusChange(focusState.isFocused)
-                            if (!focusState.isFocused) {
-                                passwordState.enableShowErrors()
-                            }
+                        .onFocusChanged {
+                            passwordState.onFocusChange(it.isFocused)
                         }
                 )
                 LoadingButton(
@@ -101,14 +96,15 @@ fun LoginScreen(
                         .padding(16.dp, 8.dp),
                     inProgress
                 ) {
+                    emailState.enableShowErrors()
+                    passwordState.enableShowErrors()
                     scope.launch {
                         if (!emailState.isValid) {
                             scaffoldState
                                 .snackbarHostState
-                                .showSnackbar(emailState.getErrorMessage(context))
-
-                        } else if (passwordState.isValid) {
-                            scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.password_blank))
+                                .showSnackbar(emailState.errorMessage)
+                        } else if (!passwordState.isValid) {
+                            scaffoldState.snackbarHostState.showSnackbar(passwordState.errorMessage)
                         } else {
                             try {
                                 inProgress = true

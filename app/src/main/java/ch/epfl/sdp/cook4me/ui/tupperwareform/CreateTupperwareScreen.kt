@@ -13,38 +13,33 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
-import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
+import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 
 @Composable
-fun CreateTupperwareScreenWithState(
-    viewModel: TupCreationViewModel = viewModel()
-) {
+fun CreateTupperwareScreen() {
+    val images = remember { mutableStateListOf<Uri>() }
+
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
     }
@@ -53,7 +48,7 @@ fun CreateTupperwareScreenWithState(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             if (uri != null) {
-                viewModel.addImage(uri)
+                images.add(uri)
             }
         }
     )
@@ -63,7 +58,7 @@ fun CreateTupperwareScreenWithState(
         onResult = { success ->
             imageUri?.let {
                 if (success) {
-                    viewModel.addImage(it)
+                    images.add(it)
                 }
             }
         }
@@ -81,23 +76,8 @@ fun CreateTupperwareScreenWithState(
         cameraLauncher.launch(uri)
     }
 
-    CreateTupperwareScreen(
-        onClickAddImage = { onClickAddImage() },
-        onClickTakePhoto = { onClickTakePhoto() },
-        viewModel = viewModel
-    )
-}
-
-@Composable
-fun CreateTupperwareScreen(
-    modifier: Modifier = Modifier,
-    onClickAddImage: () -> Unit,
-    onClickTakePhoto: () -> Unit,
-    onClickImage: () -> Unit = {},
-    viewModel: TupCreationViewModel = viewModel(),
-) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize(),
 
     ) {
@@ -115,29 +95,26 @@ fun CreateTupperwareScreen(
                 .weight(1f),
             onClickAddImage = { onClickAddImage() },
             onClickTakePhoto = { onClickTakePhoto() },
-            onClickImage = onClickImage,
-            viewModel = viewModel
-        )
-        FormButtons(
-            onCancelText = R.string.ButtonRowCancel,
-            onSaveText = R.string.ButtonRowDone,
-            onCancelClick = { /*TODO*/ },
-            onSaveClick = { viewModel.onSubmit() }
+            onClickImage = {},
+            images,
+            onSubmit = {}
         )
     }
 }
 
 @Composable
-fun TupperwareForm(
+private fun TupperwareForm(
     modifier: Modifier = Modifier,
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
     onClickImage: () -> Unit = {},
-    viewModel: TupCreationViewModel,
+    images: List<Uri>,
+    onSubmit: () -> Unit
 ) {
-    val titleText by viewModel.titleText
-    val descText by viewModel.descText
-    val formError by viewModel.formError
+    val context = LocalContext.current
+    val titleState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
+    val descriptionState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
+    val formIsValid = titleState.isValid && descriptionState.isValid
 
     Box(
         modifier = modifier
@@ -148,10 +125,13 @@ fun TupperwareForm(
                 .verticalScroll(rememberScrollState())
                 .padding(10.dp)
         ) {
-            CustomTitleText(stringResource(R.string.TupCreateFormAddImage))
-
+            Text(
+                modifier = Modifier,
+                text = stringResource(R.string.TupCreateFormAddImage),
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.h6
+            )
             Spacer(modifier = Modifier.size(10.dp))
-
             ImageSelector(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -159,70 +139,53 @@ fun TupperwareForm(
                 onClickAddImage = onClickAddImage,
                 onClickTakePhoto = onClickTakePhoto,
                 onClickImage = onClickImage,
-                images = viewModel.images
+                images = images
             )
             Spacer(modifier = Modifier.size(10.dp))
             CustomDivider()
-            Spacer(modifier = Modifier.size(5.dp))
-            CustomTitleText(stringResource(R.string.TupCreateFormTupName))
             Spacer(modifier = Modifier.size(5.dp))
             InputField(
                 modifier = Modifier
                     .height(50.dp)
+                    .onFocusChanged {
+                        titleState.onFocusChange(it.isFocused)
+                    }.testTag("title")
                     .fillMaxWidth(),
-                contentDescription = "TitleTextField",
-                value = titleText, onValueChange = { viewModel.updateTitle(it) },
-                isError = formError,
-                singleLine = true,
+                question = R.string.TupCreateFormTupName,
+                value = titleState.text,
+                onValueChange = { titleState.text = it },
+                isError = titleState.showErrors(),
             )
             Spacer(modifier = Modifier.size(10.dp))
             CustomDivider()
             Spacer(modifier = Modifier.size(2.dp))
-            CustomTitleText(stringResource(R.string.TupCreateFormDesc))
-            Spacer(modifier = Modifier.size(5.dp))
-            CustomTextField(
+            InputField(
                 modifier = Modifier
                     .height(150.dp)
+                    .onFocusChanged {
+                        descriptionState.onFocusChange(it.isFocused)
+                    }.testTag("description")
                     .fillMaxWidth(),
-                contentDescription = "DescriptionTextField",
-                value = descText, onValueChange = { viewModel.updateDesc(it) },
-                isError = formError,
+                question = R.string.TupCreateFormDesc,
+                value = descriptionState.text,
+                onValueChange = { descriptionState.text = it },
+                isError = descriptionState.showErrors(),
             )
             Spacer(modifier = Modifier.size(10.dp))
-            CustomDivider()
-            Spacer(modifier = Modifier.size(2.dp))
-            CustomTitleText(stringResource(R.string.TupCreateFormTags))
-            Spacer(modifier = Modifier.size(5.dp))
-            // TODO implement tags
-            CustomTextField(
-                modifier = Modifier
-                    .height(100.dp)
-                    .fillMaxWidth(),
-                value = "", onValueChange = {},
-                contentDescription = "TagsTextField",
-                isError = formError,
-            )
         }
     }
-}
-
-@Composable
-private fun CustomTitleText(text: String = "") {
-    Text(
-        modifier = Modifier,
-        text = text,
-        fontWeight = FontWeight.Bold,
-        style = MaterialTheme.typography.h6
+    FormButtons(
+        onCancelText = R.string.ButtonRowCancel,
+        onSaveText = R.string.ButtonRowDone,
+        onCancelClick = { /*TODO*/ },
+        onSaveClick = {
+            titleState.enableShowErrors()
+            descriptionState.enableShowErrors()
+            if (formIsValid) {
+                onSubmit()
+            } else {
+                // TODO: show snackbar
+            }
+        }
     )
-}
-
-@Preview("default", showBackground = true)
-@Composable
-fun TupCreationScreenPreview() {
-    Cook4meTheme {
-        CreateTupperwareScreen(
-            onClickTakePhoto = {},
-            onClickAddImage = {},
-        )
-    }
 }

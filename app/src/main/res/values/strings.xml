@@ -9,6 +9,7 @@
     <!--  DatePicker  -->
     <string name="selected_date_text">Selected Date: </string>
     <string name="select_date_button">Select Date</string>
+
     <!--  TimePicker  -->
     <string name="selected_time_text">Selected Time: </string>
     <string name="select_time_button">Select Time</string>
@@ -21,6 +22,17 @@
     <string name="event_visibility_everyone">Everyone</string>
     <string name="event_visibility_subscriber_only">Subscriber only</string>
     <string name="event_submit_button_test">Submit</string>
+
+    <!-- CreateTupperwareScreen -->
+    <string name="image_selector_add_image">+</string>
+    <string name="TupCreateFormAddImage">Add Images</string>
+    <string name="TupCreateFormTupName">Tupperware Name</string>
+    <string name="TupCreateFormDesc">Description</string>
+    <string name="TupCreateFormTags">Tags</string>
+    <string name="ButtonRowCancel">Cancel</string>
+    <string name="ButtonRowDone">Done</string>
+    <string name="image_uri">images/*</string>
+    <string name="TupCreateBlank">Field can\'t be left blank</string>
 
     <!-- AddressInput   -->
     <string name="address_default_question">What is the location?</string>
@@ -40,14 +52,6 @@
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
 
     <string name="cool_map">Cool Map</string>
-    <string name="image_selector_add_image">+</string>
-    <string name="TupCreateFormAddImage">Add Images</string>
-    <string name="TupCreateFormTupName">Tupperware Name</string>
-    <string name="TupCreateFormDesc">Description</string>
-    <string name="TupCreateFormTags">Tags</string>
-    <string name="ButtonRowCancel">Cancel</string>
-    <string name="ButtonRowDone">Done</string>
-    <string name="image_uri">images/*</string>
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
     <string name="tag_username">Username</string>
@@ -61,4 +65,10 @@
     <string name="btn_cancel">cancel</string>
     <string name="msg_cancelled">cancelled</string>
     <string name="msg_saved">saved</string>
+
+    <!-- tests -->
+    <string name="label">label</string>
+    <string name="question">question</string>
+    <string name="option1">option1</string>
+    <string name="option2">option2</string>
 </resources>
