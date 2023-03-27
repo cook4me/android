@@ -2,7 +2,6 @@ package ch.epfl.sdp.cook4me.ui.map
 
 import com.google.android.gms.maps.model.LatLng
 
-@Suppress("MagicNumber")
 object Locations {
     val LAUSANNE = LatLng(46.5199621, 6.6335976)
     val AGE_POLY = LatLng(46.5228189, 6.5673023)
