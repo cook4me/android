@@ -19,6 +19,7 @@ fun OverviewScreen(
     onEditProfileClick: () -> Unit,
     onAddTupperwareClick: () -> Unit,
     onAddEventClick: () -> Unit,
+    onDetailedEventClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -42,6 +43,9 @@ fun OverviewScreen(
         }
         Button(onClick = onAddEventClick) {
             Text(stringResource(R.string.navigate_to_add_event))
+        }
+        Button(onClick = onDetailedEventClick) {
+            Text(stringResource(R.string.Nav_Detailed_Event_Screen))
         }
     }
 }
