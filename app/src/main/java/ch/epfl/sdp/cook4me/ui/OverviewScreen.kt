@@ -20,6 +20,7 @@ fun OverviewScreen(
     onAddTupperwareClick: () -> Unit,
     onAddEventClick: () -> Unit,
     onAddSignUpClick: () -> Unit,
+    onPostClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -46,6 +47,9 @@ fun OverviewScreen(
         }
         Button(onClick = onAddSignUpClick) {
             Text(stringResource(R.string.navigate_to_add_signup))
+        }
+        Button(onClick = onPostClick) {
+            Text(stringResource(R.string.navigate_to_postView))
         }
     }
 }

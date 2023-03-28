@@ -3,15 +3,26 @@ package ch.epfl.sdp.cook4me.ui.profile
 import android.net.Credentials
 import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.ProfileService
+import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
 import ch.epfl.sdp.cook4me.application.TupperwareService
+import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
+import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
 import ch.epfl.sdp.cook4me.ui.tupperwareform.MockTupperwareService
+import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.launch
+import java.net.URI
 
 
 class MockProfileService : ProfileService {
@@ -23,25 +34,28 @@ class MockProfileService : ProfileService {
         favoriteDish: String,
         userImage: String,
     ) {
-        Log.d("Debug", "$username")
+        Log.d("Debug", "$credentials")
     }
 }
 
-class ProfileCreationViewModel(private val service: ProfileService = MockProfileService()) : ViewModel() {
-    private var _credentials = mutableStateOf("")
+class ProfileCreationViewModel(private val service: ProfileService = ProfileServiceWithRepository()) : ViewModel() {
+    private var _credentials = mutableStateOf("1234") //TODO ADD REAL CREDETIALS
     private var _username = mutableStateOf("")
     private var _allergies = mutableStateOf("")
     private var _bio = mutableStateOf("")
     private var _favoriteDish = mutableStateOf("")
-    private var _userImage = mutableStateOf("")
+    private var _userImage = mutableStateOf<Uri>( Uri.parse(
+            "android.resource://ch.epfl.sdp.cook4me/" + R.drawable.ic_user
+            ))
     private var _formError = mutableStateOf(false)
+    private lateinit var _profileRepository: ProfileRepository
 
     val credentials: State<String> = _credentials
     val username: State<String> = _username
     val allergies: State<String> = _allergies
     val bio: State<String> = _bio
     val favoriteDish: State<String> = _favoriteDish
-    val userImage: State<String> = _userImage
+    val userImage: State<Uri> = _userImage
     val formError: State<Boolean> = _formError
 
     fun addCredentials(credentials: String){
@@ -64,13 +78,13 @@ class ProfileCreationViewModel(private val service: ProfileService = MockProfile
         _favoriteDish.value = favoriteDish
     }
 
-    fun addUserImage(image: String) {
+    fun addUserImage(image: Uri) {
         _userImage.value = image
     }
 
     // TODO implement tags
     fun onSubmit() {
-        if (_credentials.value.isBlank() ||  _username.value.isBlank() || _allergies.value.isBlank() || _bio.value.isBlank() || _favoriteDish.value.isBlank() ||_userImage.value.isBlank()) {
+        if (_credentials.value.isBlank() ||  _username.value.isBlank() || _allergies.value.isBlank() || _bio.value.isBlank() || _favoriteDish.value.isBlank()) {
             _formError.value = true
         } else {
             viewModelScope.launch {
@@ -80,13 +94,9 @@ class ProfileCreationViewModel(private val service: ProfileService = MockProfile
                     _allergies.value,
                     _bio.value,
                     _favoriteDish.value,
-                    _userImage.value,
+                    _userImage.value.toString(),
                 )
             }
         }
-    }
-
-    //TODO a loading function
-    fun onLoad(){
     }
 }

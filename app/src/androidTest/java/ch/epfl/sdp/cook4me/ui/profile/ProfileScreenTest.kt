@@ -16,7 +16,7 @@ class ProfileScreenTest {
     @Test
     fun testDefaultValuesAreDisplayed() {
         composeTestRule.setContent {
-            ProfileScreen()
+            ProfileScreen(viewModel = ProfileCreationViewModel())
         }
         val imageTag = composeTestRule.activity.getString(R.string.tag_defaultProfileImage)
 

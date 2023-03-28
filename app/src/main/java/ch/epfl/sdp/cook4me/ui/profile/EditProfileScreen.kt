@@ -1,13 +1,12 @@
 import android.net.Uri
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,39 +23,76 @@ import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
+import ch.epfl.sdp.cook4me.ui.profile.username_profileScreen
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditProfileScreen(
-    viewModel: ProfileCreationViewModel
+    viewModel: ProfileCreationViewModel,
+    repository: ProfileRepository = ProfileRepository()
 ) {
+    val scope = rememberCoroutineScope()
     val username by viewModel.username
     val favoriteDish by viewModel.favoriteDish
     val allergies by viewModel.allergies
     val bio by viewModel.bio
+    val userImage by viewModel.userImage
+    val fromError by viewModel.formError //TODO Display errors
+    var profile: Profile? = remember {
+        null
+    }
+
+    //TODO IMPLEMENT A CLEAN WAY
+    fun onClickLoad() {
+        var job= scope.launch {
+            profile = repository.getByCredentials("1234")
+        }
+    }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            if (uri != null) {
+                viewModel.addUserImage(uri)
+            }
+        }
+    )
+
+    fun onClickAddImage() {
+        imagePicker.launch("image/*")
+    }
+
+    onClickLoad()
 
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(8.dp)
     ) {
-        saveCancelButtons(viewModel::onSubmit)
-        ProfileSetupImage_profileUpdateScreen()
+        saveCancel_buttons(viewModel::onSubmit)
+        ImageHolder_profileUpdateScreen(
+            onClickAddImage = { onClickAddImage() },
+            image = userImage,
+        )
 
-        // Textfield for the usernaame
+        // Textfield for the username
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_username),
             username,
@@ -70,7 +106,7 @@ fun EditProfileScreen(
             viewModel::addFavoriteDish,
         )
 
-        // Textfield for theusername Allergies
+        // Textfield for Allergies
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_allergies),
             allergies,
@@ -101,9 +137,9 @@ fun bio_profileUpdateScreen(
         )
         TextField(
             value = inputText,
-            onValueChange =  {change(it)},
+            onValueChange = { change(it) },
             placeholder = { Text(stringResource(R.string.default_bio)) },
-            colors = colorsTextfield_profilUpdateScreen(),
+            colors = ColorsTextfield_profilUpdateScreen(),
             singleLine = false,
             modifier = Modifier
                 .height(150.dp)
@@ -131,55 +167,24 @@ fun columnTextBtn_profileUpdateScreen(
             },
             value = inputText,
             modifier = Modifier.testTag(label),
-            onValueChange =  {change(it)},
-            colors = colorsTextfield_profilUpdateScreen()
+            onValueChange = { change(it) },
+            colors = ColorsTextfield_profilUpdateScreen()
         )
     }
 }
 
+
 @Composable
-fun colorsTextfield_profilUpdateScreen(): TextFieldColors =
+fun ColorsTextfield_profilUpdateScreen(): TextFieldColors =
     TextFieldDefaults.textFieldColors(
         backgroundColor = Color.Transparent,
         textColor = Color.Black
     )
 
 @Composable
-fun ProfileSetupImage_profileUpdateScreen() {
-    val imageURI = rememberSaveable { mutableStateOf("") }
-    val painter = rememberAsyncImagePainter(
-        if (imageURI.value.isEmpty()) {
-            R.drawable.ic_user
-        } else {
-            imageURI.value
-        }
-    )
-    /**
-     * TODO PUT INTO LOGIC
-     *Remembers and launches on recomposition
-     *takes a contract and a on result function
-     *contract = the action we want to take & Input/Output of the action
-     *onResult = lambda that receives the result
-     * launches an activity to get the image
-     * the url received we places in imageURI.value
-     * the painter will then get updated with the new value
-     */
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        uri?.let { imageURI.value = it.toString() }
-    }
-
-    Image_profileUpdateScreen(
-        painter = painter,
-        launcher = launcher
-    )
-}
-
-@Composable
-fun Image_profileUpdateScreen(
-    painter: AsyncImagePainter,
-    launcher: ManagedActivityResultLauncher<String, Uri?>
+fun ImageHolder_profileUpdateScreen(
+    onClickAddImage: () -> Unit,
+    image: Uri,
 ) {
     Column(
         modifier = Modifier
@@ -193,30 +198,34 @@ fun Image_profileUpdateScreen(
                 .padding(8.dp)
                 .size(100.dp)
         ) {
-            ProfileUpdateImage_profileUpdateScreen(painter, launcher)
+            Image_profileUpdateScreen(onClickAddImage = onClickAddImage,
+                image= image,)
         }
         Text(text = "Change profile picture")
     }
 }
 
 @Composable
-fun ProfileUpdateImage_profileUpdateScreen(
-    painter: AsyncImagePainter,
-    launcher: ManagedActivityResultLauncher<String, Uri?>
+fun Image_profileUpdateScreen(
+    onClickAddImage: () -> Unit,
+    image: Uri,
 ) {
-    Image(
-        painter = painter,
-        contentDescription = null,
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(image)
+            .build(),
+        contentDescription = "",
         modifier = Modifier
-            .testTag("ProfileImage") // TODO
+            .fillMaxHeight()
+            .testTag("ProfileImage")
             .wrapContentSize()
-            .clickable { launcher.launch("image/*") }, // starts the launcher and accept all type of images
-        contentScale = ContentScale.Crop // crops the image into the available space
+            .clickable { onClickAddImage() },
+        contentScale = ContentScale.Crop
     )
 }
 
 @Composable
-private fun saveCancelButtons(onSummit: () -> Unit) {
+private fun saveCancel_buttons(onSummit: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -242,11 +251,11 @@ private fun input_row(content: @Composable RowScope.() -> Unit) {
 }
 
 @Composable
-private fun text_buttons(onClick: () -> Unit,nameBtn: String) {
+private fun text_buttons(onClick: () -> Unit, nameBtn: String) {
     Text(
         text = nameBtn,
         modifier = Modifier
             .testTag(nameBtn)
-                .clickable(onClick = {onClick()})
+            .clickable(onClick = { onClick() })
     )
 }
