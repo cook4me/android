@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 private const val MAPS_LOADING_TIMEOUT = 5000.toLong()
 private const val STARTING_ZOOM = 10f
 private const val ASSERT_ROUNDING_ERROR = 0.01
-private const val ONE_MINUTE_IN_MILLISECONDS = 60000L
+private const val HALF_MINUTE_IN_MILLISECONDS = 30000L
 
 class GoogleMapViewTests {
     @get:Rule
@@ -119,7 +119,7 @@ class GoogleMapViewTests {
 }
 
 private fun assertMoveHappened(cameraPositionState: CameraPositionState) {
-    verify(ordering = Ordering.ORDERED, timeout = ONE_MINUTE_IN_MILLISECONDS) {
+    verify(ordering = Ordering.ORDERED, timeout = HALF_MINUTE_IN_MILLISECONDS) {
         cameraPositionState setProperty "isMoving" value true
         cameraPositionState setProperty "isMoving" value false
     }
