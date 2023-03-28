@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.persistence.model.Post
+import ch.epfl.sdp.cook4me.domain.Post
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -37,9 +37,8 @@ fun PostGrid() {
     val gridSampleType = object : TypeToken<List<Post>>() {}.type
     val postData: List<Post> = gson.fromJson(dataFileString, gridSampleType)
 
-    @Suppress("MagicNumber")
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(count = 3),
         modifier = Modifier.padding(10.dp)
     ) {
         items(postData) { post ->
@@ -52,7 +51,7 @@ fun PostGrid() {
 fun PostDataItem(data: Post) {
     Card(
         modifier = Modifier
-            .clickable() { //TODO ADD NAVIGATION TO POST
+            .clickable() {
             }
             .fillMaxSize(),
         elevation = 10.dp, shape = RoundedCornerShape(5.dp)

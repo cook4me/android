@@ -16,13 +16,15 @@ import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.CreateEvent
 import ch.epfl.sdp.cook4me.ui.OverviewScreen
+import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
+import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationScreenWithState
+import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreenWithState
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationViewModel
 import kotlinx.coroutines.launch
 
@@ -73,10 +75,10 @@ fun Cook4MeApp(
 
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
-            TupCreationScreenWithState(TupCreationViewModel())
+            CreateTupperwareScreenWithState(TupCreationViewModel())
         }
         composable(route = Screen.CreateEventScreen.name) {
-            CreateEvent()
+            CreateEventScreen()
         }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen()
