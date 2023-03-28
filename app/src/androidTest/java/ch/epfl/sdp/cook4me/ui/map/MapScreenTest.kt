@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -25,9 +26,9 @@ import java.util.concurrent.TimeUnit
 
 private const val MAPS_MOVING_TIMEOUT = 1000.toLong()
 private const val MAPS_LOADING_TIMEOUT = 5000.toLong()
-const val STARTING_ZOOM = 10f
-const val ASSERT_ROUNDING_ERROR = 0.01
-const val ONE_MINUTE_IN_MILLISECONDS = 60000L
+private const val STARTING_ZOOM = 10f
+private const val ASSERT_ROUNDING_ERROR = 0.01
+private const val ONE_MINUTE_IN_MILLISECONDS = 60000L
 
 class GoogleMapViewTests {
     @get:Rule
@@ -50,7 +51,7 @@ class GoogleMapViewTests {
                 selectedEventId = selectedEventId
             )
         }
-        val mapLoaded = countDownLatch.await(MAPS_LOADING_TIMEOUT, TimeUnit.SECONDS)
+        val mapLoaded = countDownLatch.await(MAPS_LOADING_TIMEOUT, TimeUnit.MILLISECONDS)
         assertTrue("Map loaded", mapLoaded)
     }
 
@@ -89,6 +90,7 @@ class GoogleMapViewTests {
     @Test
     fun testNoEventSelectedWhenStartingScreen() {
         initMap()
+        // To be shown when no events are displayed
         composeTestRule.onNodeWithText("Select an event").assertIsDisplayed()
     }
 
@@ -113,12 +115,7 @@ class GoogleMapViewTests {
 
     fun checkCameraPosition(nodeText: String, location: LatLng) {
         composeTestRule.onNodeWithText(nodeText).performClick()
-        composeTestRule.waitUntil(MAPS_MOVING_TIMEOUT) {
-            cameraPositionState.isMoving
-        }
-        composeTestRule.waitUntil(MAPS_LOADING_TIMEOUT) {
-            !cameraPositionState.isMoving
-        }
+        assertMoveHappened(cameraPositionState)
         location.assertEquals(cameraPositionState.position.target)
     }
 }

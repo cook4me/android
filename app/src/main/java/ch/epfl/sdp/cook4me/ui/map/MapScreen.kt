@@ -35,8 +35,8 @@ import com.google.maps.android.compose.MarkerInfoWindowContent
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
-const val ZOOM_DEFAULT_VALUE = 15f
-const val MAP_SCREEN_PROPORTION = 0.8f
+private const val ZOOM_DEFAULT_VALUE = 15f
+private const val MAP_SCREEN_PROPORTION = 0.8f
 data class MarkerData(
     val position: LatLng,
     val title: String,
@@ -112,27 +112,27 @@ fun GoogleMapView(
                 .padding(start = 16.dp, end = 16.dp)
         ) {
             Row {
-                if (selectedMarker != null) {
+                selectedMarker?.let { marker ->
                     Column {
                         Text(
-                            text = "Location: ${selectedMarker!!.title}",
+                            text = "Location: ${marker.title}",
                         )
                         if (navigateToEvent) {
                             Text(
-                                text = "Navigate to event with id: ${selectedMarker!!.id}",
+                                text = "Navigate to event with id: ${marker.id}",
                             )
                         }
                     }
                     Button(
-                        modifier = modifier.padding(4.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MaterialTheme.colors.onPrimary,
-                            contentColor = MaterialTheme.colors.primary
-                        ),
-                        onClick = { navigateToEvent = !navigateToEvent }
-                    ) {
-                        Text(text = "Explore event", style = MaterialTheme.typography.body1)
-                    }
+                            modifier = modifier.padding(4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = MaterialTheme.colors.onPrimary,
+                                contentColor = MaterialTheme.colors.primary
+                            ),
+                            onClick = { navigateToEvent = !navigateToEvent }
+                        ) {
+                            Text(text = "Explore event", style = MaterialTheme.typography.body1)
+                        }
                 }
                 Text(
                     text = "Select an event"
@@ -167,7 +167,7 @@ fun GoogleMapView(
         }
     }
 }
-fun findMarkerById(markers: List<MarkerData>, markerId: String): MarkerData? =
+private fun findMarkerById(markers: List<MarkerData>, markerId: String): MarkerData? =
     markers.find { marker -> marker.id == markerId }
 
 @Composable
@@ -209,6 +209,6 @@ private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Mo
 fun GoogleMapViewPreview() {
     GoogleMapView(
         modifier = Modifier.fillMaxSize(),
-        markers = dummyMarkers,
+        markers = dummyMarkers
     )
 }
