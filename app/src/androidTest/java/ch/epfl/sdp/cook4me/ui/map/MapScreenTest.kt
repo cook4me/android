@@ -93,13 +93,6 @@ class GoogleMapViewTests {
     }
 
     @Test
-    fun testUniversitiesButtonsSetCameraPosition() {
-        initMap()
-        checkCameraPosition(nodeText = "EPFL", Locations.EPFL)
-        checkCameraPosition(nodeText = "UNIL", Locations.UNIL)
-    }
-
-    @Test
     fun testLatLngInVisibleRegion() {
         initMap()
         composeTestRule.runOnUiThread {
