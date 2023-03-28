@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.persistence.model.Post
+import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.ui.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -51,10 +52,13 @@ fun Cook4MeApp(
             OverviewScreen(
                 onMapClick = { navController.navigate(Screen.Map.name) },
                 onProfileClick = { navController.navigate(Screen.ProfileScreen.name) },
-                onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
+                onEditProfileClick = {
+
+                    navController.navigate(Screen.EditProfileScreen.name)
+                                     },
                 onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) } ,
+                onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
             )
         }
@@ -62,11 +66,10 @@ fun Cook4MeApp(
             GoogleMapView(modifier = Modifier.fillMaxSize(), markers = dummyMarkers)
         }
         composable(route = Screen.ProfileScreen.name) {
-            ProfileScreen(ProfileCreationViewModel())
+            ProfileScreen()
         }
         composable(route = Screen.EditProfileScreen.name) {
-            EditProfileScreen(ProfileCreationViewModel())
-
+            EditProfileScreen()
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
             CreateTupperwareScreenWithState(TupCreationViewModel())
@@ -78,8 +81,8 @@ fun Cook4MeApp(
             SignUpScreen()
         }
         composable(route = Screen.PostDetails.name) {
-            //TODO MOCK  REAL NAVIGATION MAYBE CALLBACKFUNCTION
-            val post = Post(1,"Tiramisu","This is a delicious triamisu or so")
+            // TODO MOCK  REAL NAVIGATION MAYBE CALLBACKFUNCTION
+            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
         }
     }

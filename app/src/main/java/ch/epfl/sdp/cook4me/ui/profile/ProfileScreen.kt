@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,49 +21,48 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
-import coil.compose.AsyncImagePainter
+import ch.epfl.sdp.cook4me.persistence.model.Profile
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileCreationViewModel
+    profileCreationViewModel: ProfileCreationViewModel = viewModel()
 ) {
     Column(
         modifier = Modifier
             .padding(12.dp)
     ) {
-        // TODO put in logic
-        val imageURI = rememberSaveable { mutableStateOf("") }
-        val painter = rememberAsyncImagePainter(
-            if (imageURI.value.isEmpty()) {
-                R.drawable.ic_user
-            } else {
-                imageURI.value
-            }
-        )
-
-        ProfileImageAndUsername(painter)
+        ProfileImageAndUsername(profileCreationViewModel.userImage.value,profileCreationViewModel.username.value)
 
         // Textfield for the Favorite dish
-        favoriteDish_profileScreen()
+        favoriteDish_profileScreen(profileCreationViewModel.favoriteDish.value)
 
         // Textfield for the Allergies
-        allergies_profileScreen()
+        allergies_profileScreen(profileCreationViewModel.allergies.value)
 
         // Textfield for the bio
-        bio_profileScreen()
+        bio_profileScreen(profileCreationViewModel.bio.value)
 
         // Grid with post within
-        PostGrid()
+        PostGrid()//put images inside
     }
 }
 
 @Composable
-fun ProfileImageAndUsername(painter: AsyncImagePainter) {
+fun ProfileImageAndUsername(userImage: Uri, name: String) {
     // draws the image of the profile
+    val imageURI = rememberSaveable { mutableStateOf("") }
+    val painter = rememberAsyncImagePainter(
+        if (userImage.toString().isEmpty()) {
+            R.drawable.ic_user
+        } else {
+            imageURI.value = userImage.toString()
+        }
+    )
+
     Row(
         modifier = Modifier
             .padding(8.dp)
@@ -78,22 +78,31 @@ fun ProfileImageAndUsername(painter: AsyncImagePainter) {
         ) {
             Image(painter = painter, contentDescription = "")
         }
-        username_profileScreen()
+
+        username_profileScreen(name)
     }
 }
 
 @Composable
-fun username_profileScreen() {
+fun username_profileScreen(name: String) {
+    var userName = name
+    if (name.isEmpty()){
+        userName=stringResource(R.string.default_username)
+    }
+
     Text(
-        text = stringResource(R.string.default_username),
+        text = userName,
         modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
         fontWeight = FontWeight.Bold,
     )
 }
 
 @Composable
-fun favoriteDish_profileScreen() {
-    var favDish by rememberSaveable { mutableStateOf(R.string.default_favoriteDish) }
+fun favoriteDish_profileScreen(favoriteDish: String) {
+    var favDish = favoriteDish
+    if (favoriteDish.isEmpty()){
+        favDish=stringResource(R.string.default_favoriteDish)
+    }
 
     Row(
         modifier = Modifier
@@ -108,7 +117,7 @@ fun favoriteDish_profileScreen() {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = stringResource(favDish),
+            text = favDish,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -117,8 +126,11 @@ fun favoriteDish_profileScreen() {
 }
 
 @Composable
-fun allergies_profileScreen() {
-    var allergies by rememberSaveable { mutableStateOf(R.string.default_allergies) }
+fun allergies_profileScreen(allergies: String) {
+    var _allergies = allergies
+    if (allergies.isEmpty()){
+        _allergies=stringResource(R.string.default_allergies)
+    }
 
     Row(
         modifier = Modifier
@@ -133,7 +145,7 @@ fun allergies_profileScreen() {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = stringResource(allergies),
+            text = _allergies,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -142,8 +154,11 @@ fun allergies_profileScreen() {
 }
 
 @Composable
-fun bio_profileScreen() {
-    var bio by rememberSaveable { mutableStateOf(R.string.default_bio) }
+fun bio_profileScreen(bio: String) {
+    var _bio = bio
+    if (bio.isEmpty()){
+        _bio=stringResource(R.string.default_bio)
+    }
 
     Row(
         modifier = Modifier
@@ -158,7 +173,7 @@ fun bio_profileScreen() {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = stringResource(bio),
+            text = _bio,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)

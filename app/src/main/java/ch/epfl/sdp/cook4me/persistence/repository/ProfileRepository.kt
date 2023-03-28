@@ -2,6 +2,7 @@ package ch.epfl.sdp.cook4me.persistence.repository
 
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.snapshots
 import kotlinx.coroutines.tasks.await
 
 private const val COLLECTION_PATH = "profiles"
@@ -19,11 +20,10 @@ class ProfileRepository(
     }
 
     suspend fun getByCredentials(credentials: String) =
-        store.collection(COLLECTION_PATH).
-        whereEqualTo("credentials", credentials).get().await()
+        store.collection(COLLECTION_PATH)
+            .whereEqualTo("credentials", credentials).get().await()
             .first()
             ?.toObject(Profile::class.java)
-
 
     suspend fun update(id: String, value: Profile) {
         store.collection(COLLECTION_PATH).document(id).set(value).await()

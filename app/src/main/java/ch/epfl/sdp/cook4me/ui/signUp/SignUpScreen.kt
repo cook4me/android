@@ -115,19 +115,19 @@ private fun continueBack_buttons() {
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        text_buttons(nameBtn = stringResource(R.string.btn_back))
+        text_buttons({}, nameBtn = stringResource(R.string.btn_back))
 
-        text_buttons(nameBtn = stringResource(R.string.btn_continue))
+        text_buttons({}, nameBtn = stringResource(R.string.btn_continue))
     }
 }
 
 @Composable
-private fun text_buttons(nameBtn: String) {
+private fun text_buttons(onClick: () -> Unit, nameBtn: String) {
     Text(
         text = nameBtn,
         modifier = Modifier
             .testTag(nameBtn)
-            .clickable {}
+            .clickable(onClick = { onClick() })
     )
 }
 
@@ -152,4 +152,3 @@ private fun CustomTitleText(text: String = "") {
         style = MaterialTheme.typography.h6
     )
 }
-

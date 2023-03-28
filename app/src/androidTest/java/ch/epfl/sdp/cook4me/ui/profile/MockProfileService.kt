@@ -20,19 +20,19 @@ class MockProfileService(
     ) {
         assert(expectedCredentials == credentials)
         assert(expectedUsername == username)
-        assert(expectedAllergies==allergies)
-        assert(expectedBio==bio)
-        assert(expectedFavoriteDish==favoriteDish)
-        assert(expectedImage==userImage)
+        assert(expectedAllergies == allergies)
+        assert(expectedBio == bio)
+        assert(expectedFavoriteDish == favoriteDish)
+        assert(expectedImage == userImage)
     }
 
-    override suspend fun loadProfile(
-        username: String,
-        allergies: String,
-        bio: String,
-        favoriteDish: String,
-        userImage: String
-    ) {
-        TODO("Not yet implemented")
-    }
+//    override suspend fun loadProfile(
+//        username: String,
+//        allergies: String,
+//        bio: String,
+//        favoriteDish: String,
+//        userImage: String
+//    ) {
+//        TODO("Not yet implemented")
+//    }
 }

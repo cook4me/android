@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Rule
@@ -16,7 +17,7 @@ class ProfileScreenTest {
     @Test
     fun testDefaultValuesAreDisplayed() {
         composeTestRule.setContent {
-            ProfileScreen(viewModel = ProfileCreationViewModel())
+            ProfileScreen(profileCreationViewModel = ProfileCreationViewModel())
         }
         val imageTag = composeTestRule.activity.getString(R.string.tag_defaultProfileImage)
 
@@ -28,5 +29,31 @@ class ProfileScreenTest {
         composeTestRule.onNodeWithStringId(R.string.tag_allergies).assertIsDisplayed()
         composeTestRule.onNodeWithStringId(R.string.default_allergies).assertIsDisplayed()
         composeTestRule.onNodeWithTag(imageTag).assertIsDisplayed()
+    }
+
+    @Test
+    fun testChagedProfileDataAreDisplayed(){
+        var profileCreationViewModel = ProfileCreationViewModel()
+
+        composeTestRule.setContent {
+            ProfileScreen(profileCreationViewModel = profileCreationViewModel)
+        }
+        val imageTag = composeTestRule.activity.getString(R.string.tag_defaultProfileImage)
+
+        val bioText = "Hello chicas e chicos"
+        val favDishText = "empanadas"
+        val usernameText = "Emanuel"
+        val allergiesText = "nada"
+        val userImage = ""
+
+        profileCreationViewModel.addBio(bioText)
+        profileCreationViewModel.addUsername(favDishText)
+        profileCreationViewModel.addAllergies(usernameText)
+        profileCreationViewModel.addFavoriteDish(allergiesText)
+
+        composeTestRule.onNodeWithText(bioText).assertIsDisplayed()
+        composeTestRule.onNodeWithText(favDishText).assertIsDisplayed()
+        composeTestRule.onNodeWithText(usernameText).assertIsDisplayed()
+        composeTestRule.onNodeWithText(allergiesText).assertIsDisplayed()
     }
 }

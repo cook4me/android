@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.signup
 
-import EditProfileScreen
 import SignUpScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed

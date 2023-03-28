@@ -58,7 +58,7 @@ fun PostDetails(
         )
 
         Spacer(modifier = Modifier.padding(10.dp))
-        //data.undertitle,
+        // data.undertitle,
         Text(
             text = data.name,
             modifier = Modifier
@@ -68,7 +68,7 @@ fun PostDetails(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.padding(1.dp))
-        //data.desc,
+        // data.desc,
         Text(
             text = data.desc,
             modifier = Modifier

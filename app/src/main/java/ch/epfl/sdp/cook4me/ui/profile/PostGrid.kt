@@ -59,7 +59,6 @@ fun PostDataItem(data: Post) {
     }
 }
 
-
 @Composable
 fun MockImageSelection(data: Post) {
     Image(

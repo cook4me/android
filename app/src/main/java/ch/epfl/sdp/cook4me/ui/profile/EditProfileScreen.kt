@@ -41,10 +41,12 @@ import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun EditProfileScreen(
-    viewModel: ProfileCreationViewModel, repository: ProfileRepository = ProfileRepository()
+    viewModel: ProfileCreationViewModel = viewModel(),
+    repository: ProfileRepository = ProfileRepository()
 ) {
     val scope = rememberCoroutineScope()
     val username by viewModel.username
@@ -52,40 +54,23 @@ fun EditProfileScreen(
     val allergies by viewModel.allergies
     val bio by viewModel.bio
     val userImage by viewModel.userImage
-    val fromError by viewModel.formError //TODO Display errors
+    //val fromError by viewModel.formError // TODO Display errors
     var profile: Profile? = remember {
         null
     }
 
-    //TODO IMPLEMENT A CLEAN WAY
-    fun onClickLoad() {
-       scope.launch {
-            profile = repository.getByCredentials("1234")
-        }
-    }
-
     val imagePicker =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent(),
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
                 if (uri != null) {
                     viewModel.addUserImage(uri)
                 }
-            })
+            }
+        )
 
     fun onClickAddImage() {
         imagePicker.launch("image/*")
-    }
-
-    onClickLoad().run {
-        if(profile!=null){
-            viewModel.addAllergies(profile!!.allergies)
-            viewModel.addFavoriteDish(profile!!.favoriteDish)
-            viewModel.addBio(profile!!.bio)
-            viewModel.addUsername(profile!!.name)
-            if (profile?.userImage!=null){
-                viewModel.addUserImage(profile!!.userImage.toUri())
-            }
-        }
     }
 
     Column(
@@ -99,7 +84,8 @@ fun EditProfileScreen(
             image = userImage,
         )
 
-        // Textfield for the username
+        // Textfield for the userna
+    // TODO IMPLEMENT A CLEAN WAme
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_username),
             username,
@@ -131,15 +117,19 @@ fun EditProfileScreen(
 
 @Composable
 fun bio_profileUpdateScreen(
-    displayLabel: String, inputText: String, change: (String) -> Unit
+    displayLabel: String,
+    inputText: String,
+    change: (String) -> Unit
 ) {
     input_row {
         Text(
-            text = displayLabel, modifier = Modifier
+            text = displayLabel,
+            modifier = Modifier
                 .width(100.dp)
                 .padding(top = 7.dp)
         )
-        TextField(value = inputText,
+        TextField(
+            value = inputText,
             onValueChange = { change(it) },
             placeholder = { Text(stringResource(R.string.default_bio)) },
             colors = ColorsTextfield_profilUpdateScreen(),
@@ -153,17 +143,20 @@ fun bio_profileUpdateScreen(
 
 @Composable
 fun columnTextBtn_profileUpdateScreen(
-    label: String, inputText: String, change: (String) -> Unit
+    label: String,
+    inputText: String,
+    change: (String) -> Unit
 ) {
     input_row {
         Text(
             text = label, modifier = Modifier.width(100.dp)
         )
-        TextField(placeholder = {
-            Text(
-                inputText
-            )
-        },
+        TextField(
+            placeholder = {
+                Text(
+                    inputText
+                )
+            },
             value = inputText,
             modifier = Modifier.testTag(label),
             onValueChange = { change(it) },
@@ -171,7 +164,6 @@ fun columnTextBtn_profileUpdateScreen(
         )
     }
 }
-
 
 @Composable
 fun ColorsTextfield_profilUpdateScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
@@ -190,7 +182,8 @@ fun ImageHolder_profileUpdateScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-            shape = CircleShape, modifier = Modifier
+            shape = CircleShape,
+            modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
         ) {
@@ -249,7 +242,8 @@ private fun input_row(content: @Composable RowScope.() -> Unit) {
 @Composable
 private fun text_buttons(onClick: () -> Unit, nameBtn: String) {
     Text(
-        text = nameBtn, modifier = Modifier
+        text = nameBtn,
+        modifier = Modifier
             .testTag(nameBtn)
             .clickable(onClick = { onClick() })
     )

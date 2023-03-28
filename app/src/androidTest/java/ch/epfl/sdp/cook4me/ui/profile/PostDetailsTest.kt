@@ -2,7 +2,6 @@ package ch.epfl.sdp.cook4me.ui.profile
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -20,8 +19,10 @@ class PostDetailsTest {
     @Test
     fun testDefaultValuesAreDisplayed() {
         composeTestRule.setContent {
-            PostDetails(painter = painterResource(id = R.drawable.tiramisu),
-                data = Post(1,"Tiramisu", "This is tiramisu") )
+            PostDetails(
+                painter = painterResource(id = R.drawable.tiramisu),
+                data = Post(1, "Tiramisu", "This is tiramisu")
+            )
         }
         val imageTag = composeTestRule.activity.getString(R.string.post_tag_image)
 

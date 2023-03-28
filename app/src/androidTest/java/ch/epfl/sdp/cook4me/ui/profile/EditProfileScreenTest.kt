@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
+import EditProfileScreen
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -23,9 +23,7 @@ class EditProfileScreenTest {
             EditProfileScreen(ProfileCreationViewModel())
         }
 
-    //TODO Load infos from model
-
-
+        // TODO Load infos from model
     }
 
     @Test
