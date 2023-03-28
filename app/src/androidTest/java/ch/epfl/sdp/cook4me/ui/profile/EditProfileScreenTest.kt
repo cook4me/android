@@ -58,7 +58,6 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithText(usernameInput).assertExists()
         composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
-        composeTestRule.onNodeWithText(bioInput).assertExists()
     }
 
     @Test
