@@ -49,7 +49,6 @@ fun Cook4MeApp(
         Screen.Login.name
     }
     NavHost(navController = navController, startDestination = startScreen) {
-
         composable(route = Screen.Login.name) {
             LoginScreen(
                 onSuccessfulLogin = { navController.navigate(Screen.OverviewScreen.name) }
