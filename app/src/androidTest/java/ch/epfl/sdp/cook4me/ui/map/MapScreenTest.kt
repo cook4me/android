@@ -23,7 +23,6 @@ import org.junit.Test
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-private const val MAPS_MOVING_TIMEOUT = 1000.toLong()
 private const val MAPS_LOADING_TIMEOUT = 5000.toLong()
 private const val STARTING_ZOOM = 10f
 private const val ASSERT_ROUNDING_ERROR = 0.01
