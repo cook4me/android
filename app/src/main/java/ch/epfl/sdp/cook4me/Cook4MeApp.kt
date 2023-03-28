@@ -2,19 +2,15 @@ package ch.epfl.sdp.cook4me
 
 import EditProfileScreen
 import SignUpScreen
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.persistence.model.Post
-import ch.epfl.sdp.cook4me.ui.CreateEvent
 import ch.epfl.sdp.cook4me.ui.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -22,11 +18,9 @@ import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
-import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreenWithState
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationViewModel
-import kotlinx.coroutines.launch
 
 /**
  * enum values that represent the screens in the app

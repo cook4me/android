@@ -19,7 +19,8 @@ class ProfileRepository(
     }
 
     suspend fun getByCredentials(credentials: String) =
-        store.collection(COLLECTION_PATH).whereEqualTo("credentials", credentials).get().await()
+        store.collection(COLLECTION_PATH).
+        whereEqualTo("credentials", credentials).get().await()
             .first()
             ?.toObject(Profile::class.java)
 

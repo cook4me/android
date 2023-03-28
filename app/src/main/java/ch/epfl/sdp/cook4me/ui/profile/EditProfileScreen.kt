@@ -33,20 +33,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
-import ch.epfl.sdp.cook4me.ui.profile.username_profileScreen
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 @Composable
 fun EditProfileScreen(
-    viewModel: ProfileCreationViewModel,
-    repository: ProfileRepository = ProfileRepository()
+    viewModel: ProfileCreationViewModel, repository: ProfileRepository = ProfileRepository()
 ) {
     val scope = rememberCoroutineScope()
     val username by viewModel.username
@@ -61,25 +59,34 @@ fun EditProfileScreen(
 
     //TODO IMPLEMENT A CLEAN WAY
     fun onClickLoad() {
-        var job= scope.launch {
+       scope.launch {
             profile = repository.getByCredentials("1234")
         }
     }
 
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            if (uri != null) {
-                viewModel.addUserImage(uri)
-            }
-        }
-    )
+    val imagePicker =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent(),
+            onResult = { uri ->
+                if (uri != null) {
+                    viewModel.addUserImage(uri)
+                }
+            })
 
     fun onClickAddImage() {
         imagePicker.launch("image/*")
     }
 
-    onClickLoad()
+    onClickLoad().run {
+        if(profile!=null){
+            viewModel.addAllergies(profile!!.allergies)
+            viewModel.addFavoriteDish(profile!!.favoriteDish)
+            viewModel.addBio(profile!!.bio)
+            viewModel.addUsername(profile!!.name)
+            if (profile?.userImage!=null){
+                viewModel.addUserImage(profile!!.userImage.toUri())
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -124,19 +131,15 @@ fun EditProfileScreen(
 
 @Composable
 fun bio_profileUpdateScreen(
-    displayLabel: String,
-    inputText: String,
-    change: (String) -> Unit
+    displayLabel: String, inputText: String, change: (String) -> Unit
 ) {
     input_row {
         Text(
-            text = displayLabel,
-            modifier = Modifier
+            text = displayLabel, modifier = Modifier
                 .width(100.dp)
                 .padding(top = 7.dp)
         )
-        TextField(
-            value = inputText,
+        TextField(value = inputText,
             onValueChange = { change(it) },
             placeholder = { Text(stringResource(R.string.default_bio)) },
             colors = ColorsTextfield_profilUpdateScreen(),
@@ -150,21 +153,17 @@ fun bio_profileUpdateScreen(
 
 @Composable
 fun columnTextBtn_profileUpdateScreen(
-    label: String,
-    inputText: String,
-    change: (String) -> Unit
+    label: String, inputText: String, change: (String) -> Unit
 ) {
     input_row {
         Text(
-            text = label,
-            modifier = Modifier.width(100.dp)
+            text = label, modifier = Modifier.width(100.dp)
         )
-        TextField(
-            placeholder = {
-                Text(
-                    inputText
-                )
-            },
+        TextField(placeholder = {
+            Text(
+                inputText
+            )
+        },
             value = inputText,
             modifier = Modifier.testTag(label),
             onValueChange = { change(it) },
@@ -175,11 +174,9 @@ fun columnTextBtn_profileUpdateScreen(
 
 
 @Composable
-fun ColorsTextfield_profilUpdateScreen(): TextFieldColors =
-    TextFieldDefaults.textFieldColors(
-        backgroundColor = Color.Transparent,
-        textColor = Color.Black
-    )
+fun ColorsTextfield_profilUpdateScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
+    backgroundColor = Color.Transparent, textColor = Color.Black
+)
 
 @Composable
 fun ImageHolder_profileUpdateScreen(
@@ -193,13 +190,14 @@ fun ImageHolder_profileUpdateScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-            shape = CircleShape,
-            modifier = Modifier
+            shape = CircleShape, modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
         ) {
-            Image_profileUpdateScreen(onClickAddImage = onClickAddImage,
-                image= image,)
+            Image_profileUpdateScreen(
+                onClickAddImage = onClickAddImage,
+                image = image,
+            )
         }
         Text(text = "Change profile picture")
     }
@@ -211,9 +209,7 @@ fun Image_profileUpdateScreen(
     image: Uri,
 ) {
     AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(image)
-            .build(),
+        model = ImageRequest.Builder(LocalContext.current).data(image).build(),
         contentDescription = "",
         modifier = Modifier
             .fillMaxHeight()
@@ -253,8 +249,7 @@ private fun input_row(content: @Composable RowScope.() -> Unit) {
 @Composable
 private fun text_buttons(onClick: () -> Unit, nameBtn: String) {
     Text(
-        text = nameBtn,
-        modifier = Modifier
+        text = nameBtn, modifier = Modifier
             .testTag(nameBtn)
             .clickable(onClick = { onClick() })
     )

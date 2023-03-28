@@ -1,28 +1,16 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
-import android.net.Credentials
 import android.net.Uri
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.ProfileService
 import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
-import ch.epfl.sdp.cook4me.application.TupperwareService
-import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
-import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
-import ch.epfl.sdp.cook4me.ui.tupperwareform.MockTupperwareService
-import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.launch
-import java.net.URI
 
 
 class MockProfileService : ProfileService {

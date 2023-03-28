@@ -20,13 +20,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.domain.Post
+import ch.epfl.sdp.cook4me.persistence.model.Post
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-/***
- * Todo navgation return a string to the navcontroller indicating the location
- */
 @Preview(showBackground = true)
 @Composable
 fun PostGrid() {
