@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 private const val MAPS_LOADING_TIMEOUT = 5000.toLong()
 private const val STARTING_ZOOM = 10f
 private const val ASSERT_ROUNDING_ERROR = 0.01
-private const val HALF_MINUTE_IN_MILLISECONDS = 30000L
+private const val HALF_MINUTE_IN_MILLISECONDS = 20000L
 
 class GoogleMapViewTests {
     @get:Rule
