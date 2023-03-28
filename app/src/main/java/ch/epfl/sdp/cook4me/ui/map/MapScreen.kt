@@ -124,15 +124,15 @@ fun GoogleMapView(
                         }
                     }
                     Button(
-                            modifier = modifier.padding(4.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = MaterialTheme.colors.onPrimary,
-                                contentColor = MaterialTheme.colors.primary
-                            ),
-                            onClick = { navigateToEvent = !navigateToEvent }
-                        ) {
-                            Text(text = "Explore event", style = MaterialTheme.typography.body1)
-                        }
+                        modifier = modifier.padding(4.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = MaterialTheme.colors.onPrimary,
+                            contentColor = MaterialTheme.colors.primary
+                        ),
+                        onClick = { navigateToEvent = !navigateToEvent }
+                    ) {
+                        Text(text = "Explore event", style = MaterialTheme.typography.body1)
+                    }
                 }
                 Text(
                     text = "Select an event"
