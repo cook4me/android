@@ -34,6 +34,21 @@ private enum class Screen {
     DetailedEventScreen
 }
 
+/* Testing around the Detailed Event Screen */
+// initializing the testing event
+val calendar = Calendar.getInstance()
+val testEvent = Event(
+    name = "test event name",
+    description = "test description",
+    dateTime = calendar,
+    location = "Rue. Louis Favre 4, 1024, Ecublens",
+    maxParticipants = 4,
+    participants = listOf("obi.wang", "harry.potter"),
+    creator = "peter griffin",
+    id = "jabdsfias213",
+    isPrivate = false
+)
+
 @Composable
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
@@ -69,20 +84,6 @@ fun Cook4MeApp(
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()
         }
-        /* Testing around the Detailed Event Screen */
-        // initializing the testing event
-        val calendar = Calendar.getInstance()
-        val testEvent = Event(
-            name = "test event name",
-            description = "test description",
-            dateTime = calendar,
-            location = "Chemin des Triaudes 4, 1024, Ecublens",
-            maxParticipants = 4,
-            participants = listOf("obi.wang", "harry.potter"),
-            creator = "peter griffin",
-            id = "jabdsfias213",
-            isPrivate = false
-        )
         composable(route = Screen.DetailedEventScreen.name) {
             DetailedEventScreen(event = testEvent)
         }
