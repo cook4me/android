@@ -12,4 +12,8 @@ class AccountService(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     fun isValidEmail(email: String): Boolean =
         email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+    suspend fun register(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password).await()
+    }
 }
