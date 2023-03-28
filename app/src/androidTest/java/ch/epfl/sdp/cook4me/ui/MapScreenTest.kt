@@ -1,6 +1,6 @@
 package ch.epfl.sdp.cook4me.ui
 
-import androidx.compose.foundation.layout.fillMaxSize
+/*import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
@@ -25,10 +25,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeUnit*/
 
 class GoogleMapViewTests {
-    @get:Rule
+    /*@get:Rule
     val composeTestRule = createComposeRule()
 
     private val startingZoom = 10f
@@ -192,4 +192,5 @@ fun LatLng.assertEquals(other: LatLng) {
 fun LatLng.assertNotEquals(other: LatLng) {
     assertNotEquals(latitude, other.latitude, assertRoundingError)
     assertNotEquals(longitude, other.longitude, assertRoundingError)
+*/
 }

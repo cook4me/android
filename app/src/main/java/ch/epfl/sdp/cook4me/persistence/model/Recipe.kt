@@ -9,5 +9,5 @@ data class Recipe(
     val photos: List<String> = listOf(),
     val difficulty: String = "",
     val servings: Int = 0,
-    val cookingTime: Int = 0,
+    val cookingTime: String = "",
 )

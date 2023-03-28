@@ -17,31 +17,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
-class GenericSeparators {
-    companion object {
-        val ConstantSeparator = { separator: String ->
-            generateSequence(separator) { it }
-        }
+object GenericSeparators {
 
-        /**
-         * Default formatting:
-         *
-         * • item1
-         *
-         * • item2
-         *
-         * • etc...
-         */
-        val BulletSeparator = ConstantSeparator("• ")
-
-        /**
-         * Enumerated list formatting, as in:
-         * 1. item1
-         * 2. item2
-         * 3. etc...
-         */
-        val EnumeratedList = generateSequence(1) { it + 1 }.map { "$it. " }
+    val ConstantSeparator = { separator: String ->
+        generateSequence(separator) { it }
     }
+
+    /**
+     * Default formatting:
+     *
+     * • item1
+     *
+     * • item2
+     *
+     * • etc...
+     */
+    val BulletSeparator = ConstantSeparator("• ")
+
+    /**
+     * Enumerated list formatting, as in:
+     * 1. item1
+     * 2. item2
+     * 3. etc...
+     */
+    val EnumeratedList = generateSequence(1) { it + 1 }.map { "$it. " }
 }
 
 class ListVisualTransformation(
@@ -49,9 +48,9 @@ class ListVisualTransformation(
 ) : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         val formattedText =
-            if (text.isBlank())
+            if (text.isBlank()) {
                 ""
-            else {
+            } else {
                 text.lines()
                     .zip(separator.asIterable())
                     .map { (line, separator) -> "$separator${line.trimStart()}" }
@@ -89,10 +88,11 @@ class ListVisualTransformation(
                     val lastLineLength = textBeforeCursor.lines().last().length
                     val lastSeparatorLength = separator.take(nbOfLinesBeforeCursor + 1).last().length
 
-                    if (lastLineLength < lastSeparatorLength) {
-                        return newOffset + lastSeparatorLength - lastLineLength
+                    return if (lastLineLength < lastSeparatorLength) {
+                        newOffset + lastSeparatorLength - lastLineLength
+                    } else {
+                        newOffset
                     }
-                    return newOffset
                 }
             }
         )

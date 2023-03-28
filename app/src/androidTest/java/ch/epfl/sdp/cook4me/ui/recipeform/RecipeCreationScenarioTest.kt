@@ -1,64 +1,138 @@
 package ch.epfl.sdp.cook4me.ui.recipeform
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.RecipeService
+import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+
+class MockRecipeService(
+    private val expectedRecipe: Recipe
+) : RecipeService {
+    override suspend fun submitForm(
+        recipeName: String,
+        ingredients: List<String>,
+        servings: Int,
+        preparationSteps: List<String>,
+        difficulty: String,
+        preparationTime: String,
+        photos: List<String>,
+    ) {
+        assert(recipeName == expectedRecipe.name)
+        assert(ingredients == expectedRecipe.ingredients)
+        assert(servings == expectedRecipe.servings)
+        assert(preparationSteps == expectedRecipe.recipeSteps)
+        assert(difficulty == expectedRecipe.difficulty)
+        assert(photos == expectedRecipe.photos)
+        assert(preparationTime == expectedRecipe.cookingTime)
+    }
+}
 
 @RunWith(AndroidJUnit4::class)
 class RecipeCreationScenarioTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-    @Test
-    fun recipeWithoutIngredientsListShouldNotBeSubmittable() {
-        assert(false)
+    private fun getString(id: Int): String {
+        return composeTestRule.activity.getString(id)
     }
 
-    @Test
-    fun recipeWithoutTitleListShouldNotBeSubmittable() {
-        assert(false)
-    }
-
-    @Test
-    fun recipeWithoutImageShouldNotBeSubmittable() {
-        assert(false)
-    }
-
-    @Test
-    fun recipeWithoutStepsShouldNotBeSubmittable() {
-        assert(false)
-    }
+    private val expectedRecipe = Recipe(
+        name = "Sad Pizza",
+        ingredients = listOf("flour", "water", "salt"),
+        recipeSteps = listOf("Look at sad ingredients", "sob in bowl to add salt", "mix together", "enjoy"),
+        servings = 1,
+        difficulty = "Hard",
+        cookingTime = "4h00",
+        photos = listOf()
+    )
 
     @Test
     fun validRecipeFormIsCorrectlySubmitted() {
-        assert(false)
+        composeTestRule.setContent {
+            RecipeCreationScreen(viewModel = RecipeCreationViewModel(MockRecipeService(expectedRecipe)))
+        }
+
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc)).performTextInput("Sad Pizza")
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc)).performTextInput("1")
+        composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).performTextInput("flour\nwater\nsalt")
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performClick()
+        composeTestRule.onNodeWithText("Hard").performClick()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc)).performClick()
+        composeTestRule.onNodeWithText("4h00").performScrollTo()
+        composeTestRule.onNodeWithText("4h00").performClick()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).performScrollTo()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc))
+            .performTextInput("Look at sad ingredients\nsob in bowl to add salt\nmix together\nenjoy")
+        composeTestRule.onNodeWithText("Done").performClick()
     }
 
     @Test
     fun ingredientsComposableIsDisplayed() {
-        assert(false)
-    }
-
-    @Test
-    fun imageSelectorIsDisplay() {
-        assert(false)
+        composeTestRule.setContent {
+            RecipeCreationScreen(viewModel = RecipeCreationViewModel())
+        }
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationIngredientsTitle)
+        composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).assertIsDisplayed()
     }
 
     @Test
     fun recipeStepsComposableIsDisplayed() {
-        assert(false)
+        composeTestRule.setContent {
+            RecipeCreationScreen(viewModel = RecipeCreationViewModel())
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.RecipePreparationTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).assertIsDisplayed()
     }
 
     @Test
-    fun recipeDescriptionIsDisplayed() {
-        assert(false)
+    fun recipeNameIsDisplayed() {
+        composeTestRule.setContent {
+            RecipeCreationScreen(viewModel = RecipeCreationViewModel())
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationRecipeTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc))
     }
 
     @Test
-    fun recipeTitleIsDisplayed() {
-        assert(false)
+    fun servingsComposableIsDisplayed() {
+        composeTestRule.setContent {
+            RecipeCreationScreen(viewModel = RecipeCreationViewModel())
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationScreenServingsTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc))
+    }
+
+    @Test
+    fun cookingTimeComposableIsDisplayed() {
+        composeTestRule.setContent {
+            RecipeCreationScreen(viewModel = RecipeCreationViewModel())
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationCookingTimeEntryTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc))
+    }
+
+    @Test
+    fun difficultyComposableIsDisplayed() {
+        composeTestRule.setContent {
+            RecipeCreationScreen(viewModel = RecipeCreationViewModel())
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc))
     }
 }

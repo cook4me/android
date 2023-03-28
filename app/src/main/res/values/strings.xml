@@ -68,4 +68,8 @@
     <string name="RecipeCreationScreenServingsTitle">Serves</string>
     <string name="RecipeCreationDifficultyTitle">Difficulty</string>
     <string name="RecipeCreationCookingTimeEntryTitle">Cooking Time</string>
+    <string name="RecipeCreationScreenAddImageTitle">Add Image</string>
+    <string name="RecipeCreationCookingTimeDropDownMenuDesc">Cooking Time DropDownMenu</string>
+    <string name="RecipeCreationDifficultyDropDownMenuDesc">Difficulty Drop Down Menu</string>
+    <string name="RecipeCreationServingsTextFieldDesc">Servings Text Field</string>
 </resources>

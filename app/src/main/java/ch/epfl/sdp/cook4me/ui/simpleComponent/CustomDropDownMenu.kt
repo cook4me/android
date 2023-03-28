@@ -26,6 +26,7 @@ fun CustomDropDownMenu(
     textStyle: TextStyle = MaterialTheme.typography.body1,
     value: String = "",
     onValueChange: (String) -> Unit = {},
+    contentDescription: String
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -44,7 +45,7 @@ fun CustomDropDownMenu(
                 readOnly = true,
                 // trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier,
-                contentDescription = "",
+                contentDescription = contentDescription,
                 textStyle = textStyle,
                 onValueChange = {}
             )

@@ -40,6 +40,10 @@ import ch.epfl.sdp.cook4me.ui.tupperwareform.ButtonRow
 import ch.epfl.sdp.cook4me.ui.tupperwareform.ComposeFileProvider
 import ch.epfl.sdp.cook4me.ui.tupperwareform.Cook4MeDivider
 
+private val cornerSize = 8.dp
+private val textPadding = 5.dp
+private val textFieldHeight = 45.dp
+
 @Composable
 fun RecipeCreationScreen(
     modifier: Modifier = Modifier,
@@ -99,7 +103,7 @@ fun RecipeCreationScreen(
 }
 
 @Composable
-fun RecipeForm(
+private fun RecipeForm(
     modifier: Modifier = Modifier,
     viewModel: RecipeCreationViewModel,
     onClickTakePhoto: () -> Unit,
@@ -119,7 +123,7 @@ fun RecipeForm(
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        CustomTitleText("Add Image")
+        CustomTitleText(stringResource(R.string.RecipeCreationScreenAddImageTitle))
         ImageSelector(
             Modifier,
             images = viewModel.images,
@@ -162,12 +166,14 @@ fun RecipeForm(
             CookingTimeEntry(
                 onValueChange = { viewModel.changeCookingTime(it) },
                 listCookingTime = viewModel.cookingTimeOptions,
-                value = cookingTime
+                value = cookingTime,
+                contentDescription = stringResource(R.string.RecipeCreationCookingTimeDropDownMenuDesc)
             )
             DifficultyDropDownMenu(
                 listDifficulty = viewModel.difficultyOptions,
                 onValueChange = { viewModel.changeDifficulty(it) },
-                value = difficulty
+                value = difficulty,
+                contentDescription = stringResource(R.string.RecipeCreationDifficultyDropDownMenuDesc)
             )
         }
         BulletPointTextField(
@@ -180,9 +186,6 @@ fun RecipeForm(
     }
 }
 
-val cornerSize = 8.dp
-val textPadding = 5.dp
-val textFieldHeight = 45.dp
 @Composable
 fun ServingsEntry(
     modifier: Modifier = Modifier,
@@ -206,7 +209,7 @@ fun ServingsEntry(
             modifier = Modifier
                 .width(50.dp)
                 .height(textFieldHeight),
-            contentDescription = "",
+            contentDescription = stringResource(R.string.RecipeCreationServingsTextFieldDesc),
             value = nbOfServings,
             onValueChange = {
                 nbOfServings = it.takeWhile { c -> c.isDigit() }.take(2)
@@ -223,12 +226,16 @@ private fun CookingTimeEntry(
     value: String = "",
     onValueChange: (String) -> Unit = {},
     listCookingTime: List<String> = listOf(),
+    contentDescription: String
 ) {
     Row(
         modifier = Modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(modifier = Modifier.padding(horizontal = textPadding), text = stringResource(R.string.RecipeCreationCookingTimeEntryTitle))
+        Text(
+            modifier = Modifier.padding(horizontal = textPadding),
+            text = stringResource(R.string.RecipeCreationCookingTimeEntryTitle)
+        )
         CookingTimeDropDownMenu(
             listCookingTime = listCookingTime,
             modifier = Modifier
@@ -236,6 +243,7 @@ private fun CookingTimeEntry(
                 .height(45.dp),
             value = value,
             onValueChange = onValueChange,
+            contentDescription = contentDescription,
         )
     }
 }
@@ -246,6 +254,7 @@ private fun CookingTimeDropDownMenu(
     onValueChange: (String) -> Unit = {},
     listCookingTime: List<String> = listOf(),
     value: String = "",
+    contentDescription: String
 ) {
     CustomDropDownMenu(
         textStyle = MaterialTheme.typography.caption,
@@ -253,6 +262,7 @@ private fun CookingTimeDropDownMenu(
         options = listCookingTime,
         onValueChange = onValueChange,
         value = value,
+        contentDescription = contentDescription,
     )
 }
 
@@ -261,19 +271,23 @@ private fun DifficultyDropDownMenu(
     onValueChange: (String) -> Unit = {},
     listDifficulty: List<String> = listOf(),
     value: String = "",
+    contentDescription: String
 ) {
-
     Row(
         modifier = Modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(modifier = Modifier.padding(horizontal = textPadding), text = stringResource(R.string.RecipeCreationDifficultyTitle))
+        Text(
+            modifier = Modifier.padding(horizontal = textPadding),
+            text = stringResource(R.string.RecipeCreationDifficultyTitle)
+        )
         CustomDropDownMenu(
             textStyle = MaterialTheme.typography.caption,
             modifier = Modifier.height(textFieldHeight),
             options = listDifficulty,
             onValueChange = onValueChange,
             value = value,
+            contentDescription = contentDescription
         )
     }
 }

@@ -54,6 +54,7 @@ class RecipeCreationViewModel(
     )
 
     val difficultyOptions = listOf("Easy", "Medium", "Hard")
+
     // Elements for which UI state is handled from viewModel
     private val _images = mutableStateListOf<Uri>()
     private var _formError = mutableStateOf(false)
@@ -64,6 +65,8 @@ class RecipeCreationViewModel(
     val cookingTime: MutableState<String> = _cookingTime
     val difficulty: MutableState<String> = _difficulty
 
+    private val minServings = 1
+    private val maxServings = 99
 
     fun updateIngredients(ingredients: String) {
         _recipeForm = _recipeForm.copy(ingredients = ingredients)
@@ -97,13 +100,14 @@ class RecipeCreationViewModel(
     }
 
     private fun recipeIsValid(): Boolean {
-        if (_recipeForm.name.isBlank()) return false
-        if (_difficulty.value.isBlank()) return false
-        if (_recipeForm.servings < 0 || _recipeForm.servings > 99) return false
-        if (_recipeForm.ingredients.isBlank()) return false
-        if (_recipeForm.preparationSteps.isBlank()) return false
-        if (_cookingTime.value.isBlank()) return false
-        return true
+        var isValid = true
+        if (_recipeForm.name.isBlank()) isValid = false
+        if (_difficulty.value.isBlank()) isValid = false
+        if (_recipeForm.servings < minServings || _recipeForm.servings > maxServings) isValid = false
+        if (_recipeForm.ingredients.isBlank()) isValid = false
+        if (_recipeForm.preparationSteps.isBlank()) isValid = false
+        if (_cookingTime.value.isBlank()) isValid = false
+        return isValid
     }
 
     fun onSubmit() {
