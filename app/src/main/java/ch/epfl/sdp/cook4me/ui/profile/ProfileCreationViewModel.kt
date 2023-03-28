@@ -1,11 +1,9 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
 import android.net.Uri
-import android.net.wifi.hotspot2.pps.Credential.UserCredential
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,9 +12,6 @@ import ch.epfl.sdp.cook4me.application.ProfileService
 import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import ch.epfl.sdp.cook4me.application.AccountService
 
 class MockProfileService : ProfileService {
     override suspend fun submitForm(
@@ -31,8 +26,10 @@ class MockProfileService : ProfileService {
     }
 }
 
-class ProfileCreationViewModel(private val repository: ProfileRepository = ProfileRepository(), private val service: ProfileService = ProfileServiceWithRepository()) :
-    ViewModel() {
+class ProfileCreationViewModel(
+    private val repository: ProfileRepository = ProfileRepository(),
+    private val service: ProfileService = ProfileServiceWithRepository()
+) : ViewModel() {
 
     init {
         viewModelScope.launch {
@@ -42,9 +39,7 @@ class ProfileCreationViewModel(private val repository: ProfileRepository = Profi
                 addFavoriteDish(it.favoriteDish)
                 addBio(it.bio)
                 addUsername(it.name)
-                it.userImage?.let { image ->
-                    addUserImage(image.toUri())
-                }
+                addUserImage(it.userImage.toUri())
             }
         }
     }
@@ -95,7 +90,7 @@ class ProfileCreationViewModel(private val repository: ProfileRepository = Profi
 
     // TODO implement tags
     fun onSubmit() {
-        if (_credentials.value.isBlank() || _username.value.isBlank() || _allergies.value.isBlank() || _bio.value.isBlank() || _favoriteDish.value.isBlank()) {
+        if (_credentials.value.isBlank() || _username.value.isBlank()) { // TODO MAKE CHECK COMPLETE
             _formError.value = true
         } else {
             viewModelScope.launch {

@@ -13,7 +13,8 @@ class ProfileServiceWithRepository(private val repository: ProfileRepository = P
         favoriteDish: String,
         userImage: String,
     ) {
-        repository.update("1234",
+        repository.update(
+            "1234",
             Profile(
                 credentials,
                 username,

@@ -23,8 +23,6 @@ import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,38 +31,30 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.persistence.model.Profile
-import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import kotlinx.coroutines.launch
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun EditProfileScreen(
     viewModel: ProfileCreationViewModel = viewModel(),
-    repository: ProfileRepository = ProfileRepository()
 ) {
-    val scope = rememberCoroutineScope()
     val username by viewModel.username
     val favoriteDish by viewModel.favoriteDish
     val allergies by viewModel.allergies
     val bio by viewModel.bio
     val userImage by viewModel.userImage
-    //val fromError by viewModel.formError // TODO Display errors
-    var profile: Profile? = remember {
-        null
-    }
 
     val imagePicker =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
                 if (uri != null) {
-                    viewModel.addUserImage(uri)
+                    viewModel.addUserImage(
+                        uri
+                    )
                 }
             }
         )
@@ -85,7 +75,7 @@ fun EditProfileScreen(
         )
 
         // Textfield for the userna
-    // TODO IMPLEMENT A CLEAN WAme
+        // TODO IMPLEMENT A CLEAN WAme
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_username),
             username,

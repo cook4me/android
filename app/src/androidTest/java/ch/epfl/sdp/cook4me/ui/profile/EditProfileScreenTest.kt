@@ -22,8 +22,6 @@ class EditProfileScreenTest {
         composeTestRule.setContent {
             EditProfileScreen(ProfileCreationViewModel())
         }
-
-        // TODO Load infos from model
     }
 
     @Test

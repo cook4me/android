@@ -12,10 +12,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -24,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.persistence.model.Profile
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
@@ -32,10 +29,11 @@ fun ProfileScreen(
     profileCreationViewModel: ProfileCreationViewModel = viewModel()
 ) {
     Column(
-        modifier = Modifier
-            .padding(12.dp)
+        modifier = Modifier.padding(12.dp)
     ) {
-        ProfileImageAndUsername(profileCreationViewModel.userImage.value,profileCreationViewModel.username.value)
+        ProfileImageAndUsername(
+            profileCreationViewModel.userImage.value, profileCreationViewModel.username.value
+        )
 
         // Textfield for the Favorite dish
         favoriteDish_profileScreen(profileCreationViewModel.favoriteDish.value)
@@ -47,7 +45,7 @@ fun ProfileScreen(
         bio_profileScreen(profileCreationViewModel.bio.value)
 
         // Grid with post within
-        PostGrid()//put images inside
+        PostGrid() // put images inside
     }
 }
 
@@ -86,8 +84,8 @@ fun ProfileImageAndUsername(userImage: Uri, name: String) {
 @Composable
 fun username_profileScreen(name: String) {
     var userName = name
-    if (name.isEmpty()){
-        userName=stringResource(R.string.default_username)
+    if (name.isEmpty()) {
+        userName = stringResource(R.string.default_username)
     }
 
     Text(
@@ -100,8 +98,8 @@ fun username_profileScreen(name: String) {
 @Composable
 fun favoriteDish_profileScreen(favoriteDish: String) {
     var favDish = favoriteDish
-    if (favoriteDish.isEmpty()){
-        favDish=stringResource(R.string.default_favoriteDish)
+    if (favoriteDish.isEmpty()) {
+        favDish = stringResource(R.string.default_favoriteDish)
     }
 
     Row(
@@ -126,10 +124,10 @@ fun favoriteDish_profileScreen(favoriteDish: String) {
 }
 
 @Composable
-fun allergies_profileScreen(allergies: String) {
-    var _allergies = allergies
-    if (allergies.isEmpty()){
-        _allergies=stringResource(R.string.default_allergies)
+fun allergies_profileScreen(allergiesIn: String) {
+    var allergies = allergiesIn
+    if (allergiesIn.isEmpty()) {
+        allergies = stringResource(R.string.default_allergies)
     }
 
     Row(
@@ -145,7 +143,7 @@ fun allergies_profileScreen(allergies: String) {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = _allergies,
+            text = allergies,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -154,10 +152,10 @@ fun allergies_profileScreen(allergies: String) {
 }
 
 @Composable
-fun bio_profileScreen(bio: String) {
-    var _bio = bio
-    if (bio.isEmpty()){
-        _bio=stringResource(R.string.default_bio)
+fun bio_profileScreen(bioIn: String) {
+    var bio = bioIn
+    if (bioIn.isEmpty()) {
+        bio = stringResource(R.string.default_bio)
     }
 
     Row(
@@ -173,7 +171,7 @@ fun bio_profileScreen(bio: String) {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = _bio,
+            text = bio,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
