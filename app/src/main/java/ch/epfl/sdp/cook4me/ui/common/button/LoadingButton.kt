@@ -1,4 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.common.button
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -10,11 +11,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoadingButton(text: String, modifier: Modifier = Modifier, isLoading: Boolean = false, action: () -> Unit) {
+fun LoadingButton(@StringRes text: Int, modifier: Modifier = Modifier, isLoading: Boolean = false, action: () -> Unit) {
     Button(
         onClick = action,
         modifier = modifier,
@@ -25,10 +27,12 @@ fun LoadingButton(text: String, modifier: Modifier = Modifier, isLoading: Boolea
         ),
         enabled = !isLoading
     ) {
-        Text(text = text, fontSize = 16.sp)
+        Text(text = stringResource(text), fontSize = 16.sp)
         AnimatedVisibility(isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.padding(start = 16.dp).size(16.dp),
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .size(16.dp),
                 color = LocalContentColor.current,
                 strokeWidth = 2.dp,
             )

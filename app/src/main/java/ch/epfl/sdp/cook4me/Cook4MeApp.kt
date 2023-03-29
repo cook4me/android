@@ -18,6 +18,7 @@ import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreenWithState
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 
 /**
  * enum values that represent the screens in the app
@@ -73,7 +74,7 @@ fun Cook4MeApp(
             EditProfileScreen()
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
-            CreateTupperwareScreenWithState(TupCreationViewModel())
+            CreateTupperwareScreen()
         }
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()

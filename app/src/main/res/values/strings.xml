@@ -5,20 +5,26 @@
     <string name="navigate_to_edit_profile">Edit profile</string>
     <string name="navigate_to_add_tupperware">Add tupperware</string>
     <string name="navigate_to_add_event">Add event</string>
-    <!-- ui/simpleComponent strings   -->
 
-    <!-- AddressInput   -->
-    <string name="address_default_question">What is the location?</string>
-    <string name="street_address_label">Street address</string>
-    <string name="city_label">City</string>
-    <string name="zip_code_label">Zip code</string>
     <!--  DatePicker  -->
     <string name="selected_date_text">Selected Date: </string>
     <string name="select_date_button">Select Date</string>
+
     <!--  TimePicker  -->
     <string name="selected_time_text">Selected Time: </string>
     <string name="select_time_button">Select Time</string>
 
+    <!--  MainLocations  -->
+    <string name="EPFL">EPFL</string>
+    <string name="UNIL">UNIL</string>
+
+    <!--  Event  -->
+    <string name="empty_name_error_msg">Name is empty</string>
+    <string name="empty_description_error_msg">Description is empty</string>
+    <string name="empty_location_error_msg">Location is empty</string>
+    <string name="max_participants_too_low_error_msg">Max participants is less than 2</string>
+    <string name="date_in_past_error_msg">Date is in the past</string>
+    
     <!--  CreateEventScreen  -->
     <string name="ask_event_name">Name of the event?</string>
     <string name="ask_event_description">Description of the event?</string>
@@ -28,7 +34,7 @@
     <string name="event_visibility_subscriber_only">Subscriber only</string>
     <string name="event_submit_button_test">Submit</string>
 
-    <string name="cool_map">Cool Map</string>
+    <!-- CreateTupperwareScreen -->
     <string name="image_selector_add_image">+</string>
     <string name="TupCreateFormAddImage">Add Images</string>
     <string name="TupCreateFormTupName">Tupperware Name</string>
@@ -37,6 +43,26 @@
     <string name="ButtonRowCancel">Cancel</string>
     <string name="ButtonRowDone">Done</string>
     <string name="image_uri">images/*</string>
+    <string name="TupCreateBlank">Field can\'t be left blank</string>
+
+    <!-- AddressInput   -->
+    <string name="address_default_question">What is the location?</string>
+    <string name="street_address_label">Street address</string>
+    <string name="city_label">City</string>
+    <string name="zip_code_label">Zip code</string>
+
+    <!-- Login Screen -->
+    <string name="sign_in_screen_top_bar_message">Enter your login details</string>
+    <string name="sign_in_screen_sign_in_button">Sign in</string>
+    <string name="invalid_email_message">Invalid email!</string>
+    <string name="password_blank">Password cannot be blank!</string>
+    <string name="sign_in_screen_sign_in_success">Sign in successful!</string>
+    <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
+    <string name="sign_in_screen_wrong_password">Wrong password!</string>
+    <string name="TAG_EMAIL_FIELD">EmailField</string>
+    <string name="TAG_PASSWORD_FIELD">PasswordField</string>
+
+    <string name="cool_map">Cool Map</string>
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
     <string name="tag_username">Username</string>
@@ -50,15 +76,11 @@
     <string name="btn_cancel">cancel</string>
     <string name="msg_cancelled">cancelled</string>
     <string name="msg_saved">saved</string>
-    <string name="sign_in_screen_top_bar_message">Enter your login details</string>
-    <string name="sign_in_screen_sign_in_button">Sign in</string>
-    <string name="invalid_email_message">Invalid email!</string>
-    <string name="password_blank">Password cannot be blank!</string>
-    <string name="sign_in_screen_sign_in_success">Sign in successful!</string>
-    <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
-    <string name="sign_in_screen_wrong_password">Wrong password!</string>
-    <string name="TAG_EMAIL_FIELD">EmailField</string>
-    <string name="TAG_PASSWORD_FIELD">PasswordField</string>
-    <string name="Overview_Screen_Tag">OverviewScreen</string>
-    <string name="Login_Screen_Tag">LoginScreen</string>
+
+    <!-- tests -->
+    <string name="label">label</string>
+    <string name="question">question</string>
+    <string name="option1">option1</string>
+    <string name="option2">option2</string>
+>>>>>>> main
 </resources>
