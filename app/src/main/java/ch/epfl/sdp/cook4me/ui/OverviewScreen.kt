@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import ch.epfl.sdp.cook4me.R
 
@@ -27,6 +28,7 @@ fun OverviewScreen(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .testTag(stringResource(R.string.Overview_Screen_Tag))
     ) {
         Button(onClick = onMapClick) {
             Text(stringResource(R.string.navigate_to_map))
