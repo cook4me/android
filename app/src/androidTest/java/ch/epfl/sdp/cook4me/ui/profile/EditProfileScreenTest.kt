@@ -50,6 +50,7 @@ class EditProfileScreenTest {
         }
     }
 
+    @Test
     fun signUpScenario() = runTest {
         composeTestRule.setContent {
             AddProfileInfoScreen()
@@ -96,14 +97,7 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
     }
-
-
-
-    @Test
-    fun testDefaultValuesAreDisplayed() {
-
-    }
-
+    
     @Test
     fun testTextFieldsInput() {
         // Set up the test
