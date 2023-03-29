@@ -69,7 +69,7 @@ private val cookingTimeOptions = listOf(
 private val difficultyOptions = listOf("Easy", "Medium", "Hard")
 
 @Composable
-fun RecipeCreationScreen(
+fun CreateRecipeScreen(
     submitForm: (Recipe) -> Unit = {}
 ) {
     val images = remember { mutableStateListOf<Uri>() }

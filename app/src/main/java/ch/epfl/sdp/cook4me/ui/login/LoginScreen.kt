@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
@@ -62,6 +63,7 @@ fun LoginScreen(
         content = { padding ->
             Column(
                 modifier = modifier
+                    .testTag(stringResource(R.string.Login_Screen_Tag))
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())

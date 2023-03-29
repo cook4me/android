@@ -44,7 +44,7 @@ class RecipeCreationScenarioTest {
     @Test
     fun validRecipeFormIsCorrectlySubmitted() {
         composeTestRule.setContent {
-            RecipeCreationScreen(submitForm)
+            CreateRecipeScreen(submitForm)
         }
 
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc)).performTextInput("Sad Pizza")
@@ -66,7 +66,7 @@ class RecipeCreationScenarioTest {
     @Test
     fun ingredientsComposableIsDisplayed() {
         composeTestRule.setContent {
-            RecipeCreationScreen(submitForm)
+            CreateRecipeScreen(submitForm)
         }
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationIngredientsTitle)
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).assertIsDisplayed()
@@ -75,7 +75,7 @@ class RecipeCreationScenarioTest {
     @Test
     fun recipeStepsComposableIsDisplayed() {
         composeTestRule.setContent {
-            RecipeCreationScreen(submitForm)
+            CreateRecipeScreen(submitForm)
         }
 
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).performScrollTo()
@@ -86,7 +86,7 @@ class RecipeCreationScenarioTest {
     @Test
     fun recipeNameIsDisplayed() {
         composeTestRule.setContent {
-            RecipeCreationScreen(submitForm)
+            CreateRecipeScreen(submitForm)
         }
 
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationRecipeTitle).assertIsDisplayed()
@@ -96,7 +96,7 @@ class RecipeCreationScenarioTest {
     @Test
     fun servingsComposableIsDisplayed() {
         composeTestRule.setContent {
-            RecipeCreationScreen(submitForm)
+            CreateRecipeScreen(submitForm)
         }
 
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationScreenServingsTitle).assertIsDisplayed()
@@ -106,7 +106,7 @@ class RecipeCreationScenarioTest {
     @Test
     fun cookingTimeComposableIsDisplayed() {
         composeTestRule.setContent {
-            RecipeCreationScreen(submitForm)
+            CreateRecipeScreen(submitForm)
         }
 
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationCookingTimeEntryTitle).assertIsDisplayed()
@@ -116,7 +116,7 @@ class RecipeCreationScenarioTest {
     @Test
     fun difficultyComposableIsDisplayed() {
         composeTestRule.setContent {
-            RecipeCreationScreen(submitForm)
+            CreateRecipeScreen(submitForm)
         }
 
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).assertIsDisplayed()
