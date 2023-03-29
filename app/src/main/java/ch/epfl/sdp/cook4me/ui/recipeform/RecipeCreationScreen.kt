@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.ui.common.form.BulletPointTextField
 import ch.epfl.sdp.cook4me.ui.common.form.CustomDropDownMenu
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTextField
@@ -66,7 +67,9 @@ private val cookingTimeOptions = listOf(
 private val difficultyOptions = listOf("Easy", "Medium", "Hard")
 
 @Composable
-fun RecipeCreationScreen() {
+fun RecipeCreationScreen(
+    submitForm: (Recipe) -> Unit = {}
+) {
     val images = remember { mutableStateListOf<Uri>() }
 
     var imageUri by remember {
@@ -110,6 +113,8 @@ fun RecipeCreationScreen() {
             Modifier.weight(1f),
             onClickTakePhoto = { onClickTakePhoto() },
             onClickAddImage = { onClickAddImage() },
+            submitForm = submitForm,
+            images = images,
         )
     }
 }
@@ -119,7 +124,8 @@ private fun RecipeForm(
     modifier: Modifier = Modifier,
     onClickTakePhoto: () -> Unit,
     onClickAddImage: () -> Unit,
-    images: List<Uri> = listOf()
+    submitForm: (Recipe) -> Unit = {},
+    images: List<Uri> = listOf(),
 ) {
     val context = LocalContext.current
     val recipeNameState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
@@ -132,6 +138,10 @@ private fun RecipeForm(
     val difficultyState = remember {
         RequiredTextFieldState(context.getString(R.string.TupCreateBlank), difficultyOptions.first())
     }
+
+    val formIsValid = recipeNameState.isValid && ingredientsState.isValid &&
+        preparationStepsState.isValid && servingsState.isValid &&
+        cookingTimeState.isValid && difficultyState.isValid
 
     Column(
         modifier = modifier
@@ -214,6 +224,21 @@ private fun RecipeForm(
             difficultyState.enableShowErrors()
             cookingTimeState.enableShowErrors()
             servingsState.enableShowErrors()
+            if (formIsValid) {
+                submitForm(
+                    Recipe(
+                        name = recipeNameState.text,
+                        ingredients = ingredientsState.text.lines().filter { it.isNotBlank() },
+                        recipeSteps = preparationStepsState.text.lines().filter { it.isNotBlank() },
+                        servings = servingsState.text.toInt(),
+                        difficulty = difficultyState.text,
+                        cookingTime = cookingTimeState.text,
+                        photos = listOf()
+                    )
+                )
+            } else {
+                // TODO: show snackbar
+            }
         },
     )
 }
