@@ -1,6 +1,25 @@
 package ch.epfl.sdp.cook4me.ui.recipeform
 
-/*@RunWith(AndroidJUnit4::class)
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@RunWith(AndroidJUnit4::class)
 class RecipeCreationScenarioTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -31,6 +50,7 @@ class RecipeCreationScenarioTest {
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc)).performTextInput("Sad Pizza")
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc)).performTextInput("1")
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).performTextInput("flour\nwater\nsalt")
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performScrollTo()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performClick()
         composeTestRule.waitUntilExists(hasText("Hard"))
         composeTestRule.onNodeWithText("Hard").performScrollTo()
@@ -113,4 +133,3 @@ class RecipeCreationScenarioTest {
         }
     }
 }
-*/
