@@ -1,7 +1,10 @@
 package ch.epfl.sdp.cook4me.ui.recipeform
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -13,6 +16,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
+import okhttp3.internal.wait
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -49,6 +53,7 @@ class RecipeCreationScenarioTest {
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc)).performTextInput("1")
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).performTextInput("flour\nwater\nsalt")
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performClick()
+        composeTestRule.waitUntilExists(hasText("Hard"))
         composeTestRule.onNodeWithText("Hard").performScrollTo()
         composeTestRule.onNodeWithText("Hard").performClick()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc)).performClick()
@@ -118,5 +123,14 @@ class RecipeCreationScenarioTest {
 
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc))
+    }
+
+    private fun ComposeContentTestRule.waitUntilExists(
+        matcher: SemanticsMatcher,
+        timeoutMillis: Long = 10_000L
+    ) {
+        this.waitUntil {
+            this.onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
+        }
     }
 }
