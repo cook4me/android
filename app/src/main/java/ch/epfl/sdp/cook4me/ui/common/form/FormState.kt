@@ -12,6 +12,6 @@ class FormState(private vararg val formElements: FormElementState) {
         get() = formElements.all { it.isValid }
 
     fun enableShowErrors() {
-        formElements.forEach{ it.enableShowErrors() }
+        formElements.forEach { it.enableShowErrors() }
     }
 }

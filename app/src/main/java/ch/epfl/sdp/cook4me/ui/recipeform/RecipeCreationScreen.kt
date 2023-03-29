@@ -134,8 +134,12 @@ private fun RecipeForm(
     val ingredientsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
     val preparationStepsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
     val servingsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
-    val cookingTimeState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank), cookingTimeOptions.first()) }
-    val difficultyState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank), difficultyOptions.first()) }
+    val cookingTimeState = remember {
+        RequiredTextFieldState(context.getString(R.string.TupCreateBlank), cookingTimeOptions.first())
+    }
+    val difficultyState = remember {
+        RequiredTextFieldState(context.getString(R.string.TupCreateBlank), difficultyOptions.first())
+    }
     val formState = FormState(
         recipeNameState,
         ingredientsState,
