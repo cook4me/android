@@ -16,8 +16,8 @@ import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
-import java.util.Calendar
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
+import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
