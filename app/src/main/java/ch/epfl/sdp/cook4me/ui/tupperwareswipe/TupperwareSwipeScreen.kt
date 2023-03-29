@@ -12,19 +12,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 
 @Composable
 fun TupperwareSwipeScreen() {
     Column {
-        Text("Title")
+        Text("Spaghetti Carbonara", fontWeight = FontWeight.Bold)
         Image(
             painter = painterResource(id = R.drawable.carbonara),
             contentDescription = "Carbonara",
             modifier = Modifier.fillMaxWidth()
         )
-        Text("Some Description")
+        Text("made by my mother with much love ❤️")
         Row(
             modifier = Modifier
                 .padding(16.dp)
