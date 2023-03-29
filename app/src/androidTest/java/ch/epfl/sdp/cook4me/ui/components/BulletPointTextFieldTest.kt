@@ -7,8 +7,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ch.epfl.sdp.cook4me.ui.simpleComponent.BulletPointTextField
-import ch.epfl.sdp.cook4me.ui.simpleComponent.GenericSeparators
+import ch.epfl.sdp.cook4me.ui.common.form.BulletPointTextField
+import ch.epfl.sdp.cook4me.ui.common.form.GenericSeparators
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
