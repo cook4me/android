@@ -81,7 +81,7 @@ fun Cook4MeApp(
                 onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
-                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name)}
+                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) }
             )
         }
         composable(route = Screen.Map.name) {
