@@ -140,7 +140,7 @@ private fun RecipeForm(
     val difficultyState = remember {
         RequiredTextFieldState(context.getString(R.string.TupCreateBlank), difficultyOptions.first())
     }
-    val formState = FormState(
+    val form = FormState(
         recipeNameState,
         ingredientsState,
         preparationStepsState,
@@ -164,7 +164,7 @@ private fun RecipeForm(
             onClickTakePhoto = onClickTakePhoto,
             onClickImage = { /*TODO*/ }
         )
-        CustomDivider(Modifier.fillMaxWidth())
+        CustomDivider()
         CustomTitleText(stringResource(R.string.RecipeCreationRecipeTitle))
         CustomTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -177,7 +177,7 @@ private fun RecipeForm(
             shape = RoundedCornerShape(8.dp),
             placeholder = { Text(stringResource(R.string.RecipeNameTextFieldPlaceholder)) }
         )
-        CustomDivider(Modifier.fillMaxWidth())
+        CustomDivider()
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -192,7 +192,7 @@ private fun RecipeForm(
             placeholder = { Text(stringResource(R.string.ingredientsTextFieldPlaceholder)) },
             contentDescription = stringResource(R.string.ingredientsTextFieldContentDesc)
         )
-        CustomDivider(Modifier.fillMaxWidth())
+        CustomDivider()
         CustomTitleText(stringResource(R.string.RecipePreparationTitle))
         Row {
             CookingTimeEntry(
@@ -224,8 +224,8 @@ private fun RecipeForm(
         onSaveText = R.string.ButtonRowDone,
         onCancelClick = { },
         onSaveClick = {
-            formState.enableShowErrors()
-            if (formState.isValid) {
+            form.enableShowErrors()
+            if (form.isValid) {
                 submitForm(
                     Recipe(
                         name = recipeNameState.text,
