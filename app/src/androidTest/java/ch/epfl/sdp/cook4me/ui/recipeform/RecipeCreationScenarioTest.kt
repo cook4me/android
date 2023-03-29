@@ -49,9 +49,6 @@ class RecipeCreationScenarioTest {
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc)).performTextInput("1")
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).performTextInput("flour\nwater\nsalt")
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performClick()
-        composeTestRule.waitUntil(timeoutMillis = 10000) {
-            composeTestRule.onAllNodesWithText("Hard").fetchSemanticsNodes().size == 1
-        }
         composeTestRule.onNodeWithText("Hard").performScrollTo()
         composeTestRule.onNodeWithText("Hard").performClick()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc)).performClick()
