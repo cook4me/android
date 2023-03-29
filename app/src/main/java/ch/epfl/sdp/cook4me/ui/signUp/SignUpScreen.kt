@@ -30,10 +30,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
 
-@Preview(showBackground = true)
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(
+     accountService: AccountService = AccountService(),
+) {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())

@@ -2,7 +2,7 @@ package ch.epfl.sdp.cook4me.persistence.model
 
 @Suppress("DataClassShouldBeImmutable")
 data class Profile(
-    var credentials: String = "",
+    var id: String = "",
     var name: String = "",
     var bio: String = "",
     var allergies: String = "",

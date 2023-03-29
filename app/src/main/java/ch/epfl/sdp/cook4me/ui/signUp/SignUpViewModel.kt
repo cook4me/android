@@ -1,10 +1,9 @@
-package ch.epfl.sdp.cook4me.ui.profile
+package ch.epfl.sdp.cook4me.ui.signUp
 
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.R
@@ -27,25 +26,11 @@ class MockProfileService : ProfileService {
     }
 }
 
-class ProfileCreationViewModel(
+class SignUpViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
     private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
 ) : ViewModel() {
-
-    init {
-        viewModelScope.launch {
-            val profile = accountService.getCurrentUserEmail()?.let { repository.getById(it) }
-           profile?.let {
-                addAllergies(it.allergies)
-                addFavoriteDish(it.favoriteDish)
-                addBio(it.bio)
-                addUsername(it.name)
-                addUserImage(it.userImage.toUri())
-            }
-        }
-    }
-
     private var _id = accountService.getCurrentUserEmail() // Email as id
     private var _username = mutableStateOf("")
     private var _allergies = mutableStateOf("")

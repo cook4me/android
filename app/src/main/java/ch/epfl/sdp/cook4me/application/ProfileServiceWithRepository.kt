@@ -6,7 +6,7 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 class ProfileServiceWithRepository(private val repository: ProfileRepository = ProfileRepository()) :
     ProfileService {
     override suspend fun submitForm(
-        credentials: String,
+        id: String,
         username: String,
         allergies: String,
         bio: String,
@@ -14,9 +14,9 @@ class ProfileServiceWithRepository(private val repository: ProfileRepository = P
         userImage: String,
     ) {
         repository.update(
-            "1234",
+            id,
             Profile(
-                credentials,
+                id,
                 username,
                 allergies,
                 bio,

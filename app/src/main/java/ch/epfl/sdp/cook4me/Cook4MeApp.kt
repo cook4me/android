@@ -17,6 +17,7 @@ import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
+import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreenWithState
 import ch.epfl.sdp.cook4me.ui.tupperwareform.TupCreationViewModel
@@ -40,7 +41,7 @@ private enum class Screen {
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = Screen.OverviewScreen.name) {
+    NavHost(navController = navController, startDestination = Screen.Login.name) {
         composable(route = Screen.Login.name) {
             LoginScreen(onSuccessfulLogin = { navController.navigate(Screen.OverviewScreen.name) })
         }

@@ -13,13 +13,8 @@ class ProfileRepository(
         store.collection(COLLECTION_PATH).add(value).await()
     }
 
-    suspend fun getAll(): Map<String, Profile> {
-        val result = store.collection(COLLECTION_PATH).get().await()
-        return result.map { it.id }.zip(result.toObjects(Profile::class.java)).toMap()
-    }
-
-    suspend fun getByCredentials(credentials: String) =
-        store.collection(COLLECTION_PATH).whereEqualTo("credentials", credentials).get().await()
+    suspend fun getById(id: String) =
+        store.collection(COLLECTION_PATH).whereEqualTo("id", id).get().await()
             .first()?.toObject(Profile::class.java)
 
     suspend fun update(id: String, value: Profile) {
