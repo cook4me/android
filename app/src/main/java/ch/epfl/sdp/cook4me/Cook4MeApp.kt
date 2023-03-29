@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.ui.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
+import ch.epfl.sdp.cook4me.ui.eventform.DetailedEventScreen
+import ch.epfl.sdp.cook4me.ui.eventform.Event
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
@@ -17,6 +19,7 @@ import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
@@ -28,8 +31,24 @@ private enum class Screen {
     ProfileScreen,
     EditProfileScreen,
     Map,
-    CreateEventScreen
+    CreateEventScreen,
+    DetailedEventScreen
 }
+
+/* Testing around the Detailed Event Screen */
+// initializing the testing event
+val calendar = Calendar.getInstance()
+val testEvent = Event(
+    name = "test event name",
+    description = "test description",
+    dateTime = calendar,
+    location = "Rue. Louis Favre 4, 1024, Ecublens",
+    maxParticipants = 4,
+    participants = listOf("obi.wang", "harry.potter"),
+    creator = "peter griffin",
+    id = "jabdsfias213",
+    isPrivate = false
+)
 
 @Composable
 fun Cook4MeApp(
@@ -60,6 +79,7 @@ fun Cook4MeApp(
                 onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
                 onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
+                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
             )
         }
         composable(route = Screen.Map.name) {
@@ -76,6 +96,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()
+        }
+        composable(route = Screen.DetailedEventScreen.name) {
+            DetailedEventScreen(event = testEvent)
         }
     }
 }
