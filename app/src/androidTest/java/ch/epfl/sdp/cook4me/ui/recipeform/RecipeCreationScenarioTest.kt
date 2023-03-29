@@ -48,6 +48,7 @@ class RecipeCreationScenarioTest {
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc)).performTextInput("1")
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).performTextInput("flour\nwater\nsalt")
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performClick()
+        composeTestRule.onNodeWithText("Hard").performScrollTo()
         composeTestRule.onNodeWithText("Hard").performClick()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc)).performClick()
         composeTestRule.onNodeWithText("4h00").performScrollTo()
@@ -73,6 +74,7 @@ class RecipeCreationScenarioTest {
             RecipeCreationScreen(submitForm)
         }
 
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.RecipePreparationTitle).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).assertIsDisplayed()
     }
