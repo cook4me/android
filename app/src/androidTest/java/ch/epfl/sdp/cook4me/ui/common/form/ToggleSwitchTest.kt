@@ -4,9 +4,10 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,15 +22,15 @@ class ToggleSwitchTest {
     fun defaultInformationIsDisplayed() {
         composeTestRule.setContent {
             ToggleSwitch(
-                question = "question",
-                answerChecked = "option1",
-                answerUnchecked = "option2",
+                question = R.string.question,
+                answerChecked = R.string.option1,
+                answerUnchecked = R.string.option2,
                 onToggle = {}
             )
         }
 
-        composeTestRule.onNodeWithText("question").assertIsDisplayed()
-        composeTestRule.onNodeWithText("option1").assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.question).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.option1).assertIsDisplayed()
     }
 
     @Test
@@ -37,9 +38,9 @@ class ToggleSwitchTest {
         var toggle = true
         composeTestRule.setContent {
             ToggleSwitch(
-                question = "question",
-                answerChecked = "option1",
-                answerUnchecked = "option2",
+                question = R.string.question,
+                answerChecked = R.string.option1,
+                answerUnchecked = R.string.option2,
                 onToggle = { toggle = it }
             )
         }
