@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.common.form
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,8 +14,8 @@ import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 
 @Composable
 fun FormButtons(
-    onCancelText: String,
-    onSaveText: String,
+    @StringRes onCancelText: Int,
+    @StringRes onSaveText: Int,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     onCancelClick: () -> Unit,

@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.common.form
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,11 +13,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -30,47 +31,50 @@ import ch.epfl.sdp.cook4me.R
  */
 @Composable
 fun InputField(
-    question: String,
-    label: String = "",
-    onTextChanged: (String) -> Unit
+    value: String,
+    @StringRes question: Int,
+    modifier: Modifier = Modifier,
+    @StringRes label: Int? = null,
+    isError: Boolean = false,
+    onValueChange: (String) -> Unit
 ) {
-    val text = remember { mutableStateOf("") }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(question)
+        Text(stringResource(question))
         TextField(
-            value = text.value,
-            onValueChange = {
-                onTextChanged(it)
-                text.value = it
-            },
-            label = { Text(label) },
-            modifier = androidx.compose.ui.Modifier.fillMaxWidth()
+            value = value,
+            onValueChange =
+            onValueChange,
+            isError = isError,
+            label = { label?.let { Text(stringResource(id = it)) } },
+            modifier = modifier.fillMaxWidth().semantics { if (isError) stateDescription = "Error" }
         )
     }
 }
 
 @Composable
-fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+fun EmailField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
         singleLine = true,
         modifier = modifier
-            .testTag(stringResource(R.string.TAG_EMAIL_FIELD)),
+            .testTag(stringResource(R.string.TAG_EMAIL_FIELD)).semantics { if (isError) stateDescription = "Error" },
         value = value,
         onValueChange = { onNewValue(it) },
+        isError = isError,
         placeholder = { Text("Email") },
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
     )
 }
 
 @Composable
-fun PasswordField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+fun PasswordField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
         modifier = modifier
-            .testTag(stringResource(R.string.TAG_PASSWORD_FIELD)),
+            .testTag(stringResource(R.string.TAG_PASSWORD_FIELD)).semantics { if (isError) stateDescription = "Error" },
         value = value,
         onValueChange = { onNewValue(it) },
+        isError = isError,
         placeholder = { Text(text = "Password") },
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
