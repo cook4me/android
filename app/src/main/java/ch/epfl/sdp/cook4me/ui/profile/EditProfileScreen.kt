@@ -71,8 +71,8 @@ fun EditProfileScreen() {
 
         bio_profileUpdateScreen()
         FormButtons(
-            onCancelText = stringResource(R.string.btn_cancel),
-            onSaveText = stringResource(R.string.btn_save),
+            onCancelText = R.string.btn_cancel,
+            onSaveText = R.string.btn_save,
             onCancelClick = { /*TODO*/ },
             onSaveClick = { /*TODO*/ }
         )
@@ -220,8 +220,8 @@ fun saveCancelButtons_profileUpdateScreen() {
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        CancelButton(text = stringResource(R.string.btn_cancel)) {}
-        LoadingButton(text = stringResource(R.string.btn_save)) {}
+        CancelButton(R.string.btn_cancel) {}
+        LoadingButton(R.string.btn_save) {}
     }
 }
 

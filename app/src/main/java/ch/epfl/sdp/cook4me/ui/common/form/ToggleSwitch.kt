@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.common.form
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 /**
@@ -22,16 +24,16 @@ import androidx.compose.ui.unit.dp
  */
 @Composable
 fun ToggleSwitch(
-    question: String,
-    answerChecked: String,
-    answerUnchecked: String,
+    @StringRes question: Int,
+    @StringRes answerChecked: Int,
+    @StringRes answerUnchecked: Int,
     onToggle: (Boolean) -> Unit,
 ) {
     val checked = remember { mutableStateOf(true) }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(question)
+        Text(stringResource(question))
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -45,7 +47,15 @@ fun ToggleSwitch(
                 },
                 modifier = Modifier.testTag("switch")
             )
-            Text(if (checked.value) answerChecked else answerUnchecked)
+            Text(
+                if (checked.value) {
+                    stringResource(answerChecked)
+                } else {
+                    stringResource(
+                        answerUnchecked
+                    )
+                }
+            )
         }
     }
 }
