@@ -15,6 +15,7 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
+import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 
 /**
  * enum values that represent the screens in the app
@@ -22,6 +23,7 @@ import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 private enum class Screen {
     Login,
     CreateTupperwareScreen,
+    TupperwareSwipeScreen,
     OverviewScreen,
     ProfileScreen,
     EditProfileScreen,
@@ -33,7 +35,7 @@ private enum class Screen {
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = Screen.Login.name) {
+    NavHost(navController = navController, startDestination = Screen.OverviewScreen.name) {
         composable(route = Screen.Login.name) {
             LoginScreen(
                 onSuccessfulLogin = { navController.navigate(Screen.OverviewScreen.name) }
@@ -45,6 +47,7 @@ fun Cook4MeApp(
                 onProfileClick = { navController.navigate(Screen.ProfileScreen.name) },
                 onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
                 onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
+                onSwipeTupperwareClick = { navController.navigate(Screen.TupperwareSwipeScreen.name) },
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
             )
         }
@@ -59,6 +62,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
             CreateTupperwareScreen()
+        }
+        composable(route = Screen.TupperwareSwipeScreen.name) {
+            TupperwareSwipeScreen()
         }
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()
