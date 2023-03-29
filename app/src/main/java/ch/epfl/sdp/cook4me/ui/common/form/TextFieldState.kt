@@ -24,7 +24,7 @@ open class TextFieldState(
     private val validator: (String) -> Boolean = { true },
     private val errorMsg: String,
     private val default: String = "",
-) {
+) : FormElementState {
     var text: String by mutableStateOf(default)
 
     // was the TextField ever focused
@@ -32,10 +32,10 @@ open class TextFieldState(
     private var isFocused: Boolean by mutableStateOf(false)
     var isFocusedDirty: Boolean by mutableStateOf(false)
 
-    val isValid: Boolean
+    override val isValid: Boolean
         get() = validator(text)
 
-    val errorMessage: String
+    override val errorMessage: String
         get() = errorMsg
 
     fun onFocusChange(focused: Boolean) {
@@ -46,11 +46,11 @@ open class TextFieldState(
         }
     }
 
-    fun enableShowErrors() {
+    override fun enableShowErrors() {
         displayErrors = true
     }
 
-    fun showErrors() = !isValid && displayErrors
+    override fun showErrors() = !isValid && displayErrors
 }
 
 class RequiredTextFieldState(errorMsg: String, default: String = "",) : TextFieldState(

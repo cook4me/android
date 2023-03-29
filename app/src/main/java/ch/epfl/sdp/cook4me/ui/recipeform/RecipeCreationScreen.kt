@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.recipeform
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.CustomDropDownMenu
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTextField
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTitleText
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
+import ch.epfl.sdp.cook4me.ui.common.form.FormState
 import ch.epfl.sdp.cook4me.ui.common.form.GenericSeparators
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
@@ -132,16 +134,16 @@ private fun RecipeForm(
     val ingredientsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
     val preparationStepsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
     val servingsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
-    val cookingTimeState = remember {
-        RequiredTextFieldState(context.getString(R.string.TupCreateBlank), cookingTimeOptions.first())
-    }
-    val difficultyState = remember {
-        RequiredTextFieldState(context.getString(R.string.TupCreateBlank), difficultyOptions.first())
-    }
-
-    val formIsValid = recipeNameState.isValid && ingredientsState.isValid &&
-        preparationStepsState.isValid && servingsState.isValid &&
-        cookingTimeState.isValid && difficultyState.isValid
+    val cookingTimeState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank), cookingTimeOptions.first()) }
+    val difficultyState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank), difficultyOptions.first()) }
+    val formState = FormState(
+        recipeNameState,
+        ingredientsState,
+        preparationStepsState,
+        servingsState,
+        cookingTimeState,
+        difficultyState,
+    )
 
     Column(
         modifier = modifier
@@ -218,13 +220,8 @@ private fun RecipeForm(
         onSaveText = R.string.ButtonRowDone,
         onCancelClick = { },
         onSaveClick = {
-            recipeNameState.enableShowErrors()
-            ingredientsState.enableShowErrors()
-            preparationStepsState.enableShowErrors()
-            difficultyState.enableShowErrors()
-            cookingTimeState.enableShowErrors()
-            servingsState.enableShowErrors()
-            if (formIsValid) {
+            formState.enableShowErrors()
+            if (formState.isValid) {
                 submitForm(
                     Recipe(
                         name = recipeNameState.text,
@@ -237,7 +234,7 @@ private fun RecipeForm(
                     )
                 )
             } else {
-                // TODO: show snackbar
+                Log.d("Debug", "Error in form")
             }
         },
     )
