@@ -15,6 +15,17 @@
     <string name="selected_time_text">Selected Time: </string>
     <string name="select_time_button">Select Time</string>
 
+    <!--  MainLocations  -->
+    <string name="EPFL">EPFL</string>
+    <string name="UNIL">UNIL</string>
+
+    <!--  Event  -->
+    <string name="empty_name_error_msg">Name is empty</string>
+    <string name="empty_description_error_msg">Description is empty</string>
+    <string name="empty_location_error_msg">Location is empty</string>
+    <string name="max_participants_too_low_error_msg">Max participants is less than 2</string>
+    <string name="date_in_past_error_msg">Date is in the past</string>
+    
     <!--  CreateEventScreen  -->
     <string name="ask_event_name">Name of the event?</string>
     <string name="ask_event_description">Description of the event?</string>
@@ -23,6 +34,16 @@
     <string name="event_visibility_everyone">Everyone</string>
     <string name="event_visibility_subscriber_only">Subscriber only</string>
     <string name="event_submit_button_test">Submit</string>
+
+    <!-- DetailedEventScreen -->
+    <string name="event_name">Event name:</string>
+    <string name="event_description">Event description:</string>
+    <string name="event_location">Event location:</string>
+    <string name="event_max_participants">Max Participants:</string>
+    <string name="event_creator">Creator:</string>
+    <string name="event_participants">Participants:</string>
+    <string name="event_who_can_see_event">Who can see the event:</string>
+    <string name="event_time">Event time:</string>
 
     <!-- CreateTupperwareScreen -->
     <string name="image_selector_add_image">+</string>
@@ -51,6 +72,10 @@
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
     <string name="TAG_EMAIL_FIELD">EmailField</string>
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
+    <string name="Login_Screen_Tag">LoginScreen</string>
+
+    <!-- Overview Screen -->
+    <string name="Overview_Screen_Tag">OverviewScreen</string>
 
     <string name="cool_map">Cool Map</string>
     <string name="tag_allergies">Allergies</string>
@@ -66,10 +91,12 @@
     <string name="btn_cancel">cancel</string>
     <string name="msg_cancelled">cancelled</string>
     <string name="msg_saved">saved</string>
+    <string name="Nav_Detailed_Event_Screen">Detailed Event</string>
 
     <!-- tests -->
     <string name="label">label</string>
     <string name="question">question</string>
     <string name="option1">option1</string>
     <string name="option2">option2</string>
+
 </resources>
