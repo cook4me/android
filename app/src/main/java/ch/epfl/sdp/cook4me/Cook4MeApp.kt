@@ -17,9 +17,9 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
-import java.util.Calendar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
