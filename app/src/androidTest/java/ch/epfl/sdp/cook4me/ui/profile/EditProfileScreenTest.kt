@@ -86,39 +86,15 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithText(bioInput).assertExists()
 
         composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
-
-        profile_test(
-            usernameInput,
-            favoriteDishInput,
-            allergiesInput,
-            bioInput,
-            ""
-        )
-
-        editScreen_test(
-            "ronald",
-            "Butterbeer",
-            "Snails",
-            "I'm just the friend of harry",
-            ""
-        )
-
-        profile_test(
-            "ronald",
-            "Butterbeer",
-            "Snails",
-            "I'm just the friend of harry",
-            ""
-        )
     }
 
-    private fun profile_test(
-        usernameInput: String,
-        favoriteDishInput: String,
-        allergiesInput: String,
-        bioInput: String,
-        imageInput: String
-    ) {
+    @Test
+    private fun profile_test() {
+        val usernameInput = "Harry"
+        val favoriteDishInput = "Spaghetti"
+        val allergiesInput = "Hazelnut"
+        val bioInput = "Gourmet"
+
         composeTestRule.setContent { ProfileScreen() }
 
         composeTestRule.onNodeWithText(usernameInput).assertExists()
@@ -128,12 +104,8 @@ class EditProfileScreenTest {
         // TODO test image
     }
 
+    @Test
     private fun editScreen_test(
-        usernameInput: String,
-        favoriteDishInput: String,
-        allergiesInput: String,
-        bioInput: String,
-        imageInput: String
     ) {
         // Set up the test
         val username = composeTestRule.activity.getString(R.string.tag_username)
@@ -142,6 +114,11 @@ class EditProfileScreenTest {
         val bio = composeTestRule.activity.getString(R.string.tag_bio)
 
         composeTestRule.setContent { EditProfileScreen() }
+
+        val usernameInput = "ronald"
+        val favoriteDishInput = "Butterbeer"
+        val allergiesInput = "Snails"
+        val bioInput = "I'm just the friend of harry"
 
         // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
