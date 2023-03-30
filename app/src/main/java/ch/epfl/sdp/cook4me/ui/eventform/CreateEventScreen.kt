@@ -21,6 +21,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
+import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 /**
@@ -87,10 +88,9 @@ fun CreateEventScreen(
             onSaveText = stringResource(R.string.ButtonRowDone),
             onCancelClick = { /*TODO*/ },
             onSaveClick = {
-                endMsg.value = if (event.value.isValidEvent) {
-                    event.value.eventInformation
-                } else {
-                    event.value.eventProblem?.let { "Error: $it" } ?: "Error"
+                // call suspend function
+                runBlocking {
+                    endMsg.value = eventService.submitForm(event.value) ?: "Event created!"
                 }
             }
         )
