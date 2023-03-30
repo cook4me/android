@@ -12,13 +12,6 @@ class TupperwareRepository(store: FirebaseFirestore = FirebaseFirestore.getInsta
         super.add(value)
     }
 
-//    suspend fun getAll(): Map<String, Tupperware> {
-//        super.getAll(Tupperware::class.java)
-//    }
-//
-//    suspend fun getById(id: String) =
-//        super.getById(id, Tupperware::class.java)
-
     suspend fun update(id: String, value: Tupperware) {
         super.update(id, value)
     }
