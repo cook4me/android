@@ -61,7 +61,7 @@ class EditProfileScreenTest {
         val allergies = composeTestRule.activity.getString(R.string.tag_allergies)
         val bio = composeTestRule.activity.getString(R.string.tag_bio)
 
-        val usernameInput = "Daniel"
+        val usernameInput = "Harry"
         val favoriteDishInput = "Spaghetti"
         val allergiesInput = "Hazelnut"
         val bioInput = "Gourmet"
@@ -87,30 +87,32 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
 
-        // TODO TEST FOR IMAGE
         composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
 
-        composeTestRule.setContent { EditProfileScreen() }
+        profile_test(usernameInput,favoriteDishInput,allergiesInput,bioInput,"")
+
+        editScreen_test("ronald","Butterbeer", "Snails","I'm just the friend of harry", "")
+
+        profile_test("ronald","Butterbeer", "Snails","I'm just the friend of harry", "")
+    }
+
+    private fun profile_test(usernameInput: String, favoriteDishInput: String, allergiesInput: String, bioInput: String, imageInput: String){
+        composeTestRule.setContent { ProfileScreen() }
 
         composeTestRule.onNodeWithText(usernameInput).assertExists()
         composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
+        //TODO test image
     }
-    
-    @Test
-    fun testTextFieldsInput() {
+
+    private fun editScreen_test(usernameInput: String, favoriteDishInput: String, allergiesInput: String, bioInput: String, imageInput: String) {
         // Set up the test
         val username = composeTestRule.activity.getString(R.string.tag_username)
         val favoriteDish = composeTestRule.activity.getString(R.string.tag_favoriteDish)
         val allergies = composeTestRule.activity.getString(R.string.tag_allergies)
         val bio = composeTestRule.activity.getString(R.string.tag_bio)
 
-        val usernameInput = "Daniel"
-        val favoriteDishInput = "Spaghetti"
-        val allergiesInput = "Hazelnut"
-        val bioInput = "Gourmet"
-
         composeTestRule.setContent { EditProfileScreen() }
 
         // Clear fields
@@ -133,6 +135,8 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
+
+        composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
     }
 
     @Test
