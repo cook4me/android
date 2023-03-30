@@ -56,8 +56,8 @@ class CreateEventScreenTest {
     private fun ComposeContentTestRule.waitUntilExists(
         matcher: SemanticsMatcher,
         timeoutMillis: Long = 5000
-    ){
-        this.waitUntil(timeoutMillis){
+    ) {
+        this.waitUntil(timeoutMillis) {
             this.onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
         }
     }
