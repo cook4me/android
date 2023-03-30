@@ -1,12 +1,15 @@
+package ch.epfl.sdp.cook4me.ui.profile
+
 import android.net.Uri
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,7 +36,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.profile.ProfileCreationViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -89,7 +91,6 @@ fun EditProfileScreen(
             viewModel::addFavoriteDish,
         )
 
-        // Textfield for Allergies
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_allergies),
             allergies,

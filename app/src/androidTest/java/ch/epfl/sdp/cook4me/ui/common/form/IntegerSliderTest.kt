@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -22,9 +23,10 @@ class IntegerSliderTest {
     @Test
     fun defaultInformationIsDisplayed() {
         composeTestRule.setContent {
-            IntegerSlider(text = "text", min = 0, max = 10, onValueChange = {})
+            IntegerSlider(text = R.string.label, min = 0, max = 10, onValueChange = {})
         }
-        composeTestRule.onNodeWithText("text:0").assertIsDisplayed()
+
+        composeTestRule.onNodeWithText("${getStringFromId(R.string.label)}:0").assertIsDisplayed()
     }
 
     @Test
@@ -32,14 +34,14 @@ class IntegerSliderTest {
         var value = 0
         composeTestRule.setContent {
             IntegerSlider(
-                text = "Slider Value",
+                text = R.string.label,
                 min = 0,
                 max = 10,
                 onValueChange = { value = it }
             )
         }
         // Verify initial value
-        composeTestRule.onNodeWithText("Slider Value:0").assertExists()
+        composeTestRule.onNodeWithText("${(getStringFromId(R.string.label))}:0").assertExists()
         // Drag the slider to the right
         composeTestRule.onNodeWithTag("slider").performTouchInput {
             swipeRight(
@@ -49,7 +51,9 @@ class IntegerSliderTest {
             )
         }
 
-        composeTestRule.onNodeWithText("Slider Value:10").assertExists()
+        composeTestRule.onNodeWithText("${getStringFromId(R.string.label)}:10").assertExists()
         assertEquals(10, value)
     }
+
+    private fun getStringFromId(id: Int) = composeTestRule.activity.getString(id)
 }

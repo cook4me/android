@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import ch.epfl.sdp.cook4me.R
 
@@ -18,9 +19,9 @@ fun OverviewScreen(
     onProfileClick: () -> Unit,
     onEditProfileClick: () -> Unit,
     onAddTupperwareClick: () -> Unit,
+    onSwipeTupperwareClick: () -> Unit,
     onAddEventClick: () -> Unit,
-    onAddSignUpClick: () -> Unit,
-    onPostClick: () -> Unit,
+    onDetailedEventClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -29,6 +30,7 @@ fun OverviewScreen(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .testTag(stringResource(R.string.Overview_Screen_Tag))
     ) {
         Button(onClick = onMapClick) {
             Text(stringResource(R.string.navigate_to_map))
@@ -42,8 +44,14 @@ fun OverviewScreen(
         Button(onClick = onAddTupperwareClick) {
             Text(stringResource(R.string.navigate_to_add_tupperware))
         }
+        Button(onClick = onSwipeTupperwareClick) {
+            Text(stringResource(R.string.navigate_to_swipe_tupperware))
+        }
         Button(onClick = onAddEventClick) {
             Text(stringResource(R.string.navigate_to_add_event))
+        }
+        Button(onClick = onDetailedEventClick) {
+            Text(stringResource(R.string.Nav_Detailed_Event_Screen))
         }
         Button(onClick = onAddSignUpClick) {
             Text(stringResource(R.string.navigate_to_add_signup))
