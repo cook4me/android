@@ -95,17 +95,29 @@ class EditProfileScreenTest {
         profile_test("ronald","Butterbeer", "Snails","I'm just the friend of harry", "")
     }
 
-    private fun profile_test(usernameInput: String, favoriteDishInput: String, allergiesInput: String, bioInput: String, imageInput: String){
+    private fun profile_test(
+        usernameInput: String,
+        favoriteDishInput: String,
+        allergiesInput: String,
+        bioInput: String,
+        imageInput: String
+    ) {
         composeTestRule.setContent { ProfileScreen() }
 
         composeTestRule.onNodeWithText(usernameInput).assertExists()
         composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
-        //TODO test image
+        // TODO test image
     }
 
-    private fun editScreen_test(usernameInput: String, favoriteDishInput: String, allergiesInput: String, bioInput: String, imageInput: String) {
+    private fun editScreen_test(
+        usernameInput: String,
+        favoriteDishInput: String,
+        allergiesInput: String,
+        bioInput: String,
+        imageInput: String
+    ) {
         // Set up the test
         val username = composeTestRule.activity.getString(R.string.tag_username)
         val favoriteDish = composeTestRule.activity.getString(R.string.tag_favoriteDish)
