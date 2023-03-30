@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.application
 
-import java.util.Calendar
 import ch.epfl.sdp.cook4me.persistence.repository.ObjectRepository
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import io.mockk.coEvery
@@ -9,6 +8,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.Test
+import java.util.Calendar
 
 class EventFormServiceTest {
 
