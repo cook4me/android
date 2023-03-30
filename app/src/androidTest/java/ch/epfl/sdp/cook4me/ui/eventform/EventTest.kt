@@ -114,7 +114,7 @@ class EventTest {
     fun addNewParticipantInFullEventDoesNotAddParticipant() {
         val participant = "participant3"
         val expected = event
-        val actual = addParticipant(event.copy(maxParticipants = 2),participant)
+        val actual = addParticipant(event.copy(maxParticipants = 2), participant)
         assertEquals(expected.copy(maxParticipants = 2), actual)
     }
 }
