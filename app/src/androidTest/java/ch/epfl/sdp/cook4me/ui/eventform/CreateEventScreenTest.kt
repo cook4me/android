@@ -1,8 +1,10 @@
 package ch.epfl.sdp.cook4me.ui.eventform
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
@@ -47,7 +49,16 @@ class CreateEventScreenTest {
 
         coEvery { mockEventService.submitForm(match { !it.isValidEvent }) } returns "error"
         composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performClick()
-        composeTestRule.onNodeWithText("error").assertExists()
+        composeTestRule.waitUntilExists(hasText("error"))
         coVerify { mockEventService.submitForm(match { !it.isValidEvent }) }
+    }
+
+    private fun ComposeContentTestRule.waitUntilExists(
+        matcher: SemanticsMatcher,
+        timeoutMillis: Long = 5000
+    ){
+        this.waitUntil(timeoutMillis){
+            this.onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
+        }
     }
 }
