@@ -56,11 +56,11 @@ fun CustomDropDownMenu(
             ) {
                 options.forEach { item ->
                     DropdownMenuItem(
-                        content = { Text(text = item) },
                         onClick = {
                             onValueChange(item)
                             expanded = false
-                        }
+                        },
+                        content = { Text(text = item) },
                     )
                 }
             }
