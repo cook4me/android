@@ -1,16 +1,15 @@
 package ch.epfl.sdp.cook4me.ui.map
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.CameraMoveStartedReason
 import com.google.maps.android.compose.CameraPositionState
 import io.mockk.Ordering
 import io.mockk.spyk
@@ -24,9 +23,10 @@ import org.junit.Test
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-const val STARTING_ZOOM = 10f
-const val ASSERT_ROUNDING_ERROR = 0.01
-const val ONE_MINUTE_IN_MILLISECONDS = 60000L
+private const val MAPS_LOADING_TIMEOUT = 5000.toLong()
+private const val STARTING_ZOOM = 10f
+private const val ASSERT_ROUNDING_ERROR = 0.01
+private const val HALF_MINUTE_IN_MILLISECONDS = 20000L
 
 class GoogleMapViewTests {
     @get:Rule
@@ -35,7 +35,7 @@ class GoogleMapViewTests {
     private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
 
-    private fun initMap() {
+    private fun initMap(content: @Composable () -> Unit = {}, selectedEventId: String = "") {
         check(hasValidApiKey()) { "Maps API key not specified" }
         val countDownLatch = CountDownLatch(1)
         composeTestRule.setContent {
@@ -45,10 +45,11 @@ class GoogleMapViewTests {
                 cameraPositionState = cameraPositionState,
                 onMapLoaded = {
                     countDownLatch.countDown()
-                }
+                },
+                selectedEventId = selectedEventId
             )
         }
-        val mapLoaded = countDownLatch.await(60, TimeUnit.SECONDS)
+        val mapLoaded = countDownLatch.await(MAPS_LOADING_TIMEOUT, TimeUnit.MILLISECONDS)
         assertTrue("Map loaded", mapLoaded)
     }
 
@@ -65,61 +66,30 @@ class GoogleMapViewTests {
     }
 
     @Test
-    fun testStartingCameraPosition() {
-        initMap()
-        startingPosition.assertEquals(cameraPositionState.position.target)
+    fun testEventInformationIsDisplayedWhenEventSelected() {
+        initMap(selectedEventId = dummyMarkers[0].id)
+        composeTestRule.onNodeWithText("Location: ${dummyMarkers[0].title}").assertIsDisplayed()
     }
 
     @Test
-    fun testCameraReportsMoving() {
+    fun testNoEventIsDisplayedWhenNoEventIsSelected() {
         initMap()
-        assertEquals(CameraMoveStartedReason.NO_MOVEMENT_YET, cameraPositionState.cameraMoveStartedReason)
-        zoom(shouldAnimate = true, zoomIn = true) {
-            verify(ordering = Ordering.ORDERED, timeout = ONE_MINUTE_IN_MILLISECONDS) {
-                cameraPositionState setProperty "cameraMoveStartedReason" value CameraMoveStartedReason.DEVELOPER_ANIMATION
-                cameraPositionState setProperty "isMoving" value true
-                cameraPositionState setProperty "isMoving" value false
-            }
-        }
+        composeTestRule.onNodeWithText("Select an event").assertIsDisplayed()
     }
 
     @Test
-    fun testCameraZoomInAnimation() {
-        initMap()
-        zoom(shouldAnimate = true, zoomIn = true) {
-            assertMoveHappened(cameraPositionState)
-            assertEquals(
-                STARTING_ZOOM + 1f,
-                cameraPositionState.position.zoom,
-                ASSERT_ROUNDING_ERROR.toFloat()
-            )
-        }
+    fun testEventButtonClickNavigatesToEventScreen() {
+        initMap(selectedEventId = dummyMarkers[0].id)
+        composeTestRule.onNodeWithText("Explore event").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Explore event").performClick()
+        composeTestRule.onNodeWithText("Navigate to event with id: ${dummyMarkers[0].id}").assertIsDisplayed()
     }
 
     @Test
-    fun testCameraZoomOut() {
+    fun testNoEventSelectedWhenStartingScreen() {
         initMap()
-        zoom(shouldAnimate = false, zoomIn = false) {
-            assertMoveHappened(cameraPositionState)
-            assertEquals(
-                STARTING_ZOOM - 1f,
-                cameraPositionState.position.zoom,
-                ASSERT_ROUNDING_ERROR.toFloat()
-            )
-        }
-    }
-
-    @Test
-    fun testCameraZoomOutAnimation() {
-        initMap()
-        zoom(shouldAnimate = true, zoomIn = false) {
-            assertMoveHappened(cameraPositionState)
-            assertEquals(
-                STARTING_ZOOM - 1f,
-                cameraPositionState.position.zoom,
-                ASSERT_ROUNDING_ERROR.toFloat()
-            )
-        }
+        // To be shown when no events are displayed
+        composeTestRule.onNodeWithText("Select an event").assertIsDisplayed()
     }
 
     @Test
@@ -134,26 +104,15 @@ class GoogleMapViewTests {
         }
     }
 
-    private fun zoom(
-        shouldAnimate: Boolean,
-        zoomIn: Boolean,
-        assertionBlock: () -> Unit
-    ) {
-        if (!shouldAnimate) {
-            composeTestRule.onNodeWithTag("cameraAnimations")
-                .assertIsDisplayed()
-                .performClick()
-        }
-        composeTestRule.onNodeWithText(if (zoomIn) "+" else "-")
-            .assertIsDisplayed()
-            .performClick()
-
-        assertionBlock()
+    fun checkCameraPosition(nodeText: String, location: LatLng) {
+        composeTestRule.onNodeWithText(nodeText).performClick()
+        assertMoveHappened(cameraPositionState)
+        location.assertEquals(cameraPositionState.position.target)
     }
 }
 
 private fun assertMoveHappened(cameraPositionState: CameraPositionState) {
-    verify(ordering = Ordering.ORDERED, timeout = ONE_MINUTE_IN_MILLISECONDS) {
+    verify(ordering = Ordering.ORDERED, timeout = HALF_MINUTE_IN_MILLISECONDS) {
         cameraPositionState setProperty "isMoving" value true
         cameraPositionState setProperty "isMoving" value false
     }
