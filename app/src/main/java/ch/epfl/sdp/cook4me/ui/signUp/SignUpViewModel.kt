@@ -13,19 +13,6 @@ import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import kotlinx.coroutines.launch
 
-class MockProfileService : ProfileService {
-    override suspend fun submitForm(
-        credentials: String,
-        username: String,
-        allergies: String,
-        bio: String,
-        favoriteDish: String,
-        userImage: String,
-    ) {
-        Log.d("Debug", "$credentials")
-    }
-}
-
 class SignUpViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
     private val service: ProfileService = ProfileServiceWithRepository(),
