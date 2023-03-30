@@ -49,6 +49,7 @@ class GoogleMapViewTests {
                 selectedEventId = selectedEventId
             )
         }
+
         val mapLoaded = countDownLatch.await(MAPS_LOADING_TIMEOUT, TimeUnit.MILLISECONDS)
         assertTrue("Map loaded", mapLoaded)
     }
@@ -125,3 +126,4 @@ private fun LatLng.assertEquals(other: LatLng) {
     assertEquals(latitude, other.latitude, ASSERT_ROUNDING_ERROR)
     assertEquals(longitude, other.longitude, ASSERT_ROUNDING_ERROR)
 }
+

@@ -128,7 +128,7 @@ class RecipeCreationScenarioTest {
         matcher: SemanticsMatcher,
         timeoutMillis: Long = 10_000L
     ) {
-        this.waitUntil {
+        this.waitUntil(timeoutMillis) {
             this.onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
         }
     }
