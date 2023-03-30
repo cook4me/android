@@ -192,5 +192,4 @@ fun LatLng.assertEquals(other: LatLng) {
 fun LatLng.assertNotEquals(other: LatLng) {
     assertNotEquals(latitude, other.latitude, assertRoundingError)
     assertNotEquals(longitude, other.longitude, assertRoundingError)
-
 }
