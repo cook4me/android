@@ -36,15 +36,14 @@ class EditProfileScreenTest {
         Firebase.auth.useEmulator("10.0.2.2", 9099)
         auth = FirebaseAuth.getInstance()
         runBlocking {
-            auth.createUserWithEmailAndPassword("ronald.weasly@epfl.ch", "123456").await()
-            auth.signInWithEmailAndPassword("ronald.weasly@epfl.ch", "123456").await()
+            auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
         }
     }
 
     @After
     fun cleanUp() {
         runBlocking {
-            auth.signInWithEmailAndPassword("ronald.weasly@epfl.ch", "123456").await()
+            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             auth.currentUser?.delete()
         }
     }
