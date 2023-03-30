@@ -37,6 +37,7 @@ class EditProfileScreenTest {
         auth = FirebaseAuth.getInstance()
         runBlocking {
             auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
+            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
         }
     }
 
