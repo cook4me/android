@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
 import AddProfileInfoScreen
-import EditProfileScreen
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
