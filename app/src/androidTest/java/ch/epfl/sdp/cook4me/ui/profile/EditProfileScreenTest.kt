@@ -105,8 +105,7 @@ class EditProfileScreenTest {
     }
 
     @Test
-    private fun editScreen_test(
-    ) {
+    private fun editScreen_test() {
         // Set up the test
         val username = composeTestRule.activity.getString(R.string.tag_username)
         val favoriteDish = composeTestRule.activity.getString(R.string.tag_favoriteDish)
