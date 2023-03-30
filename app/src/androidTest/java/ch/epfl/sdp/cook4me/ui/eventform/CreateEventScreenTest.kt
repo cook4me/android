@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.eventform
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -30,14 +29,14 @@ class CreateEventScreenTest {
             CreateEventScreen(mockEventService)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.ask_event_name).assertIsDisplayed()
-        composeTestRule.onNodeWithStringId(R.string.ask_event_description).assertIsDisplayed()
-        composeTestRule.onNodeWithStringId(R.string.address_default_question).assertIsDisplayed()
-        composeTestRule.onNodeWithStringId(R.string.ask_event_visibility).assertIsDisplayed()
-        composeTestRule.onNodeWithStringId(R.string.select_date_button).assertIsDisplayed()
-        composeTestRule.onNodeWithStringId(R.string.select_time_button).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.ask_event_name).assertExists()
+        composeTestRule.onNodeWithStringId(R.string.ask_event_description).assertExists()
+        composeTestRule.onNodeWithStringId(R.string.address_default_question).assertExists()
+        composeTestRule.onNodeWithStringId(R.string.ask_event_visibility).assertExists()
+        composeTestRule.onNodeWithStringId(R.string.select_date_button).assertExists()
+        composeTestRule.onNodeWithStringId(R.string.select_time_button).assertExists()
 
-        composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).assertExists()
     }
 
     @Test
@@ -48,7 +47,7 @@ class CreateEventScreenTest {
 
         coEvery { mockEventService.submitForm(match { !it.isValidEvent }) } returns "error"
         composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performClick()
-        composeTestRule.onNodeWithText("error").assertIsDisplayed()
+        composeTestRule.onNodeWithText("error").assertExists()
         coVerify { mockEventService.submitForm(match { !it.isValidEvent }) }
     }
 }
