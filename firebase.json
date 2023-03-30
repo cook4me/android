@@ -9,12 +9,6 @@
     "ui": {
       "enabled": true
     },
-    "singleProjectMode": true,
-    "database": {
-      "port": 9000
-    }
-  },
-  "database": {
-    "rules": "database.rules.json"
+    "singleProjectMode": true
   }
 }
