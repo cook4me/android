@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.ui.common.form.BulletPointTextField
-import ch.epfl.sdp.cook4me.ui.common.form.CustomDropDownMenu
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTextField
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTitleText
+import ch.epfl.sdp.cook4me.ui.common.form.DropDownMenuWithTitle
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.FormState
 import ch.epfl.sdp.cook4me.ui.common.form.GenericSeparators
@@ -197,15 +197,11 @@ private fun RecipeForm(
         Row {
             CookingTimeEntry(
                 onValueChange = { cookingTimeState.text = it },
-                listCookingTime = cookingTimeOptions,
                 value = cookingTimeState.text,
-                contentDescription = stringResource(R.string.RecipeCreationCookingTimeDropDownMenuDesc)
             )
-            DifficultyDropDownMenu(
-                listDifficulty = difficultyOptions,
+            DifficultyEntry(
                 onValueChange = { difficultyState.text = it },
                 value = difficultyState.text,
-                contentDescription = stringResource(R.string.RecipeCreationDifficultyDropDownMenuDesc)
             )
         }
         BulletPointTextField(
@@ -279,72 +275,31 @@ fun ServingsEntry(
 
 @Composable
 private fun CookingTimeEntry(
-    modifier: Modifier = Modifier,
-    value: String = "",
-    onValueChange: (String) -> Unit = {},
-    listCookingTime: List<String> = listOf(),
-    contentDescription: String
+    value: String,
+    onValueChange: (String) -> Unit
 ) {
-    Row(
-        modifier = Modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier.padding(horizontal = textPadding),
-            text = stringResource(R.string.RecipeCreationCookingTimeEntryTitle)
-        )
-        CookingTimeDropDownMenu(
-            listCookingTime = listCookingTime,
-            modifier = Modifier
-                .width(80.dp)
-                .height(45.dp),
-            value = value,
-            onValueChange = onValueChange,
-            contentDescription = contentDescription,
-        )
-    }
-}
-
-@Composable
-private fun CookingTimeDropDownMenu(
-    modifier: Modifier = Modifier,
-    onValueChange: (String) -> Unit = {},
-    listCookingTime: List<String> = listOf(),
-    value: String = "",
-    contentDescription: String
-) {
-    CustomDropDownMenu(
-        textStyle = MaterialTheme.typography.caption,
-        modifier = modifier,
-        options = listCookingTime,
-        onValueChange = onValueChange,
+    DropDownMenuWithTitle(
+        contentDescription = stringResource(R.string.RecipeCreationCookingTimeDropDownMenuDesc),
+        height = 45.dp,
+        width = 80.dp,
+        options = cookingTimeOptions,
+        titleText = stringResource(R.string.RecipeCreationCookingTimeEntryTitle),
         value = value,
-        contentDescription = contentDescription,
+        onValueChange = onValueChange
     )
 }
 
 @Composable
-private fun DifficultyDropDownMenu(
-    onValueChange: (String) -> Unit = {},
-    listDifficulty: List<String> = listOf(),
-    value: String = "",
-    contentDescription: String
+private fun DifficultyEntry(
+    value: String,
+    onValueChange: (String) -> Unit
 ) {
-    Row(
-        modifier = Modifier,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            modifier = Modifier.padding(horizontal = textPadding),
-            text = stringResource(R.string.RecipeCreationDifficultyTitle)
-        )
-        CustomDropDownMenu(
-            textStyle = MaterialTheme.typography.caption,
-            modifier = Modifier.height(textFieldHeight),
-            options = listDifficulty,
-            onValueChange = onValueChange,
-            value = value,
-            contentDescription = contentDescription
-        )
-    }
+    DropDownMenuWithTitle(
+        contentDescription = stringResource(R.string.RecipeCreationDifficultyDropDownMenuDesc),
+        height = textFieldHeight,
+        options = difficultyOptions,
+        titleText = stringResource(R.string.RecipeCreationDifficultyTitle),
+        value = value,
+        onValueChange = onValueChange
+    )
 }
