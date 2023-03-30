@@ -170,18 +170,9 @@ class EditProfileScreenTest {
     @Test
     fun clickingSaveButton() {
         composeTestRule.setContent {
-            EditProfileScreen(ProfileCreationViewModel())
+            EditProfileScreen()
         }
 
         composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
-    }
-
-    @Test
-    fun clickingCancelButton() {
-        composeTestRule.setContent {
-            EditProfileScreen(ProfileCreationViewModel())
-        }
-
-        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
     }
 }
