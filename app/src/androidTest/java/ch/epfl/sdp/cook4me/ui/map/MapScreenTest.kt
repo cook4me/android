@@ -126,4 +126,3 @@ private fun LatLng.assertEquals(other: LatLng) {
     assertEquals(latitude, other.latitude, ASSERT_ROUNDING_ERROR)
     assertEquals(longitude, other.longitude, ASSERT_ROUNDING_ERROR)
 }
-
