@@ -82,7 +82,7 @@ fun AddProfileInfoScreen(
         )
 
         // Textfield for the Favorite dish
-        columnTextBtn_profileUpdateScreen(
+        columnTextBtn_AddProfileInfoScreen(
             stringResource(R.string.tag_favoriteDish),
             favoriteDish,
             viewModel::addFavoriteDish,
@@ -121,7 +121,7 @@ fun bio_AddProfileInfoScreen(
             value = inputText,
             onValueChange = { change(it) },
             placeholder = { Text(stringResource(R.string.default_bio)) },
-            colors = ColorsTextfield_profilUpdateScreen(),
+            colors = ColorsTextfield_AddProfileInfoScreen(),
             singleLine = false,
             modifier = Modifier
                 .height(150.dp)
@@ -149,7 +149,7 @@ fun columnTextBtn_AddProfileInfoScreen(
             value = inputText,
             modifier = Modifier.testTag(label),
             onValueChange = { change(it) },
-            colors = ColorsTextfield_profilUpdateScreen()
+            colors = ColorsTextfield_AddProfileInfoScreen()
         )
     }
 }
@@ -176,7 +176,7 @@ fun ImageHolder_AddProfileInfoScreen(
                 .padding(8.dp)
                 .size(100.dp)
         ) {
-            Image_profileUpdateScreen(
+            Image_AddProfileInfoScreen(
                 onClickAddImage = onClickAddImage,
                 image = image,
             )

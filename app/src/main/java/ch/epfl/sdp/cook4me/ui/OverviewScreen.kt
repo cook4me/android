@@ -20,7 +20,9 @@ fun OverviewScreen(
     onEditProfileClick: () -> Unit,
     onAddTupperwareClick: () -> Unit,
     onSwipeTupperwareClick: () -> Unit,
+    onAddSignUpClick: () -> Unit,
     onAddEventClick: () -> Unit,
+    onPostClick: () -> Unit,
     onDetailedEventClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

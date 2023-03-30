@@ -81,6 +81,7 @@
     <string name="Overview_Screen_Tag">OverviewScreen</string>
 
     <string name="cool_map">Cool Map</string>
+    <string name="Nav_Detailed_Event_Screen">Detailed Event</string>
 
     <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
@@ -99,7 +100,7 @@
     <string name="tag_password">Password</string>
     <string name="default_password">Enter a password</string>
     <string name="tag_email">Email</string>
-    <string name="default_email">exemple@epfl.ch</
+    <string name="default_email">exemple@epfl.ch</string>
 
     <!-- tests -->
     <string name="label">label</string>
