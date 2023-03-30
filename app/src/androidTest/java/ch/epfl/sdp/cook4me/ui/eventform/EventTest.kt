@@ -93,4 +93,28 @@ class EventTest {
         val errorMsg = "Date is in the past"
         assertEquals(errorMsg, event.eventProblem)
     }
+
+    @Test
+    fun addNewParticipantInNonFullEventAddsParticipant() {
+        val participant = "participant3"
+        val expected = event.copy(participants = event.participants + participant)
+        val actual = addParticipant(event, participant)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun addExistingParticipantInNonFullEventDoesNotAddParticipant() {
+        val participant = "participant1"
+        val expected = event
+        val actual = addParticipant(event, participant)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun addNewParticipantInFullEventDoesNotAddParticipant() {
+        val participant = "participant3"
+        val expected = event
+        val actual = addParticipant(event.copy(maxParticipants = 2),participant)
+        assertEquals(expected.copy(maxParticipants = 2), actual)
+    }
 }
