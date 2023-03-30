@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.application
 
+import java.util.Calendar
 import ch.epfl.sdp.cook4me.persistence.repository.ObjectRepository
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import io.mockk.coEvery
@@ -8,7 +9,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.Test
-import java.util.*
 
 class EventFormServiceTest {
 
@@ -17,7 +17,7 @@ class EventFormServiceTest {
     private val eventFormService = EventFormService(mockObjectRepository)
 
     @Test
-    fun submitValidEventStoresEvent() = runBlocking{
+    fun submitValidEventStoresEvent() = runBlocking {
         val dateTime = Calendar.getInstance()
         // to ensure event is in the future
         dateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR) + 1)
@@ -44,7 +44,7 @@ class EventFormServiceTest {
     }
 
     @Test
-    fun submitIncompleteEventReturnsErrorMessage() = runBlocking{
+    fun submitIncompleteEventReturnsErrorMessage() = runBlocking {
         val event = Event()
         val result = withTimeout(500L) {
             eventFormService.submitForm(event)

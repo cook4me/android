@@ -13,12 +13,10 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
      * @param event the event to submit
      * @return null if the event is valid, the error message otherwise
      */
-    suspend fun submitForm(event: Event): String? {
-        return if (event.isValidEvent){
-            objectRepository.add(event)
-            null
-        } else {
-            event.eventProblem
-        }
+    suspend fun submitForm(event: Event): String? = if (event.isValidEvent) {
+        objectRepository.add(event)
+        null
+    } else {
+        event.eventProblem
     }
 }

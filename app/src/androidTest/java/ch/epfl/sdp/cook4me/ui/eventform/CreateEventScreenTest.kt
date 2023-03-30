@@ -6,12 +6,12 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.EventFormService
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import io.mockk.coEvery
-import io.mockk.mockk
-import ch.epfl.sdp.cook4me.R
 import io.mockk.coVerify
+import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,7 +25,7 @@ class CreateEventScreenTest {
     private val mockEventService = mockk<EventFormService>(relaxed = true)
 
     @Test
-    fun assertAllQuestionsAreDisplayed(){
+    fun assertAllQuestionsAreDisplayed() {
         composeTestRule.setContent {
             CreateEventScreen(mockEventService)
         }
@@ -51,5 +51,4 @@ class CreateEventScreenTest {
         composeTestRule.onNodeWithText("error").assertIsDisplayed()
         coVerify { mockEventService.submitForm(match { !it.isValidEvent }) }
     }
-
 }
