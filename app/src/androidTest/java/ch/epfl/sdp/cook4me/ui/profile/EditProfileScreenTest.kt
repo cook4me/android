@@ -88,11 +88,29 @@ class EditProfileScreenTest {
 
         composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
 
-        profile_test(usernameInput,favoriteDishInput,allergiesInput,bioInput,"")
+        profile_test(
+            usernameInput,
+            favoriteDishInput,
+            allergiesInput,
+            bioInput,
+            ""
+        )
 
-        editScreen_test("ronald","Butterbeer", "Snails","I'm just the friend of harry", "")
+        editScreen_test(
+            "ronald",
+            "Butterbeer",
+            "Snails",
+            "I'm just the friend of harry",
+            ""
+        )
 
-        profile_test("ronald","Butterbeer", "Snails","I'm just the friend of harry", "")
+        profile_test(
+            "ronald",
+            "Butterbeer",
+            "Snails",
+            "I'm just the friend of harry",
+            ""
+        )
     }
 
     private fun profile_test(
