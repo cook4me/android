@@ -4,7 +4,7 @@
 mkdir ~/.gradle
 echo "githubJacocoUsername=$GITHUB_USERNAME\ngithubJacocoPassword=$GITHUB_TOKEN" > ~/.gradle/gradle.properties
 
-echo "android.useAndroidX=true" > ~/.gradle/gradle.properties
+echo "android.useAndroidX=true" >> ~/.gradle/gradle.properties
 
 # Takes $MAPS_API_KEY and writes it to local.properties
 echo MAPS_API_KEY=$MAPS_API_KEY >> local.properties
