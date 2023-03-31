@@ -46,6 +46,9 @@ data class Event(
         get() = "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\n" +
             "Location: $location\n Max participants: $maxParticipants\nParticipants: $participants\n" +
             "Creator: $creator\nId: $id\nIs private: $isPrivate"
+
+    val eventDate: String
+        get() = "$dateAsFormattingDate"
 }
 
 /**

@@ -6,6 +6,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -21,13 +23,14 @@ class InputFieldTest {
     fun questionLabelAndExampleTextIsDisplayed() {
         composeTestRule.setContent {
             InputField(
-                question = "question", label = "label",
-                onTextChanged = {}
+                question = R.string.question, label = R.string.label,
+                value = "",
+                onValueChange = {}
             )
         }
 
-        composeTestRule.onNodeWithText("question").assertIsDisplayed()
-        composeTestRule.onNodeWithText("label").assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.question).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.label).assertIsDisplayed()
     }
 
     @Test
@@ -35,8 +38,9 @@ class InputFieldTest {
         var text = ""
         composeTestRule.setContent {
             InputField(
-                question = "question", label = "label",
-                onTextChanged = { text = it }
+                question = R.string.question, label = R.string.label,
+                onValueChange = { text = it },
+                value = ""
             )
         }
 
