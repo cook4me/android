@@ -1,3 +1,5 @@
+package ch.epfl.sdp.cook4me.ui.profile
+
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -36,6 +38,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.common.button.CancelButton
+import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
+import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 
@@ -47,30 +52,30 @@ fun EditProfileScreen() {
             .verticalScroll(rememberScrollState())
             .padding(8.dp)
     ) {
-        saveCancelButtons_profileUpdateScreen()
-
         ProfileSetupImage_profileUpdateScreen()
 
-        // Textfield for the username
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_username),
             stringResource(R.string.default_username)
         )
 
-        // Textfield for the Favorite dish
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_favoriteDish),
             stringResource(R.string.default_favoriteDish)
         )
 
-        // Textfield for the Allergies
         columnTextBtn_profileUpdateScreen(
             stringResource(R.string.tag_allergies),
             stringResource(R.string.default_allergies)
         )
 
-        // Textfield for the bio
         bio_profileUpdateScreen()
+        FormButtons(
+            onCancelText = R.string.btn_cancel,
+            onSaveText = R.string.btn_save,
+            onCancelClick = { /*TODO*/ },
+            onSaveClick = { /*TODO*/ }
+        )
     }
 }
 
@@ -215,20 +220,9 @@ fun saveCancelButtons_profileUpdateScreen() {
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        text_buttons(nameBtn = stringResource(R.string.btn_cancel))
-
-        text_buttons(nameBtn = stringResource(R.string.btn_save))
+        CancelButton(R.string.btn_cancel) {}
+        LoadingButton(R.string.btn_save) {}
     }
-}
-
-@Composable
-fun text_buttons(nameBtn: String) {
-    Text(
-        text = nameBtn,
-        modifier = Modifier
-            .testTag(nameBtn)
-            .clickable {}
-    )
 }
 
 @Composable
