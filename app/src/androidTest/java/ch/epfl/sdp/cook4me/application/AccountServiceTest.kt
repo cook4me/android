@@ -48,6 +48,37 @@ class AccountServiceTest {
     }
 
     @Test
+    fun accountServiceRegistersValidUser() = runTest {
+        accountService.register("validemail@epfl.ch", "123456")
+        accountService.authenticate("validemail@epfl.ch", "123456")
+        assertThat(auth.currentUser?.email, `is`("validemail@epfl.ch"))
+        auth.currentUser?.delete()
+    }
+
+    @Test
+    fun accountServiceRefusesToRegisterInvalidEmail() = runTest {
+        assertThrowsAsync {
+            accountService.register("mrinvalid", "123456")
+        }
+    }
+    @Test
+    fun accountServiceRefusesToRegisterWeakPassword() = runTest {
+        assertThrowsAsync {
+            accountService.register("validemail@epfl.ch", "126")
+        }
+    }
+
+    @Test
+    fun accountServiceRefusesToRegisterExistingUser() = runTest {
+        accountService.register("validemail@epfl.ch", "123456")
+        assertThrowsAsync {
+            accountService.register("validemail@epfl.ch", "123456")
+        }
+        accountService.authenticate("validemail@epfl.ch", "123456")
+        auth.currentUser?.delete()
+    }
+
+    @Test
     fun accountServicePermitsValidEmail() {
         assertThat(accountService.isValidEmail(validEmail), `is`(true))
     }
