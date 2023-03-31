@@ -70,6 +70,7 @@ android {
 detekt {
     autoCorrect = true
     config = files('../detekt.yml')
+    autoCorrect = true
 }
 
 jacoco {

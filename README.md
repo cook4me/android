@@ -39,6 +39,11 @@ As this project integrates Google Maps, a Google Maps API key is needed and need
 MAPS_API_KEY=KEYVALUE
 ```
 
+If  there is an error : android.experimental.testOptions.emulatorSnapshots.maxSnapshotsForTestFailures=0' is experimental. You can put the following into your gradle properties: 
+
+```global properties
+android.useNewApkCreator=true
+```
 
 ### Static code analysis
 In the CI pipeline we use two static code analysis tools:
