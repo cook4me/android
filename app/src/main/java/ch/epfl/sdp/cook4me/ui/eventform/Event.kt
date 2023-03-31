@@ -51,4 +51,21 @@ data class Event(
         get() = "$dateAsFormattingDate"
 }
 
+/**
+ * Adds a participant to the event (if the event is not full)
+ * @param event the event to add the participant to
+ * @param participant the participant to add
+ * @return the event with the participant added
+ */
+fun addParticipant(event: Event, participant: String): Event =
+    if (event.participants.size < event.maxParticipants) {
+        if (!event.participants.contains(participant)) {
+            event.copy(participants = event.participants + participant)
+        } else {
+            event
+        }
+    } else {
+        event
+    }
+
 private fun getTwoDigits(number: Int): String = String.format(Locale.ENGLISH, "%02d", number)
