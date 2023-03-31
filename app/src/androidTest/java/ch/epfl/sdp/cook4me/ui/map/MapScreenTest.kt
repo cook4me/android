@@ -49,6 +49,7 @@ class GoogleMapViewTests {
                 selectedEventId = selectedEventId
             )
         }
+
         val mapLoaded = countDownLatch.await(MAPS_LOADING_TIMEOUT, TimeUnit.MILLISECONDS)
         assertTrue("Map loaded", mapLoaded)
     }

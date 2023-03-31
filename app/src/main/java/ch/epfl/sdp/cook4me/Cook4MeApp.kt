@@ -31,6 +31,7 @@ private enum class Screen {
     TupperwareSwipeScreen,
     OverviewScreen,
     ProfileScreen,
+    CreateRecipeScreen,
     EditProfileScreen,
     Map,
     CreateEventScreen,
@@ -82,7 +83,8 @@ fun Cook4MeApp(
                 onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
                 onSwipeTupperwareClick = { navController.navigate(Screen.TupperwareSwipeScreen.name) },
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
+                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
+                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) }
             )
         }
         composable(route = Screen.Map.name) {

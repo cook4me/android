@@ -22,6 +22,7 @@ fun OverviewScreen(
     onSwipeTupperwareClick: () -> Unit,
     onAddEventClick: () -> Unit,
     onDetailedEventClick: () -> Unit,
+    onAddRecipeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -43,6 +44,9 @@ fun OverviewScreen(
         }
         Button(onClick = onAddTupperwareClick) {
             Text(stringResource(R.string.navigate_to_add_tupperware))
+        }
+        Button(onClick = onAddRecipeClick) {
+            Text(stringResource(R.string.navigate_to_add_recipe))
         }
         Button(onClick = onSwipeTupperwareClick) {
             Text(stringResource(R.string.navigate_to_swipe_tupperware))
