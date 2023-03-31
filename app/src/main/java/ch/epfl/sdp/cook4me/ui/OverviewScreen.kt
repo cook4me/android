@@ -19,6 +19,7 @@ fun OverviewScreen(
     onProfileClick: () -> Unit,
     onEditProfileClick: () -> Unit,
     onAddTupperwareClick: () -> Unit,
+    onSwipeTupperwareClick: () -> Unit,
     onAddEventClick: () -> Unit,
     onDetailedEventClick: () -> Unit,
     onAddRecipeClick: () -> Unit,
@@ -46,6 +47,9 @@ fun OverviewScreen(
         }
         Button(onClick = onAddRecipeClick) {
             Text(stringResource(R.string.navigate_to_add_recipe))
+        }
+        Button(onClick = onSwipeTupperwareClick) {
+            Text(stringResource(R.string.navigate_to_swipe_tupperware))
         }
         Button(onClick = onAddEventClick) {
             Text(stringResource(R.string.navigate_to_add_event))

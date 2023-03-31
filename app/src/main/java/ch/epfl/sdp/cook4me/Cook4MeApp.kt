@@ -17,6 +17,7 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
+import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.util.Calendar
@@ -27,6 +28,7 @@ import java.util.Calendar
 private enum class Screen {
     Login,
     CreateTupperwareScreen,
+    TupperwareSwipeScreen,
     OverviewScreen,
     ProfileScreen,
     CreateRecipeScreen,
@@ -79,6 +81,7 @@ fun Cook4MeApp(
                 onProfileClick = { navController.navigate(Screen.ProfileScreen.name) },
                 onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
                 onAddTupperwareClick = { navController.navigate(Screen.CreateTupperwareScreen.name) },
+                onSwipeTupperwareClick = { navController.navigate(Screen.TupperwareSwipeScreen.name) },
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) }
@@ -95,6 +98,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
             CreateTupperwareScreen()
+        }
+        composable(route = Screen.TupperwareSwipeScreen.name) {
+            TupperwareSwipeScreen()
         }
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()
