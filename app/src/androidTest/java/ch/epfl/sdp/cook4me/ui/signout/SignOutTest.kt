@@ -1,9 +1,12 @@
 package ch.epfl.sdp.cook4me.ui.signout
 
 import android.content.Context
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
@@ -24,6 +27,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -38,6 +42,8 @@ class SignOutTest {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
+    private val testTagEmailField = "EmailField"
+    private val testTagPasswordField = "PasswordField"
     @Before
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -47,6 +53,7 @@ class SignOutTest {
             auth.createUserWithEmailAndPassword("obi.wan@epfl.ch", "123456").await()
             auth.createUserWithEmailAndPassword("darth.vader@epfl.ch", "123456").await()
         }
+        auth.signOut()
     }
 
     @After
@@ -76,18 +83,52 @@ class SignOutTest {
     }
 
     @Test
-    fun testSwitchUserWithSignOut() = runTest {
-        auth.signOut() // make sure no user is logged in
+    fun justtrying() = runTest {
         composeTestRule.setContent {
             Cook4MeApp()
         }
-        // now we should be in the login screen
+        composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("darth.vader@epfl.ch")
+        composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
+        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).assertIsEnabled().performClick()
+        composeTestRule.waitForIdle()
+        println("!!!!!!!!!!!!!"+auth.currentUser?.email)
+    }
+    @Test
+    @ExperimentalTestApi
+    fun testSwitchUserWithSignOut() = runTest {
+        auth.signOut()
+        composeTestRule.setContent {
+            Cook4MeApp()
+        }
+        composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("obi.wan@epfl.ch")
+        composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
+        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        val cur = auth.currentUser
+        // now we should be in the overview screen
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithTag(context.getString(R.string.Overview_Screen_Tag))
+                .fetchSemanticsNodes().size == 1
+        }
+        composeTestRule.onNodeWithTag(context.getString(R.string.Overview_Screen_Tag)).assertIsDisplayed()
+        assertThat(auth.currentUser?.email, `is`("obi.wan@epfl.ch"))
+        composeTestRule.onNodeWithStringId(R.string.sign_out).performClick()
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
                 .onAllNodesWithTag(context.getString(R.string.Login_Screen_Tag))
                 .fetchSemanticsNodes().size == 1
         }
         composeTestRule.onNodeWithTag(context.getString(R.string.Login_Screen_Tag)).assertIsDisplayed()
-
+        assertNull(auth.currentUser)
+        composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("darth.vader@epfl.ch")
+        composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
+        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithTag(context.getString(R.string.Overview_Screen_Tag))
+                .fetchSemanticsNodes().size == 1
+        }
+        composeTestRule.onNodeWithTag(context.getString(R.string.Overview_Screen_Tag)).assertIsDisplayed()
+        assertThat(auth.currentUser?.email, `is`("darth.vader@epfl.ch"))
     }
 }
