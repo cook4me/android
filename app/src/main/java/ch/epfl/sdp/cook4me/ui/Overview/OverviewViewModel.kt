@@ -18,7 +18,7 @@ class OverviewViewModel(
     val signOutErrorMessage
         get() = _signOutErrorMessage
 
-    fun signOut() {
+    fun onSignOutButtonClicked() {
         viewModelScope.launch {
             val signOutResult = accountService.signOut()
             handleSignOutResult(signOutResult)

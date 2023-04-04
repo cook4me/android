@@ -80,7 +80,7 @@ fun OverviewScreen(
         Button(onClick = onPostClick) {
             Text(stringResource(R.string.navigate_to_postView))
         }
-        Button(onClick = { overviewViewModel.signOut() }) {
+        Button(onClick = { overviewViewModel.onSignOutButtonClicked() }) {
             Text(stringResource(R.string.sign_out))
         }
     }
