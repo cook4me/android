@@ -45,15 +45,24 @@ fun OverviewScreen(
     // Collect user email from viewModel
     val userEmail = overviewViewModel.userEmail.collectAsState()
 
-    Box(modifier.fillMaxSize()) {
-        currentLoggedInEmailText(email = userEmail.value)
+    Box(
+        modifier
+            .fillMaxSize()
+            .testTag(stringResource(R.string.Overview_Screen_Tag))
+    ) {
+        Text(
+            text = stringResource(R.string.Current_user_header) + userEmail.value,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(16.dp),
+            fontWeight = FontWeight.Bold
+        )
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .testTag(stringResource(R.string.Overview_Screen_Tag))
         ) {
             Button(onClick = onMapClick) {
                 Text(stringResource(R.string.navigate_to_map))
@@ -90,7 +99,7 @@ fun OverviewScreen(
 }
 
 @Composable
-fun currentLoggedInEmailText(email: String?) {
+fun CurrentLoggedInEmailText(email: String?) {
     var userEmail = email
     if (userEmail == null) {
         userEmail = "Empty Email"

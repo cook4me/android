@@ -53,7 +53,7 @@ class DisplayUserEmailTest {
 
     @Test
     fun overViewScreenDisplaysCurrentUserEmail() = runTest {
-        auth.signInWithEmailAndPassword("obi.wan@epfl.ch", "123456")
+        auth.signInWithEmailAndPassword("obi.wan@epfl.ch", "123456").await()
         composeTestRule.setContent {
             Cook4MeApp()
         }
