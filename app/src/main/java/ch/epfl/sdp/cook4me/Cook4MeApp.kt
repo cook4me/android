@@ -92,7 +92,8 @@ fun Cook4MeApp(
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
-                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) }
+                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
+                signOutNavigation = { navController.navigate(Screen.Login.name) }
             )
         }
         composable(route = Screen.Map.name) {

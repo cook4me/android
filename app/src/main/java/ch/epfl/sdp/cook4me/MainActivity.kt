@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Cook4meTheme {
                 Column {
-                    CreateRecipeScreen()
+                    Cook4MeApp()
                 }
             }
         }
