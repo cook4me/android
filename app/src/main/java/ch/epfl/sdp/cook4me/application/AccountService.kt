@@ -18,6 +18,9 @@ class AccountService(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
         }
         return currentUser.email
     }
+    fun signOut() {
+        auth.signOut()
+    }
     suspend fun authenticate(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).await()
     }
