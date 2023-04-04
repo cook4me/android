@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.ui.overview
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.Overview.OverviewViewModel
 
 @Composable
 fun OverviewScreen(
@@ -33,14 +32,9 @@ fun OverviewScreen(
 ) {
     // Listen to the navigation state and navigate to the correct screen
     val navigationState = overviewViewModel.navigationState
-    val signOutErrorMessage = overviewViewModel.signOutErrorMessage
-    if(navigationState.value == 1) {
+    if (navigationState.value == 1) {
         overviewViewModel.navigationState.value = 0
         signOutNavigation()
-    }
-    if(signOutErrorMessage.value != null) {
-        println(signOutErrorMessage.value)
-        overviewViewModel.signOutErrorMessage.value = null
     }
     Column(
         verticalArrangement = Arrangement.Center,

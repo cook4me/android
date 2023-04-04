@@ -7,7 +7,6 @@ import assertThrowsAsync
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -51,9 +50,8 @@ class AccountServiceTest {
     @Test
     fun accountServiceSignsOutCurrentUser() = runTest {
         accountService.authenticate("harry.potter@epfl.ch", "123456")
-        val signOutResult = accountService.signOut()
+        accountService.signOut()
         assertNull(auth.currentUser)
-        assertEquals(signOutResult.getOrNull(), "Sign out successful")
     }
     @Test
     fun accountServiceRegistersValidUser() = runTest {
