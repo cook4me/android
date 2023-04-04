@@ -24,7 +24,6 @@ fun OverviewScreen(
     onAddSignUpClick: () -> Unit,
     onAddEventClick: () -> Unit,
     onPostClick: () -> Unit,
-    onDetailedEventClick: () -> Unit,
     onAddRecipeClick: () -> Unit,
     signOutNavigation: () -> Unit,
     overviewViewModel: OverviewViewModel = viewModel(),
@@ -65,7 +64,7 @@ fun OverviewScreen(
         Button(onClick = onAddEventClick) {
             Text(stringResource(R.string.navigate_to_add_event))
         }
-        Button(onClick = onDetailedEventClick) {
+        Button(onClick = {overviewViewModel.onDetailedEventButtonClicked()}) {
             Text(stringResource(R.string.Nav_Detailed_Event_Screen))
         }
         Button(onClick = onAddSignUpClick) {

@@ -17,4 +17,9 @@ class OverviewViewModel(
         accountService.signOut()
         _navigationState.value = 1
     }
+
+    fun onDetailedEventButtonClicked() {
+        ///TODO
+
+    }
 }

@@ -44,20 +44,6 @@ private enum class Screen {
     PostDetails,
 }
 
-/* Testing around the Detailed Event Screen */
-// initializing the testing event
-val calendar = Calendar.getInstance()
-val testEvent = Event(
-    name = "test event name",
-    description = "test description",
-    dateTime = calendar,
-    location = "Rue. Louis Favre 4, 1024, Ecublens",
-    maxParticipants = 4,
-    participants = listOf("obi.wang", "harry.potter"),
-    creator = "peter griffin",
-    id = "jabdsfias213",
-    isPrivate = false
-)
 
 @Composable
 fun Cook4MeApp(
@@ -91,7 +77,6 @@ fun Cook4MeApp(
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
                 signOutNavigation = { navController.navigate(Screen.Login.name) }
             )
@@ -113,9 +98,6 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()
-        }
-        composable(route = Screen.DetailedEventScreen.name) {
-            DetailedEventScreen(event = testEvent)
         }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen()
