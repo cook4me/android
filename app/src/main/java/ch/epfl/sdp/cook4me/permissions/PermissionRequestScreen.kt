@@ -7,10 +7,13 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun dummyScreen() {
+    val permissionStatusProvider = ComposePermissionStatusProvider(listOf(
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.ACCESS_FINE_LOCATION))
+
     val permissionManager = remember {
-        PermissionManager(listOf(
-                android.Manifest.permission.CAMERA
-            )
+        PermissionManager(
+            permissionStatusProvider
         )
     }
     permissionManager.withPermission {

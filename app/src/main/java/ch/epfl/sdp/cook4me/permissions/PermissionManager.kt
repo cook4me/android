@@ -4,36 +4,54 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalPermissionsApi::class)
-class PermissionManager(private val permissions: List<String>) {
+class PermissionManager(
+    //private val permissions: List<String>,
+    private val permissionStatusProvider: PermissionStatusProvider
+    ) {
+
+
 
     @Composable
     fun withPermission(content: @Composable () -> Unit) {
-        val permissionStates = rememberMultiplePermissionsState(permissions = permissions)
-        handlePermissionStates(permissionStates, content)
+        //val permissionStates = rememberMultiplePermissionsState(permissions = permissions)
+        //handlePermissionStates(permissionStates, content)
+        handlePermissionStates(content)
     }
 
     @Composable
     private fun handlePermissionStates(
-        permissionStates: MultiplePermissionsState,
+        //permissionStates: MultiplePermissionsState,
         content: @Composable () -> Unit
     ) {
-        if (permissionStates.allPermissionsGranted) {
+        var permissionsRequested by remember { mutableStateOf(false) }
+        if (permissionStatusProvider.allPermissionsGranted()) {
             content()
         } else {
+            if (permissionsRequested) {
+                permissionStatusProvider.requestAllPermissions()
+            }
             Column {
                 Text(
                     getTextToShowGivenPermissions(
-                        permissionStates.revokedPermissions,
-                        permissionStates.shouldShowRationale
-                    )
+                        permissionStatusProvider.getRevokedPermissions(),
+                        permissionStatusProvider.shouldShowRationale()
+                        //permissionStates.revokedPermissions,
+                        //permissionStates.shouldShowRationale
+                    ) +
+                "Give permission!"
                 )
-                Button(onClick = { permissionStates.launchMultiplePermissionRequest() }) {
+
+                Button(onClick = { permissionsRequested = true }) {
                     Text("Request permissions")
                 }
             }
@@ -42,9 +60,11 @@ class PermissionManager(private val permissions: List<String>) {
         }
     }
 
+
+
     @OptIn(ExperimentalPermissionsApi::class)
     private fun getTextToShowGivenPermissions(
-        permissions: List<PermissionState>,
+        permissions: List<String>,
         shouldShowRationale: Boolean
     ): String {
         val revokedPermissionsSize = permissions.size
@@ -55,7 +75,7 @@ class PermissionManager(private val permissions: List<String>) {
         }
 
         for (i in permissions.indices) {
-            textToShow.append(permissions[i].permission)
+            textToShow.append(permissions[i])
             when {
                 revokedPermissionsSize > 1 && i == revokedPermissionsSize - 2 -> {
                     textToShow.append(", and ")
@@ -78,5 +98,4 @@ class PermissionManager(private val permissions: List<String>) {
         )
         return textToShow.toString()
     }
-
 }

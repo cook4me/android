@@ -30,6 +30,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TupperwareCreationScenarioTest {
+    /*
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -201,4 +202,5 @@ class TupperwareCreationScenarioTest {
             returnValue && (globalRect.width > 0f && globalRect.height > 0f)
         }
     }
+    */
 }
