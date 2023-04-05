@@ -26,6 +26,6 @@ fun dummyScreen() {
 
 @Preview
 @Composable
-fun MapScreenPreview() {
+fun DummyPreview() {
     dummyScreen()
 }
