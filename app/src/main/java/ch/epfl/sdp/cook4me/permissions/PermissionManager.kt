@@ -9,28 +9,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.MultiplePermissionsState
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalPermissionsApi::class)
 class PermissionManager(
-    //private val permissions: List<String>,
     private val permissionStatusProvider: PermissionStatusProvider
-    ) {
-
-
-
+) {
     @Composable
     fun withPermission(content: @Composable () -> Unit) {
-        //val permissionStates = rememberMultiplePermissionsState(permissions = permissions)
-        //handlePermissionStates(permissionStates, content)
         handlePermissionStates(content)
     }
 
     @Composable
     private fun handlePermissionStates(
-        //permissionStates: MultiplePermissionsState,
         content: @Composable () -> Unit
     ) {
         var permissionsRequested by remember { mutableStateOf(false) }
@@ -42,60 +32,45 @@ class PermissionManager(
             }
             Column {
                 Text(
-                    getTextToShowGivenPermissions(
+                    getPermissionText(
                         permissionStatusProvider.getRevokedPermissions(),
                         permissionStatusProvider.shouldShowRationale()
-                        //permissionStates.revokedPermissions,
-                        //permissionStates.shouldShowRationale
                     ) +
-                "Give permission!"
+                        "Give permission!"
                 )
-
                 Button(onClick = { permissionsRequested = true }) {
                     Text("Request permissions")
                 }
             }
-
-
         }
     }
 
+    fun getPermissionText(permissions: List<String>, shouldShowRationale: Boolean): String {
+        val permissionCount = permissions.size
+        if (permissionCount == 0) return ""
 
+        val permissionText = if (permissionCount == 1) "permission" else "permissions"
 
-    @OptIn(ExperimentalPermissionsApi::class)
-    private fun getTextToShowGivenPermissions(
-        permissions: List<String>,
-        shouldShowRationale: Boolean
-    ): String {
-        val revokedPermissionsSize = permissions.size
-        if (revokedPermissionsSize == 0) return ""
-
-        val textToShow = StringBuilder().apply {
-            append("The ")
-        }
+        val stringBuilder = StringBuilder("The ")
 
         for (i in permissions.indices) {
-            textToShow.append(permissions[i])
+            stringBuilder.append(permissions[i])
             when {
-                revokedPermissionsSize > 1 && i == revokedPermissionsSize - 2 -> {
-                    textToShow.append(", and ")
-                }
-                i == revokedPermissionsSize - 1 -> {
-                    textToShow.append(" ")
-                }
-                else -> {
-                    textToShow.append(", ")
-                }
+                permissionCount > 1 && i == permissionCount - 2 -> stringBuilder.append(", and ")
+                i == permissionCount - 1 -> stringBuilder.append(" ")
+                else -> stringBuilder.append(", ")
             }
         }
-        textToShow.append(if (revokedPermissionsSize == 1) "permission is" else "permissions are")
-        textToShow.append(
+
+        stringBuilder.append(" $permissionText ")
+        stringBuilder.append(
             if (shouldShowRationale) {
-                " important. Please grant all of them for the app to function properly."
+                "is important. Please grant all of them for the app to function properly."
             } else {
-                " denied. The app cannot function without them."
+                "are denied. The app cannot function without them."
             }
         )
-        return textToShow.toString()
+
+        return stringBuilder.toString()
     }
 }

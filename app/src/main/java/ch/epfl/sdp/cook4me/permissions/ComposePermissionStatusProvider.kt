@@ -2,7 +2,6 @@ package ch.epfl.sdp.cook4me.permissions
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -10,11 +9,10 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 @OptIn(ExperimentalPermissionsApi::class)
 class ComposePermissionStatusProvider(
     private val permissions: List<String>
-):PermissionStatusProvider {
+) : PermissionStatusProvider {
     @Composable
-    private fun getPermissionsState(): MultiplePermissionsState {
-        return rememberMultiplePermissionsState(permissions)
-    }
+    private fun getPermissionsState(): MultiplePermissionsState =
+        rememberMultiplePermissionsState(permissions)
 
     @Composable
     override fun allPermissionsGranted(): Boolean {
