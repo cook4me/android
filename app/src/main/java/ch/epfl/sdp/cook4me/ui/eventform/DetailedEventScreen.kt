@@ -34,7 +34,10 @@ fun DetailedEventScreen(
     * For now, I use the event id as the email of the current user.(See CreateEventScreen.kt)
     * This should be changed as discussed in CreateEventScreen.kt
     * Ask Daniel!!!
+    *
     * TODO:
+    *  - In an event, store the creator id
+    *  - For a user, query all events the users owns
     *  - Resolve errors in this screen
     *  - Test CreateEventScreen, because I throw NullPointerException when I try to get the current user email.
     *  - Test DetailedEventScreen, because I throw NullPointerException when I try to get the current user email.
