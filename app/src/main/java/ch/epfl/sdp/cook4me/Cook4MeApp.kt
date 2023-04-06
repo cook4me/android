@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.persistence.model.Post
+import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.ui.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.DetailedEventScreen
@@ -20,6 +21,7 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -92,7 +94,7 @@ fun Cook4MeApp(
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
-                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) }
+                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
             )
         }
         composable(route = Screen.Map.name) {
@@ -122,6 +124,9 @@ fun Cook4MeApp(
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
+        }
+        composable(route = Screen.CreateRecipeScreen.name) {
+            CreateRecipeScreen(submitForm = {})
         }
     }
 }
