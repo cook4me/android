@@ -8,9 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
-@OptIn(ExperimentalPermissionsApi::class)
 class PermissionManager(
     private val permissionStatusProvider: PermissionStatusProvider
 ) {
@@ -35,8 +33,7 @@ class PermissionManager(
                     getPermissionText(
                         permissionStatusProvider.getRevokedPermissions(),
                         permissionStatusProvider.shouldShowRationale()
-                    ) +
-                        "Give permission!"
+                    )
                 )
                 Button(onClick = { permissionsRequested = true }) {
                     Text("Request permissions")

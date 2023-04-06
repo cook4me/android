@@ -6,7 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun dummyScreen() {
+fun PermissionRequestScreen() {
     val permissionStatusProvider = ComposePermissionStatusProvider(
         listOf(
             android.Manifest.permission.CAMERA,
@@ -26,6 +26,6 @@ fun dummyScreen() {
 
 @Preview
 @Composable
-fun DummyPreview() {
-    dummyScreen()
+fun PermissionRequestScreenPreview() {
+    PermissionRequestScreen()
 }
