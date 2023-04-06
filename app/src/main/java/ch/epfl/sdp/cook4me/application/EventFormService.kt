@@ -21,4 +21,6 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
     } else {
         event.eventProblem
     }
+
+    suspend fun getById(id: String) = objectRepository.getById<Event>(id)
 }

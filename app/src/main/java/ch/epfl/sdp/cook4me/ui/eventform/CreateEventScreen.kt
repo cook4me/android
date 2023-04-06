@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.EventFormService
 import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
@@ -30,6 +31,7 @@ import java.util.Calendar
 @Composable
 fun CreateEventScreen(
     eventService: EventFormService = EventFormService(),
+    accountService: AccountService = AccountService()
 ) {
     val event = remember {
         mutableStateOf(Event())
@@ -44,6 +46,17 @@ fun CreateEventScreen(
     fun updateTime(calendar: Calendar) {
         event.value.dateTime.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
         event.value.dateTime.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
+    }
+
+    // for now I just set the id as the email of the current user,
+    // this needs to be changed!!!! because one user could have multiple events
+    // we need to discuss a bit about it.
+    try{
+        val userEmail = accountService.getCurrentUserEmail()
+        if(userEmail != null)
+            event.value = event.value.copy(id = userEmail)
+    } catch (e: NullPointerException){
+        throw e
     }
 
     Column(

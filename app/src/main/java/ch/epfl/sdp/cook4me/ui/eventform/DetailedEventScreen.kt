@@ -15,13 +15,43 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.application.EventFormService
+import kotlinx.coroutines.runBlocking
 
 /**
  * A component screen that displays details of an event
  * @param event the event to be displayed
  */
 @Composable
-fun DetailedEventScreen(event: Event) {
+fun DetailedEventScreen(
+    eventService: EventFormService = EventFormService(),
+    accountService: AccountService = AccountService()
+) {
+    /*
+    * 2023/04/06 14:48
+    * Working on displaying actual event from firestore.
+    * For now, I use the event id as the email of the current user.(See CreateEventScreen.kt)
+    * This should be changed as discussed in CreateEventScreen.kt
+    * TODO:
+    *  - Resolve errors in this screen
+    *  - Test CreateEventScreen, because I throw NullPointerException when I try to get the current user email.
+    *  - Test DetailedEventScreen, because I throw NullPointerException when I try to get the current user email.
+    *  - There is a bug in CreateEventScreen, in the input field of event description, maybe debug it.
+    *  - In EventFormService, I think we should change the return type of getById() to Event? instead of Event, or see what happens if
+    *    no event is found. (ask dayan or daniel perhaps?)
+    *  - Test EventFormService for the new method getById()
+    * */
+    var event: Event?
+    runBlocking {
+        try{
+            val userEmail = accountService.getCurrentUserEmail()
+            if(userEmail != null)
+                event = eventService.getById(userEmail)
+        } catch (e: NullPointerException){
+            throw e
+        }
+    }
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
