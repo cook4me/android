@@ -33,6 +33,7 @@ fun DetailedEventScreen(
     * Working on displaying actual event from firestore.
     * For now, I use the event id as the email of the current user.(See CreateEventScreen.kt)
     * This should be changed as discussed in CreateEventScreen.kt
+    * Ask Daniel!!!
     * TODO:
     *  - Resolve errors in this screen
     *  - Test CreateEventScreen, because I throw NullPointerException when I try to get the current user email.
