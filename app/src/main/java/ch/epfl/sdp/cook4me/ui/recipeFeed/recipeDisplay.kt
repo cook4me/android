@@ -29,7 +29,7 @@ const val RECIPE_TITLE_RATIO = 0.8F
  * Displays a single recipe
  */
 @Composable
-fun RecipeDisplay(recipe: Recipe) {
+fun RecipeDisplay(recipe: Recipe, note: Int) {
     val clicked = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -72,7 +72,7 @@ fun RecipeDisplay(recipe: Recipe) {
                 }
             }
             // put on the right side a voteIcon
-            VoteIcon()
+            VoteIcon(counterValue = note)
 
         }
     }
