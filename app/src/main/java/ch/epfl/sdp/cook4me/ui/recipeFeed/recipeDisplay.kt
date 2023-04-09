@@ -19,18 +19,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ch.epfl.sdp.cook4me.persistence.model.Recipe
 
 const val RECIPE_TITLE_RATIO = 0.8F
 
 /**
  * Displays a single recipe
  */
-@Preview(showBackground = true)
 @Composable
-fun RecipeDisplay(recipeTitle: String = "Recipe Title", timeNeeded: String = "3h") {
+fun RecipeDisplay(recipe: Recipe) {
     val clicked = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -48,7 +47,7 @@ fun RecipeDisplay(recipeTitle: String = "Recipe Title", timeNeeded: String = "3h
                     .padding(8.dp),
             ) {
                 Text(
-                    text = recipeTitle,
+                    text = recipe.name,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -56,7 +55,7 @@ fun RecipeDisplay(recipeTitle: String = "Recipe Title", timeNeeded: String = "3h
                         .padding(8.dp)
                 )
                 Text(
-                    text = timeNeeded,
+                    text = recipe.cookingTime,
                     fontSize = 16.sp,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
