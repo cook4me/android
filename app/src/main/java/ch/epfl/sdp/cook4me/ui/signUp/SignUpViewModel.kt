@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.signUp
 
 import android.net.Uri
+import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -17,7 +18,8 @@ class SignUpViewModel(
     private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
 ) : ViewModel() {
-    private var _id = accountService.getCurrentUserEmail() // Email as id
+    private var _email = mutableStateOf("")
+    private var _password = mutableStateOf("")
     private var _username = mutableStateOf("")
     private var _allergies = mutableStateOf("")
     private var _bio = mutableStateOf("")
@@ -40,6 +42,14 @@ class SignUpViewModel(
         _username.value = username
     }
 
+    fun addPassword(password: String){
+        _password.value = password
+    }
+
+    fun addEmail(email: String){
+        _email.value = email
+    }
+
     fun addAllergies(allergies: String) {
         _allergies.value = allergies
     }
@@ -57,13 +67,14 @@ class SignUpViewModel(
     }
 
     fun onSubmit() {
-        if (_username.value.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
+        if (_username.value.isBlank()||_password.value.isBlank()||_email.value.isBlank()) {
             _formError.value = true
         } else {
             viewModelScope.launch {
-                _id?.let {
+                _email?.let {
+                    accountService.authenticate(_email.value,_password.value)
                     service.submitForm(
-                        it,
+                        _email.value,
                         _username.value,
                         _allergies.value,
                         _bio.value,

@@ -117,7 +117,7 @@ fun Cook4MeApp(
             DetailedEventScreen(event = testEvent)
         }
         composable(route = Screen.SignUpScreen.name) {
-            SignUpScreen()
+            SignUpScreen(onSuccessfullSignUp = {navController.navigate(Screen.OverviewScreen.name)})
         }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")

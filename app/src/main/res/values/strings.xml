@@ -132,6 +132,9 @@
     <string name="tag_singUpTitle">Add email and password</string>
     <string name="btn_back">back</string>
     <string name="btn_continue">continue</string>
+    <string name="sign_up_screen_top_bar_message">Enter Email and Password</string>
+    <string name="sign_up_screen_invalid_email">Email invalid</string>
+    <string name="sign_up_screen_invalid_password">Password invalid</string>
 
     <!-- Post -->
     <string name="post_tag_image">image</string>
