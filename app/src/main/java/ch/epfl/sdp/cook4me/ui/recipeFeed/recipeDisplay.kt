@@ -36,7 +36,7 @@ fun RecipeDisplay(recipe: Recipe, note: Int) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { clicked.value = !clicked.value }
-            .background(Color.White, RoundedCornerShape(8.dp))
+            .background(Color.Gray, RoundedCornerShape(8.dp))
             .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
     ) {
         Row (modifier = Modifier.fillMaxWidth(),

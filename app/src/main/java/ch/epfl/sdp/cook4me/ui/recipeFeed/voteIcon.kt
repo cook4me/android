@@ -26,6 +26,7 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}) {
     val downvote = remember { mutableStateOf(false) }
     val notPressedColor = Color.Black
     val pressedColor = Color.Red
+    val localCounterValue = remember { mutableStateOf(counterValue) }
 
     fun onVote(isUpVote: Boolean) {
         val buttonPressed = if (isUpVote) upvote else downvote
@@ -34,12 +35,15 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}) {
         if (buttonPressed.value) {
             onChange(buttonPressedValue * -1)
             buttonPressed.value = false
+            localCounterValue.value -= buttonPressedValue
         } else {
             if (otherButton.value) {
                 onChange(buttonPressedValue*2)
                 otherButton.value = false
+                localCounterValue.value += 2*buttonPressedValue
             } else {
                 onChange(buttonPressedValue*1)
+                localCounterValue.value += buttonPressedValue
             }
             buttonPressed.value = true
         }
@@ -53,7 +57,7 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}) {
                 tint = if (upvote.value) pressedColor else notPressedColor
             )
         }
-        Text(text = counterValue.toString())
+        Text(text = localCounterValue.value.toString())
         IconButton(onClick = {onVote(false)}) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowDown,

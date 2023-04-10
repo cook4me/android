@@ -23,9 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 
+/**
+ * Displays the recipe feed screen
+ */
 @Preview(showBackground = true)
 @Composable
-fun RecipeDisplay(){
+fun RecipeFeed(){
     val recipeList = listOf(
         Pair(Recipe(name = "Recipe 1"), 1),
         Pair(Recipe(name = "Recipe 2"), 3),
