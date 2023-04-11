@@ -24,9 +24,6 @@ import ch.epfl.sdp.cook4me.persistence.model.Post
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-/***
- * Todo navgation return a string to the navcontroller indicating the location
- */
 @Preview(showBackground = true)
 @Composable
 fun PostGrid() {
@@ -51,25 +48,25 @@ fun PostGrid() {
 fun PostDataItem(data: Post) {
     Card(
         modifier = Modifier
-            .clickable {
+            .clickable() {
             }
             .fillMaxSize(),
         elevation = 10.dp, shape = RoundedCornerShape(5.dp)
     ) {
         Column(modifier = Modifier) {
-            ImageSelection(data = data)
+            MockImageSelection(data = data)
         }
     }
 }
 
 @Composable
-fun ImageSelection(data: Post) {
+fun MockImageSelection(data: Post) {
     Image(
         painter = painterResource(
             id = when (data.id) {
-                1L -> R.drawable.carbonara
+                1L -> R.drawable.placeholder_carbonara
                 2L -> R.drawable.tiramisu
-                else -> R.drawable.guacamole
+                else -> R.drawable.placeholder_guacamole
             }
         ),
         contentDescription = "Grid Image",
@@ -77,7 +74,6 @@ fun ImageSelection(data: Post) {
             .fillMaxSize()
             .clip(RoundedCornerShape(10.dp)),
         alignment = Alignment.Center
-
     )
 }
 

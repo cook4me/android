@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
 class MainActivity : ComponentActivity() {
@@ -10,7 +11,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Cook4meTheme {
-                Cook4MeApp()
+                Column {
+                    Cook4MeApp()
+                }
             }
         }
     }

@@ -21,7 +21,7 @@ fun TupperwareSwipeScreen() {
     Column {
         Text("Spaghetti Carbonara", fontWeight = FontWeight.Bold)
         Image(
-            painter = painterResource(id = R.drawable.carbonara),
+            painter = painterResource(id = R.drawable.placeholder_carbonara),
             contentDescription = "Carbonara",
             modifier = Modifier.fillMaxWidth()
         )

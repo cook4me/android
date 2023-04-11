@@ -35,6 +35,7 @@ import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
+import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
 
 @Composable
 fun CreateTupperwareScreen() {

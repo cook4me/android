@@ -20,8 +20,11 @@ fun OverviewScreen(
     onEditProfileClick: () -> Unit,
     onAddTupperwareClick: () -> Unit,
     onSwipeTupperwareClick: () -> Unit,
+    onAddSignUpClick: () -> Unit,
     onAddEventClick: () -> Unit,
+    onPostClick: () -> Unit,
     onDetailedEventClick: () -> Unit,
+    onAddRecipeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -44,6 +47,9 @@ fun OverviewScreen(
         Button(onClick = onAddTupperwareClick) {
             Text(stringResource(R.string.navigate_to_add_tupperware))
         }
+        Button(onClick = onAddRecipeClick) {
+            Text(stringResource(R.string.navigate_to_add_recipe))
+        }
         Button(onClick = onSwipeTupperwareClick) {
             Text(stringResource(R.string.navigate_to_swipe_tupperware))
         }
@@ -52,6 +58,12 @@ fun OverviewScreen(
         }
         Button(onClick = onDetailedEventClick) {
             Text(stringResource(R.string.Nav_Detailed_Event_Screen))
+        }
+        Button(onClick = onAddSignUpClick) {
+            Text(stringResource(R.string.navigate_to_add_signup))
+        }
+        Button(onClick = onPostClick) {
+            Text(stringResource(R.string.navigate_to_postView))
         }
     }
 }

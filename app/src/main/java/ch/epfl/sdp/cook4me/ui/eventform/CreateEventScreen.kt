@@ -13,19 +13,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.EventFormService
 import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
+import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 /**
  * Component that shows the form to create an event
+ * @param eventService the service that will be used to create the event
  */
 @Composable
-fun CreateEventScreen() {
+fun CreateEventScreen(
+    eventService: EventFormService = EventFormService(),
+) {
     val event = remember {
         mutableStateOf(Event())
     }
@@ -84,10 +89,9 @@ fun CreateEventScreen() {
             onSaveText = R.string.ButtonRowDone,
             onCancelClick = { /*TODO*/ },
             onSaveClick = {
-                endMsg.value = if (event.value.isValidEvent) {
-                    event.value.eventInformation
-                } else {
-                    event.value.eventProblem?.let { "Error: $it" } ?: "Error"
+                // call suspend function
+                runBlocking {
+                    endMsg.value = eventService.submitForm(event.value) ?: "Event created!"
                 }
             }
         )

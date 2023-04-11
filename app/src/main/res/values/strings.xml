@@ -6,6 +6,11 @@
     <string name="navigate_to_add_tupperware">Add tupperware</string>
     <string name="navigate_to_swipe_tupperware">Swipe tupperware</string>
     <string name="navigate_to_add_event">Add event</string>
+    <string name="navigate_to_add_signup">Sign up</string>
+    <string name="navigate_to_postView">Post</string>
+    
+    <!-- ui/simpleComponent strings   -->
+    <string name="navigate_to_add_recipe">Add Recipe</string>
 
     <!--  DatePicker  -->
     <string name="selected_date_text">Selected Date: </string>
@@ -76,14 +81,15 @@
 
     <!-- Overview Screen -->
     <string name="Overview_Screen_Tag">OverviewScreen</string>
-
     <string name="cool_map">Cool Map</string>
+
+    <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
     <string name="tag_username">Username</string>
     <string name="tag_bio">Bio</string>
     <string name="tag_defaultProfileImage">defaultProfilImage</string>
-    <string name="default_username">User_42</string>
+    <string name="default_username">Edith</string>
     <string name="default_favoriteDish">Pizza</string>
     <string name="default_allergies">No Allergies</string>
     <string name="default_bio">Hi there, I am a chef</string>
@@ -91,6 +97,29 @@
     <string name="btn_cancel">cancel</string>
     <string name="msg_cancelled">cancelled</string>
     <string name="msg_saved">saved</string>
+    <string name="tag_password">Password</string>
+    <string name="default_password">Enter a password</string>
+    <string name="tag_email">Email</string>
+    <string name="default_email">example@epfl.ch</string>
+
+    <!-- Recipe Screen -->
+    <string name="ingredientsTextFieldContentDesc">Ingredients Text field</string>
+    <string name="ingredientsTextFieldPlaceholder">Add ingredients</string>
+    <string name="RecipePreparationTitle">Preparation</string>
+    <string name="RecipeStepsTextFieldPlaceholder">Add recipe steps</string>
+    <string name="RecipeStepsTextFieldDesc">Recipe steps text field</string>
+    <string name="RecipeNameTextFieldDesc">Recipe name text field</string>
+    <string name="RecipeCreationRecipeTitle">Recipe name</string>
+    <string name="RecipeNameTextFieldPlaceholder">Add recipe name</string>
+    <string name="RecipeCreationIngredientsTitle">Ingredients</string>
+    <string name="RecipeCreationScreenServingsTitle">Serves</string>
+    <string name="RecipeCreationDifficultyTitle">Difficulty</string>
+    <string name="RecipeCreationCookingTimeEntryTitle">Cooking Time</string>
+    <string name="RecipeCreationScreenAddImageTitle">Add Image</string>
+    <string name="RecipeCreationCookingTimeDropDownMenuDesc">Cooking Time DropDownMenu</string>
+    <string name="RecipeCreationDifficultyDropDownMenuDesc">Difficulty Drop Down Menu</string>
+    <string name="RecipeCreationServingsTextFieldDesc">Servings Text Field</string>
+
     <string name="Nav_Detailed_Event_Screen">Detailed Event</string>
 
     <!-- tests -->
@@ -98,5 +127,14 @@
     <string name="question">question</string>
     <string name="option1">option1</string>
     <string name="option2">option2</string>
+
+    <!-- Signup -->
+    <string name="tag_singUpTitle">Add email and password</string>
+    <string name="btn_back">back</string>
+    <string name="btn_continue">continue</string>
+
+    <!-- Post -->
+    <string name="post_tag_image">image</string>
+    <string name="post_title">Post</string>
 
 </resources>

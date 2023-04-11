@@ -2,8 +2,10 @@ package ch.epfl.sdp.cook4me.ui.eventform
 
 import android.content.Context
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
@@ -48,8 +50,10 @@ class DetailedEventScreenTest {
         composeTestRule.setContent {
             DetailedEventScreen(event = testEvent)
         }
-        composeTestRule.onNodeWithStringId(R.string.event_name).assertExists()
-        composeTestRule.onNodeWithText("test event name").assertExists()
+        composeTestRule.onNodeWithStringId(R.string.event_name).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.event_name).assertIsDisplayed()
+        composeTestRule.onNodeWithText("test event name").performScrollTo()
+        composeTestRule.onNodeWithText("test event name").assertIsDisplayed()
     }
 
     @Test
@@ -57,8 +61,10 @@ class DetailedEventScreenTest {
         composeTestRule.setContent {
             DetailedEventScreen(event = testEvent)
         }
-        composeTestRule.onNodeWithStringId(R.string.event_description).assertExists()
-        composeTestRule.onNodeWithText("test description").assertExists()
+        composeTestRule.onNodeWithStringId(R.string.event_description).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.event_description).assertIsDisplayed()
+        composeTestRule.onNodeWithText("test description").performScrollTo()
+        composeTestRule.onNodeWithText("test description").assertIsDisplayed()
     }
 
     @Test
@@ -66,8 +72,10 @@ class DetailedEventScreenTest {
         composeTestRule.setContent {
             DetailedEventScreen(event = testEvent)
         }
-        composeTestRule.onNodeWithStringId(R.string.event_location).assertExists()
-        composeTestRule.onNodeWithText("mondstadt").assertExists()
+        composeTestRule.onNodeWithStringId(R.string.event_location).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.event_location).assertIsDisplayed()
+        composeTestRule.onNodeWithText("mondstadt").performScrollTo()
+        composeTestRule.onNodeWithText("mondstadt").assertIsDisplayed()
     }
 
     @Test
@@ -75,8 +83,10 @@ class DetailedEventScreenTest {
         composeTestRule.setContent {
             DetailedEventScreen(event = testEvent)
         }
-        composeTestRule.onNodeWithStringId(R.string.event_max_participants).assertExists()
-        composeTestRule.onNodeWithText("4").assertExists()
+        composeTestRule.onNodeWithStringId(R.string.event_max_participants).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.event_max_participants).assertIsDisplayed()
+        composeTestRule.onNodeWithText("4").performScrollTo()
+        composeTestRule.onNodeWithText("4").assertIsDisplayed()
     }
 
     @Test
@@ -84,8 +94,10 @@ class DetailedEventScreenTest {
         composeTestRule.setContent {
             DetailedEventScreen(event = testEvent)
         }
-        composeTestRule.onNodeWithStringId(R.string.event_creator).assertExists()
-        composeTestRule.onNodeWithText("peter griffin").assertExists()
+        composeTestRule.onNodeWithStringId(R.string.event_creator).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.event_creator).assertIsDisplayed()
+        composeTestRule.onNodeWithText("peter griffin").performScrollTo()
+        composeTestRule.onNodeWithText("peter griffin").assertIsDisplayed()
     }
 
     @Test
@@ -93,8 +105,10 @@ class DetailedEventScreenTest {
         composeTestRule.setContent {
             DetailedEventScreen(event = testEvent)
         }
-        composeTestRule.onNodeWithStringId(R.string.event_who_can_see_event).assertExists()
-        composeTestRule.onNodeWithText("Everyone").assertExists()
+        composeTestRule.onNodeWithStringId(R.string.event_who_can_see_event).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.event_who_can_see_event).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Everyone").performScrollTo()
+        composeTestRule.onNodeWithText("Everyone").assertIsDisplayed()
     }
 
     @Test
@@ -102,15 +116,20 @@ class DetailedEventScreenTest {
         composeTestRule.setContent {
             DetailedEventScreen(event = testEvent)
         }
-        composeTestRule.onNodeWithStringId(R.string.event_participants).assertExists()
-        composeTestRule.onNodeWithText(testEvent.participants.joinToString(separator = ", ")).assertExists()
+        val testEventParticipants = testEvent.participants.joinToString(separator = ", ")
+        composeTestRule.onNodeWithStringId(R.string.event_participants).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.event_participants).assertIsDisplayed()
+        composeTestRule.onNodeWithText(testEventParticipants).performScrollTo()
+        composeTestRule.onNodeWithText(testEventParticipants).assertIsDisplayed()
     }
     @Test
     fun eventDateTimeIsDisplayed() {
         composeTestRule.setContent {
             DetailedEventScreen(event = testEvent)
         }
-        composeTestRule.onNodeWithStringId(R.string.event_time).assertExists()
-        composeTestRule.onNodeWithText(eventDate).assertExists()
+        composeTestRule.onNodeWithStringId(R.string.event_time).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.event_time).assertIsDisplayed()
+        composeTestRule.onNodeWithText(eventDate).performScrollTo()
+        composeTestRule.onNodeWithText(eventDate).assertIsDisplayed()
     }
 }

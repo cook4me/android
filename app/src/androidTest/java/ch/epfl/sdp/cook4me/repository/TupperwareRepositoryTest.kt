@@ -53,7 +53,7 @@ class TupperwareRepositoryTest {
         )
         tupperwareRepository.add(newEntry1)
         tupperwareRepository.add(newEntry2)
-        val allTupperware = tupperwareRepository.getAll()
+        val allTupperware = tupperwareRepository.getAll<Tupperware>()
         MatcherAssert.assertThat(allTupperware.values, Matchers.containsInAnyOrder(newEntry1, newEntry2))
     }
 
@@ -63,10 +63,10 @@ class TupperwareRepositoryTest {
             title = "title", description = "desc", tags = listOf("Pizza", "Italian"), images = listOf("Uri")
         )
         tupperwareRepository.add(entryToBeUpdated)
-        val allTupperwareBeforeUpdate = tupperwareRepository.getAll()
+        val allTupperwareBeforeUpdate = tupperwareRepository.getAll<Tupperware>()
         val updatedEntry = entryToBeUpdated.copy(title = "updated")
         tupperwareRepository.update(allTupperwareBeforeUpdate.keys.first(), updatedEntry)
-        val allTupperwareAfterUpdate = tupperwareRepository.getAll()
+        val allTupperwareAfterUpdate = tupperwareRepository.getAll<Tupperware>()
         MatcherAssert.assertThat(allTupperwareAfterUpdate.values, Matchers.contains(updatedEntry))
         MatcherAssert.assertThat(allTupperwareAfterUpdate.values, Matchers.not(Matchers.contains(entryToBeUpdated)))
     }
@@ -88,8 +88,8 @@ class TupperwareRepositoryTest {
                 title = "title2", description = "desc2", tags = listOf("Langosh", "Hungarian"), images = listOf("Uri2")
             )
         )
-        val allTupperware = tupperwareRepository.getAll()
-        val actual = tupperwareRepository.getById(allTupperware.keys.first())
+        val allTupperware = tupperwareRepository.getAll<Tupperware>()
+        val actual = tupperwareRepository.getById<Tupperware>(allTupperware.keys.first())
         MatcherAssert.assertThat(actual, Matchers.`is`(allTupperware.values.first()))
     }
 }

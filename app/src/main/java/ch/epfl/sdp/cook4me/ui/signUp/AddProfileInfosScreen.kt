@@ -1,5 +1,3 @@
-package ch.epfl.sdp.cook4me.ui.profile
-
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,12 +33,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun EditProfileScreen(
-    viewModel: ProfileCreationViewModel = viewModel(),
+fun AddProfileInfoScreen(
+    viewModel: SignUpViewModel = viewModel(),
 ) {
     val username by viewModel.username
     val favoriteDish by viewModel.favoriteDish
@@ -70,34 +69,34 @@ fun EditProfileScreen(
             .padding(8.dp)
     ) {
         saveCancel_buttons(viewModel::onSubmit)
-        ImageHolder_profileUpdateScreen(
+        ImageHolder_AddProfileInfoScreen(
             onClickAddImage = { onClickAddImage() },
             image = userImage,
         )
 
         // Textfield for the userna
-        // TODO IMPLEMENT A CLEAN WAme
-        columnTextBtn_profileUpdateScreen(
+        columnTextBtn_AddProfileInfoScreen(
             stringResource(R.string.tag_username),
             username,
             viewModel::addUsername,
         )
 
         // Textfield for the Favorite dish
-        columnTextBtn_profileUpdateScreen(
+        columnTextBtn_AddProfileInfoScreen(
             stringResource(R.string.tag_favoriteDish),
             favoriteDish,
             viewModel::addFavoriteDish,
         )
 
-        columnTextBtn_profileUpdateScreen(
+        // Textfield for Allergies
+        columnTextBtn_AddProfileInfoScreen(
             stringResource(R.string.tag_allergies),
             allergies,
             viewModel::addAllergies,
         )
 
         // Textfield for the bio
-        bio_profileUpdateScreen(
+        bio_AddProfileInfoScreen(
             stringResource(R.string.tag_bio),
             bio,
             viewModel::addBio,
@@ -106,7 +105,7 @@ fun EditProfileScreen(
 }
 
 @Composable
-fun bio_profileUpdateScreen(
+fun bio_AddProfileInfoScreen(
     displayLabel: String,
     inputText: String,
     change: (String) -> Unit
@@ -122,7 +121,7 @@ fun bio_profileUpdateScreen(
             value = inputText,
             onValueChange = { change(it) },
             placeholder = { Text(stringResource(R.string.default_bio)) },
-            colors = ColorsTextfield_profilUpdateScreen(),
+            colors = ColorsTextfield_AddProfileInfoScreen(),
             singleLine = false,
             modifier = Modifier
                 .height(150.dp)
@@ -132,7 +131,7 @@ fun bio_profileUpdateScreen(
 }
 
 @Composable
-fun columnTextBtn_profileUpdateScreen(
+fun columnTextBtn_AddProfileInfoScreen(
     label: String,
     inputText: String,
     change: (String) -> Unit
@@ -150,18 +149,18 @@ fun columnTextBtn_profileUpdateScreen(
             value = inputText,
             modifier = Modifier.testTag(label),
             onValueChange = { change(it) },
-            colors = ColorsTextfield_profilUpdateScreen()
+            colors = ColorsTextfield_AddProfileInfoScreen()
         )
     }
 }
 
 @Composable
-fun ColorsTextfield_profilUpdateScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
+fun ColorsTextfield_AddProfileInfoScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
     backgroundColor = Color.Transparent, textColor = Color.Black
 )
 
 @Composable
-fun ImageHolder_profileUpdateScreen(
+fun ImageHolder_AddProfileInfoScreen(
     onClickAddImage: () -> Unit,
     image: Uri,
 ) {
@@ -177,7 +176,7 @@ fun ImageHolder_profileUpdateScreen(
                 .padding(8.dp)
                 .size(100.dp)
         ) {
-            Image_profileUpdateScreen(
+            Image_AddProfileInfoScreen(
                 onClickAddImage = onClickAddImage,
                 image = image,
             )
@@ -187,7 +186,7 @@ fun ImageHolder_profileUpdateScreen(
 }
 
 @Composable
-fun Image_profileUpdateScreen(
+fun Image_AddProfileInfoScreen(
     onClickAddImage: () -> Unit,
     image: Uri,
 ) {

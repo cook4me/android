@@ -22,19 +22,20 @@ import androidx.compose.runtime.setValue
 
 open class TextFieldState(
     private val validator: (String) -> Boolean = { true },
-    private val errorMsg: String
-) {
-    var text: String by mutableStateOf("")
+    private val errorMsg: String,
+    private val default: String = "",
+) : FormElementState {
+    var text: String by mutableStateOf(default)
 
     // was the TextField ever focused
     private var displayErrors: Boolean by mutableStateOf(false)
     private var isFocused: Boolean by mutableStateOf(false)
     var isFocusedDirty: Boolean by mutableStateOf(false)
 
-    val isValid: Boolean
+    override val isValid: Boolean
         get() = validator(text)
 
-    val errorMessage: String
+    override val errorMessage: String
         get() = errorMsg
 
     fun onFocusChange(focused: Boolean) {
@@ -45,21 +46,23 @@ open class TextFieldState(
         }
     }
 
-    fun enableShowErrors() {
+    override fun enableShowErrors() {
         displayErrors = true
     }
 
-    fun showErrors() = !isValid && displayErrors
+    override fun showErrors() = !isValid && displayErrors
 }
 
-class RequiredTextFieldState(errorMsg: String) : TextFieldState(
+class RequiredTextFieldState(errorMsg: String, default: String = "",) : TextFieldState(
     { it.isNotBlank() },
-    errorMsg
+    errorMsg,
+    default
 )
 
-class EmailState(errorMsg: String) : TextFieldState(
+class EmailState(errorMsg: String, default: String = "",) : TextFieldState(
     {
         it.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(it).matches()
     },
-    errorMsg
+    errorMsg,
+    default,
 )
