@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 
 /**
@@ -28,8 +30,8 @@ import ch.epfl.sdp.cook4me.persistence.model.Recipe
  */
 @Preview(showBackground = true)
 @Composable
-fun RecipeFeed(){
-    val recipeList = listOf(
+fun RecipeFeed(service: RecipeFeedService = RecipeFeedService()) {
+    val mockRecipeList = listOf(
         Pair(Recipe(name = "Recipe 1"), 1),
         Pair(Recipe(name = "Recipe 2"), 3),
         Pair(Recipe(name = "Recipe 3"), 2),
@@ -40,6 +42,13 @@ fun RecipeFeed(){
     val isOrderedByTopRecipes = remember {
         mutableStateOf(true)
     }
+    val recipeList = remember {
+        mutableStateOf(listOf<Pair<Recipe,Int>>())
+    }
+
+    LaunchedEffect(Unit){
+        recipeList.value = service.getRecipesWithNotes()
+    }
 
     Column (modifier = Modifier
         .fillMaxWidth()
@@ -48,8 +57,8 @@ fun RecipeFeed(){
         verticalArrangement = Arrangement.SpaceEvenly) {
         Box (modifier = Modifier.fillMaxHeight(0.9F)) {
             RecipeListScreen(
-                recipeList = if (isOrderedByTopRecipes.value) recipeList.sortedByDescending
-                             { it.second } else recipeList,
+                recipeList = if (isOrderedByTopRecipes.value) recipeList.value.sortedByDescending
+                             { it.second } else recipeList.value,
             )
         }
         Box(modifier = Modifier.fillMaxHeight(0.05F))
