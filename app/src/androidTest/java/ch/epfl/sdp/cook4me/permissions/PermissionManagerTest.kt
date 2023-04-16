@@ -161,5 +161,4 @@ class PermissionManagerTest {
         val expectedMultiplePermissionText = "The camera, and location  permissions are denied. The app cannot function without them."
         assertEquals(expectedMultiplePermissionText, multiplePermissionText)
     }
-
 }
