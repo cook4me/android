@@ -3,7 +3,7 @@ package ch.epfl.sdp.cook4me.permissions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.tooling.preview.Preview
+// import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun PermissionRequestScreen(permissionStatusProvider: PermissionStatusProvider) {
@@ -17,6 +17,7 @@ fun PermissionRequestScreen(permissionStatusProvider: PermissionStatusProvider) 
     }
 }
 
+/*
 @Preview
 @Composable
 fun PermissionRequestScreenPreview() {
@@ -28,3 +29,4 @@ fun PermissionRequestScreenPreview() {
     )
     PermissionRequestScreen(permissionStatusProvider)
 }
+*/
