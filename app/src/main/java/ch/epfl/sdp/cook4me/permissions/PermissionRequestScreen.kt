@@ -6,14 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun PermissionRequestScreen() {
-    val permissionStatusProvider = ComposePermissionStatusProvider(
-        listOf(
-            android.Manifest.permission.CAMERA,
-            android.Manifest.permission.ACCESS_FINE_LOCATION
-        )
-    )
-
+fun PermissionRequestScreen(permissionStatusProvider: PermissionStatusProvider) {
     val permissionManager = remember {
         PermissionManager(
             permissionStatusProvider
@@ -27,5 +20,11 @@ fun PermissionRequestScreen() {
 @Preview
 @Composable
 fun PermissionRequestScreenPreview() {
-    PermissionRequestScreen()
+    val permissionStatusProvider = ComposePermissionStatusProvider(
+        listOf(
+            android.Manifest.permission.CAMERA,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+    )
+    PermissionRequestScreen(permissionStatusProvider)
 }
