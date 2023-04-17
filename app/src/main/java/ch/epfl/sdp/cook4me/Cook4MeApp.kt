@@ -21,6 +21,7 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
@@ -44,7 +45,6 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
-    SignUpUserInfos,
 }
 
 /* Testing around the Detailed Event Screen */
@@ -78,9 +78,6 @@ fun Cook4MeApp(
         // not signed in yet, navigate to sign in screen
         Screen.Login.name
     }
-    // signUpViewModel is used to synchronize the signUp flow
-    val signUpViewModel = SignUpViewModel()
-
     NavHost(navController = navController, startDestination = startScreen) {
         composable(route = Screen.Login.name) {
             LoginScreen(
@@ -134,8 +131,11 @@ fun Cook4MeApp(
                 onSuccessfullSignUp = {navController.navigate(Screen.OverviewScreen.name)})
         }
         composable(route = Screen.PostDetails.name) {
-            val post = Post(1, "Tiramisu", "This is a delicious tiramisu or so")
+            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
+        }
+        composable(route = Screen.CreateRecipeScreen.name) {
+            CreateRecipeScreen(submitForm = {})
         }
     }
 }
