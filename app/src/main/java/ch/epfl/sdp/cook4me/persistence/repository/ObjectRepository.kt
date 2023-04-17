@@ -46,6 +46,19 @@ open class ObjectRepository(
     * Notes: Firebase could not serialize to java.untl.Calender, I will add an constructor in Event.kt
     * to construct an Event object from a map.
     * */
+
+    /*
+    * Usage: In your service:
+    * Initialize the repository;
+    * suspend fun getWithGivenField(field: String, query: Any): Map<String, DataClass> {
+        val result = objectRepository.getWithGivenField<DataClass>(field, query)
+        return result.map { it.id to it.toObject(DataClass::class.java) }.toMap()
+      }
+     * This will return a map of id to DataClass object.
+     * If your dataclass sadly is not able to be serialized by firebase, add
+         a secondary constructor to your dataclass to construct it from a map.
+     * Want a demo? See EventFormService.kt and Event.kt
+    * */
     suspend fun <A : Any> getWithGivenField(field: String, query: Any): List<DocumentSnapshot> {
         val result = store.collection(objectPath).whereEqualTo(field, query).get().await()
         return result.documents

@@ -25,7 +25,8 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
 
     /*
     * Retrieves event with query name at the given field
-    * e.g. getWithGivenField("name", "darth.vadar") will return the event with name (event attr.) "darth.vadar"
+    * e.g. getWithGivenField("name", "darth.vadar") will return a map of events with name (event attr.) "darth.vadar"
+    * map id: the id of the event, map value: the event object
     * When nothing is found, an empty map is returned
     * */
     suspend fun getWithGivenField(field: String, query: Any): Map<String, Event> {
