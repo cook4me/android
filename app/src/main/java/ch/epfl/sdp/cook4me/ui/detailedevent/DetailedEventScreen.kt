@@ -24,10 +24,6 @@ import ch.epfl.sdp.cook4me.R
 fun DetailedEventScreen(
     detailedEventViewModel: DetailedEventViewModel = viewModel(),
 ) {
-    /*
-    * TODO:
-    *  - There is a bug in CreateEventScreen, in the input field of event description, maybe debug it.
-    * */
     val event = detailedEventViewModel.firstEventState.value
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),

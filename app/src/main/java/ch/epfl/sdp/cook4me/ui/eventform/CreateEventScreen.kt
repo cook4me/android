@@ -33,7 +33,7 @@ fun CreateEventScreen(
     eventService: EventFormService = EventFormService(),
     accountService: AccountService = AccountService()
 ) {
-    val event = remember {
+    var event = remember {
         mutableStateOf(Event())
     }
     val endMsg = remember { mutableStateOf("") }
@@ -67,10 +67,12 @@ fun CreateEventScreen(
         )
         InputField(
             question = R.string.ask_event_description,
-            value = event.value.name,
+            value = event.value.description,
             onValueChange = { event.value = event.value.copy(description = it) }
         )
         AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
+        // !!!!!!!!!!!!!
+        // this is not working. the max participants stays at 2 in firestore
         IntegerSlider(
             text = R.string.ask_event_number_participants, min = 2, max = 16,
             onValueChange = { event.value = event.value.copy(maxParticipants = it) },

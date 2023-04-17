@@ -37,7 +37,7 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
     * To get the first event of queried map of events.
     * If nothing is found, null is returned
     * */
-    suspend fun getFirstEventWithGivenField(field: String, query: String): Event? {
+    suspend fun getFirstEventWithGivenField(field: String, query: Any): Event? {
         val resultMap: Map<String, Event> = getWithGivenField(field, query)
         return resultMap.values.firstOrNull()
     }
