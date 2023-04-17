@@ -15,22 +15,13 @@ class ComposePermissionStatusProvider(
         rememberMultiplePermissionsState(permissions)
 
     @Composable
-    override fun allPermissionsGranted(): Boolean {
-        val permissionsState = getPermissionsState()
-        return permissionsState.allPermissionsGranted
-    }
+    override fun allPermissionsGranted() = getPermissionsState().allPermissionsGranted
 
     @Composable
-    override fun shouldShowRationale(): Boolean {
-        val permissionsState = getPermissionsState()
-        return permissionsState.shouldShowRationale
-    }
+    override fun shouldShowRationale() = getPermissionsState().shouldShowRationale
 
     @Composable
-    override fun getRevokedPermissions(): List<String> {
-        val permissionsState = getPermissionsState()
-        return permissionsState.revokedPermissions.map { it.permission }.toList()
-    }
+    override fun getRevokedPermissions() = getPermissionsState().revokedPermissions.map { it.permission }.toList()
 
     @Composable
     override fun requestAllPermissions() {

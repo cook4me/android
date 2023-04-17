@@ -20,7 +20,7 @@ class TestPermissionStatusProvider(
 
     @Composable
     override fun getRevokedPermissions(): List<String> {
-        return permissionsMap.filter { !it.value.first }.map { it.key }
+        return permissionsMap.filterNot { it.value.first }.map { it.key }
     }
 
     @Composable

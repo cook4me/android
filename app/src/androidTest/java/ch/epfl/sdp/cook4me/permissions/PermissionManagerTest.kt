@@ -49,7 +49,7 @@ class PermissionManagerTest {
         }
 
         composeTestRule.onNodeWithText("Request permissions").assertExists()
-        composeTestRule.onNodeWithText("The TestPermission1, and TestPermission2  permissions is important. Please grant all of them for the app to function properly.").assertExists()
+        composeTestRule.onNodeWithText("The following permissions are important: TestPermission1, TestPermission2. Please grant all of them for the app to function properly.").assertExists()
     }
 
     @Test
@@ -105,7 +105,7 @@ class PermissionManagerTest {
     fun testPermissionManager_permissionDenied_withoutRationale() {
         val testPermissionStatusProvider = TestPermissionStatusProvider(
             mapOf("camera" to Pair(false, false), "location" to Pair(false, false))
-        ).apply { setPermissionValue("location", false) }
+        )
 
         composeTestRule.setContent {
             PermissionManager(testPermissionStatusProvider).withPermission {
@@ -113,7 +113,7 @@ class PermissionManagerTest {
             }
         }
 
-        val expectedText = "The camera, and location  permissions are denied. The app cannot function without them."
+        val expectedText = "The following permissions will grant a better experience in the app: camera, location."
         composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
     }
 
@@ -129,7 +129,39 @@ class PermissionManagerTest {
             }
         }
 
-        val expectedText = "The camera, and location  permissions is important. Please grant all of them for the app to function properly."
+        val expectedText = "The following permissions are important: camera, location. Please grant all of them for the app to function properly."
+        composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
+    }
+
+    @Test
+    fun testPermissionManager_singularPermissionDenied_withoutRationale() {
+        val testPermissionStatusProvider = TestPermissionStatusProvider(
+            mapOf("camera" to Pair(false, false))
+        )
+
+        composeTestRule.setContent {
+            PermissionManager(testPermissionStatusProvider).withPermission {
+                Text("Camera and location permission Granted")
+            }
+        }
+
+        val expectedText = "The camera permission will grant a better experience in the app"
+        composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
+    }
+
+    @Test
+    fun testPermissionManager_singularPermissionDenied_withRationale() {
+        val testPermissionStatusProvider = TestPermissionStatusProvider(
+            mapOf("camera" to Pair(false, true))
+        )
+
+        composeTestRule.setContent {
+            PermissionManager(testPermissionStatusProvider).withPermission {
+                Text("Camera and location permission Granted")
+            }
+        }
+
+        val expectedText = "The camera permission is important. Please grant it for the app to function properly."
         composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
     }
 
@@ -146,19 +178,5 @@ class PermissionManagerTest {
         }
 
         composeTestRule.onNodeWithText("Request permissions").assertIsDisplayed()
-    }
-
-    @Test
-    fun testPermissionManager_getPermissionText() {
-        val permissionManager = PermissionManager(TestPermissionStatusProvider(mapOf()))
-
-        val singlePermissionText = permissionManager.getPermissionText(listOf("camera"), true)
-        val expectedSinglePermissionText = "The camera  permission is important. Please grant all of them for the app to function properly."
-        println(singlePermissionText)
-        assertEquals(expectedSinglePermissionText, singlePermissionText)
-
-        val multiplePermissionText = permissionManager.getPermissionText(listOf("camera", "location"), false)
-        val expectedMultiplePermissionText = "The camera, and location  permissions are denied. The app cannot function without them."
-        assertEquals(expectedMultiplePermissionText, multiplePermissionText)
     }
 }
