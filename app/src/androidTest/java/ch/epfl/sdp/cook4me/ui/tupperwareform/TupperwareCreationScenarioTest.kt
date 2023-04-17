@@ -164,8 +164,8 @@ class TupperwareCreationScenarioTest {
         composeTestRule.onNodeWithTag("image", useUnmergedTree = true).assertIsDisplayed()
     }
 
-    private val registryOwner = ActivityResultRegistryOwner {
-        object : ActivityResultRegistry() {
+    private val registryOwner = object : ActivityResultRegistryOwner {
+        override val activityResultRegistry: ActivityResultRegistry = object : ActivityResultRegistry() {
             override fun <I : Any?, O : Any?> onLaunch(
                 requestCode: Int,
                 contract: ActivityResultContract<I, O>,

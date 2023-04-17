@@ -19,6 +19,7 @@ import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -106,6 +107,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.DetailedEventScreen.name) {
             DetailedEventScreen()
+        }
+        composable(route = Screen.CreateRecipeScreen.name) {
+            CreateRecipeScreen(submitForm = {})
         }
     }
 }
