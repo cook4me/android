@@ -51,13 +51,8 @@ fun CreateEventScreen(
     // for now I just set the id as the email of the current user,
     // this needs to be changed!!!! because one user could have multiple events
     // we need to discuss a bit about it.
-    try{
-        val userEmail = accountService.getCurrentUserEmail()
-        if(userEmail != null)
-            event.value = event.value.copy(id = userEmail)
-    } catch (e: NullPointerException){
-        throw e
-    }
+    val userEmail = accountService.getCurrentUserEmail()
+    userEmail?.let { event.value = event.value.copy(id = userEmail) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),

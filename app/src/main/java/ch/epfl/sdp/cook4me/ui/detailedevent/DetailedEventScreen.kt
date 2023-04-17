@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.detailedevent
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,11 +16,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.application.AccountService
-import ch.epfl.sdp.cook4me.application.EventFormService
-import ch.epfl.sdp.cook4me.ui.eventform.Event
-import ch.epfl.sdp.cook4me.ui.overview.OverviewViewModel
-import kotlinx.coroutines.runBlocking
 
 /**
  * A component screen that displays details of an event
@@ -31,22 +25,8 @@ fun DetailedEventScreen(
     detailedEventViewModel: DetailedEventViewModel = viewModel(),
 ) {
     /*
-    * 2023/04/06 14:48
-    * Working on displaying actual event from firestore.
-    * For now, I use the event id as the email of the current user.(See CreateEventScreen.kt)
-    * This should be changed as discussed in CreateEventScreen.kt
-    * Ask Daniel!!!
-    *
     * TODO:
-    *  - Deal with null event after query
-    *  - Resolve errors in this screen
-    *  - Test Objectrepo.getwithgivenfield()
-    *  - Test CreateEventScreen, because I throw NullPointerException when I try to get the current user email.
-    *  - Test DetailedEventScreen, because I throw NullPointerException when I try to get the current user email.
     *  - There is a bug in CreateEventScreen, in the input field of event description, maybe debug it.
-    *  - In EventFormService, I think we should change the return type of getById() to Event? instead of Event, or see what happens if
-    *    no event is found. (ask dayan or daniel perhaps?)
-    *  - Test EventFormService for the new method getById()
     * */
     val event = detailedEventViewModel.firstEventState.value
     Column(

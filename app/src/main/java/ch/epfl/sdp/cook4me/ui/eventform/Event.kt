@@ -18,18 +18,6 @@ data class Event(
     val id: String = "",
     val isPrivate: Boolean = false
 ) {
-    constructor(map: Map<String, Any>): this(
-        name = map["name"] as? String ?: "",
-        description = map["description"] as? String ?: "",
-        dateTime = (map["dateTime"] as? com.google.firebase.Timestamp)?.toDate()?.let { calendarFromTime(it) } ?: Calendar.getInstance(),
-        location = map["location"] as? String ?: "",
-        maxParticipants = map["maxParticipants"] as? Int ?: 0,
-        participants = map["participants"] as? List<String> ?: listOf(),
-        creator = map["creator"] as? String ?: "",
-        id = map["id"] as? String ?: "",
-        isPrivate = map["isPrivate"] as? Boolean ?: false
-    )
-
     private val dateAsFormattingDate: String
         get() { // make that there is always 2 digits
             val month = getTwoDigits(dateTime.get(Calendar.MONTH) + 1)
@@ -62,6 +50,21 @@ data class Event(
 
     val eventDate: String
         get() = "$dateAsFormattingDate"
+
+    constructor(map: Map<String, Any>) : this(
+        name = map["name"] as? String ?: "",
+        description = map["description"] as? String ?: "",
+        dateTime = (map["dateTime"] as? com.google.firebase.Timestamp)
+            ?.toDate()
+            ?.let { calendarFromTime(it) }
+            ?: Calendar.getInstance(),
+        location = map["location"] as? String ?: "",
+        maxParticipants = map["maxParticipants"] as? Int ?: 0,
+        participants = map["participants"] as? List<String> ?: listOf(),
+        creator = map["creator"] as? String ?: "",
+        id = map["id"] as? String ?: "",
+        isPrivate = map["isPrivate"] as? Boolean ?: false
+    )
 }
 
 /**
