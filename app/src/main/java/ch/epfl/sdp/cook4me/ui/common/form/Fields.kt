@@ -1,9 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.common.form
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -12,8 +10,10 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
@@ -64,6 +64,48 @@ fun EmailField(value: String, isError: Boolean, onNewValue: (String) -> Unit, mo
         isError = isError,
         placeholder = { Text("Email") },
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
+    )
+}
+
+@Composable
+fun UserField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+    OutlinedTextField(
+        singleLine = true,
+        modifier = modifier
+            .testTag(stringResource(R.string.TAG_USER_FIELD)).semantics { if (isError) stateDescription = "Error" },
+        value = value,
+        onValueChange = { onNewValue(it) },
+        isError = isError,
+        placeholder = { Text("Username") },
+        leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "Username") }
+    )
+}
+
+@Composable
+fun ProfileInfosField(icon: ImageVector,preview: String,value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+    OutlinedTextField(
+        singleLine = true,
+        modifier = modifier
+            .testTag(preview).semantics { if (isError) stateDescription = "Error" },
+        value = value,
+        onValueChange = { onNewValue(it) },
+        isError = false,
+        placeholder = { Text(preview) },
+        leadingIcon = { Icon(imageVector = icon, contentDescription = "Username") }
+    )
+}
+@Composable
+fun BiosField(icon: ImageVector,preview: String,value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+    OutlinedTextField(
+        singleLine = false,
+        modifier = modifier
+            .fillMaxHeight()
+            .testTag(preview).semantics { if (isError) stateDescription = "Error" },
+        value = value,
+        onValueChange = { onNewValue(it) },
+        isError = false,
+        placeholder = { Text(preview) },
+        leadingIcon = { Icon(imageVector = icon, contentDescription = "Username") }
     )
 }
 

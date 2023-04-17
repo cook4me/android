@@ -66,6 +66,19 @@ class SignUpViewModel(
         _userImage.value = image
     }
 
+    fun isValidUsername(username : String): Boolean{
+        return (_username.value == username) //TODO better check
+    }
+
+    fun checkForm():Boolean{
+        if (_username.value.isBlank() || _password.value.isBlank()|| _email.value.isBlank()) {
+            _formError.value = true
+        }else{
+            _formError.value = false
+        }
+        return !_formError.value
+    }
+
     fun onSubmit() {
         if (_username.value.isBlank()||_password.value.isBlank()||_email.value.isBlank()) {
             _formError.value = true

@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me
 
+import AddProfileInfoScreen
 import SignUpScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -42,6 +44,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    SignUpUserInfos,
 }
 
 /* Testing around the Detailed Event Screen */
@@ -75,6 +78,9 @@ fun Cook4MeApp(
         // not signed in yet, navigate to sign in screen
         Screen.Login.name
     }
+    // signUpViewModel is used to synchronize the signUp flow
+    val signUpViewModel = SignUpViewModel()
+
     NavHost(navController = navController, startDestination = startScreen) {
         composable(route = Screen.Login.name) {
             LoginScreen(
@@ -117,10 +123,18 @@ fun Cook4MeApp(
             DetailedEventScreen(event = testEvent)
         }
         composable(route = Screen.SignUpScreen.name) {
-            SignUpScreen(onSuccessfullSignUp = {navController.navigate(Screen.OverviewScreen.name)})
+            SignUpScreen(
+                onSuccessfullSignUp = {navController.navigate(Screen.SignUpUserInfos.name)},
+                signUpViewModel = signUpViewModel,
+            )
+        }
+        composable(route = Screen.SignUpUserInfos.name) {
+            AddProfileInfoScreen(
+                viewModel = signUpViewModel,
+                onSuccessfullSignUp = {navController.navigate(Screen.OverviewScreen.name)})
         }
         composable(route = Screen.PostDetails.name) {
-            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
+            val post = Post(1, "Tiramisu", "This is a delicious tiramisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
         }
     }

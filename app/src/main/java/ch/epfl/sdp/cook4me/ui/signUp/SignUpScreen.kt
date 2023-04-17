@@ -1,4 +1,5 @@
 import android.util.Log
+import android.util.Patterns
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -22,10 +23,8 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
-import ch.epfl.sdp.cook4me.ui.common.form.EmailField
+import ch.epfl.sdp.cook4me.ui.common.form.*
 import ch.epfl.sdp.cook4me.ui.common.form.EmailState
-import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
-import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthException
@@ -81,12 +80,13 @@ fun SignUpScreen(
                     { passwordState.text = it },
                     Modifier
                         .fieldModifier()
+                        .testTag(stringResource(R.string.tag_password))
                         .onFocusChanged {
                             passwordState.onFocusChange(it.isFocused)
                         }
                 )
                 LoadingButton(
-                    R.string.sign_in_screen_sign_in_button,
+                    R.string.btn_continue,
                     Modifier
                         .fillMaxWidth()
                         .padding(16.dp, 8.dp),
@@ -140,51 +140,6 @@ fun SignUpScreen(
 }
 
 @Composable
-fun Password_signUpScreen() {
-    var password by rememberSaveable { mutableStateOf("") }
-
-    input_row {
-        Text(stringResource(R.string.tag_password), modifier = Modifier.width(100.dp))
-        TextField(
-            value = password,
-            modifier = Modifier.testTag(stringResource(R.string.tag_password)),
-            onValueChange = { password = it },
-            placeholder = { Text(stringResource(R.string.default_password)) },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            colors = colorsTextfield_SignUpScreen()
-        )
-    }
-}
-
-@Composable
-fun columnTextBtn_SignUpScreen(
-    displayLabel: String,
-    defaultText: String
-) {
-    var textInputVariable by rememberSaveable {
-        mutableStateOf("")
-    }
-
-    input_row {
-        Text(
-            text = displayLabel,
-            modifier = Modifier.width(100.dp)
-        )
-        TextField(
-            placeholder = {
-                Text(
-                    defaultText
-                )
-            },
-            value = textInputVariable,
-            modifier = Modifier.testTag(displayLabel),
-            onValueChange = { textInputVariable = it },
-            colors = colorsTextfield_SignUpScreen()
-        )
-    }
-}
-@Composable
 private fun BasicToolbar(title: String) {
     TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
 }
@@ -192,60 +147,6 @@ private fun BasicToolbar(title: String) {
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
     if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
-
-
-@Composable
-fun colorsTextfield_SignUpScreen(): TextFieldColors =
-    TextFieldDefaults.textFieldColors(
-        backgroundColor = Color.Transparent,
-        textColor = Color.Black
-    )
-
-@Composable
-private fun continueBack_buttons() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        text_buttons({}, nameBtn = stringResource(R.string.btn_back))
-
-        text_buttons({}, nameBtn = stringResource(R.string.btn_continue))
-    }
-}
-
-@Composable
-private fun text_buttons(onClick: () -> Unit, nameBtn: String) {
-    Text(
-        text = nameBtn,
-        modifier = Modifier
-            .testTag(nameBtn)
-            .clickable(onClick = { onClick() })
-    )
-}
-
-@Composable
-private fun input_row(content: @Composable RowScope.() -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        content()
-    }
-}
-
-@Composable
-private fun CustomTitleText(text: String = "") {
-    Text(
-        modifier = Modifier,
-        text = text,
-        fontWeight = FontWeight.Bold,
-        style = MaterialTheme.typography.h6
-    )
-}
 
 
 private fun Modifier.fieldModifier(): Modifier =

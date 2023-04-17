@@ -135,6 +135,11 @@
     <string name="sign_up_screen_top_bar_message">Enter Email and Password</string>
     <string name="sign_up_screen_invalid_email">Email invalid</string>
     <string name="sign_up_screen_invalid_password">Password invalid</string>
+    <string name="invalid_username_message">This username is not valid</string>
+    <string name="Add_profile_infos_top_bar_message">Add your user informations</string>
+    <string name="Add_profile_infos_invalid_user">Email invalid</string>
+    <string name="TAG_USER_FIELD">EmailField</string>
+
 
     <!-- Post -->
     <string name="post_tag_image">image</string>
