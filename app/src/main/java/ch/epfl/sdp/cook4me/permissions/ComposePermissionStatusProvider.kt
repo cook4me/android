@@ -3,7 +3,6 @@ package ch.epfl.sdp.cook4me.permissions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -11,23 +10,18 @@ class ComposePermissionStatusProvider(
     private val permissions: List<String>
 ) : PermissionStatusProvider {
     @Composable
-    private fun getPermissionsState(): MultiplePermissionsState =
-        rememberMultiplePermissionsState(permissions)
+    override fun allPermissionsGranted() = rememberMultiplePermissionsState(permissions).allPermissionsGranted
 
     @Composable
-    override fun allPermissionsGranted() = getPermissionsState().allPermissionsGranted
+    override fun shouldShowRationale() = rememberMultiplePermissionsState(permissions).shouldShowRationale
 
     @Composable
-    override fun shouldShowRationale() = getPermissionsState().shouldShowRationale
-
-    @Composable
-    override fun getRevokedPermissions() = getPermissionsState().revokedPermissions.map { it.permission }.toList()
+    override fun getRevokedPermissions() = rememberMultiplePermissionsState(permissions)
+        .revokedPermissions.map { it.permission }.toList()
 
     @Composable
     override fun requestAllPermissions() {
-        val permissionsState = getPermissionsState()
-        LaunchedEffect(permissionsState) {
-            permissionsState.launchMultiplePermissionRequest()
-        }
+        val permissionsState = rememberMultiplePermissionsState(permissions)
+        LaunchedEffect(permissionsState) { permissionsState.launchMultiplePermissionRequest() }
     }
 }
