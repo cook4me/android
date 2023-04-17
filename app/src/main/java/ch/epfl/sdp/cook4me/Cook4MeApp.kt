@@ -45,6 +45,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    SignUpUserInfos,
 }
 
 /* Testing around the Detailed Event Screen */
@@ -78,6 +79,9 @@ fun Cook4MeApp(
         // not signed in yet, navigate to sign in screen
         Screen.Login.name
     }
+    //SignUp viewmodel to share the signupState between the screens
+    val signUpViewModel = SignUpViewModel()
+
     NavHost(navController = navController, startDestination = startScreen) {
         composable(route = Screen.Login.name) {
             LoginScreen(
