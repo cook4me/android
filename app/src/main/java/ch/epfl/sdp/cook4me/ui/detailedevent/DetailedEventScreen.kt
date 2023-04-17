@@ -1,5 +1,6 @@
-package ch.epfl.sdp.cook4me.ui.eventform
+package ch.epfl.sdp.cook4me.ui.detailedevent
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,19 +15,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.EventFormService
+import ch.epfl.sdp.cook4me.ui.eventform.Event
+import ch.epfl.sdp.cook4me.ui.overview.OverviewViewModel
 import kotlinx.coroutines.runBlocking
 
 /**
  * A component screen that displays details of an event
- * @param event the event to be displayed
  */
 @Composable
 fun DetailedEventScreen(
-    eventService: EventFormService = EventFormService(),
-    accountService: AccountService = AccountService()
+    detailedEventViewModel: DetailedEventViewModel = viewModel(),
 ) {
     /*
     * 2023/04/06 14:48
@@ -36,9 +38,9 @@ fun DetailedEventScreen(
     * Ask Daniel!!!
     *
     * TODO:
-    *  - In an event, store the creator id
-    *  - For a user, query all events the users owns
+    *  - Deal with null event after query
     *  - Resolve errors in this screen
+    *  - Test Objectrepo.getwithgivenfield()
     *  - Test CreateEventScreen, because I throw NullPointerException when I try to get the current user email.
     *  - Test DetailedEventScreen, because I throw NullPointerException when I try to get the current user email.
     *  - There is a bug in CreateEventScreen, in the input field of event description, maybe debug it.
@@ -46,16 +48,7 @@ fun DetailedEventScreen(
     *    no event is found. (ask dayan or daniel perhaps?)
     *  - Test EventFormService for the new method getById()
     * */
-    var event: Event?
-    runBlocking {
-        try{
-            val userEmail = accountService.getCurrentUserEmail()
-            if(userEmail != null)
-                event = eventService.getById(userEmail)
-        } catch (e: NullPointerException){
-            throw e
-        }
-    }
+    val event = detailedEventViewModel.firstEventState.value
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier

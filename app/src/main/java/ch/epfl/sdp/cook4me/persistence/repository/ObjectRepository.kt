@@ -1,5 +1,7 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
+import android.util.Log
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -29,4 +31,25 @@ open class ObjectRepository(
     suspend fun <A : Any> update(id: String, value: A) {
         store.collection(objectPath).document(id).set(value).await()
     }
+
+    /*
+    * A function to query from firestore with given attribute.
+    * @param field: the field to query. e.g.: "id", "name", "description"
+    * @param query: the query to search for. e.g. "darth.vadar" (for the field of name)
+    * returns a list of document snapshots.
+    *
+    * I didn't return a Map because it does not apply to the
+    * Event class (reason see below) and I don't want to introduce anything about Event class here,
+    * since this repository is supposed to be generic.
+    * */
+
+    /*
+    * Notes: Firebase could not serialize to java.untl.Calender, I will add an constructor in Event.kt
+    * to construct an Event object from a map.
+    * */
+    suspend fun <A: Any> getWithGivenField(field: String, query: String): List<DocumentSnapshot> {
+        val result = store.collection(objectPath).whereEqualTo(field, query).get().await()
+        return result.documents
+    }
+
 }

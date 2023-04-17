@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.eventform.DetailedEventScreen
+import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
@@ -78,7 +78,8 @@ fun Cook4MeApp(
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
-                signOutNavigation = { navController.navigate(Screen.Login.name) }
+                signOutNavigation = { navController.navigate(Screen.Login.name) },
+                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
             )
         }
         composable(route = Screen.Map.name) {
@@ -105,6 +106,9 @@ fun Cook4MeApp(
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
+        }
+        composable(route = Screen.DetailedEventScreen.name) {
+            DetailedEventScreen()
         }
     }
 }
