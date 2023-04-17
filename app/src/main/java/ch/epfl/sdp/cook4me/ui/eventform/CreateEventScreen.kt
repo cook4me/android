@@ -33,7 +33,7 @@ fun CreateEventScreen(
     eventService: EventFormService = EventFormService(),
     accountService: AccountService = AccountService()
 ) {
-    var event = remember {
+    val event = remember {
         mutableStateOf(Event())
     }
     val endMsg = remember { mutableStateOf("") }
@@ -48,9 +48,7 @@ fun CreateEventScreen(
         event.value.dateTime.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
     }
 
-    // for now I just set the id as the email of the current user,
-    // this needs to be changed!!!! because one user could have multiple events
-    // we need to discuss a bit about it.
+    // for now I just set the id as the email of the current user for the sake of functionality
     val userEmail = accountService.getCurrentUserEmail()
     userEmail?.let { event.value = event.value.copy(id = userEmail) }
 
