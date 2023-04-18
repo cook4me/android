@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
@@ -72,11 +73,12 @@ fun GoogleMapView(
     onMapLoaded: () -> Unit = {},
     content: @Composable () -> Unit = {},
     markers: List<MarkerData> = emptyList(),
-    selectedEventId: String = ""
+    selectedEventId: String = "",
+    userLocationDisplayed: Boolean = false
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
-        mutableStateOf(MapProperties(mapType = MapType.NORMAL))
+        mutableStateOf(MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = userLocationDisplayed))
     }
     var onClickUniversity = {
         uniLocation: LatLng ->
@@ -207,8 +209,8 @@ private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Mo
 @Preview
 @Composable
 fun GoogleMapViewPreview() {
-    GoogleMapView(
-        modifier = Modifier.fillMaxSize(),
-        markers = dummyMarkers
+    val permissionStatusProvider = ComposePermissionStatusProvider(
+        listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
     )
+    MapPermissionWrapper(permissionStatusProvider, Modifier.fillMaxSize(), dummyMarkers)
 }
