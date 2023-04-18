@@ -56,7 +56,6 @@ fun SignUpScreen(
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
@@ -98,7 +97,7 @@ fun SignUpScreen(
                     Modifier
                         .fillMaxWidth()
                         .padding(16.dp, 8.dp)
-                        .testTag(stringResource(id =  R . string . btn_continue)),
+                        .testTag(stringResource(id = R.string.btn_continue)),
                     inProgress
                 ) {
                     emailState.enableShowErrors()

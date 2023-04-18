@@ -50,7 +50,7 @@ class EditProfileScreenTest {
     }
 
     @Test
-    fun signUpScenario() = runTest {
+    fun editValuesScenario() = runTest {
         composeTestRule.setContent {
             EditProfileScreen()
         }

@@ -81,15 +81,15 @@ class SignUpViewModel(
             _formError.value = true
         } else {
             viewModelScope.launch {
-                    accountService.register(_email.value, _password.value)
-                    service.submitForm(
-                        _email.value,
-                        _username.value,
-                        _allergies.value,
-                        _bio.value,
-                        _favoriteDish.value,
-                        _userImage.value.toString(),
-                    )
+                accountService.register(_email.value, _password.value)
+                service.submitForm(
+                    _email.value,
+                    _username.value,
+                    _allergies.value,
+                    _bio.value,
+                    _favoriteDish.value,
+                    _userImage.value.toString(),
+                )
             }
         }
     }
