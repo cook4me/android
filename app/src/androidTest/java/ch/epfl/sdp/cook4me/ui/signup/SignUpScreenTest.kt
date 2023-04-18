@@ -98,5 +98,3 @@ class SignUpScreenTest {
         assert(isClicked)
     }
 }
-
-

@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.signup
 
 import AddProfileInfoScreen
-import SignUpScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -97,5 +96,3 @@ class AddProfileInfoScreenTest {
         assert(isClicked)
     }
 }
-
-
