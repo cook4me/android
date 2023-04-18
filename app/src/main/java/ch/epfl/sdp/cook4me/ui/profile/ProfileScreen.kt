@@ -26,7 +26,7 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(
-    profileCreationViewModel: ProfileCreationViewModel = viewModel()
+    profileCreationViewModel: ProfileCreationViewModel = ProfileCreationViewModel()
 ) {
     Column(
         modifier = Modifier.padding(12.dp)

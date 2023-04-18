@@ -40,7 +40,7 @@ import coil.request.ImageRequest
 
 @Composable
 fun EditProfileScreen(
-    viewModel: ProfileCreationViewModel = viewModel(),
+    viewModel: ProfileCreationViewModel = ProfileCreationViewModel(),
 ) {
     val username by viewModel.username
     val favoriteDish by viewModel.favoriteDish
