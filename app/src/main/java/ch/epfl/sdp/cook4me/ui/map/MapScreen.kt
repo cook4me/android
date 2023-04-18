@@ -205,12 +205,3 @@ private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Mo
         Text(text = text, style = MaterialTheme.typography.body1)
     }
 }
-
-@Preview
-@Composable
-fun GoogleMapViewPreview() {
-    val permissionStatusProvider = ComposePermissionStatusProvider(
-        listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
-    )
-    MapPermissionWrapper(permissionStatusProvider, Modifier.fillMaxSize(), dummyMarkers)
-}
