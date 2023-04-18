@@ -120,7 +120,7 @@ fun AddProfileInfoScreen(
                     image = userImage,
                 )
 
-                // Textfield for the Favorite dish
+                // Textfield for the Username
                 UserField(
                     usernameState.text,
                     usernameState.showErrors(),
@@ -167,7 +167,8 @@ fun AddProfileInfoScreen(
                     R.string.btn_continue,
                     Modifier
                         .fillMaxWidth()
-                        .padding(16.dp, 8.dp),
+                        .padding(16.dp, 8.dp)
+                        .testTag(stringResource(id =  R . string . btn_continue)),
                     inProgress
                 ) {
                     usernameState.enableShowErrors()
