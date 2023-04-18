@@ -52,7 +52,7 @@ class EditProfileScreenTest {
     @Test
     fun signUpScenario() = runTest {
         composeTestRule.setContent {
-            AddProfileInfoScreen()
+            EditProfileScreen()
         }
         // Set up the test
         val username = composeTestRule.activity.getString(R.string.tag_username)

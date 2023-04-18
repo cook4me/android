@@ -18,11 +18,23 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldColors
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.runtime.*
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,10 +45,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
-import ch.epfl.sdp.cook4me.ui.common.form.*
+import ch.epfl.sdp.cook4me.ui.common.form.BiosField
+import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
+import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
+import ch.epfl.sdp.cook4me.ui.common.form.UserField
+import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
 
 @Composable
@@ -48,20 +65,16 @@ fun AddProfileInfoScreen(
     val context = LocalContext.current
     val usernameState =
         remember { UserNameState(context.getString(R.string.invalid_username_message)) }
-    val favoriteDishState= remember {
-        nonRequiredTextFieldState("","")
+    val favoriteDishState = remember {
+        NonRequiredTextFieldState("", "")
     }
-    val allergiesState= remember {
-        nonRequiredTextFieldState("","")
+    val allergiesState = remember {
+        NonRequiredTextFieldState("", "")
     }
-    val bioState= remember {
-        nonRequiredTextFieldState("","")
+    val bioState = remember {
+        NonRequiredTextFieldState("", "")
     }
 
-    val username by viewModel.username
-    val favoriteDish by viewModel.favoriteDish
-    val allergies by viewModel.allergies
-    val bio by viewModel.bio
     val userImage by viewModel.userImage
 
     var inProgress by remember {
@@ -87,8 +100,6 @@ fun AddProfileInfoScreen(
         imagePicker.launch("image/*")
     }
 
-    BasicToolbar(stringResource(R.string.Add_profile_infos_top_bar_message))
-
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
@@ -99,9 +110,11 @@ fun AddProfileInfoScreen(
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
                     .padding(padding),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                BasicToolbar(stringResource(R.string.Add_profile_infos_top_bar_message))
+
                 ImageHolder_AddProfileInfoScreen(
                     onClickAddImage = { onClickAddImage() },
                     image = userImage,
@@ -113,39 +126,42 @@ fun AddProfileInfoScreen(
                     usernameState.showErrors(),
                     {
                         usernameState.text = it
-                        viewModel::addUsername
+                        viewModel.addUsername(it)
                     },
-                    )
+                )
 
                 ProfileInfosField(
                     icon = Icons.Filled.Info,
                     preview = stringResource(id = R.string.tag_favoriteDish),
                     value = favoriteDishState.text,
                     isError = false,
-                    onNewValue ={
+                    onNewValue = {
                         favoriteDishState.text = it
-                        viewModel::addFavoriteDish
-                    } )
+                        viewModel.addFavoriteDish(it)
+                    }
+                )
 
                 ProfileInfosField(
                     icon = Icons.Filled.Info,
                     preview = stringResource(id = R.string.tag_allergies),
                     value = allergiesState.text,
                     isError = false,
-                    onNewValue ={
+                    onNewValue = {
                         allergiesState.text = it
-                        viewModel::addAllergies
-                    } )
+                        viewModel.addAllergies(it)
+                    }
+                )
 
                 BiosField(
                     icon = Icons.Filled.Info,
                     preview = stringResource(id = R.string.tag_bio),
                     value = bioState.text,
                     isError = false,
-                    onNewValue ={
+                    onNewValue = {
                         bioState.text = it
-                        viewModel::addBio
-                    } )
+                        viewModel.addBio(it)
+                    }
+                )
 
                 LoadingButton(
                     R.string.btn_continue,
@@ -157,24 +173,16 @@ fun AddProfileInfoScreen(
                     usernameState.enableShowErrors()
                     scope.launch {
                         if (!usernameState.isValid) {
-                            scaffoldState
-                                .snackbarHostState
-                                .showSnackbar(usernameState.errorMessage)
+                            scaffoldState.snackbarHostState.showSnackbar(usernameState.errorMessage)
                         } else {
                             try {
                                 inProgress = true
-                                if(!viewModel.isValidUsername(username = username)){
-                                    throw Exception("invalid Username")
-                                }
-                                if(viewModel.checkForm()){
-                                    throw Exception("invalid form")
-                                }
                                 viewModel.onSubmit()
                                 onSuccessfullSignUp()
-                            } catch (e: Exception) {
-                                scaffoldState
-                                    .snackbarHostState
-                                    .showSnackbar(context.getString(R.string.Add_profile_infos_invalid_user))
+                            } catch (e: FirebaseAuthException) {
+                                scaffoldState.snackbarHostState.showSnackbar(
+                                    context.getString(R.string.Add_profile_infos_invalid_user),
+                                )
                                 Log.d(
                                     context.getString(R.string.Add_profile_infos_invalid_user),
                                     e.stackTraceToString()
@@ -184,63 +192,9 @@ fun AddProfileInfoScreen(
                     }
                 }
             }
-        })
+        }
+    )
 }
-
-@Composable
-fun bio_AddProfileInfoScreen(
-    displayLabel: String,
-    inputText: String,
-    change: (String) -> Unit
-) {
-    input_row {
-        Text(
-            text = displayLabel,
-            modifier = Modifier
-                .width(100.dp)
-                .padding(top = 7.dp)
-        )
-        TextField(
-            value = inputText,
-            onValueChange = { change(it) },
-            placeholder = { Text(stringResource(R.string.default_bio)) },
-            colors = ColorsTextfield_AddProfileInfoScreen(),
-            singleLine = false,
-            modifier = Modifier
-                .height(150.dp)
-                .testTag(displayLabel)
-        )
-    }
-}
-
-@Composable
-fun columnText_AddProfileInfoScreen(
-    label: String,
-    inputText: String,
-    change: (String) -> Unit
-) {
-    input_row {
-        Text(
-            text = label, modifier = Modifier.width(100.dp)
-        )
-        TextField(
-            placeholder = {
-                Text(
-                    inputText
-                )
-            },
-            value = inputText,
-            modifier = Modifier.testTag(label),
-            onValueChange = { change(it) },
-            colors = ColorsTextfield_AddProfileInfoScreen()
-        )
-    }
-}
-
-@Composable
-fun ColorsTextfield_AddProfileInfoScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
-    backgroundColor = Color.Transparent, textColor = Color.Black
-)
 
 @Composable
 fun ImageHolder_AddProfileInfoScreen(
@@ -286,28 +240,6 @@ fun Image_AddProfileInfoScreen(
 }
 
 @Composable
-private fun input_row(content: @Composable RowScope.() -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        content()
-    }
-}
-
-@Composable
-private fun text_buttons(onClick: () -> Unit, nameBtn: String) {
-    Text(
-        text = nameBtn,
-        modifier = Modifier
-            .testTag(nameBtn)
-            .clickable(onClick = { onClick() })
-    )
-}
-
-@Composable
 private fun BasicToolbar(title: String) {
     TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
 }
@@ -315,4 +247,3 @@ private fun BasicToolbar(title: String) {
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
     if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
-

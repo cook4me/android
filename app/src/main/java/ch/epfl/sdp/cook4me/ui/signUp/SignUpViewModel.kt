@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.signUp
 
 import android.net.Uri
-import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -42,11 +41,11 @@ class SignUpViewModel(
         _username.value = username
     }
 
-    fun addPassword(password: String){
+    fun addPassword(password: String) {
         _password.value = password
     }
 
-    fun addEmail(email: String){
+    fun addEmail(email: String) {
         _email.value = email
     }
 
@@ -66,26 +65,23 @@ class SignUpViewModel(
         _userImage.value = image
     }
 
-    fun isValidUsername(username : String): Boolean{
-        return (_username.value == username) //TODO better check
-    }
+    fun isValidUsername(username: String): Boolean = _username.value == username // TODO better check
 
-    fun checkForm():Boolean{
-        if (_username.value.isBlank() || _password.value.isBlank()|| _email.value.isBlank()) {
+    fun checkForm(): Boolean {
+        if (_username.value.isBlank() || _password.value.isBlank() || _email.value.isBlank()) {
             _formError.value = true
-        }else{
+        } else {
             _formError.value = false
         }
         return !_formError.value
     }
 
     fun onSubmit() {
-        if (_username.value.isBlank()||_password.value.isBlank()||_email.value.isBlank()) {
+        if (_username.value.isBlank() || _password.value.isBlank() || _email.value.isBlank()) {
             _formError.value = true
         } else {
             viewModelScope.launch {
-                _email?.let {
-                    accountService.authenticate(_email.value,_password.value)
+                    accountService.register(_email.value, _password.value)
                     service.submitForm(
                         _email.value,
                         _username.value,
@@ -94,7 +90,6 @@ class SignUpViewModel(
                         _favoriteDish.value,
                         _userImage.value.toString(),
                     )
-                }
             }
         }
     }

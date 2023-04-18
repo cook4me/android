@@ -53,7 +53,7 @@ open class TextFieldState(
     override fun showErrors() = !isValid && displayErrors
 }
 
-class nonRequiredTextFieldState(errorMsg: String, default: String = "",) : TextFieldState(
+class NonRequiredTextFieldState(errorMsg: String, default: String = "",) : TextFieldState(
     { true },
     errorMsg,
     default
@@ -75,9 +75,8 @@ class EmailState(errorMsg: String, default: String = "",) : TextFieldState(
 
 class UserNameState(errorMsg: String, default: String = "",) : TextFieldState(
     {
-        it.isNotBlank() //TODO
+        it.isNotBlank() // TODO
     },
     errorMsg,
     default,
 )
-

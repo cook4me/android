@@ -79,7 +79,7 @@ fun Cook4MeApp(
         // not signed in yet, navigate to sign in screen
         Screen.Login.name
     }
-    //SignUp viewmodel to share the signupState between the screens
+    // SignUp viewmodel to share the signupState between the screens
     val signUpViewModel = SignUpViewModel()
 
     NavHost(navController = navController, startDestination = startScreen) {
@@ -125,14 +125,19 @@ fun Cook4MeApp(
         }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
-                onSuccessfullSignUp = {navController.navigate(Screen.SignUpUserInfos.name)},
+                onSuccessfullSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
                 signUpViewModel = signUpViewModel,
             )
         }
         composable(route = Screen.SignUpUserInfos.name) {
             AddProfileInfoScreen(
                 viewModel = signUpViewModel,
-                onSuccessfullSignUp = {navController.navigate(Screen.OverviewScreen.name)})
+                onSuccessfullSignUp = {
+                    navController.navigate(
+                        Screen.OverviewScreen.name
+                    )
+                }
+            )
         }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")

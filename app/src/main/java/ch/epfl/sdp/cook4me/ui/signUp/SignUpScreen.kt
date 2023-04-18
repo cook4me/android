@@ -1,14 +1,23 @@
 import android.util.Log
-import android.util.Patterns
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -16,20 +25,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
-import ch.epfl.sdp.cook4me.ui.common.form.*
+import ch.epfl.sdp.cook4me.ui.common.form.EmailField
 import ch.epfl.sdp.cook4me.ui.common.form.EmailState
+import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
+import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,7 +56,7 @@ fun SignUpScreen(
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    BasicToolbar(stringResource(R.string.sign_up_screen_top_bar_message))
+
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
@@ -61,15 +67,17 @@ fun SignUpScreen(
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
                     .padding(padding),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                BasicToolbar(stringResource(R.string.sign_up_screen_top_bar_message))
                 EmailField(
                     emailState.text,
                     emailState.showErrors(),
                     { emailState.text = it },
                     Modifier
                         .fieldModifier()
+                        .testTag(stringResource(R.string.tag_email))
                         .onFocusChanged {
                             emailState.onFocusChange(it.isFocused)
                         }
@@ -89,7 +97,8 @@ fun SignUpScreen(
                     R.string.btn_continue,
                     Modifier
                         .fillMaxWidth()
-                        .padding(16.dp, 8.dp),
+                        .padding(16.dp, 8.dp)
+                        .testTag(stringResource(id =  R . string . btn_continue)),
                     inProgress
                 ) {
                     emailState.enableShowErrors()
@@ -104,11 +113,11 @@ fun SignUpScreen(
                         } else {
                             try {
                                 inProgress = true
-                                if(!accountService.isValidEmail(email = emailState.text)){
-                                    throw FirebaseAuthEmailException("email","isMalFormed")
+                                if (!accountService.isValidEmail(email = emailState.text)) {
+                                    throw FirebaseAuthEmailException("email", "isMalFormed")
                                 }
-                                if(!accountService.isValidPassword(password = passwordState.text)){
-                                    throw FirebaseAuthException("password","isMalFormed")
+                                if (!accountService.isValidPassword(password = passwordState.text)) {
+                                    throw FirebaseAuthException("password", "isMalFormed")
                                 }
                                 signUpViewModel.addPassword(password = passwordState.text)
                                 signUpViewModel.addEmail(email = emailState.text)
@@ -147,7 +156,6 @@ private fun BasicToolbar(title: String) {
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
     if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
-
 
 private fun Modifier.fieldModifier(): Modifier =
     this

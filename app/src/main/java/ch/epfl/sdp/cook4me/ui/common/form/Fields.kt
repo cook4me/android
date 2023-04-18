@@ -1,7 +1,10 @@
 package ch.epfl.sdp.cook4me.ui.common.form
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
@@ -82,7 +85,14 @@ fun UserField(value: String, isError: Boolean, onNewValue: (String) -> Unit, mod
 }
 
 @Composable
-fun ProfileInfosField(icon: ImageVector,preview: String,value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ProfileInfosField(
+    icon: ImageVector,
+    preview: String,
+    value: String,
+    isError: Boolean,
+    onNewValue: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     OutlinedTextField(
         singleLine = true,
         modifier = modifier
@@ -94,8 +104,16 @@ fun ProfileInfosField(icon: ImageVector,preview: String,value: String, isError: 
         leadingIcon = { Icon(imageVector = icon, contentDescription = "Username") }
     )
 }
+
 @Composable
-fun BiosField(icon: ImageVector,preview: String,value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+fun BiosField(
+    icon: ImageVector,
+    preview: String,
+    value: String,
+    isError: Boolean,
+    onNewValue: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     OutlinedTextField(
         singleLine = false,
         modifier = modifier
