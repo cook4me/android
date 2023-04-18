@@ -5,8 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.printToLog
 import ch.epfl.sdp.cook4me.permissions.TestPermissionStatusProvider
 import org.junit.Rule
 import org.junit.Test
@@ -28,8 +26,7 @@ class MapPermissionWrapper {
             )
         }
 
-        composeTestRule.onRoot().printToLog("DEBUG:")
-        composeTestRule.onNodeWithText("EPFL").assertIsDisplayed()
+        composeTestRule.onNodeWithText("EPFL").assertIsDisplayed() // Map is shown
     }
 
     @Test
@@ -47,7 +44,4 @@ class MapPermissionWrapper {
 
         composeTestRule.onNodeWithText("The location permission will grant a better experience in the app").assertIsDisplayed()
     }
-
-
-
 }
