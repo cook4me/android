@@ -38,19 +38,19 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}) {
             localCounterValue.value -= buttonPressedValue
         } else {
             if (otherButton.value) {
-                onChange(buttonPressedValue*2)
+                onChange(buttonPressedValue * 2)
                 otherButton.value = false
-                localCounterValue.value += 2*buttonPressedValue
+                localCounterValue.value += 2 * buttonPressedValue
             } else {
-                onChange(buttonPressedValue*1)
+                onChange(buttonPressedValue * 1)
                 localCounterValue.value += buttonPressedValue
             }
             buttonPressed.value = true
         }
     }
-    
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        IconButton(onClick = {onVote(true)}) {
+        IconButton(onClick = { onVote(true) }) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowUp,
                 contentDescription = "Upvote",
@@ -58,7 +58,7 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}) {
             )
         }
         Text(text = localCounterValue.value.toString())
-        IconButton(onClick = {onVote(false)}) {
+        IconButton(onClick = { onVote(false) }) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowDown,
                 contentDescription = "Downvote",

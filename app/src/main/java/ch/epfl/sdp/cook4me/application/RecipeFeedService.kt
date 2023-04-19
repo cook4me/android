@@ -7,17 +7,19 @@ import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
 /**
  * Service that handles the recipe feed
  */
-class RecipeFeedService(private val recipeRepository: RecipeRepository = RecipeRepository(),
-    private val recipeNoteRepository: RecipeNoteRepository = RecipeNoteRepository()) {
+class RecipeFeedService(
+    private val recipeRepository: RecipeRepository = RecipeRepository(),
+    private val recipeNoteRepository: RecipeNoteRepository = RecipeNoteRepository()
+) {
 
     /**
      * Retrieves all the recipes and assigns them their notes (0 if they have none)
      * @return a list of recipes with their id with their notes
      */
-    suspend fun getRecipesWithNotes(): List<Pair<Pair<String,Recipe>,Int>> {
+    suspend fun getRecipesWithNotes(): List<Pair<Pair<String, Recipe>, Int>> {
         val recipes = recipeRepository.getAll()
         val notes = recipeNoteRepository.retrieveAllRecipeNotes()
-        return recipes.map { Pair(Pair(it.key,it.value), notes[it.key] ?: 0) }
+        return recipes.map { Pair(Pair(it.key, it.value), notes[it.key] ?: 0) }
     }
 
     /**
@@ -31,7 +33,7 @@ class RecipeFeedService(private val recipeRepository: RecipeRepository = RecipeR
         if (currentNote === null) {
             recipeNoteRepository.addRecipeNote(recipeId, note)
         } else {
-            recipeNoteRepository.updateRecipeNote(recipeId, note+currentNote)
+            recipeNoteRepository.updateRecipeNote(recipeId, note + currentNote)
         }
         return note + (currentNote ?: 0)
     }

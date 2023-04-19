@@ -5,10 +5,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import io.mockk.coEvery
 import io.mockk.mockk
 import org.junit.Rule

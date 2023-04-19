@@ -8,8 +8,8 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.containsInAnyOrder
 import org.junit.Test
 
 class RecipeFeedServiceTest {
@@ -19,12 +19,12 @@ class RecipeFeedServiceTest {
     private val recipeFeedService = RecipeFeedService(mockRecipeRepository, mockRecipeNoteRepository)
 
     @Test
-    fun getRecipesWithNotesReturnsListOfRecipesWithNotes() =  runBlocking {
+    fun getRecipesWithNotesReturnsListOfRecipesWithNotes() = runBlocking {
         coEvery { mockRecipeRepository.getAll() } returns mapOf("id1" to Recipe(), "id2" to Recipe())
         coEvery { mockRecipeNoteRepository.retrieveAllRecipeNotes() } returns mapOf("id1" to 1, "id2" to 2)
         val result = recipeFeedService.getRecipesWithNotes()
-        assertThat(result.map{it.first.first}, containsInAnyOrder("id1", "id2"))
-        assertThat(result.map{it.second}, containsInAnyOrder(1, 2))
+        assertThat(result.map { it.first.first }, containsInAnyOrder("id1", "id2"))
+        assertThat(result.map { it.second }, containsInAnyOrder(1, 2))
     }
 
     @Test
@@ -32,8 +32,8 @@ class RecipeFeedServiceTest {
         coEvery { mockRecipeRepository.getAll() } returns mapOf("id1" to Recipe(), "id2" to Recipe())
         coEvery { mockRecipeNoteRepository.retrieveAllRecipeNotes() } returns mapOf("id1" to 1)
         val result = recipeFeedService.getRecipesWithNotes()
-        assertThat(result.map{it.first.first}, containsInAnyOrder("id1", "id2"))
-        assertThat(result.map{it.second}, containsInAnyOrder(1, 0))
+        assertThat(result.map { it.first.first }, containsInAnyOrder("id1", "id2"))
+        assertThat(result.map { it.second }, containsInAnyOrder(1, 0))
     }
 
     @Test
@@ -41,13 +41,13 @@ class RecipeFeedServiceTest {
         val recipeId = "id1"
 
         coEvery { mockRecipeNoteRepository.getRecipeNote(recipeId) } returns 1
-        coEvery { mockRecipeNoteRepository.updateRecipeNote(recipeId,2) } returns Unit
+        coEvery { mockRecipeNoteRepository.updateRecipeNote(recipeId, 2) } returns Unit
 
         val newNote = recipeFeedService.updateRecipeNotes(recipeId, 2)
 
         // assert updateRecipeNote was called with the correct parameters
         coVerify {
-            mockRecipeNoteRepository.updateRecipeNote(recipeId, 2+1)
+            mockRecipeNoteRepository.updateRecipeNote(recipeId, 2 + 1)
         }
 
         assertThat(newNote, `is`(3))

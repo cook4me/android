@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.recipeFeed
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,8 +41,10 @@ fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}) {
             .background(Color.Gray, RoundedCornerShape(8.dp))
             .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
     ) {
-        Row (modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,){
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth(RECIPE_TITLE_RATIO)
@@ -76,7 +77,6 @@ fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}) {
             }
             // put on the right side a voteIcon
             VoteIcon(counterValue = note, onChange = onNoteUpdate)
-
         }
     }
 }

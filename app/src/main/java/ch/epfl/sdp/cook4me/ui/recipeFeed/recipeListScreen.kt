@@ -10,10 +10,13 @@ import ch.epfl.sdp.cook4me.persistence.model.Recipe
  * @param onNoteUpdate the function to call when the note is updated (recipeId, note)
  */
 @Composable
-fun RecipeListScreen(recipeList: List<Pair<Pair<String,Recipe>,Int>>, onNoteUpdate: (String, Int) -> Unit) {
+fun RecipeListScreen(recipeList: List<Pair<Pair<String, Recipe>, Int>>, onNoteUpdate: (String, Int) -> Unit) {
     LazyColumn {
         items(recipeList.size) { index ->
-            RecipeDisplay(recipeList[index].first.second, recipeList[index].second, onNoteUpdate = { note -> onNoteUpdate(recipeList[index].first.first, note) })
+            RecipeDisplay(
+                recipeList[index].first.second, recipeList[index].second,
+                onNoteUpdate = { note -> onNoteUpdate(recipeList[index].first.first, note) }
+            )
         }
     }
 }

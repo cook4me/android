@@ -29,6 +29,10 @@ import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import kotlinx.coroutines.launch
 
+const val RECIPE_LIST_RATIO = 0.9F
+const val EMPTY_SPACE_RATIO = 0.05F
+const val MIDDLE_SPACE_RATIO = 0.5F
+
 /**
  * Displays the recipe feed screen
  * @param service the service to use to get the recipes/notes and update the notes
@@ -40,24 +44,29 @@ fun RecipeFeed(service: RecipeFeedService = RecipeFeedService()) {
         mutableStateOf(true)
     }
     val recipeList = remember {
-        mutableStateOf(listOf<Pair<Pair<String,Recipe>,Int>>())
+        mutableStateOf(listOf<Pair<Pair<String, Recipe>, Int>>())
     }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         recipeList.value = service.getRecipesWithNotes()
     }
 
     val coroutineScope = rememberCoroutineScope()
 
-    Column (modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()
-        .background(Color.White),
-        verticalArrangement = Arrangement.SpaceEvenly) {
-        Box (modifier = Modifier.fillMaxHeight(0.9F)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(Color.White),
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Box(modifier = Modifier.fillMaxHeight(RECIPE_LIST_RATIO)) {
             RecipeListScreen(
-                recipeList = if (isOrderedByTopRecipes.value) recipeList.value.sortedByDescending
-                             { it.second } else recipeList.value,
+                recipeList = if (isOrderedByTopRecipes.value) {
+                    recipeList.value.sortedByDescending { it.second }
+                } else {
+                    recipeList.value
+                },
                 onNoteUpdate = { recipe, note ->
                     // launch coroutine to update the note
                     coroutineScope.launch {
@@ -66,13 +75,14 @@ fun RecipeFeed(service: RecipeFeedService = RecipeFeedService()) {
                 }
             )
         }
-        Box(modifier = Modifier.fillMaxHeight(0.05F))
-        BottomBar(onButtonClicked = {
-            isOrderedByTopRecipes.value = it
-        })
+        Box(modifier = Modifier.fillMaxHeight(EMPTY_SPACE_RATIO))
+        BottomBar(
+            onButtonClicked = {
+                isOrderedByTopRecipes.value = it
+            }
+        )
     }
 }
-
 
 /**
  * Displays a bottom bar where user can choose between top recipes or most recent recipes
@@ -90,14 +100,17 @@ fun BottomBar(onButtonClicked: (Boolean) -> Unit = {}) {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier
-            .fillMaxWidth(0.5F)
-            .fillMaxHeight()
-            .align(Alignment.CenterVertically)
-            .border(1.dp, Color.Black)
-            .clickable(onClick = {
-                onButtonClicked(true)
-            })
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(MIDDLE_SPACE_RATIO)
+                .fillMaxHeight()
+                .align(Alignment.CenterVertically)
+                .border(1.dp, Color.Black)
+                .clickable(
+                    onClick = {
+                        onButtonClicked(true)
+                    }
+                )
         ) {
             Text(
                 text = stringResource(R.string.get_top_recipes),
@@ -107,14 +120,18 @@ fun BottomBar(onButtonClicked: (Boolean) -> Unit = {}) {
                     .align(Alignment.Center)
             )
         }
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .align(Alignment.CenterVertically)
-            .border(1.dp, Color.Black)
-            .clickable(onClick = {
-                onButtonClicked(false)
-            })) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .align(Alignment.CenterVertically)
+                .border(1.dp, Color.Black)
+                .clickable(
+                    onClick = {
+                        onButtonClicked(false)
+                    }
+                )
+        ) {
             Text(
                 text = stringResource(R.string.get_recent_recipes),
                 fontSize = 16.sp,

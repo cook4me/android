@@ -8,8 +8,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.nullValue
 import org.junit.After
 import org.junit.Before

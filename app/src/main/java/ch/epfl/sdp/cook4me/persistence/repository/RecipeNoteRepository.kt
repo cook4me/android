@@ -15,13 +15,12 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
      * @param id the id of the recipe
      * @return the note of the recipe, null if the recipe has no note
      */
-    suspend fun getRecipeNote(id: String): Int?{
-        return try {
-            store.collection(RECIPE_NOTE_PATH).whereEqualTo("id", id).get().await()
-                .first()?.getLong("note")?.toInt()
-        } catch (e: NoSuchElementException) {
-            null
-        }
+    suspend fun getRecipeNote(id: String): Int? = try {
+        store.collection(RECIPE_NOTE_PATH).whereEqualTo("id", id).get().await()
+            .first()?.getLong("note")?.toInt()
+    } catch (e: NoSuchElementException) {
+        println("No note for recipe $id (err: ${e.message})")
+        null
     }
 
     /**
@@ -49,6 +48,6 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
      */
     suspend fun retrieveAllRecipeNotes(): Map<String, Int> {
         val result = store.collection(RECIPE_NOTE_PATH).get().await()
-        return result.map { it.get("id").toString()}.zip(result.map { it.getLong("note")?.toInt()?: 0 }).toMap()
+        return result.map { it.get("id").toString() }.zip(result.map { it.getLong("note")?.toInt() ?: 0 }).toMap()
     }
 }
