@@ -15,40 +15,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import kotlinx.coroutines.launch
 
 /**
  * Displays the recipe feed screen
+ * @param service the service to use to get the recipes/notes and update the notes
  */
 @Preview(showBackground = true)
 @Composable
 fun RecipeFeed(service: RecipeFeedService = RecipeFeedService()) {
-    val mockRecipeList = listOf(
-        Pair(Recipe(name = "Recipe 1"), 1),
-        Pair(Recipe(name = "Recipe 2"), 3),
-        Pair(Recipe(name = "Recipe 3"), 2),
-        Pair(Recipe(name = "Recipe 4"), 1),
-        Pair(Recipe(name = "Recipe 5"), 4),
-        Pair(Recipe(name = "Recipe 6"), 0)
-    )
     val isOrderedByTopRecipes = remember {
         mutableStateOf(true)
     }
     val recipeList = remember {
-        mutableStateOf(listOf<Pair<Recipe,Int>>())
+        mutableStateOf(listOf<Pair<Pair<String,Recipe>,Int>>())
     }
 
     LaunchedEffect(Unit){
         recipeList.value = service.getRecipesWithNotes()
     }
+
+    val coroutineScope = rememberCoroutineScope()
 
     Column (modifier = Modifier
         .fillMaxWidth()
@@ -59,6 +58,12 @@ fun RecipeFeed(service: RecipeFeedService = RecipeFeedService()) {
             RecipeListScreen(
                 recipeList = if (isOrderedByTopRecipes.value) recipeList.value.sortedByDescending
                              { it.second } else recipeList.value,
+                onNoteUpdate = { recipe, note ->
+                    // launch coroutine to update the note
+                    coroutineScope.launch {
+                        service.updateRecipeNotes(recipe, note)
+                    }
+                }
             )
         }
         Box(modifier = Modifier.fillMaxHeight(0.05F))
@@ -95,7 +100,7 @@ fun BottomBar(onButtonClicked: (Boolean) -> Unit = {}) {
             })
         ) {
             Text(
-                text = "Top recipes",
+                text = stringResource(R.string.get_top_recipes),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -111,7 +116,7 @@ fun BottomBar(onButtonClicked: (Boolean) -> Unit = {}) {
                 onButtonClicked(false)
             })) {
             Text(
-                text = "Most recent recipes",
+                text = stringResource(R.string.get_recent_recipes),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier

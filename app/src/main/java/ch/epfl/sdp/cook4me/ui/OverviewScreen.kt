@@ -25,6 +25,7 @@ fun OverviewScreen(
     onPostClick: () -> Unit,
     onDetailedEventClick: () -> Unit,
     onAddRecipeClick: () -> Unit,
+    onRecipeFeedClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -64,6 +65,9 @@ fun OverviewScreen(
         }
         Button(onClick = onPostClick) {
             Text(stringResource(R.string.navigate_to_postView))
+        }
+        Button(onClick = onRecipeFeedClick) {
+            Text(stringResource(R.string.navigate_to_recipe_feed))
         }
     }
 }

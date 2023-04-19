@@ -20,6 +20,7 @@ import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
@@ -43,6 +44,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    RecipeFeed,
 }
 
 /* Testing around the Detailed Event Screen */
@@ -94,6 +96,7 @@ fun Cook4MeApp(
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
+                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
         composable(route = Screen.Map.name) {
@@ -126,6 +129,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipeScreen(submitForm = {})
+        }
+        composable(route = Screen.RecipeFeed.name) {
+            RecipeFeed()
         }
     }
 }

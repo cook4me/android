@@ -12,12 +12,12 @@ class RecipeFeedService(private val recipeRepository: RecipeRepository = RecipeR
 
     /**
      * Retrieves all the recipes and assigns them their notes (0 if they have none)
-     * @return a list of recipes with their notes
+     * @return a list of recipes with their id with their notes
      */
-    suspend fun getRecipesWithNotes(): List<Pair<Recipe,Int>> {
-        val recipes = recipeRepository.getAll().values.toList()
+    suspend fun getRecipesWithNotes(): List<Pair<Pair<String,Recipe>,Int>> {
+        val recipes = recipeRepository.getAll()
         val notes = recipeNoteRepository.retrieveAllRecipeNotes()
-        return recipes.map { Pair(it, notes[it.id] ?: 0) }
+        return recipes.map { Pair(Pair(it.key,it.value), notes[it.key] ?: 0) }
     }
 
     /**
@@ -26,7 +26,7 @@ class RecipeFeedService(private val recipeRepository: RecipeRepository = RecipeR
      * @param note the note to add to the recipe
      * @return the new note of the recipe
      */
-    suspend fun updateRecipeNotes(recipeId: Int, note: Int): Int {
+    suspend fun updateRecipeNotes(recipeId: String, note: Int): Int {
         val currentNote = recipeNoteRepository.getRecipeNote(recipeId)
         if (currentNote === null) {
             recipeNoteRepository.addRecipeNote(recipeId, note)
