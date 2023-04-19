@@ -43,15 +43,6 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
     }
 
     /**
-     * This method is used to delete the note of a recipe.
-     * @param id the id of the recipe
-     */
-    suspend fun deleteRecipeNoteById(id: String) {
-        store.collection(RECIPE_NOTE_PATH).whereEqualTo("id", id).get().await()
-            .first()?.reference?.delete()?.await()
-    }
-
-    /**
      * This method is used to retrieve all the notes of all the recipes.
      * @return a map with the id of the recipe as key and the note as value
      * if there was an error while reading, the id will be -1
