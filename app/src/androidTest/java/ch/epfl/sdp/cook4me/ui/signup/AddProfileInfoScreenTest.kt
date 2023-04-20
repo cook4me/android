@@ -16,15 +16,8 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import io.mockk.coEvery
-import io.mockk.mockk
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
