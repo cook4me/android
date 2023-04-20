@@ -40,11 +40,11 @@ fun CreateNewItemButton(
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = stringResource(R.string.create_new_item_type) + itemType,
+                contentDescription = stringResource(R.string.create_new_item_type) + " " + itemType,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = stringResource(R.string.create_new_item_type) + itemType)
+            Text(text = stringResource(R.string.create_new_item_type) + " " + itemType)
         }
     }
 }

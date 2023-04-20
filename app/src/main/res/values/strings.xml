@@ -42,7 +42,7 @@
     <string name="event_submit_button_test">Submit</string>
 
     <!-- CreateNewItemButton -->
-    <string name="create_new_item_type">Create a new </string>
+    <string name="create_new_item_type">Create a new</string>
     <string name="event">Event</string>
 
     <!-- DetailedEventScreen -->

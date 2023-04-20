@@ -6,7 +6,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -112,6 +114,7 @@ class GoogleMapViewTests {
     fun testOnAddNewEventClick() {
         initMap()
         assertFalse(navigatedToCreateEvent)
+        composeTestRule.onRoot().printToLog("DEBUG")
         composeTestRule.onNodeWithText("Create a new Event").performClick()
         assertTrue(navigatedToCreateEvent)
     }
