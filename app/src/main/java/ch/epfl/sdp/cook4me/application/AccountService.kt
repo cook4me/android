@@ -22,10 +22,7 @@ class AccountService(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     fun getCurrentUserEmail(): String? {
         val currentUser: FirebaseUser? = getCurrentUser()
-        if (currentUser == null) {
-            throw NullPointerException("current user is null!")
-        }
-        return currentUser.email
+        return currentUser?.email
     }
     fun signOut() {
         auth.signOut()
