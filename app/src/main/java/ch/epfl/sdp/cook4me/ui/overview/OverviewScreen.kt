@@ -31,6 +31,7 @@ fun OverviewScreen(
     onAddEventClick: () -> Unit,
     onPostClick: () -> Unit,
     onAddRecipeClick: () -> Unit,
+    onRecipeFeedClick: () -> Unit,
     signOutNavigation: () -> Unit,
     onDetailedEventClick: () -> Unit,
     overviewViewModel: OverviewViewModel = viewModel(),
@@ -93,6 +94,9 @@ fun OverviewScreen(
             }
             Button(onClick = onPostClick) {
                 Text(stringResource(R.string.navigate_to_postView))
+            }
+            Button(onClick = onRecipeFeedClick) {
+                Text(stringResource(R.string.navigate_to_recipe_feed))
             }
             Button(onClick = { overviewViewModel.onSignOutButtonClicked() }) {
                 Text(stringResource(R.string.sign_out))

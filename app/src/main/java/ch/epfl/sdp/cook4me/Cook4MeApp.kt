@@ -10,17 +10,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
+import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
-import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
-import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
+import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
@@ -45,27 +47,14 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
-    SignUpUserInfos,
 }
-
-/* Testing around the Detailed Event Screen */
-// initializing the testing event
-val calendar = Calendar.getInstance()
-val testEvent = Event(
-    name = "test event name",
-    description = "test description",
-    dateTime = calendar,
-    location = "Rue. Louis Favre 4, 1024, Ecublens",
-    maxParticipants = 4,
-    participants = listOf("obi.wang", "harry.potter"),
-    creator = "peter griffin",
-    id = "jabdsfias213",
-    isPrivate = false
-)
 
 @Composable
 fun Cook4MeApp(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    permissionStatusProvider: PermissionStatusProvider = ComposePermissionStatusProvider(
+        listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+    )
 ) {
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -79,9 +68,6 @@ fun Cook4MeApp(
         // not signed in yet, navigate to sign in screen
         Screen.Login.name
     }
-    // SignUp viewmodel to share the signupState between the screens
-    val signUpViewModel = SignUpViewModel()
-
     NavHost(navController = navController, startDestination = startScreen) {
         composable(route = Screen.Login.name) {
             LoginScreen(
@@ -104,7 +90,10 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.Map.name) {
-            GoogleMapView(modifier = Modifier.fillMaxSize(), markers = dummyMarkers)
+            MapPermissionWrapper(
+                permissionStatusProvider = permissionStatusProvider,
+                onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) }
+            )
         }
         composable(route = Screen.ProfileScreen.name) {
             ProfileScreen()
@@ -141,7 +130,7 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.PostDetails.name) {
-            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
+            val post = Post(1, "Tiramisu", "This is a delicious tiramisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
         }
         composable(route = Screen.DetailedEventScreen.name) {
@@ -149,6 +138,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipeScreen(submitForm = {})
+        }
+        composable(route = Screen.RecipeFeed.name) {
+            RecipeFeed()
         }
     }
 }
