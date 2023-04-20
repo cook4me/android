@@ -107,7 +107,7 @@ fun Cook4MeApp(
             SignUpScreen()
         }
         composable(route = Screen.PostDetails.name) {
-            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
+            val post = Post(1, "Tiramisu", "This is a delicious tiramisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
         }
         composable(route = Screen.DetailedEventScreen.name) {
