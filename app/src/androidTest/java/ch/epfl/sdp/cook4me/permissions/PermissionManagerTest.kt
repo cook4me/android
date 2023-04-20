@@ -135,7 +135,7 @@ class PermissionManagerTest {
     @Test
     fun testPermissionManager_singularPermissionDenied_withoutRationale() {
         val testPermissionStatusProvider = TestPermissionStatusProvider(
-            mapOf("camera" to Pair(false, false))
+            mapOf("location" to Pair(false, false))
         )
 
         composeTestRule.setContent {
@@ -144,7 +144,7 @@ class PermissionManagerTest {
             }
         }
 
-        val expectedText = "The camera permission will grant a better experience in the app"
+        val expectedText = "The location permission will grant a better experience in the app"
         composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
     }
 
