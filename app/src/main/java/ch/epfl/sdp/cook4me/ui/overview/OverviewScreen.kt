@@ -102,7 +102,7 @@ fun OverviewScreen(
 fun CurrentLoggedInEmailText(email: String?) {
     var userEmail = email
     if (userEmail == null) {
-        userEmail = "Empty Email"
+        userEmail = stringResource(R.string.Empty_User_Email)
     }
     Text(
         text = stringResource(R.string.Current_user_header) + userEmail,
