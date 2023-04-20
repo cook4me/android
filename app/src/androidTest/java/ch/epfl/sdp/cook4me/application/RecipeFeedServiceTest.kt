@@ -23,8 +23,8 @@ class RecipeFeedServiceTest {
         coEvery { mockRecipeRepository.getAll() } returns mapOf("id1" to Recipe(), "id2" to Recipe())
         coEvery { mockRecipeNoteRepository.retrieveAllRecipeNotes() } returns mapOf("id1" to 1, "id2" to 2)
         val result = recipeFeedService.getRecipesWithNotes()
-        assertThat(result.map { it.first.first }, containsInAnyOrder("id1", "id2"))
-        assertThat(result.map { it.second }, containsInAnyOrder(1, 2))
+        assertThat(result.map { it.recipeId }, containsInAnyOrder("id1", "id2"))
+        assertThat(result.map { it.note }, containsInAnyOrder(1, 2))
     }
 
     @Test
@@ -32,8 +32,8 @@ class RecipeFeedServiceTest {
         coEvery { mockRecipeRepository.getAll() } returns mapOf("id1" to Recipe(), "id2" to Recipe())
         coEvery { mockRecipeNoteRepository.retrieveAllRecipeNotes() } returns mapOf("id1" to 1)
         val result = recipeFeedService.getRecipesWithNotes()
-        assertThat(result.map { it.first.first }, containsInAnyOrder("id1", "id2"))
-        assertThat(result.map { it.second }, containsInAnyOrder(1, 0))
+        assertThat(result.map { it.recipeId }, containsInAnyOrder("id1", "id2"))
+        assertThat(result.map { it.note }, containsInAnyOrder(1, 0))
     }
 
     @Test

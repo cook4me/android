@@ -2,7 +2,7 @@ package ch.epfl.sdp.cook4me.ui.recipeFeed
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 
 /**
  * Displays a scrollable list of recipes
@@ -10,12 +10,12 @@ import ch.epfl.sdp.cook4me.persistence.model.Recipe
  * @param onNoteUpdate the function to call when the note is updated (recipeId, note)
  */
 @Composable
-fun RecipeListScreen(recipeList: List<Pair<Pair<String, Recipe>, Int>>, onNoteUpdate: (String, Int) -> Unit) {
+fun RecipeListScreen(recipeList: List<RecipeNote>, onNoteUpdate: (String, Int) -> Unit) {
     LazyColumn {
         items(recipeList.size) { index ->
             RecipeDisplay(
-                recipeList[index].first.second, recipeList[index].second,
-                onNoteUpdate = { note -> onNoteUpdate(recipeList[index].first.first, note) }
+                recipeList[index].recipe, recipeList[index].note,
+                onNoteUpdate = { note -> onNoteUpdate(recipeList[index].recipeId, note) }
             )
         }
     }

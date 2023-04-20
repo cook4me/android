@@ -1,6 +1,6 @@
 package ch.epfl.sdp.cook4me.application
 
-import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeNoteRepository
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
 
@@ -16,10 +16,10 @@ class RecipeFeedService(
      * Retrieves all the recipes and assigns them their notes (0 if they have none)
      * @return a list of recipes with their id with their notes
      */
-    suspend fun getRecipesWithNotes(): List<Pair<Pair<String, Recipe>, Int>> {
+    suspend fun getRecipesWithNotes(): List<RecipeNote> {
         val recipes = recipeRepository.getAll()
         val notes = recipeNoteRepository.retrieveAllRecipeNotes()
-        return recipes.map { Pair(Pair(it.key, it.value), notes[it.key] ?: 0) }
+        return recipes.map { RecipeNote(it.key, notes[it.key] ?: 0,it.value) }
     }
 
     /**

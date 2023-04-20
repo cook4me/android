@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.RecipeFeedService
-import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 import kotlinx.coroutines.launch
 
 const val RECIPE_LIST_RATIO = 0.9F
@@ -44,7 +44,7 @@ fun RecipeFeed(service: RecipeFeedService = RecipeFeedService()) {
         mutableStateOf(true)
     }
     val recipeList = remember {
-        mutableStateOf(listOf<Pair<Pair<String, Recipe>, Int>>())
+        mutableStateOf(listOf<RecipeNote>())
     }
 
     LaunchedEffect(Unit) {
@@ -63,7 +63,7 @@ fun RecipeFeed(service: RecipeFeedService = RecipeFeedService()) {
         Box(modifier = Modifier.fillMaxHeight(RECIPE_LIST_RATIO)) {
             RecipeListScreen(
                 recipeList = if (isOrderedByTopRecipes.value) {
-                    recipeList.value.sortedByDescending { it.second }
+                    recipeList.value.sortedByDescending { it.note }
                 } else {
                     recipeList.value
                 },

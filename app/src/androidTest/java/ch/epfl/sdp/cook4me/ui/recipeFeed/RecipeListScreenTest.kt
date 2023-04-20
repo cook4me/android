@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,8 +20,8 @@ class RecipeListScreenTest {
     @Test
     fun defaultRecipeListScreenIsDisplayed() {
         val mockList = listOf(
-            Pair(Pair("id1", Recipe(name = "Test recipe 1", cookingTime = "10 min")), 1),
-            Pair(Pair("id2", Recipe(name = "Test recipe 2", cookingTime = "20 min")), 2)
+            RecipeNote(recipeId = "id1", recipe = Recipe(name = "Test recipe 1", cookingTime = "10 min"), note= 1),
+            RecipeNote(recipeId = "id2", recipe = Recipe(name = "Test recipe 2", cookingTime = "20 min"), note= 2)
         )
         composeTestRule.setContent {
             RecipeListScreen(recipeList = mockList, onNoteUpdate = { _, _ -> })
