@@ -247,7 +247,7 @@ fun ServingsEntry(
     onValueChange: (String) -> Unit = {},
 ) {
     Row(
-        modifier = Modifier,
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {

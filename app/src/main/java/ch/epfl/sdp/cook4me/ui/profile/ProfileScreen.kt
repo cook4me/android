@@ -20,13 +20,12 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(
-    profileCreationViewModel: ProfileCreationViewModel = viewModel()
+    profileCreationViewModel: ProfileCreationViewModel = ProfileCreationViewModel()
 ) {
     Column(
         modifier = Modifier.padding(12.dp)

@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me
 
+import AddProfileInfoScreen
 import SignUpScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -35,6 +36,7 @@ import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
+import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -56,6 +58,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    SignUpUserInfos,
     RecipeFeed,
 }
 
@@ -77,7 +80,9 @@ fun Cook4MeApp(
         listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
     )
 ) {
-    // User authentication
+    // initialize the view model for the sign up screen
+    val singUpViewModel = SignUpViewModel()
+    // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
 
@@ -124,15 +129,30 @@ fun Cook4MeApp(
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
-                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) },
                 signOutNavigation = { navController.navigate(Screen.Login.name) },
+                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
         composable(route = Screen.EditProfileScreen.name) { EditProfileScreen() }
         composable(route = Screen.CreateTupperwareScreen.name) { CreateTupperwareScreen() }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen() }
-        composable(route = Screen.SignUpScreen.name) { SignUpScreen() }
+        composable(route = Screen.SignUpScreen.name) {
+            SignUpScreen(
+                onSuccessfullSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
+                signUpViewModel = singUpViewModel,
+            )
+        }
+        composable(route = Screen.SignUpUserInfos.name) {
+            AddProfileInfoScreen(
+                viewModel = singUpViewModel,
+                onSuccessfullSignUp = {
+                    navController.navigate(
+                        startScreen
+                    )
+                }
+            )
+        }
         composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
