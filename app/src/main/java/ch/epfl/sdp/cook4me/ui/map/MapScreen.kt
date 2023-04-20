@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -21,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import com.google.android.gms.maps.model.CameraPosition
@@ -72,11 +70,12 @@ fun GoogleMapView(
     onMapLoaded: () -> Unit = {},
     content: @Composable () -> Unit = {},
     markers: List<MarkerData> = emptyList(),
-    selectedEventId: String = ""
+    selectedEventId: String = "",
+    userLocationDisplayed: Boolean = false
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
-        mutableStateOf(MapProperties(mapType = MapType.NORMAL))
+        mutableStateOf(MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = userLocationDisplayed))
     }
     var onClickUniversity = {
         uniLocation: LatLng ->
@@ -202,13 +201,4 @@ private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Mo
     ) {
         Text(text = text, style = MaterialTheme.typography.body1)
     }
-}
-
-@Preview
-@Composable
-fun GoogleMapViewPreview() {
-    GoogleMapView(
-        modifier = Modifier.fillMaxSize(),
-        markers = dummyMarkers
-    )
 }

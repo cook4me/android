@@ -18,6 +18,7 @@ import ch.epfl.sdp.cook4me.ui.eventform.Event
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
+import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
@@ -98,8 +99,9 @@ fun Cook4MeApp(
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
-                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) }
+                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
+                signOutNavigation = { navController.navigate(Screen.Login.name) },
+                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
             )
         }
         composable(route = Screen.Map.name) {
@@ -142,6 +144,9 @@ fun Cook4MeApp(
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
+        }
+        composable(route = Screen.DetailedEventScreen.name) {
+            DetailedEventScreen()
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipeScreen(submitForm = {})
