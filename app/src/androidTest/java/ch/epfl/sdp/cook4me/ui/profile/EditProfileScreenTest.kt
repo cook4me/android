@@ -6,9 +6,11 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.printToLog
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
@@ -121,7 +123,7 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithTag(username).performTextClearance()
         composeTestRule.onNodeWithTag(favoriteDish).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
-        composeTestRule.onNodeWithTag(allergies).performTextClearance()
+       composeTestRule.onNodeWithTag(allergies).performTextClearance()
 
         // Set input
         composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
@@ -131,6 +133,7 @@ class EditProfileScreenTest {
 
         // Wait ot be completed
         composeTestRule.waitForIdle()
+        composeTestRule.onRoot().printToLog("DEBUG")
 
         // Verify that the text fields display the correct values
         composeTestRule.onNodeWithText(usernameInput).assertExists()
