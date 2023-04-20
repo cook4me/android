@@ -6,7 +6,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -15,6 +17,7 @@ import io.mockk.Ordering
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -34,6 +37,7 @@ class GoogleMapViewTests {
 
     private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
+    private var navigatedToCreateEvent = false
 
     private fun initMap(content: @Composable () -> Unit = {}, selectedEventId: String = "") {
         check(hasValidApiKey()) { "Maps API key not specified" }
@@ -46,7 +50,8 @@ class GoogleMapViewTests {
                 onMapLoaded = {
                     countDownLatch.countDown()
                 },
-                selectedEventId = selectedEventId
+                selectedEventId = selectedEventId,
+                onCreateNewEventClick = { navigatedToCreateEvent = true }
             )
         }
 
@@ -103,6 +108,15 @@ class GoogleMapViewTests {
                 projection!!.visibleRegion.latLngBounds.contains(startingPosition)
             )
         }
+    }
+
+    @Test
+    fun testOnAddNewEventClick() {
+        initMap()
+        assertFalse(navigatedToCreateEvent)
+        composeTestRule.onRoot().printToLog("DEBUG")
+        composeTestRule.onNodeWithText("Create a new Event").performClick()
+        assertTrue(navigatedToCreateEvent)
     }
 
     fun checkCameraPosition(nodeText: String, location: LatLng) {

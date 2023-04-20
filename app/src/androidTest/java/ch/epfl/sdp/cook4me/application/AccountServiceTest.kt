@@ -7,6 +7,7 @@ import assertThrowsAsync
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
@@ -46,7 +47,12 @@ class AccountServiceTest {
             auth.currentUser?.delete()
         }
     }
-
+    @Test
+    fun accountServiceSignsOutCurrentUser() = runTest {
+        accountService.authenticate("harry.potter@epfl.ch", "123456")
+        accountService.signOut()
+        assertNull(auth.currentUser)
+    }
     @Test
     fun accountServiceRegistersValidUser() = runTest {
         accountService.register("validemail@epfl.ch", "123456")

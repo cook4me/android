@@ -8,6 +8,8 @@
     <string name="navigate_to_add_event">Add event</string>
     <string name="navigate_to_add_signup">Sign up</string>
     <string name="navigate_to_postView">Post</string>
+    <string name="navigate_to_recipe_feed">Recipe feed</string>
+    <string name="sign_out">Sign out</string>
     
     <!-- ui/simpleComponent strings   -->
     <string name="navigate_to_add_recipe">Add Recipe</string>
@@ -39,6 +41,10 @@
     <string name="event_visibility_everyone">Everyone</string>
     <string name="event_visibility_subscriber_only">Subscriber only</string>
     <string name="event_submit_button_test">Submit</string>
+
+    <!-- CreateNewItemButton -->
+    <string name="create_new_item_type">Create a new</string>
+    <string name="event">Event</string>
 
     <!-- DetailedEventScreen -->
     <string name="event_name">Event name:</string>
@@ -82,6 +88,8 @@
     <!-- Overview Screen -->
     <string name="Overview_Screen_Tag">OverviewScreen</string>
     <string name="cool_map">Cool Map</string>
+    <string name="Current_user_header">You are logged in with: </string>
+    <string name="Empty_User_Email">Empty Email</string>
 
     <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
@@ -121,6 +129,10 @@
     <string name="RecipeCreationServingsTextFieldDesc">Servings Text Field</string>
 
     <string name="Nav_Detailed_Event_Screen">Detailed Event</string>
+
+    <!-- recipe feed -->
+    <string name="get_top_recipes">Top recipes</string>
+    <string name="get_recent_recipes">Most recent recipes</string>
 
     <!-- tests -->
     <string name="label">label</string>

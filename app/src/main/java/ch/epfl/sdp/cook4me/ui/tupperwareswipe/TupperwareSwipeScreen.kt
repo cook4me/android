@@ -15,10 +15,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 
 @Composable
-fun TupperwareSwipeScreen() {
+fun TupperwareSwipeScreen(
+    onCreateNewTupperware: () -> Unit = {},
+) {
     Column {
+        CreateNewItemButton(itemType = "Tupperware", onClick = onCreateNewTupperware)
         Text("Spaghetti Carbonara", fontWeight = FontWeight.Bold)
         Image(
             painter = painterResource(id = R.drawable.placeholder_carbonara),

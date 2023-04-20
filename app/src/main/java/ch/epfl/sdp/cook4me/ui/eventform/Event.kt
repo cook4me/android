@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.eventform
 
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 /**
@@ -49,6 +50,28 @@ data class Event(
 
     val eventDate: String
         get() = "$dateAsFormattingDate"
+
+    constructor(map: Map<String, Any>) : this(
+        name = map["name"] as? String ?: "",
+        description = map["description"] as? String ?: "",
+        dateTime = (map["dateTime"] as? Map<String, Any>)
+            ?.let { it["time"] as? com.google.firebase.Timestamp }
+            ?.toDate()
+            ?.let { calendarFromTime(it) }
+            ?: Calendar.getInstance(),
+        location = map["location"] as? String ?: "",
+        /*
+        * map["maxParticipants"]: get the value of the key "maxParticipants" in the map
+        * map["maxParticipants"] as? Long: cast the value to a Long, if it is not possible, return null
+        * (map["maxParticipants"] as? Long)?.toInt(): if the value is not null, cast it to an Int
+        * (map["maxParticipants"] as? Long)?.toInt() ?: 0 : provide a default value if the value is null (0)
+        * */
+        maxParticipants = (map["maxParticipants"] as? Long)?.toInt() ?: 0,
+        participants = map["participants"] as? List<String> ?: listOf(),
+        creator = map["creator"] as? String ?: "",
+        id = map["id"] as? String ?: "",
+        isPrivate = map["isPrivate"] as? Boolean ?: false
+    )
 }
 
 /**
@@ -68,4 +91,9 @@ fun addParticipant(event: Event, participant: String): Event =
         event
     }
 
+private fun calendarFromTime(date: Date): Calendar {
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    return calendar
+}
 private fun getTwoDigits(number: Int): String = String.format(Locale.ENGLISH, "%02d", number)

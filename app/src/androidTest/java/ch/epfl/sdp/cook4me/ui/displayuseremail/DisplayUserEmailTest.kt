@@ -1,12 +1,10 @@
-package ch.epfl.sdp.cook4me.ui.login
+package ch.epfl.sdp.cook4me.ui.displayuseremail
 
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onAllNodesWithText
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -27,7 +25,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class SignInPersistTest {
+class DisplayUserEmailTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -42,6 +40,7 @@ class SignInPersistTest {
         runBlocking {
             auth.createUserWithEmailAndPassword("obi.wan@epfl.ch", "123456").await()
         }
+        auth.signOut()
     }
 
     @After
@@ -53,30 +52,16 @@ class SignInPersistTest {
     }
 
     @Test
-    fun whenUserSignedInAppNavigatesToOverviewScreen() = runTest {
+    fun overViewScreenDisplaysCurrentUserEmail() = runTest {
         auth.signInWithEmailAndPassword("obi.wan@epfl.ch", "123456").await()
         composeTestRule.setContent {
             Cook4MeApp()
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithText("Top recipes")
+                .onAllNodesWithTag(context.getString(R.string.Overview_Screen_Tag))
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithText("Top recipes").assertIsDisplayed()
-    }
-
-    @Test
-    fun whenNoUserSignedInAppNavigatesToLoginScreen() = runTest {
-        auth.signOut()
-        composeTestRule.setContent {
-            Cook4MeApp()
-        }
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            composeTestRule
-                .onAllNodesWithTag(context.getString(R.string.Login_Screen_Tag))
-                .fetchSemanticsNodes().size == 1
-        }
-        composeTestRule.onNodeWithTag(context.getString(R.string.Login_Screen_Tag)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(context.getString(R.string.Current_user_header) + "obi.wan@epfl.ch").assertIsDisplayed()
     }
 }

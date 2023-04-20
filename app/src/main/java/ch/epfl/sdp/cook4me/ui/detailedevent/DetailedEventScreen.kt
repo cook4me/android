@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.eventform
+package ch.epfl.sdp.cook4me.ui.detailedevent
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,14 +14,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 
 /**
  * A component screen that displays details of an event
- * @param event the event to be displayed
  */
 @Composable
-fun DetailedEventScreen(event: Event) {
+fun DetailedEventScreen(
+    detailedEventViewModel: DetailedEventViewModel = viewModel(),
+) {
+    val event = detailedEventViewModel.firstEventState.value
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier

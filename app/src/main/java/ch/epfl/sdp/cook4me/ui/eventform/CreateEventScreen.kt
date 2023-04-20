@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.EventFormService
 import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
@@ -30,6 +31,7 @@ import java.util.Calendar
 @Composable
 fun CreateEventScreen(
     eventService: EventFormService = EventFormService(),
+    accountService: AccountService = AccountService()
 ) {
     val event = remember {
         mutableStateOf(Event())
@@ -46,6 +48,10 @@ fun CreateEventScreen(
         event.value.dateTime.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
     }
 
+    // for now I just set the id as the email of the current user for the sake of functionality
+    val userEmail = accountService.getCurrentUserEmail()
+    userEmail?.let { event.value = event.value.copy(id = userEmail) }
+
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
@@ -59,7 +65,7 @@ fun CreateEventScreen(
         )
         InputField(
             question = R.string.ask_event_description,
-            value = event.value.name,
+            value = event.value.description,
             onValueChange = { event.value = event.value.copy(description = it) }
         )
         AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
