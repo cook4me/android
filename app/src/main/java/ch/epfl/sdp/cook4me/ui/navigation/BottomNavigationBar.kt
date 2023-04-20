@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -14,11 +15,21 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.BottomNavScreen
 
+val mainScreens = listOf(
+    BottomNavScreen.Tupperwares,
+    BottomNavScreen.Recipes,
+    BottomNavScreen.Events,
+    BottomNavScreen.Profile,
+    BottomNavScreen.Menu
+)
+
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun BottomNavigationBar(navController: NavHostController = rememberNavController()) {
     val screens = listOf(
-        BottomNavScreen.Home,
-        BottomNavScreen.Map,
+        BottomNavScreen.Tupperwares,
+        BottomNavScreen.Recipes,
+        BottomNavScreen.Events,
         BottomNavScreen.Profile,
         BottomNavScreen.Menu
     )
