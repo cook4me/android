@@ -1,9 +1,7 @@
 package ch.epfl.sdp.cook4me
 
 import SignUpScreen
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,7 +14,6 @@ import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
-import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
 import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
@@ -88,8 +85,6 @@ fun Cook4MeApp(
         composable(route = Screen.Map.name) {
             MapPermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
-                modifier = Modifier.fillMaxSize(),
-                markers = dummyMarkers,
                 onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) }
             )
         }
