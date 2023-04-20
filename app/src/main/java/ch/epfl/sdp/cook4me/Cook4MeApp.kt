@@ -78,7 +78,7 @@ fun Cook4MeApp(
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
-                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
+                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) },
                 signOutNavigation = { navController.navigate(Screen.Login.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
             )
