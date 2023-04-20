@@ -83,6 +83,8 @@
     <!-- Overview Screen -->
     <string name="Overview_Screen_Tag">OverviewScreen</string>
     <string name="cool_map">Cool Map</string>
+    <string name="Current_user_header">You are logged in with: </string>
+    <string name="Empty_User_Email">Empty Email</string>
 
     <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
