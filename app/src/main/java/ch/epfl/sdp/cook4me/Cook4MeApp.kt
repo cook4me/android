@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.persistence.model.Post
+import ch.epfl.sdp.cook4me.ui.chat.ChatScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -41,6 +42,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    ChatScreen,
 }
 
 @Composable
@@ -77,7 +79,8 @@ fun Cook4MeApp(
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
                 signOutNavigation = { navController.navigate(Screen.Login.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
+                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
+                onChatClick = { navController.navigate(Screen.ChatScreen.name) }
             )
         }
         composable(route = Screen.Map.name) {
@@ -110,6 +113,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipeScreen(submitForm = {})
+        }
+        composable(route = Screen.ChatScreen.name) {
+            ChatScreen()
         }
     }
 }
