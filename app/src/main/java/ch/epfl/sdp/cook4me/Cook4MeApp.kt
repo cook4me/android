@@ -1,20 +1,19 @@
 package ch.epfl.sdp.cook4me
 
 import SignUpScreen
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
+import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
-import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
-import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
+import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
@@ -45,7 +44,10 @@ private enum class Screen {
 
 @Composable
 fun Cook4MeApp(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    permissionStatusProvider: PermissionStatusProvider = ComposePermissionStatusProvider(
+        listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+    )
 ) {
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -81,7 +83,10 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.Map.name) {
-            GoogleMapView(modifier = Modifier.fillMaxSize(), markers = dummyMarkers)
+            MapPermissionWrapper(
+                permissionStatusProvider = permissionStatusProvider,
+                onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) }
+            )
         }
         composable(route = Screen.ProfileScreen.name) {
             ProfileScreen()
@@ -102,7 +107,7 @@ fun Cook4MeApp(
             SignUpScreen()
         }
         composable(route = Screen.PostDetails.name) {
-            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
+            val post = Post(1, "Tiramisu", "This is a delicious tiramisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
         }
         composable(route = Screen.DetailedEventScreen.name) {
