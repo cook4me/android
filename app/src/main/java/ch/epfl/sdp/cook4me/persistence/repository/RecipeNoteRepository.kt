@@ -26,6 +26,7 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
     /**
      * This method is used to add a note to a recipe.
      * @param id the id of the recipe
+     * @param note the note of the recipe
      */
     suspend fun addRecipeNote(id: String, note: Int) {
         store.collection(RECIPE_NOTE_PATH).add(mapOf("id" to id, "note" to note)).await()

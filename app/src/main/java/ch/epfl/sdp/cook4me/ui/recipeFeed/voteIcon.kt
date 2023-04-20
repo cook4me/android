@@ -28,15 +28,23 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}) {
     val pressedColor = Color.Red
     val localCounterValue = remember { mutableStateOf(counterValue) }
 
+    /**
+     * Function that is called when the user presses the upvote/downvote button
+     * it will update the counter and the buttons color accordingly
+     * it also calls the onChange function
+     * @param isUpVote true if the upvote button was pressed, false if the downvote button was pressed1
+     */
     fun onVote(isUpVote: Boolean) {
         val buttonPressed = if (isUpVote) upvote else downvote
         val otherButton = if (isUpVote) downvote else upvote
         val buttonPressedValue = if (isUpVote) 1 else -1
+        // second time pressing the button -> revert the vote
         if (buttonPressed.value) {
             onChange(buttonPressedValue * -1)
             buttonPressed.value = false
             localCounterValue.value -= buttonPressedValue
         } else {
+            // other button was pressed -> remove the vote from the other button
             if (otherButton.value) {
                 onChange(buttonPressedValue * 2)
                 otherButton.value = false

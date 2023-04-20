@@ -54,7 +54,7 @@ class RecipeNoteRepositoryTest {
     }
 
     @Test
-    fun updateRecipeNote() = runTest {
+    fun updateRecipeNoteReturnsTheNewNote() = runTest {
         recipeNoteRepository.addRecipeNote("recipeId", 1)
         recipeNoteRepository.addRecipeNote("recipeId2", 2)
         recipeNoteRepository.updateRecipeNote("recipeId", 3)
