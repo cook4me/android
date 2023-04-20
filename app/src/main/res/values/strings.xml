@@ -41,6 +41,10 @@
     <string name="event_visibility_subscriber_only">Subscriber only</string>
     <string name="event_submit_button_test">Submit</string>
 
+    <!-- CreateNewItemButton -->
+    <string name="create_new_item_type">Create a new </string>
+    <string name="event">Event</string>
+
     <!-- DetailedEventScreen -->
     <string name="event_name">Event name:</string>
     <string name="event_description">Event description:</string>

@@ -16,7 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.R
 
 const val BUTTON_VERTICAL_PROPORTION = 0.07f
 
@@ -38,11 +40,11 @@ fun CreateNewItemButton(
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
-                contentDescription = "Create a new $itemType",
+                contentDescription = stringResource(R.string.create_new_item_type) + itemType,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "Create a new $itemType")
+            Text(text = stringResource(R.string.create_new_item_type) + itemType)
         }
     }
 }

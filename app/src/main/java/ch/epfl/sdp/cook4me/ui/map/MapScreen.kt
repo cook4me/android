@@ -90,7 +90,7 @@ fun GoogleMapView(
             .fillMaxWidth()
             .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
-        CreateNewItemButton(itemType = "Event", onClick = onCreateNewEventClick)
+        CreateNewItemButton(itemType = stringResource(R.string.event), onClick = onCreateNewEventClick)
         MapTypeControls(
             onMapTypeClick = {
                 mapProperties = mapProperties.copy(mapType = it)
