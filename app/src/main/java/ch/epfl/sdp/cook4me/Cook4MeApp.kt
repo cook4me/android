@@ -18,6 +18,7 @@ import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
@@ -40,6 +41,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    RecipeFeed,
 }
 
 @Composable
@@ -78,6 +80,7 @@ fun Cook4MeApp(
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
+                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) },
                 signOutNavigation = { navController.navigate(Screen.Login.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
             )
@@ -115,6 +118,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipeScreen(submitForm = {})
+        }
+        composable(route = Screen.RecipeFeed.name) {
+            RecipeFeed()
         }
     }
 }

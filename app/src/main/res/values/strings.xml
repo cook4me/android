@@ -8,6 +8,7 @@
     <string name="navigate_to_add_event">Add event</string>
     <string name="navigate_to_add_signup">Sign up</string>
     <string name="navigate_to_postView">Post</string>
+    <string name="navigate_to_recipe_feed">Recipe feed</string>
     <string name="sign_out">Sign out</string>
     
     <!-- ui/simpleComponent strings   -->
@@ -128,6 +129,10 @@
     <string name="RecipeCreationServingsTextFieldDesc">Servings Text Field</string>
 
     <string name="Nav_Detailed_Event_Screen">Detailed Event</string>
+
+    <!-- recipe feed -->
+    <string name="get_top_recipes">Top recipes</string>
+    <string name="get_recent_recipes">Most recent recipes</string>
 
     <!-- tests -->
     <string name="label">label</string>
