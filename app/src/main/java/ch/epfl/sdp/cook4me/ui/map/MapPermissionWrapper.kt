@@ -10,6 +10,7 @@ fun MapPermissionWrapper(
     permissionStatusProvider: PermissionStatusProvider,
     modifier: Modifier,
     markers: List<MarkerData>,
+    onCreateNewEventClick: () -> Unit = {},
     testing: Boolean = false
 ) {
     val permissionManager = PermissionManager(permissionStatusProvider)
@@ -17,6 +18,7 @@ fun MapPermissionWrapper(
         GoogleMapView(
             modifier = modifier,
             markers = markers,
+            onCreateNewEventClick = onCreateNewEventClick,
             userLocationDisplayed = !testing
         )
     }

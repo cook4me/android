@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -20,8 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
+import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
@@ -71,7 +75,8 @@ fun GoogleMapView(
     content: @Composable () -> Unit = {},
     markers: List<MarkerData> = emptyList(),
     selectedEventId: String = "",
-    userLocationDisplayed: Boolean = false
+    userLocationDisplayed: Boolean = false,
+    onCreateNewEventClick: () -> Unit = {}
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
@@ -88,6 +93,7 @@ fun GoogleMapView(
             .fillMaxWidth()
             .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
+        CreateNewItemButton(itemType = "Event", onClick = onCreateNewEventClick)
         MapTypeControls(
             onMapTypeClick = {
                 mapProperties = mapProperties.copy(mapType = it)
@@ -201,4 +207,17 @@ private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Mo
     ) {
         Text(text = text, style = MaterialTheme.typography.body1)
     }
+}
+
+@Preview
+@Composable
+fun MapComposePreview() {
+    val permissionStatusProvider = ComposePermissionStatusProvider(
+        listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+    )
+    MapPermissionWrapper(
+        permissionStatusProvider = permissionStatusProvider,
+        modifier = Modifier.fillMaxSize(),
+        markers = dummyMarkers
+    )
 }

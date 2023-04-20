@@ -1,13 +1,23 @@
 package ch.epfl.sdp.cook4me.ui.map
 
+import android.text.BoringLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.testing.TestNavHostController
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
+import ch.epfl.sdp.cook4me.Cook4MeApp
+import ch.epfl.sdp.cook4me.permissions.TestPermissionStatusProvider
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
@@ -15,6 +25,7 @@ import io.mockk.Ordering
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -34,6 +45,7 @@ class GoogleMapViewTests {
 
     private val startingPosition = Locations.LAUSANNE
     private lateinit var cameraPositionState: CameraPositionState
+    private var navigatedToCreateEvent = false
 
     private fun initMap(content: @Composable () -> Unit = {}, selectedEventId: String = "") {
         check(hasValidApiKey()) { "Maps API key not specified" }
@@ -46,7 +58,8 @@ class GoogleMapViewTests {
                 onMapLoaded = {
                     countDownLatch.countDown()
                 },
-                selectedEventId = selectedEventId
+                selectedEventId = selectedEventId,
+                onCreateNewEventClick = { navigatedToCreateEvent = true }
             )
         }
 
@@ -103,6 +116,14 @@ class GoogleMapViewTests {
                 projection!!.visibleRegion.latLngBounds.contains(startingPosition)
             )
         }
+    }
+
+    @Test
+    fun testOnAddNewEventClick() {
+        initMap()
+        assertFalse(navigatedToCreateEvent)
+        composeTestRule.onNodeWithText("Create a new Event").performClick()
+        assertTrue(navigatedToCreateEvent)
     }
 
     fun checkCameraPosition(nodeText: String, location: LatLng) {
