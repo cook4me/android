@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui
+package ch.epfl.sdp.cook4me.ui.overview
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 
 @Composable
@@ -23,10 +24,18 @@ fun OverviewScreen(
     onAddSignUpClick: () -> Unit,
     onAddEventClick: () -> Unit,
     onPostClick: () -> Unit,
-    onDetailedEventClick: () -> Unit,
     onAddRecipeClick: () -> Unit,
+    signOutNavigation: () -> Unit,
+    onDetailedEventClick: () -> Unit,
+    overviewViewModel: OverviewViewModel = viewModel(),
     modifier: Modifier = Modifier
 ) {
+    // Listen to the navigation state and navigate to the correct screen
+    val navigationState = overviewViewModel.navigationState
+    if (navigationState.value == 1) {
+        overviewViewModel.navigationState.value = 0
+        signOutNavigation()
+    }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,7 +65,7 @@ fun OverviewScreen(
         Button(onClick = onAddEventClick) {
             Text(stringResource(R.string.navigate_to_add_event))
         }
-        Button(onClick = onDetailedEventClick) {
+        Button(onClick = { onDetailedEventClick() }) {
             Text(stringResource(R.string.Nav_Detailed_Event_Screen))
         }
         Button(onClick = onAddSignUpClick) {
@@ -64,6 +73,9 @@ fun OverviewScreen(
         }
         Button(onClick = onPostClick) {
             Text(stringResource(R.string.navigate_to_postView))
+        }
+        Button(onClick = { overviewViewModel.onSignOutButtonClicked() }) {
+            Text(stringResource(R.string.sign_out))
         }
     }
 }

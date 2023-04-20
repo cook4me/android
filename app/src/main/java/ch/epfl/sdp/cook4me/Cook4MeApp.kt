@@ -10,13 +10,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.persistence.model.Post
-import ch.epfl.sdp.cook4me.ui.OverviewScreen
+import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.eventform.DetailedEventScreen
-import ch.epfl.sdp.cook4me.ui.eventform.Event
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
 import ch.epfl.sdp.cook4me.ui.map.dummyMarkers
+import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
@@ -25,7 +24,6 @@ import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
@@ -44,21 +42,6 @@ private enum class Screen {
     SignUpScreen,
     PostDetails,
 }
-
-/* Testing around the Detailed Event Screen */
-// initializing the testing event
-val calendar = Calendar.getInstance()
-val testEvent = Event(
-    name = "test event name",
-    description = "test description",
-    dateTime = calendar,
-    location = "Rue. Louis Favre 4, 1024, Ecublens",
-    maxParticipants = 4,
-    participants = listOf("obi.wang", "harry.potter"),
-    creator = "peter griffin",
-    id = "jabdsfias213",
-    isPrivate = false
-)
 
 @Composable
 fun Cook4MeApp(
@@ -92,8 +75,9 @@ fun Cook4MeApp(
                 onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
+                signOutNavigation = { navController.navigate(Screen.Login.name) },
+                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
             )
         }
         composable(route = Screen.Map.name) {
@@ -114,15 +98,15 @@ fun Cook4MeApp(
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()
         }
-        composable(route = Screen.DetailedEventScreen.name) {
-            DetailedEventScreen(event = testEvent)
-        }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen()
         }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
+        }
+        composable(route = Screen.DetailedEventScreen.name) {
+            DetailedEventScreen()
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipeScreen(submitForm = {})
