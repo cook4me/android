@@ -15,6 +15,9 @@ import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.auth.User
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -29,10 +32,36 @@ import org.junit.Test
 class AddProfileInfoScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-    private val mockSignUpViewModel = mockk<SignUpViewModel>(relaxed = true)
 
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
+    private lateinit var firestore: FirebaseFirestore
+
+    @Before
+    fun setUp() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+        /*
+        * IMPORTANT:
+        * (Below code is already functional, no need to change anything)
+        * Make sure you do this try-catch block,
+        * otherwise when doing CI, there will be an exception:
+        * kotlin.UninitializedPropertyAccessException: lateinit property firestore has not been initialized
+        * */
+        try {
+            Firebase.firestore.useEmulator("10.0.2.2", 8080)
+        } catch (e: IllegalStateException) {
+            // emulator already set
+            // do nothing
+        }
+        try {
+            Firebase.auth.useEmulator("10.0.2.2", 9099)
+        } catch (e: IllegalStateException) {
+            // emulator already set
+            // do nothing
+        }
+        firestore = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+    }
 
     @Test
     fun testTextFieldsInput() {
@@ -46,12 +75,23 @@ class AddProfileInfoScreenTest {
         val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)
         val blankUser = composeTestRule.activity.getString(R.string.invalid_username_message)
 
+        // Set input
         val usernameInput = "donald"
         val favFoodInput = "pizza"
         val allergiesInput = "gluten"
         val bioInput = "I love cooking"
+        val emailInput = "donald.duck@epfl.ch"
+        val passwordInput = "123456"
 
-        composeTestRule.setContent { AddProfileInfoScreen(onSuccessfullSignUp = {}) }
+        // Set up the view model
+        val signUpViewModel = SignUpViewModel()
+
+        // Add email and password to the view model from sign up screen
+        signUpViewModel.addEmail(emailInput)
+        signUpViewModel.addPassword(passwordInput)
+
+        // Set the content of the ComposeTestRule
+        composeTestRule.setContent { AddProfileInfoScreen(onSuccessfullSignUp = {}, viewModel = SignUpViewModel()) }
 
         // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
@@ -59,8 +99,12 @@ class AddProfileInfoScreenTest {
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(favFood).performTextClearance()
 
+        // Click the save button
         composeTestRule.onNodeWithTag(saveBtn).performClick()
+
+        // Verify that the click was not handled because no input
         composeTestRule.onNodeWithText(blankUser).assertIsDisplayed()
+
         // Set input mail
         composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
         composeTestRule.onNodeWithTag(allergies).performTextInput(allergiesInput)
@@ -105,5 +149,11 @@ class AddProfileInfoScreenTest {
 
         // Wait ot be completed
         composeTestRule.waitForIdle()
+
+        // Click the save button
+        composeTestRule.onNodeWithTag(saveBtn).performClick()
+
+        // Verify that the click was handled
+        assert(isClicked)
     }
 }

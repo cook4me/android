@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
-import AddProfileInfoScreen
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -144,4 +143,3 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
     }
 }
-

@@ -2,9 +2,7 @@ package ch.epfl.sdp.cook4me
 
 import AddProfileInfoScreen
 import SignUpScreen
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,7 +13,6 @@ import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.eventform.Event
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
@@ -29,7 +26,6 @@ import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
