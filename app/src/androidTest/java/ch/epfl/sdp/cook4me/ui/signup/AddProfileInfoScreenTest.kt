@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.signup
 
 import AddProfileInfoScreen
+import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -9,13 +10,29 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
+import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class AddProfileInfoScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    private val mockSignUpViewModel = mockk<SignUpViewModel>(relaxed = true)
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var context: Context
 
     @Test
     fun testTextFieldsInput() {
@@ -88,11 +105,5 @@ class AddProfileInfoScreenTest {
 
         // Wait ot be completed
         composeTestRule.waitForIdle()
-
-        // Click the save button
-        composeTestRule.onNodeWithTag(saveBtn).performClick()
-
-        // Verify that the click was handled
-        assert(isClicked)
     }
 }

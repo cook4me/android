@@ -11,9 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.persistence.model.Post
-import ch.epfl.sdp.cook4me.ui.OverviewScreen
+import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.eventform.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.GoogleMapView
@@ -123,7 +122,7 @@ fun Cook4MeApp(
             CreateEventScreen()
         }
         composable(route = Screen.DetailedEventScreen.name) {
-            DetailedEventScreen(event = testEvent)
+            DetailedEventScreen()
         }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
