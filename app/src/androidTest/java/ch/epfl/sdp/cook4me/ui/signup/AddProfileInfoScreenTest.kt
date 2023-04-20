@@ -144,6 +144,7 @@ class AddProfileInfoScreenTest {
         composeTestRule.waitForIdle()
 
         // Click the save button
+        // commneted for cirrus
         composeTestRule.onNodeWithTag(saveBtn).performClick()
 
         // Verify that the click was handled
