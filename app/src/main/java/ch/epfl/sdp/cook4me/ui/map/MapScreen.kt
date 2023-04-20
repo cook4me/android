@@ -73,7 +73,8 @@ fun GoogleMapView(
     markers: List<MarkerData> = emptyList(),
     selectedEventId: String = "",
     userLocationDisplayed: Boolean = false,
-    onCreateNewEventClick: () -> Unit = {}
+    onCreateNewEventClick: () -> Unit = {},
+    onDetailedEventClick: () -> Unit = {},
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
@@ -131,7 +132,10 @@ fun GoogleMapView(
                             backgroundColor = MaterialTheme.colors.onPrimary,
                             contentColor = MaterialTheme.colors.primary
                         ),
-                        onClick = { navigateToEvent = !navigateToEvent }
+                        onClick = {
+                            navigateToEvent = !navigateToEvent
+                            onDetailedEventClick()
+                        }
                     ) {
                         Text(text = "Explore event", style = MaterialTheme.typography.body1)
                     }

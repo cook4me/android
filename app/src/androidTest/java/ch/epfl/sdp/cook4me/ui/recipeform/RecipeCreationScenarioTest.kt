@@ -1,10 +1,8 @@
 package ch.epfl.sdp.cook4me.ui.recipeform
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -18,6 +16,7 @@ import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import waitUntilExists
 
 @RunWith(AndroidJUnit4::class)
 class RecipeCreationScenarioTest {
@@ -122,14 +121,5 @@ class RecipeCreationScenarioTest {
 
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc))
-    }
-
-    private fun ComposeContentTestRule.waitUntilExists(
-        matcher: SemanticsMatcher,
-        timeoutMillis: Long = 10_000L
-    ) {
-        this.waitUntil(timeoutMillis) {
-            this.onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
-        }
     }
 }

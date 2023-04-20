@@ -9,24 +9,22 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.core.app.ActivityOptionsCompat
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import waitUntilDisplayed
 
 @RunWith(AndroidJUnit4::class)
 class TupperwareCreationScenarioTest {
@@ -176,29 +174,6 @@ class TupperwareCreationScenarioTest {
                 val intent = Intent().setData(testUri)
                 this.dispatchResult(requestCode, Activity.RESULT_OK, intent)
             }
-        }
-    }
-
-    // super hacky way to wait for AsyncImage to be displayed but seems to work
-// should be called with assertIsDisplayed as it doesn't do the exhaustive checks
-    private fun ComposeContentTestRule.waitUntilDisplayed(
-        matcher: SemanticsMatcher,
-        timeoutMillis: Long = 2_000L
-    ) {
-        this.waitUntil(timeoutMillis) {
-            // code taken from assertIsDisplayed()
-
-            val node = this.onNode(matcher).fetchSemanticsNode()
-            var returnValue = true
-
-            (node.root as? ViewRootForTest)?.let {
-                if (!ViewMatchers.isDisplayed().matches(it.view)) {
-                    returnValue = false
-                }
-            }
-            val globalRect = node.boundsInWindow
-            // checks if node has zero area, I think
-            returnValue && (globalRect.width > 0f && globalRect.height > 0f)
         }
     }
 }

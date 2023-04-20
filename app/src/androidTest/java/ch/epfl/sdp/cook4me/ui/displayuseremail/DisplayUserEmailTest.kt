@@ -6,6 +6,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.Cook4MeApp
@@ -57,6 +58,7 @@ class DisplayUserEmailTest {
         composeTestRule.setContent {
             Cook4MeApp()
         }
+        composeTestRule.onNodeWithText("Menu").performClick()
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
                 .onAllNodesWithTag(context.getString(R.string.Overview_Screen_Tag))

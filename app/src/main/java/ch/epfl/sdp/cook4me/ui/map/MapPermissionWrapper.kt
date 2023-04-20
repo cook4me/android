@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me.ui.map
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionManager
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 
@@ -12,7 +13,7 @@ fun MapPermissionWrapper(
     modifier: Modifier = Modifier.fillMaxSize(),
     markers: List<MarkerData> = dummyMarkers,
     onCreateNewEventClick: () -> Unit = {},
-    testing: Boolean = false
+    onDetailedEventClick: () -> Unit = {},
 ) {
     val permissionManager = PermissionManager(permissionStatusProvider)
     permissionManager.withPermission {
@@ -20,7 +21,8 @@ fun MapPermissionWrapper(
             modifier = modifier,
             markers = markers,
             onCreateNewEventClick = onCreateNewEventClick,
-            userLocationDisplayed = !testing
+            userLocationDisplayed = permissionStatusProvider is ComposePermissionStatusProvider,
+            onDetailedEventClick = onDetailedEventClick,
         )
     }
 }

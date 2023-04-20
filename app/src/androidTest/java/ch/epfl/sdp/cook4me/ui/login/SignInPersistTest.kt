@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.Cook4MeApp
@@ -58,10 +60,10 @@ class SignInPersistTest {
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithTag(context.getString(R.string.Overview_Screen_Tag))
+                .onAllNodesWithText("Top recipes")
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithTag(context.getString(R.string.Overview_Screen_Tag)).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Top recipes").assertIsDisplayed()
     }
 
     @Test
