@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me
 
+import AddProfileInfoScreen
 import SignUpScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
@@ -20,6 +21,7 @@ import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
+import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -41,6 +43,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    SignUpUserInfos,
     RecipeFeed,
 }
 
@@ -51,6 +54,8 @@ fun Cook4MeApp(
         listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
     )
 ) {
+    // initialize the view model for the sign up screen
+    val singUpViewModel = SignUpViewModel()
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     // the current logged in user, if no user is logged in, then return null
@@ -80,9 +85,9 @@ fun Cook4MeApp(
                 onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
                 onPostClick = { navController.navigate(Screen.PostDetails.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
-                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) },
                 signOutNavigation = { navController.navigate(Screen.Login.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) }
+                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
+                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
         composable(route = Screen.Map.name) {
@@ -106,8 +111,24 @@ fun Cook4MeApp(
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen()
         }
+        composable(route = Screen.DetailedEventScreen.name) {
+            DetailedEventScreen()
+        }
         composable(route = Screen.SignUpScreen.name) {
-            SignUpScreen()
+            SignUpScreen(
+                onSuccessfullSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
+                signUpViewModel = singUpViewModel,
+            )
+        }
+        composable(route = Screen.SignUpUserInfos.name) {
+            AddProfileInfoScreen(
+                viewModel = singUpViewModel,
+                onSuccessfullSignUp = {
+                    navController.navigate(
+                        Screen.OverviewScreen.name
+                    )
+                }
+            )
         }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious tiramisu or so")

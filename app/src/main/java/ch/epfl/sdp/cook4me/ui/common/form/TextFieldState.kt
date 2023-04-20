@@ -53,6 +53,12 @@ open class TextFieldState(
     override fun showErrors() = !isValid && displayErrors
 }
 
+class NonRequiredTextFieldState(errorMsg: String, default: String = "",) : TextFieldState(
+    { true },
+    errorMsg,
+    default
+)
+
 class RequiredTextFieldState(errorMsg: String, default: String = "",) : TextFieldState(
     { it.isNotBlank() },
     errorMsg,
@@ -62,6 +68,14 @@ class RequiredTextFieldState(errorMsg: String, default: String = "",) : TextFiel
 class EmailState(errorMsg: String, default: String = "",) : TextFieldState(
     {
         it.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(it).matches()
+    },
+    errorMsg,
+    default,
+)
+
+class UserNameState(errorMsg: String, default: String = "",) : TextFieldState(
+    {
+        it.isNotBlank() // TODO
     },
     errorMsg,
     default,

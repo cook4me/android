@@ -17,7 +17,8 @@ class SignUpViewModel(
     private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
 ) : ViewModel() {
-    private var _id = accountService.getCurrentUserEmail() // Email as id
+    private var _email = mutableStateOf("")
+    private var _password = mutableStateOf("")
     private var _username = mutableStateOf("")
     private var _allergies = mutableStateOf("")
     private var _bio = mutableStateOf("")
@@ -40,6 +41,14 @@ class SignUpViewModel(
         _username.value = username
     }
 
+    fun addPassword(password: String) {
+        _password.value = password
+    }
+
+    fun addEmail(email: String) {
+        _email.value = email
+    }
+
     fun addAllergies(allergies: String) {
         _allergies.value = allergies
     }
@@ -56,21 +65,31 @@ class SignUpViewModel(
         _userImage.value = image
     }
 
+    fun isValidUsername(username: String): Boolean = _username.value == username // TODO better check
+
+    fun checkForm(): Boolean {
+        if (_username.value.isBlank() || _password.value.isBlank() || _email.value.isBlank()) {
+            _formError.value = true
+        } else {
+            _formError.value = false
+        }
+        return !_formError.value
+    }
+
     fun onSubmit() {
-        if (_username.value.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
+        if (_username.value.isBlank() || _password.value.isBlank() || _email.value.isBlank()) {
             _formError.value = true
         } else {
             viewModelScope.launch {
-                _id?.let {
-                    service.submitForm(
-                        it,
-                        _username.value,
-                        _allergies.value,
-                        _bio.value,
-                        _favoriteDish.value,
-                        _userImage.value.toString(),
-                    )
-                }
+                accountService.register(_email.value, _password.value)
+                service.submitForm(
+                    _email.value,
+                    _username.value,
+                    _allergies.value,
+                    _bio.value,
+                    _favoriteDish.value,
+                    _userImage.value.toString(),
+                )
             }
         }
     }
