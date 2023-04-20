@@ -48,7 +48,7 @@ class SignUpViewModelTest {
     }
 
     @Test
-    fun checkGetters(){
+    fun checkGetters() {
         val signUpViewModel = SignUpViewModel()
         val username = "Donald Duck"
         val allergies = "Peanuts"
