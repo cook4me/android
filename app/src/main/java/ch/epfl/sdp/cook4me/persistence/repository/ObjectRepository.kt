@@ -1,7 +1,9 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
+import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
 open class ObjectRepository(
@@ -59,8 +61,13 @@ open class ObjectRepository(
          a secondary constructor to your dataclass to construct it from a map.
      * Want a demo? See EventFormService.kt and Event.kt
     * */
-    suspend fun <A : Any> getWithGivenField(field: String, query: Any): List<DocumentSnapshot> {
-        val result = store.collection(objectPath).whereEqualTo(field, query).get().await()
-        return result.documents
-    }
+    suspend fun <A : Any> getWithGivenField(field: String, query: Any): List<DocumentSnapshot> =
+        try {
+            val result = store.collection(objectPath).whereEqualTo(field, query).get().await()
+            result.documents
+        } catch (e: FirebaseFirestoreException) {
+            // handling the exception, if anything goes wrong, return an empty list
+            Log.e("ObjectRepo", "Error querying documents: ${e.message}")
+            emptyList()
+        }
 }
