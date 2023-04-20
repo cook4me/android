@@ -122,6 +122,15 @@ class AddProfileInfoScreenTest {
         }
         // Find the save button by its content description
         val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)
+        val emailInput = "donald.duck@epfl.ch"
+        val passwordInput = "123456"
+
+        // Set up the view model
+        val signUpViewModel = SignUpViewModel()
+
+        // Add email and password to the view model from sign up screen
+        signUpViewModel.addEmail(emailInput)
+        signUpViewModel.addPassword(passwordInput)
 
         // Click the save button
         composeTestRule.onNodeWithTag(saveBtn).performClick()
