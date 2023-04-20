@@ -20,8 +20,8 @@ class RecipeListScreenTest {
     @Test
     fun defaultRecipeListScreenIsDisplayed() {
         val mockList = listOf(
-            RecipeNote(recipeId = "id1", recipe = Recipe(name = "Test recipe 1", cookingTime = "10 min"), note= 1),
-            RecipeNote(recipeId = "id2", recipe = Recipe(name = "Test recipe 2", cookingTime = "20 min"), note= 2)
+            RecipeNote(recipeId = "id1", recipe = Recipe(name = "Test recipe 1", cookingTime = "10 min"), note = 1),
+            RecipeNote(recipeId = "id2", recipe = Recipe(name = "Test recipe 2", cookingTime = "20 min"), note = 2)
         )
         composeTestRule.setContent {
             RecipeListScreen(recipeList = mockList, onNoteUpdate = { _, _ -> })

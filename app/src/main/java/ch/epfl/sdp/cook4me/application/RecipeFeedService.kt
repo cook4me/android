@@ -19,7 +19,7 @@ class RecipeFeedService(
     suspend fun getRecipesWithNotes(): List<RecipeNote> {
         val recipes = recipeRepository.getAll()
         val notes = recipeNoteRepository.retrieveAllRecipeNotes()
-        return recipes.map { RecipeNote(it.key, notes[it.key] ?: 0,it.value) }
+        return recipes.map { RecipeNote(it.key, notes[it.key] ?: 0, it.value) }
     }
 
     /**

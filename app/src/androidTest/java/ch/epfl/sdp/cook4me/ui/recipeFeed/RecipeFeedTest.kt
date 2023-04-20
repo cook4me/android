@@ -8,6 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -24,8 +25,8 @@ class RecipeFeedTest {
     private val mockRecipeFeedService = mockk<RecipeFeedService>(relaxed = true)
 
     private val mockList = listOf(
-        Pair(Pair("id1", Recipe(name = "Test recipe 1", cookingTime = "10 min")), 1),
-        Pair(Pair("id2", Recipe(name = "Test recipe 2", cookingTime = "20 min")), 2)
+        RecipeNote(recipeId = "id1", recipe = Recipe(name = "Test recipe 1", cookingTime = "10 min"), note = 1),
+        RecipeNote(recipeId = "id2", recipe = Recipe(name = "Test recipe 2", cookingTime = "20 min"), note = 2)
     )
 
     @Test
@@ -46,9 +47,9 @@ class RecipeFeedTest {
         }
 
         for (recipe in mockList) {
-            composeTestRule.onNodeWithText(recipe.first.second.name).assertIsDisplayed()
-            composeTestRule.onNodeWithText(recipe.first.second.cookingTime).assertIsDisplayed()
-            composeTestRule.onNodeWithText(recipe.second.toString()).assertIsDisplayed()
+            composeTestRule.onNodeWithText(recipe.recipe.name).assertIsDisplayed()
+            composeTestRule.onNodeWithText(recipe.recipe.cookingTime).assertIsDisplayed()
+            composeTestRule.onNodeWithText(recipe.note.toString()).assertIsDisplayed()
         }
     }
 }
