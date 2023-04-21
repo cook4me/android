@@ -49,8 +49,6 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
     * */
     suspend fun getEventWithId(id: String): Event? {
         val result = objectRepository.getWithId<Event>(id)
-        // if(result == null) println("YESSSSSSSSSSSSSS")
-        // result?.let { println("NOOOOOOOOOOOO") }
         return result?.let { documentSnapshotToEvent(it) }
     }
 
