@@ -10,15 +10,15 @@ import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 @Composable
 fun MapPermissionWrapper(
     permissionStatusProvider: PermissionStatusProvider,
-    modifier: Modifier = Modifier.fillMaxSize(),
+    modifier: Modifier = Modifier,
     markers: List<MarkerData> = dummyMarkers,
     onCreateNewEventClick: () -> Unit = {},
     onDetailedEventClick: () -> Unit = {},
 ) {
     val permissionManager = PermissionManager(permissionStatusProvider)
-    permissionManager.withPermission {
+    permissionManager.WithPermission {
         GoogleMapView(
-            modifier = modifier,
+            modifier = modifier.fillMaxSize(),
             markers = markers,
             onCreateNewEventClick = onCreateNewEventClick,
             userLocationDisplayed = permissionStatusProvider is ComposePermissionStatusProvider,

@@ -35,13 +35,13 @@ fun ProfileScreen(
         )
 
         // Textfield for the Favorite dish
-        favoriteDish_profileScreen(profileCreationViewModel.favoriteDish.value)
+        FavoriteDishProfileScreen(profileCreationViewModel.favoriteDish.value)
 
         // Textfield for the Allergies
-        allergies_profileScreen(profileCreationViewModel.allergies.value)
+        AllergiesProfileScreen(profileCreationViewModel.allergies.value)
 
         // Textfield for the bio
-        bio_profileScreen(profileCreationViewModel.bio.value)
+        BioProfileScreen(profileCreationViewModel.bio.value)
 
         // Grid with post within
         PostGrid() // put images inside
@@ -76,12 +76,12 @@ fun ProfileImageAndUsername(userImage: Uri, name: String) {
             Image(painter = painter, contentDescription = "")
         }
 
-        username_profileScreen(name)
+        UsernameProfileScreen(name)
     }
 }
 
 @Composable
-fun username_profileScreen(name: String) {
+fun UsernameProfileScreen(name: String) {
     var userName = name
     if (name.isEmpty()) {
         userName = stringResource(R.string.default_username)
@@ -95,7 +95,7 @@ fun username_profileScreen(name: String) {
 }
 
 @Composable
-fun favoriteDish_profileScreen(favoriteDish: String) {
+fun FavoriteDishProfileScreen(favoriteDish: String) {
     var favDish = favoriteDish
     if (favoriteDish.isEmpty()) {
         favDish = stringResource(R.string.default_favoriteDish)
@@ -123,7 +123,7 @@ fun favoriteDish_profileScreen(favoriteDish: String) {
 }
 
 @Composable
-fun allergies_profileScreen(allergiesIn: String) {
+fun AllergiesProfileScreen(allergiesIn: String) {
     var allergies = allergiesIn
     if (allergiesIn.isEmpty()) {
         allergies = stringResource(R.string.default_allergies)
@@ -151,7 +151,7 @@ fun allergies_profileScreen(allergiesIn: String) {
 }
 
 @Composable
-fun bio_profileScreen(bioIn: String) {
+fun BioProfileScreen(bioIn: String) {
     var bio = bioIn
     if (bioIn.isEmpty()) {
         bio = stringResource(R.string.default_bio)

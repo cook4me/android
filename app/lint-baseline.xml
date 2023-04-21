@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.4.2" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.2)" variant="all" version="7.4.2">
+
+    <issue
+        id="Typos"
+        message="Did you mean &quot;option!&quot; instead of &quot;option1&quot;?"
+        errorLine1="    &lt;string name=&quot;option1&quot;>option1&lt;/string>"
+        errorLine2="                           ^">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="123"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/placeholder_carbonara.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/placeholder_carbonara.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/placeholder_guacamole.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/placeholder_guacamole.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/placeholder_tupperware.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/placeholder_tupperware.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/tiramisu.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/tiramisu.jpg"/>
+    </issue>
+
+</issues>

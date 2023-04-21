@@ -36,6 +36,7 @@ import com.google.maps.android.compose.rememberMarkerState
 
 private const val ZOOM_DEFAULT_VALUE = 15f
 private const val MAP_SCREEN_PROPORTION = 0.8f
+
 data class MarkerData(
     val position: LatLng,
     val title: String,
@@ -78,11 +79,16 @@ fun GoogleMapView(
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
-        mutableStateOf(MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = userLocationDisplayed))
+        mutableStateOf(
+            MapProperties(
+                mapType = MapType.NORMAL,
+                isMyLocationEnabled = userLocationDisplayed
+            )
+        )
     }
-    var onClickUniversity = {
-        uniLocation: LatLng ->
-        cameraPositionState.position = CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
+    val onClickUniversity = { uniLocation: LatLng ->
+        cameraPositionState.position =
+            CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
     var selectedMarker by remember { mutableStateOf(findMarkerById(markers, selectedEventId)) }
     var navigateToEvent by remember { mutableStateOf(false) }
@@ -91,7 +97,10 @@ fun GoogleMapView(
             .fillMaxWidth()
             .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
-        CreateNewItemButton(itemType = stringResource(R.string.event), onClick = onCreateNewEventClick)
+        CreateNewItemButton(
+            itemType = stringResource(R.string.event),
+            onClick = onCreateNewEventClick
+        )
         MapTypeControls(
             onMapTypeClick = {
                 mapProperties = mapProperties.copy(mapType = it)
@@ -173,6 +182,7 @@ fun GoogleMapView(
         }
     }
 }
+
 private fun findMarkerById(markers: List<MarkerData>, markerId: String): MarkerData? =
     markers.find { marker -> marker.id == markerId }
 
