@@ -37,6 +37,7 @@ class DetailedEventScreenTest {
     private val calendar = Calendar.getInstance()
     private lateinit var testEvent: Event
     private lateinit var eventDate: String
+    private lateinit var eventId: String
 
     @Before
     fun setUp() {
@@ -95,13 +96,14 @@ class DetailedEventScreenTest {
             auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
         }
         runBlocking {
-            firestore.collection(EVENT_PATH).document(testEvent.id).set(eventMap).await()
+            val documentReference = firestore.collection(EVENT_PATH).add(eventMap).await()
+            eventId = documentReference.id
         }
     }
     @After
     fun cleanUp() {
         runBlocking {
-            firestore.collection(EVENT_PATH).document("harry.potter@epfl.ch").delete().await()
+            firestore.collection(EVENT_PATH).document(eventId).delete().await()
             auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             auth.currentUser?.delete()?.await()
         }
@@ -110,7 +112,7 @@ class DetailedEventScreenTest {
     @Test
     fun testCorrectDetailedEventInfoIsDisplayed() {
         composeTestRule.setContent {
-            DetailedEventScreen()
+            DetailedEventScreen(eventId)
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
