@@ -86,7 +86,7 @@ fun GoogleMapView(
             )
         )
     }
-    var onClickUniversity = { uniLocation: LatLng ->
+    val onClickUniversity = { uniLocation: LatLng ->
         cameraPositionState.position =
             CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
