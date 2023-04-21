@@ -84,7 +84,7 @@ class AddProfileInfoScreenTest {
         signUpViewModel.addPassword(passwordInput)
 
         // Set the content of the ComposeTestRule
-        composeTestRule.setContent { AddProfileInfoScreen(onSuccessfullSignUp = {}, viewModel = SignUpViewModel()) }
+        composeTestRule.setContent { AddProfileInfoScreen(onSuccessfulSignUp = {}, viewModel = SignUpViewModel()) }
 
         // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
@@ -118,7 +118,7 @@ class AddProfileInfoScreenTest {
     fun navigationTest() {
         var isClicked = false
         composeTestRule.setContent {
-            AddProfileInfoScreen(onSuccessfullSignUp = { isClicked = true })
+            AddProfileInfoScreen(onSuccessfulSignUp = { isClicked = true })
         }
         // Find the save button by its content description
         val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)

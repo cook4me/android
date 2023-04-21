@@ -20,7 +20,7 @@ class ComposePermissionStatusProvider(
         .revokedPermissions.map { it.permission }.toList()
 
     @Composable
-    override fun requestAllPermissions() {
+    override fun RequestAllPermissions() {
         val permissionsState = rememberMultiplePermissionsState(permissions)
         LaunchedEffect(permissionsState) { permissionsState.launchMultiplePermissionRequest() }
     }

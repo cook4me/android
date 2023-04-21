@@ -146,7 +146,7 @@ fun Cook4MeApp(
         composable(route = Screen.SignUpUserInfos.name) {
             AddProfileInfoScreen(
                 viewModel = singUpViewModel,
-                onSuccessfullSignUp = {
+                onSuccessfulSignUp = {
                     navController.navigate(
                         startScreen
                     )

@@ -51,9 +51,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddProfileInfoScreen(
-    viewModel: SignUpViewModel = SignUpViewModel(),
-    onSuccessfullSignUp: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: SignUpViewModel = SignUpViewModel(),
+    onSuccessfulSignUp: () -> Unit,
 ) {
     val context = LocalContext.current
     val usernameState =
@@ -172,7 +172,7 @@ fun AddProfileInfoScreen(
                             try {
                                 inProgress = true
                                 viewModel.onSubmit()
-                                onSuccessfullSignUp()
+                                onSuccessfulSignUp()
                             } catch (e: FirebaseAuthException) {
                                 scaffoldState.snackbarHostState.showSnackbar(
                                     context.getString(R.string.Add_profile_infos_invalid_user),
