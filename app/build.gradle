@@ -65,6 +65,10 @@ android {
             }
         }
     }
+
+    lintOptions {
+        warningsAsErrors true
+    }
 }
 
 detekt {
