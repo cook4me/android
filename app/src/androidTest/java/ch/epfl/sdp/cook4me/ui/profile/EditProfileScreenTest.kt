@@ -78,6 +78,9 @@ class EditProfileScreenTest {
     @After
     fun cleanUp() {
         runBlocking {
+            firestore.collection(COLLECTION_PATH).document(id).delete().await()
+        }
+        runBlocking {
             auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             auth.currentUser?.delete()
         }
