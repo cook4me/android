@@ -5,11 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.printToLog
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
@@ -86,10 +84,10 @@ class EditProfileScreenTest {
     }
 
     @Test
-    fun editScreen_test() {
+    fun editScreenTest() {
         // Set up the test
-        val username = composeTestRule.activity.getString(R.string.tag_username)
-        val favoriteDish = composeTestRule.activity.getString(R.string.tag_favoriteDish)
+        val username = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
+        val favFood = composeTestRule.activity.getString(R.string.tag_favoriteDish)
         val allergies = composeTestRule.activity.getString(R.string.tag_allergies)
         val bio = composeTestRule.activity.getString(R.string.tag_bio)
 
@@ -102,19 +100,18 @@ class EditProfileScreenTest {
 
         // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
-        composeTestRule.onNodeWithTag(favoriteDish).performTextClearance()
+        composeTestRule.onNodeWithTag(favFood).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
 
         // Set input
         composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
-        composeTestRule.onNodeWithTag(favoriteDish).performTextInput(favoriteDishInput)
+        composeTestRule.onNodeWithTag(favFood).performTextInput(favoriteDishInput)
         composeTestRule.onNodeWithTag(allergies).performTextInput(allergiesInput)
         composeTestRule.onNodeWithTag(bio).performTextInput(bioInput)
 
         // Wait ot be completed
         composeTestRule.waitForIdle()
-        composeTestRule.onRoot().printToLog("DEBUG")
 
         // Verify that the text fields display the correct values
         composeTestRule.onNodeWithText(usernameInput).assertExists()
@@ -123,5 +120,21 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithText(bioInput).assertExists()
 
         composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
+    }
+
+    @Test
+    fun editProfileScreenStateTest() {
+        val profileViewModel = ProfileViewModel()
+
+        composeTestRule.setContent { ProfileScreen(profileViewModel = profileViewModel) }
+
+
+        profileViewModel.isLoading.value = true
+
+        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
+
+        profileViewModel.isLoading.value = false
+
+        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
     }
 }

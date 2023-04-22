@@ -1,22 +1,19 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
 import android.net.Uri
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.ProfileService
 import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
+import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ch.epfl.sdp.cook4me.persistence.model.Profile
 
 class ProfileViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
@@ -25,35 +22,34 @@ class ProfileViewModel(
 ) : ViewModel() {
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
     private val _formError = mutableStateOf(false)
-    private val _isLoading = mutableStateOf(true)
-    val isLoading: State<Boolean> = _isLoading
+    val isLoading = mutableStateOf(true) // not private for testing
     val formError: State<Boolean> = _formError
-    val _profileState = mutableStateOf(Profile())
+    private val _profileState = mutableStateOf(Profile())
     val profileState = _profileState
 
     init {
-            viewModelScope.launch {
-                var profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+        viewModelScope.launch {
+            var profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
 
-                //load the profile again if it is null
-                while (_profileState.value == null) {
-                    delay(1000) // Wait for 1 second before retrying
-                    profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+            // load the profile again if it is null
+            while (profile == null) {
+                @Suppress("MagicNumber")
+                delay(1000) // Wait for 1 second before retrying
+                profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+            }
+
+            profile.let {
+                withContext(Dispatchers.Main) {
+                    _profileState.value.name = it.name
+                    _profileState.value.allergies = it.allergies
+                    _profileState.value.bio = it.bio
+                    _profileState.value.favoriteDish = it.favoriteDish
+                    _profileState.value.userImage = it.userImage
+                    isLoading.value = false
                 }
-
-                profile?.let {
-                    withContext(Dispatchers.Main) {
-                        _profileState.value.name= it.name
-                        _profileState.value.allergies=it.allergies
-                        _profileState.value.bio=it.bio
-                        _profileState.value.favoriteDish=it.favoriteDish
-                        _profileState.value.userImage=it.userImage
-                        _isLoading.value = false
-                    }
             }
         }
     }
-
 
     fun addUsername(username: String) {
         profileState.value.name = username

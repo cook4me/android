@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me.ui.profile
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.firebase.auth.FirebaseAuth
@@ -78,12 +79,11 @@ class ProfileScreenTest {
     }
 
     @Test
-    fun profile_test() {
+    fun profileLoadCorrectValuesTest() {
         val usernameInput = "Harry"
         val favoriteDishInput = "Spaghetti"
         val allergiesInput = "Hazelnut"
         val bioInput = "Gourmet"
-        val profileViewModel = ProfileViewModel()
 
         composeTestRule.setContent { ProfileScreen() }
 
@@ -91,6 +91,20 @@ class ProfileScreenTest {
         composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
-        // TODO test image
+    }
+
+    @Test
+    fun profileScreenStateTest() {
+        val profileViewModel = ProfileViewModel()
+
+        composeTestRule.setContent { ProfileScreen(profileViewModel = profileViewModel) }
+
+        profileViewModel.isLoading.value = true
+
+        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
+
+        profileViewModel.isLoading.value = false
+
+        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
     }
 }

@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +31,7 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel= remember {
+    profileViewModel: ProfileViewModel = remember {
         ProfileViewModel()
     }
 ) {
@@ -40,19 +39,21 @@ fun ProfileScreen(
     val userNameState = rememberSaveable { mutableStateOf("") }
     val isLoading = profileViewModel.isLoading.value
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .testTag("CircularProgressIndicator")
             )
         } else {
             userNameState.value = profile.name
             Column(
-                modifier = Modifier.padding(12.dp).fillMaxHeight()
+                modifier = Modifier
+                    .padding(12.dp)
+                    .fillMaxHeight()
             ) {
-
                 ProfileImageAndUsername(
                     profile.userImage.toUri(), profile.name
                 )
@@ -152,8 +153,7 @@ fun AllergiesProfileScreen(allergies: String) {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = allergies,
-            modifier = Modifier
+            text = allergies, modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
         )
@@ -175,8 +175,7 @@ fun BioProfileScreen(bio: String) {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = bio,
-            modifier = Modifier
+            text = bio, modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         )
