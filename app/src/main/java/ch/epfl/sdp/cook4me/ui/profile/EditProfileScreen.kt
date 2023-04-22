@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -19,6 +20,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
@@ -33,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 import coil.compose.AsyncImage
@@ -40,13 +43,10 @@ import coil.request.ImageRequest
 
 @Composable
 fun EditProfileScreen(
-    viewModel: ProfileCreationViewModel = viewModel(),
+    viewModel: ProfileViewModel = viewModel(),
 ) {
-    val username by viewModel.username
-    val favoriteDish by viewModel.favoriteDish
-    val allergies by viewModel.allergies
-    val bio by viewModel.bio
-    val userImage by viewModel.userImage
+    val profile = viewModel.profileState.value
+    val isLoading = viewModel.isLoading.value
 
     val imagePicker =
         rememberLauncherForActivityResult(
@@ -64,46 +64,52 @@ fun EditProfileScreen(
         imagePicker.launch("image/*")
     }
 
-    Column(
+    Box {
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
+        } else {
+            Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(8.dp)
-    ) {
-        SaveCancelButtons(viewModel::onSubmit)
+              .verticalScroll(rememberScrollState())
+             .padding(8.dp)
+          ) {
+            SaveCancelButtons(viewModel::onSubmit)
         ImageHolder_profileUpdateScreen(
             onClickAddImage = { onClickAddImage() },
-            image = userImage,
+            image = profile.userImage.toUri(),
         )
 
         // Textfield for the userna
         // TODO IMPLEMENT A CLEAN WAme
         ColumnTextBtnProfileUpdateScreen(
             stringResource(R.string.tag_username),
-            username,
+            profile.name,
             viewModel::addUsername,
         )
 
         // Textfield for the Favorite dish
         ColumnTextBtnProfileUpdateScreen(
             stringResource(R.string.tag_favoriteDish),
-            favoriteDish,
+            profile.favoriteDish,
             viewModel::addFavoriteDish,
         )
 
         ColumnTextBtnProfileUpdateScreen(
             stringResource(R.string.tag_allergies),
-            allergies,
+            profile.allergies,
             viewModel::addAllergies,
         )
 
         // Textfield for the bio
         BioProfileUpdateScreen(
             stringResource(R.string.tag_bio),
-            bio,
+            profile.bio,
             viewModel::addBio,
         )
     }
-}
+}}}
 
 @Composable
 fun BioProfileUpdateScreen(
