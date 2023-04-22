@@ -129,7 +129,7 @@ class EditProfileScreenTest {
     fun editProfileScreenStateTest() {
         val profileViewModel = ProfileViewModel()
 
-        composeTestRule.setContent { ProfileScreen(profileViewModel = profileViewModel) }
+        composeTestRule.setContent { EditProfileScreen(viewModel = profileViewModel) }
 
         profileViewModel.isLoading.value = true
 
