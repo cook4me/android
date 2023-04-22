@@ -93,7 +93,7 @@ class ProfileScreenTest {
 
         composeTestRule.setContent {
             ProfileScreen(
-            profileViewModel = profileViewModel
+                profileViewModel = profileViewModel
             )
         }
 
