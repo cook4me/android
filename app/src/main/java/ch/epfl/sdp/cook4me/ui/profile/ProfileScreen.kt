@@ -153,7 +153,8 @@ fun AllergiesProfileScreen(allergies: String) {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = allergies, modifier = Modifier
+            text = allergies,
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
         )
@@ -175,7 +176,8 @@ fun BioProfileScreen(bio: String) {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = bio, modifier = Modifier
+            text = bio,
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         )
