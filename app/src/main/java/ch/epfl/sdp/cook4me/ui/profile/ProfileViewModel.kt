@@ -1,8 +1,11 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
 import android.net.Uri
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.AccountService
@@ -29,27 +32,28 @@ class ProfileViewModel(
     val profileState = _profileState
 
     init {
-        viewModelScope.launch {
-            var profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+            viewModelScope.launch {
+                var profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
 
-            //load the profile again if it is null
-            while (_profileState.value == null) {
-                delay(1000) // Wait for 1 second before retrying
-                profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
-            }
-
-            profile?.let {
-                withContext(Dispatchers.Main) {
-                    _profileState.value.name= it.name
-                    _profileState.value.allergies=it.allergies
-                    _profileState.value.bio=it.bio
-                    _profileState.value.favoriteDish=it.favoriteDish
-                    _profileState.value.userImage=it.userImage
-                    _isLoading.value = false
+                //load the profile again if it is null
+                while (_profileState.value == null) {
+                    delay(1000) // Wait for 1 second before retrying
+                    profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
                 }
+
+                profile?.let {
+                    withContext(Dispatchers.Main) {
+                        _profileState.value.name= it.name
+                        _profileState.value.allergies=it.allergies
+                        _profileState.value.bio=it.bio
+                        _profileState.value.favoriteDish=it.favoriteDish
+                        _profileState.value.userImage=it.userImage
+                        _isLoading.value = false
+                    }
             }
         }
     }
+
 
     fun addUsername(username: String) {
         profileState.value.name = username

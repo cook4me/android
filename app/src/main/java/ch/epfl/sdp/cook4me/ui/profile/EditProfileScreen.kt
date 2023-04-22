@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,7 +45,7 @@ import coil.request.ImageRequest
 
 @Composable
 fun EditProfileScreen(
-    viewModel: ProfileViewModel = viewModel(),
+    viewModel: ProfileViewModel = remember{ProfileViewModel()},
 ) {
     val profile = viewModel.profileState.value
     val isLoading = viewModel.isLoading.value
@@ -64,16 +66,19 @@ fun EditProfileScreen(
         imagePicker.launch("image/*")
     }
 
-    Box {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+    ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center).testTag("CircularProgressIndicator")
             )
         } else {
             Column(
         modifier = Modifier
-              .verticalScroll(rememberScrollState())
-             .padding(8.dp)
+                .verticalScroll(rememberScrollState())
+                .padding(8.dp)
+                .fillMaxHeight()
           ) {
             SaveCancelButtons(viewModel::onSubmit)
         ImageHolder_profileUpdateScreen(
@@ -81,8 +86,7 @@ fun EditProfileScreen(
             image = profile.userImage.toUri(),
         )
 
-        // Textfield for the userna
-        // TODO IMPLEMENT A CLEAN WAme
+        // Textfield for the username
         ColumnTextBtnProfileUpdateScreen(
             stringResource(R.string.tag_username),
             profile.name,

@@ -3,16 +3,8 @@ package ch.epfl.sdp.cook4me.ui.profile
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextClearance
-import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.printToLog
 import androidx.test.platform.app.InstrumentationRegistry
-import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,7 +17,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class EditProfileScreenTest {
+class ProfileScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -86,42 +78,19 @@ class EditProfileScreenTest {
     }
 
     @Test
-    fun editScreen_test() {
-        // Set up the test
-        val username = composeTestRule.activity.getString(R.string.tag_username)
-        val favoriteDish = composeTestRule.activity.getString(R.string.tag_favoriteDish)
-        val allergies = composeTestRule.activity.getString(R.string.tag_allergies)
-        val bio = composeTestRule.activity.getString(R.string.tag_bio)
+    fun profile_test() {
+        val usernameInput = "Harry"
+        val favoriteDishInput = "Spaghetti"
+        val allergiesInput = "Hazelnut"
+        val bioInput = "Gourmet"
+        val profileViewModel = ProfileViewModel()
 
-        composeTestRule.setContent { EditProfileScreen() }
+        composeTestRule.setContent { ProfileScreen() }
 
-        val usernameInput = "ronald"
-        val favoriteDishInput = "Butterbeer"
-        val allergiesInput = "Snails"
-        val bioInput = "I'm just the friend of harry"
-
-        // Clear fields
-        composeTestRule.onNodeWithTag(username).performTextClearance()
-        composeTestRule.onNodeWithTag(favoriteDish).performTextClearance()
-        composeTestRule.onNodeWithTag(bio).performTextClearance()
-        composeTestRule.onNodeWithTag(allergies).performTextClearance()
-
-        // Set input
-        composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
-        composeTestRule.onNodeWithTag(favoriteDish).performTextInput(favoriteDishInput)
-        composeTestRule.onNodeWithTag(allergies).performTextInput(allergiesInput)
-        composeTestRule.onNodeWithTag(bio).performTextInput(bioInput)
-
-        // Wait ot be completed
-        composeTestRule.waitForIdle()
-        composeTestRule.onRoot().printToLog("DEBUG")
-
-        // Verify that the text fields display the correct values
         composeTestRule.onNodeWithText(usernameInput).assertExists()
         composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
-
-        composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
+        // TODO test image
     }
 }

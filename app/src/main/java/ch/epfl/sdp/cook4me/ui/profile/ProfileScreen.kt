@@ -5,6 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,9 +17,11 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,12 +32,17 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel= ProfileViewModel()
+    profileViewModel: ProfileViewModel= remember {
+        ProfileViewModel()
+    }
 ) {
     val profile = profileViewModel.profileState.value
     val userNameState = rememberSaveable { mutableStateOf("") }
     val isLoading = profileViewModel.isLoading.value
-    Box {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.align(Alignment.Center)
@@ -41,7 +50,7 @@ fun ProfileScreen(
         } else {
             userNameState.value = profile.name
             Column(
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier.padding(12.dp).fillMaxHeight()
             ) {
 
                 ProfileImageAndUsername(
