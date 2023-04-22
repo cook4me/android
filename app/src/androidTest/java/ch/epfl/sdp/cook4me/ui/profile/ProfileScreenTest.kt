@@ -65,7 +65,7 @@ class ProfileScreenTest {
             auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
         }
-        //add the user to the database
+        // add the user to the database
         runBlocking {
             firestore.collection(COLLECTION_PATH).document(id).set(user).await()
         }
@@ -74,7 +74,7 @@ class ProfileScreenTest {
     @After
     fun cleanUp() {
         runBlocking {
-            //delete the user from the database
+            // delete the user from the database
             firestore.collection(COLLECTION_PATH).document(id).delete().await()
         }
         runBlocking {
@@ -91,8 +91,10 @@ class ProfileScreenTest {
         val bioInput = "Gourmet"
         val profileViewModel = ProfileViewModel()
 
-        composeTestRule.setContent { ProfileScreen(
-            profileViewModel = profileViewModel)
+        composeTestRule.setContent {
+            ProfileScreen(
+            profileViewModel = profileViewModel
+            )
         }
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
