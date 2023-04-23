@@ -28,7 +28,7 @@ check_android_task:
       -camera-back none
   prepare_environment_script:
     sh ./.cirrus/populate_properties.sh
-  download_firebase_emulator_script:
+  firebase_emulator_cache:
     folder: ./.cache/firebase/emulators
     populate_script: 
       - curl -Lo ./firebase_bin https://firebase.tools/bin/linux/latest
