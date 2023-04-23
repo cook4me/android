@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.eventform
+package ch.epfl.sdp.cook4me.ui.event.form
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,6 @@ import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
-import ch.epfl.sdp.cook4me.ui.event.form.Event
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 

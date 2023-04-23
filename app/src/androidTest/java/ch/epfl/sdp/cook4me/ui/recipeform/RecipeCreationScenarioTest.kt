@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
+import ch.epfl.sdp.cook4me.ui.recipe.form.CreateRecipeScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

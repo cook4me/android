@@ -28,7 +28,6 @@ import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
-import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeListScreen
 import kotlinx.coroutines.launch
 
 const val RECIPE_LIST_RATIO = 0.9F

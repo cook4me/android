@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.EventFormService
+import ch.epfl.sdp.cook4me.ui.event.form.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import io.mockk.coEvery
 import io.mockk.coVerify
