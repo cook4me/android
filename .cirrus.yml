@@ -29,7 +29,7 @@ check_android_task:
   prepare_environment_script:
     sh ./.cirrus/populate_properties.sh
   firebase_emulator_cache:
-    folder: ./.cache/firebase/emulators
+    folder: ~/.cache/firebase/emulators
     populate_script: 
       - curl -Lo ./firebase_bin https://firebase.tools/bin/linux/latest
   assemble_instrumented_tests_script: |
