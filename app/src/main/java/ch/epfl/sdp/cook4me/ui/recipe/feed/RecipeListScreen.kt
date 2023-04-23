@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me.ui.recipeFeed
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
+import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeDisplay
 
 /**
  * Displays a scrollable list of recipes

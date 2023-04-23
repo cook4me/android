@@ -49,12 +49,12 @@ data class Event(
             "Creator: $creator\nId: $id\nIs private: $isPrivate"
 
     val eventDate: String
-        get() = "$dateAsFormattingDate"
+        get() = dateAsFormattingDate
 
     constructor(map: Map<String, Any>) : this(
         name = map["name"] as? String ?: "",
         description = map["description"] as? String ?: "",
-        dateTime = (map["dateTime"] as? Map<String, Any>)
+        dateTime = (map["dateTime"] as? Map<*, *>)
             ?.let { it["time"] as? com.google.firebase.Timestamp }
             ?.toDate()
             ?.let { calendarFromTime(it) }

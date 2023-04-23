@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.application
 
 import ch.epfl.sdp.cook4me.persistence.repository.BaseRepository
-import ch.epfl.sdp.cook4me.ui.eventform.Event
+import ch.epfl.sdp.cook4me.ui.event.form.Event
 import com.google.firebase.firestore.DocumentSnapshot
 
 private const val EVENT_PATH = "events"
