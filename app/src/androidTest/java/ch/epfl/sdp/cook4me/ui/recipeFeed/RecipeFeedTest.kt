@@ -10,6 +10,8 @@ import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
+import ch.epfl.sdp.cook4me.ui.recipe.feed.BottomBar
+import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeFeed
 import io.mockk.coEvery
 import io.mockk.mockk
 import org.junit.Rule

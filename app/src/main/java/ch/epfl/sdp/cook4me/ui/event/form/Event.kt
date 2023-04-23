@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.eventform
+package ch.epfl.sdp.cook4me.ui.event.form
 
 import java.util.Calendar
 import java.util.Date

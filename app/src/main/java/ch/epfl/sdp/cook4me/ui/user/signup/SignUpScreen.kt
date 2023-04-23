@@ -33,7 +33,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.EmailField
 import ch.epfl.sdp.cook4me.ui.common.form.EmailState
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
-import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch

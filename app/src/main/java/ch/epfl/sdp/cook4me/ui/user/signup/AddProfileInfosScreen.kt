@@ -43,7 +43,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
 import ch.epfl.sdp.cook4me.ui.common.form.UserField
 import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
-import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.firebase.auth.FirebaseAuthException

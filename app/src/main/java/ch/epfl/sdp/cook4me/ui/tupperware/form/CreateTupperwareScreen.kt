@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.tupperwareform
+package ch.epfl.sdp.cook4me.ui.tupperware.form
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -33,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.persistence.model.Tupperware
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField

@@ -24,23 +24,22 @@ import androidx.navigation.createGraph
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
-import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
+import ch.epfl.sdp.cook4me.ui.event.details.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
-import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
+import ch.epfl.sdp.cook4me.ui.event.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.navigation.BottomNavigationBar
 import ch.epfl.sdp.cook4me.ui.navigation.mainScreens
 import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
+import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
-import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
+import ch.epfl.sdp.cook4me.ui.tupperware.form.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
-import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app

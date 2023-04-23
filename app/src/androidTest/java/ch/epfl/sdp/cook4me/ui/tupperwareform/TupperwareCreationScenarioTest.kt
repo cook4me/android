@@ -21,6 +21,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.core.app.ActivityOptionsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.tupperware.form.CreateTupperwareScreen
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

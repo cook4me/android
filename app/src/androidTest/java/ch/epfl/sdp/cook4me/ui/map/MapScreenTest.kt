@@ -10,6 +10,9 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
+import ch.epfl.sdp.cook4me.ui.event.map.GoogleMapView
+import ch.epfl.sdp.cook4me.ui.event.map.Locations
+import ch.epfl.sdp.cook4me.ui.event.map.dummyMarkers
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState

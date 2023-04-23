@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.detailedevent
+package ch.epfl.sdp.cook4me.ui.event.details
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

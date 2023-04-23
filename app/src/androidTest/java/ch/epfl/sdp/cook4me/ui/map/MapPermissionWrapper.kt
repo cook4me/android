@@ -6,6 +6,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import ch.epfl.sdp.cook4me.permissions.TestPermissionStatusProvider
+import ch.epfl.sdp.cook4me.ui.event.map.MapPermissionWrapper
+import ch.epfl.sdp.cook4me.ui.event.map.dummyMarkers
 import org.junit.Rule
 import org.junit.Test
 

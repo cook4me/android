@@ -42,8 +42,8 @@ import ch.epfl.sdp.cook4me.ui.common.form.FormState
 import ch.epfl.sdp.cook4me.ui.common.form.GenericSeparators
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
-import ch.epfl.sdp.cook4me.ui.tupperwareform.ComposeFileProvider
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CustomDivider
+import ch.epfl.sdp.cook4me.ui.tupperware.form.ComposeFileProvider
+import ch.epfl.sdp.cook4me.ui.tupperware.form.CustomDivider
 
 private val cornerSize = 8.dp
 private val textPadding = 5.dp

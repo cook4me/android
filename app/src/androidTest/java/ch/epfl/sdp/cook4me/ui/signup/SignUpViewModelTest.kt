@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
-import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore

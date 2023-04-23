@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.map
+package ch.epfl.sdp.cook4me.ui.event.map
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.horizontalScroll
