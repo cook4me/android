@@ -30,7 +30,8 @@ check_android_task:
     sh ./.cirrus/populate_properties.sh
   download_firebase_emulator_script:
     folder: ./.cache/firebase/emulators
-    populate_script: curl -Lo ./firebase_bin https://firebase.tools/bin/linux/latest
+    populate_script: 
+      - curl -Lo ./firebase_bin https://firebase.tools/bin/linux/latest
   assemble_instrumented_tests_script: |
     chmod +x gradlew
     ./gradlew assembleDebugAndroidTest
