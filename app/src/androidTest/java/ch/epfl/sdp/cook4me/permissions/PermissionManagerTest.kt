@@ -26,7 +26,7 @@ class PermissionManagerTest {
         val permissionManager = PermissionManager(testPermissionStatusProvider)
 
         composeTestRule.setContent {
-            permissionManager.withPermission {
+            permissionManager.WithPermission {
                 Text("Content with permissions")
             }
         }
@@ -42,7 +42,7 @@ class PermissionManagerTest {
         val permissionManager = PermissionManager(testPermissionStatusProvider)
 
         composeTestRule.setContent {
-            permissionManager.withPermission {
+            permissionManager.WithPermission {
                 Text("Content with permissions")
             }
         }
@@ -59,7 +59,7 @@ class PermissionManagerTest {
         val permissionManager = PermissionManager(testPermissionStatusProvider)
 
         composeTestRule.setContent {
-            permissionManager.withPermission {
+            permissionManager.WithPermission {
                 Text("Content with permissions")
             }
         }
@@ -107,7 +107,7 @@ class PermissionManagerTest {
         )
 
         composeTestRule.setContent {
-            PermissionManager(testPermissionStatusProvider).withPermission {
+            PermissionManager(testPermissionStatusProvider).WithPermission {
                 Text("Camera and location permission Granted")
             }
         }
@@ -123,7 +123,7 @@ class PermissionManagerTest {
         )
 
         composeTestRule.setContent {
-            PermissionManager(testPermissionStatusProvider).withPermission {
+            PermissionManager(testPermissionStatusProvider).WithPermission {
                 Text("Camera and location permission Granted")
             }
         }
@@ -139,7 +139,7 @@ class PermissionManagerTest {
         )
 
         composeTestRule.setContent {
-            PermissionManager(testPermissionStatusProvider).withPermission {
+            PermissionManager(testPermissionStatusProvider).WithPermission {
                 Text("Camera and location permission Granted")
             }
         }
@@ -155,7 +155,7 @@ class PermissionManagerTest {
         )
 
         composeTestRule.setContent {
-            PermissionManager(testPermissionStatusProvider).withPermission {
+            PermissionManager(testPermissionStatusProvider).WithPermission {
                 Text("Camera and location permission Granted")
             }
         }
@@ -171,7 +171,7 @@ class PermissionManagerTest {
         )
 
         composeTestRule.setContent {
-            PermissionManager(testPermissionStatusProvider).withPermission {
+            PermissionManager(testPermissionStatusProvider).WithPermission {
                 Text("Camera and location permission Granted")
             }
         }

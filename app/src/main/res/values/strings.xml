@@ -26,13 +26,6 @@
     <string name="EPFL">EPFL</string>
     <string name="UNIL">UNIL</string>
 
-    <!--  Event  -->
-    <string name="empty_name_error_msg">Name is empty</string>
-    <string name="empty_description_error_msg">Description is empty</string>
-    <string name="empty_location_error_msg">Location is empty</string>
-    <string name="max_participants_too_low_error_msg">Max participants is less than 2</string>
-    <string name="date_in_past_error_msg">Date is in the past</string>
-    
     <!--  CreateEventScreen  -->
     <string name="ask_event_name">Name of the event?</string>
     <string name="ask_event_description">Description of the event?</string>
@@ -40,7 +33,6 @@
     <string name="ask_event_visibility">Who can see the event</string>
     <string name="event_visibility_everyone">Everyone</string>
     <string name="event_visibility_subscriber_only">Subscriber only</string>
-    <string name="event_submit_button_test">Submit</string>
 
     <!-- CreateNewItemButton -->
     <string name="create_new_item_type">Create a new</string>
@@ -61,10 +53,8 @@
     <string name="TupCreateFormAddImage">Add Images</string>
     <string name="TupCreateFormTupName">Tupperware Name</string>
     <string name="TupCreateFormDesc">Description</string>
-    <string name="TupCreateFormTags">Tags</string>
     <string name="ButtonRowCancel">Cancel</string>
     <string name="ButtonRowDone">Done</string>
-    <string name="image_uri">images/*</string>
     <string name="TupCreateBlank">Field can\'t be left blank</string>
 
     <!-- AddressInput   -->
@@ -78,7 +68,6 @@
     <string name="sign_in_screen_sign_in_button">Sign in</string>
     <string name="invalid_email_message">Invalid email!</string>
     <string name="password_blank">Password cannot be blank!</string>
-    <string name="sign_in_screen_sign_in_success">Sign in successful!</string>
     <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
     <string name="TAG_EMAIL_FIELD">EmailField</string>
@@ -87,9 +76,7 @@
 
     <!-- Overview Screen -->
     <string name="Overview_Screen_Tag">OverviewScreen</string>
-    <string name="cool_map">Cool Map</string>
     <string name="Current_user_header">You are logged in with: </string>
-    <string name="Empty_User_Email">Empty Email</string>
 
     <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
@@ -102,13 +89,9 @@
     <string name="default_allergies">No Allergies</string>
     <string name="default_bio">Hi there, I am a chef</string>
     <string name="btn_save">save</string>
-    <string name="btn_cancel">cancel</string>
-    <string name="msg_cancelled">cancelled</string>
-    <string name="msg_saved">saved</string>
+    <string name="btn_cancel">Cancel</string>
     <string name="tag_password">Password</string>
-    <string name="default_password">Enter a password</string>
     <string name="tag_email">Email</string>
-    <string name="default_email">example@epfl.ch</string>
 
     <!-- Recipe Screen -->
     <string name="ingredientsTextFieldContentDesc">Ingredients Text field</string>
@@ -141,8 +124,6 @@
     <string name="option2">option2</string>
 
     <!-- Signup -->
-    <string name="tag_singUpTitle">Add email and password</string>
-    <string name="btn_back">back</string>
     <string name="btn_continue">continue</string>
     <string name="sign_up_screen_top_bar_message">Enter Email and Password</string>
     <string name="sign_up_screen_invalid_email">Email invalid</string>

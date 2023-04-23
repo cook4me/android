@@ -69,7 +69,7 @@ fun EditProfileScreen(
             .verticalScroll(rememberScrollState())
             .padding(8.dp)
     ) {
-        saveCancel_buttons(viewModel::onSubmit)
+        SaveCancelButtons(viewModel::onSubmit)
         ImageHolder_profileUpdateScreen(
             onClickAddImage = { onClickAddImage() },
             image = userImage,
@@ -77,27 +77,27 @@ fun EditProfileScreen(
 
         // Textfield for the userna
         // TODO IMPLEMENT A CLEAN WAme
-        columnTextBtn_profileUpdateScreen(
+        ColumnTextBtnProfileUpdateScreen(
             stringResource(R.string.tag_username),
             username,
             viewModel::addUsername,
         )
 
         // Textfield for the Favorite dish
-        columnTextBtn_profileUpdateScreen(
+        ColumnTextBtnProfileUpdateScreen(
             stringResource(R.string.tag_favoriteDish),
             favoriteDish,
             viewModel::addFavoriteDish,
         )
 
-        columnTextBtn_profileUpdateScreen(
+        ColumnTextBtnProfileUpdateScreen(
             stringResource(R.string.tag_allergies),
             allergies,
             viewModel::addAllergies,
         )
 
         // Textfield for the bio
-        bio_profileUpdateScreen(
+        BioProfileUpdateScreen(
             stringResource(R.string.tag_bio),
             bio,
             viewModel::addBio,
@@ -106,12 +106,12 @@ fun EditProfileScreen(
 }
 
 @Composable
-fun bio_profileUpdateScreen(
+fun BioProfileUpdateScreen(
     displayLabel: String,
     inputText: String,
     change: (String) -> Unit
 ) {
-    input_row {
+    InputRow {
         Text(
             text = displayLabel,
             modifier = Modifier
@@ -122,7 +122,7 @@ fun bio_profileUpdateScreen(
             value = inputText,
             onValueChange = { change(it) },
             placeholder = { Text(stringResource(R.string.default_bio)) },
-            colors = ColorsTextfield_profilUpdateScreen(),
+            colors = colorsTextfieldProfileUpdateScreen(),
             singleLine = false,
             modifier = Modifier
                 .height(150.dp)
@@ -132,12 +132,12 @@ fun bio_profileUpdateScreen(
 }
 
 @Composable
-fun columnTextBtn_profileUpdateScreen(
+fun ColumnTextBtnProfileUpdateScreen(
     label: String,
     inputText: String,
     change: (String) -> Unit
 ) {
-    input_row {
+    InputRow {
         Text(
             text = label, modifier = Modifier.width(100.dp)
         )
@@ -150,13 +150,13 @@ fun columnTextBtn_profileUpdateScreen(
             value = inputText,
             modifier = Modifier.testTag(label),
             onValueChange = { change(it) },
-            colors = ColorsTextfield_profilUpdateScreen()
+            colors = colorsTextfieldProfileUpdateScreen()
         )
     }
 }
 
 @Composable
-fun ColorsTextfield_profilUpdateScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
+fun colorsTextfieldProfileUpdateScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
     backgroundColor = Color.Transparent, textColor = Color.Black
 )
 
@@ -204,21 +204,21 @@ fun Image_profileUpdateScreen(
 }
 
 @Composable
-private fun saveCancel_buttons(onSummit: () -> Unit) {
+private fun SaveCancelButtons(onSummit: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        text_buttons(onClick = {}, nameBtn = stringResource(R.string.btn_cancel))
+        TextButtons(onClick = {}, nameBtn = stringResource(R.string.btn_cancel))
 
-        text_buttons(onClick = onSummit, nameBtn = stringResource(R.string.btn_save))
+        TextButtons(onClick = onSummit, nameBtn = stringResource(R.string.btn_save))
     }
 }
 
 @Composable
-private fun input_row(content: @Composable RowScope.() -> Unit) {
+private fun InputRow(content: @Composable RowScope.() -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -230,7 +230,7 @@ private fun input_row(content: @Composable RowScope.() -> Unit) {
 }
 
 @Composable
-private fun text_buttons(onClick: () -> Unit, nameBtn: String) {
+private fun TextButtons(onClick: () -> Unit, nameBtn: String) {
     Text(
         text = nameBtn,
         modifier = Modifier
