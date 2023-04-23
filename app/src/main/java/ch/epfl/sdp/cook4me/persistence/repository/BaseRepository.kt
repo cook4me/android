@@ -6,13 +6,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
-open class ObjectRepository(
-    private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
+open class BaseRepository(
+    protected val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val objectPath: String = ""
 ) {
 
     suspend fun <A : Any> add(value: A) {
-        store.collection(objectPath).add(value).await()
+        try {
+            store.collection(objectPath).add(value).await()
+        } catch (e: FirebaseFirestoreException) {
+            Log.e("BaseRepository", "Error adding element: ${e.message}")
+        }
     }
 
     suspend fun <A : Any> getAll(ofClass: Class<A>): Map<String, A> {
@@ -67,7 +71,7 @@ open class ObjectRepository(
             result.documents
         } catch (e: FirebaseFirestoreException) {
             // handling the exception, if anything goes wrong, return an empty list
-            Log.e("ObjectRepo", "Error querying documents: ${e.message}")
+            Log.e("BaseRepository", "Error querying documents: ${e.message}")
             emptyList()
         }
 
@@ -82,7 +86,7 @@ open class ObjectRepository(
             val result = store.collection(objectPath).document(id).get().await()
             result
         } catch (e: FirebaseFirestoreException) {
-            Log.e("ObjectRepo", "Error querying documents: ${e.message}")
+            Log.e("BaseRepository", "Error querying documents: ${e.message}")
             null
         }
 }

@@ -1,6 +1,6 @@
 package ch.epfl.sdp.cook4me.application
 
-import ch.epfl.sdp.cook4me.persistence.repository.ObjectRepository
+import ch.epfl.sdp.cook4me.persistence.repository.BaseRepository
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import com.google.firebase.firestore.DocumentSnapshot
 
@@ -9,7 +9,7 @@ private const val EVENT_PATH = "events"
 /**
  * Service that handles the submission of the event form
  */
-class EventFormService(private val objectRepository: ObjectRepository = ObjectRepository(objectPath = EVENT_PATH)) {
+class EventFormService(private val baseRepository: BaseRepository = BaseRepository(objectPath = EVENT_PATH)) {
 
     /**
      * Submits the form if it is valid, otherwise returns the error message
@@ -17,7 +17,7 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
      * @return null if the event is valid, the error message otherwise
      */
     suspend fun submitForm(event: Event): String? = if (event.isValidEvent) {
-        objectRepository.add(event)
+        baseRepository.add(event)
         null
     } else {
         event.eventProblem
@@ -30,7 +30,7 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
     * When nothing is found, an empty map is returned
     * */
     suspend fun getWithGivenField(field: String, query: Any): Map<String, Event> {
-        val result = objectRepository.getWithGivenField<Event>(field, query)
+        val result = baseRepository.getWithGivenField<Event>(field, query)
         return result.map { it.id to documentSnapshotToEvent(it) }.toMap()
     }
 
@@ -48,7 +48,7 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
     * If nothing is found, null is returned
     * */
     suspend fun getEventWithId(id: String): Event? {
-        val result = objectRepository.getWithId<Event>(id)
+        val result = baseRepository.getWithId<Event>(id)
         return result?.let { documentSnapshotToEvent(it) }
     }
 
