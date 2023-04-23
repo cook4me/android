@@ -62,10 +62,6 @@ enum class Screen {
     RecipeFeed,
 }
 
-/* Testing around the Detailed Event Screen */
-// initializing the testing event
-val calendar = Calendar.getInstance()
-
 sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title: String) {
     object Tupperwares :
         BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
