@@ -135,6 +135,7 @@ class EditProfileScreenTest {
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
 
+        // Wait to be completed
         profileViewModel.isLoading.value = false
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
