@@ -17,12 +17,14 @@ class TupperwareRepository(
 ) :
     BaseRepository(store, COLLECTION_PATH) {
     suspend fun add(title: String, description: String, images: List<Uri>) {
-        val storageRef = storage.reference
-        images.forEach { path ->
-            val ref =
-                storageRef.child("/images/${auth.currentUser?.email}/${title}/${UUID.randomUUID()}")
-            ref.putFile(path).await()
-        }
-        super.add(Tupperware(title, description))
+        auth.currentUser?.email?.let{email ->
+            val storageRef = storage.reference
+            images.forEach { path ->
+                val ref =
+                    storageRef.child("/images/$email/$title/${UUID.randomUUID()}")
+                ref.putFile(path).await()
+            }
+            super.add(Tupperware(title, description, email))
+        } ?: throw IllegalStateException("User is not logged in!")
     }
 }
