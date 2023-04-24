@@ -110,7 +110,7 @@ class EditProfileScreenTest {
 
         composeTestRule.onNodeWithTag(username).performScrollTo()
 
-        Thread.sleep(2000)
+        composeTestRule.waitForIdle()
         // Set input
         composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
         composeTestRule.onNodeWithTag(favFood).performTextInput(favoriteDishInput)
