@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
@@ -107,6 +108,7 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
 
+        composeTestRule.onNodeWithTag(username).performScrollTo()
         // Set input
         composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
         composeTestRule.onNodeWithTag(favFood).performTextInput(favoriteDishInput)
