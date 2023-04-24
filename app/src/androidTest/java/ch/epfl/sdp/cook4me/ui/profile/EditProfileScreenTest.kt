@@ -109,6 +109,8 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
 
         composeTestRule.onNodeWithTag(username).performScrollTo()
+
+        Thread.sleep(2000)
         // Set input
         composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
         composeTestRule.onNodeWithTag(favFood).performTextInput(favoriteDishInput)
