@@ -109,7 +109,7 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithTag(favFood).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
-        
+
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
                 .onAllNodesWithTag(username)
