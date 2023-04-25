@@ -1,28 +1,33 @@
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldColors
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,21 +36,46 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
+import ch.epfl.sdp.cook4me.ui.common.form.BiosField
+import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
+import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
+import ch.epfl.sdp.cook4me.ui.common.form.UserField
+import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.firebase.auth.FirebaseAuthException
+import kotlinx.coroutines.launch
 
 @Composable
 fun AddProfileInfoScreen(
-    viewModel: SignUpViewModel = viewModel(),
+    modifier: Modifier = Modifier,
+    viewModel: SignUpViewModel = SignUpViewModel(),
+    onSuccessfulSignUp: () -> Unit,
 ) {
-    val username by viewModel.username
-    val favoriteDish by viewModel.favoriteDish
-    val allergies by viewModel.allergies
-    val bio by viewModel.bio
+    val context = LocalContext.current
+    val usernameState =
+        remember { UserNameState(context.getString(R.string.invalid_username_message)) }
+    val favoriteDishState = remember {
+        NonRequiredTextFieldState("", "")
+    }
+    val allergiesState = remember {
+        NonRequiredTextFieldState("", "")
+    }
+    val bioState = remember {
+        NonRequiredTextFieldState("", "")
+    }
+
     val userImage by viewModel.userImage
+
+    var inProgress by remember {
+        mutableStateOf(false)
+    }
+
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
     val imagePicker =
         rememberLauncherForActivityResult(
@@ -63,101 +93,102 @@ fun AddProfileInfoScreen(
         imagePicker.launch("image/*")
     }
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(8.dp)
-    ) {
-        saveCancel_buttons(viewModel::onSubmit)
-        ImageHolder_AddProfileInfoScreen(
-            onClickAddImage = { onClickAddImage() },
-            image = userImage,
-        )
+    Scaffold(
+        scaffoldState = scaffoldState,
+        content = { padding ->
+            Column(
+                modifier = modifier
+                    .testTag(stringResource(R.string.Login_Screen_Tag))
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState())
+                    .padding(padding),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                BasicToolbar(stringResource(R.string.Add_profile_infos_top_bar_message))
 
-        // Textfield for the userna
-        columnTextBtn_AddProfileInfoScreen(
-            stringResource(R.string.tag_username),
-            username,
-            viewModel::addUsername,
-        )
-
-        // Textfield for the Favorite dish
-        columnTextBtn_AddProfileInfoScreen(
-            stringResource(R.string.tag_favoriteDish),
-            favoriteDish,
-            viewModel::addFavoriteDish,
-        )
-
-        // Textfield for Allergies
-        columnTextBtn_AddProfileInfoScreen(
-            stringResource(R.string.tag_allergies),
-            allergies,
-            viewModel::addAllergies,
-        )
-
-        // Textfield for the bio
-        bio_AddProfileInfoScreen(
-            stringResource(R.string.tag_bio),
-            bio,
-            viewModel::addBio,
-        )
-    }
-}
-
-@Composable
-fun bio_AddProfileInfoScreen(
-    displayLabel: String,
-    inputText: String,
-    change: (String) -> Unit
-) {
-    input_row {
-        Text(
-            text = displayLabel,
-            modifier = Modifier
-                .width(100.dp)
-                .padding(top = 7.dp)
-        )
-        TextField(
-            value = inputText,
-            onValueChange = { change(it) },
-            placeholder = { Text(stringResource(R.string.default_bio)) },
-            colors = ColorsTextfield_AddProfileInfoScreen(),
-            singleLine = false,
-            modifier = Modifier
-                .height(150.dp)
-                .testTag(displayLabel)
-        )
-    }
-}
-
-@Composable
-fun columnTextBtn_AddProfileInfoScreen(
-    label: String,
-    inputText: String,
-    change: (String) -> Unit
-) {
-    input_row {
-        Text(
-            text = label, modifier = Modifier.width(100.dp)
-        )
-        TextField(
-            placeholder = {
-                Text(
-                    inputText
+                ImageHolder_AddProfileInfoScreen(
+                    onClickAddImage = { onClickAddImage() },
+                    image = userImage,
                 )
-            },
-            value = inputText,
-            modifier = Modifier.testTag(label),
-            onValueChange = { change(it) },
-            colors = ColorsTextfield_AddProfileInfoScreen()
-        )
-    }
-}
 
-@Composable
-fun ColorsTextfield_AddProfileInfoScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
-    backgroundColor = Color.Transparent, textColor = Color.Black
-)
+                // Textfield for the Username
+                UserField(
+                    usernameState.text,
+                    usernameState.showErrors(),
+                    {
+                        usernameState.text = it
+                        viewModel.addUsername(it)
+                    },
+                )
+
+                ProfileInfosField(
+                    icon = Icons.Filled.Info,
+                    preview = stringResource(id = R.string.tag_favoriteDish),
+                    value = favoriteDishState.text,
+                    isError = false,
+                    onNewValue = {
+                        favoriteDishState.text = it
+                        viewModel.addFavoriteDish(it)
+                    }
+                )
+
+                ProfileInfosField(
+                    icon = Icons.Filled.Info,
+                    preview = stringResource(id = R.string.tag_allergies),
+                    value = allergiesState.text,
+                    isError = false,
+                    onNewValue = {
+                        allergiesState.text = it
+                        viewModel.addAllergies(it)
+                    }
+                )
+
+                BiosField(
+                    icon = Icons.Filled.Info,
+                    preview = stringResource(id = R.string.tag_bio),
+                    value = bioState.text,
+                    isError = false,
+                    onNewValue = {
+                        bioState.text = it
+                        viewModel.addBio(it)
+                    }
+                )
+
+                LoadingButton(
+                    R.string.btn_continue,
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp, 8.dp)
+                        .testTag(stringResource(id = R.string.btn_continue)),
+                    inProgress
+                ) {
+                    usernameState.enableShowErrors()
+                    scope.launch {
+                        if (!usernameState.isValid) {
+                            scaffoldState.snackbarHostState.showSnackbar(usernameState.errorMessage)
+                        } else {
+                            try {
+                                inProgress = true
+                                viewModel.onSubmit()
+                                onSuccessfulSignUp()
+                            } catch (e: FirebaseAuthException) {
+                                scaffoldState.snackbarHostState.showSnackbar(
+                                    context.getString(R.string.Add_profile_infos_invalid_user),
+                                )
+                                Log.d(
+                                    context.getString(R.string.Add_profile_infos_invalid_user),
+                                    e.stackTraceToString()
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    )
+}
 
 @Composable
 fun ImageHolder_AddProfileInfoScreen(
@@ -181,7 +212,7 @@ fun ImageHolder_AddProfileInfoScreen(
                 image = image,
             )
         }
-        Text(text = "Change profile picture")
+        Text(text = "Add profile picture")
     }
 }
 
@@ -203,37 +234,10 @@ fun Image_AddProfileInfoScreen(
 }
 
 @Composable
-private fun saveCancel_buttons(onSummit: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        text_buttons(onClick = {}, nameBtn = stringResource(R.string.btn_cancel))
-
-        text_buttons(onClick = onSummit, nameBtn = stringResource(R.string.btn_save))
-    }
+private fun BasicToolbar(title: String) {
+    TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
 }
 
 @Composable
-private fun input_row(content: @Composable RowScope.() -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        content()
-    }
-}
-
-@Composable
-private fun text_buttons(onClick: () -> Unit, nameBtn: String) {
-    Text(
-        text = nameBtn,
-        modifier = Modifier
-            .testTag(nameBtn)
-            .clickable(onClick = { onClick() })
-    )
-}
+private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
+    if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant

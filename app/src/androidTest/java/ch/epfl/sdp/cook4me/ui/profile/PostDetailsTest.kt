@@ -24,7 +24,6 @@ class PostDetailsTest {
                 data = Post(1, "Tiramisu", "This is tiramisu")
             )
         }
-        val imageTag = composeTestRule.activity.getString(R.string.post_tag_image)
 
         composeTestRule.onNodeWithStringId(R.string.post_title).assertIsDisplayed()
         composeTestRule.onNodeWithText("Tiramisu").assertIsDisplayed()

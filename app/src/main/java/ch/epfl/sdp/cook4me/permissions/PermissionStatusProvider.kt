@@ -33,5 +33,5 @@ interface PermissionStatusProvider {
      * Requests all required permissions from the user.
      */
     @Composable
-    fun requestAllPermissions()
+    fun RequestAllPermissions()
 }

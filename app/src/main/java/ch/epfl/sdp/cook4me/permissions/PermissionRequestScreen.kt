@@ -11,7 +11,7 @@ fun PermissionRequestScreen(permissionStatusProvider: PermissionStatusProvider) 
             permissionStatusProvider
         )
     }
-    permissionManager.withPermission {
+    permissionManager.WithPermission {
         Text("Camera and location permission Granted")
     }
 }

@@ -31,11 +31,12 @@ fun OverviewScreen(
     onAddEventClick: () -> Unit,
     onPostClick: () -> Unit,
     onAddRecipeClick: () -> Unit,
+    onRecipeFeedClick: () -> Unit,
     signOutNavigation: () -> Unit,
     onDetailedEventClick: () -> Unit,
     onChatClick: () -> Unit,
-    overviewViewModel: OverviewViewModel = viewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    overviewViewModel: OverviewViewModel = viewModel()
 ) {
     // Listen to the navigation state and navigate to the correct screen
     val navigationState = overviewViewModel.navigationState
@@ -95,6 +96,9 @@ fun OverviewScreen(
             Button(onClick = onPostClick) {
                 Text(stringResource(R.string.navigate_to_postView))
             }
+            Button(onClick = onRecipeFeedClick) {
+                Text(stringResource(R.string.navigate_to_recipe_feed))
+            }
             Button(onClick = { overviewViewModel.onSignOutButtonClicked() }) {
                 Text(stringResource(R.string.sign_out))
             }
@@ -103,18 +107,4 @@ fun OverviewScreen(
             }
         }
     }
-}
-
-@Composable
-fun CurrentLoggedInEmailText(email: String?) {
-    var userEmail = email
-    if (userEmail == null) {
-        userEmail = stringResource(R.string.Empty_User_Email)
-    }
-    Text(
-        text = stringResource(R.string.Current_user_header) + userEmail,
-        modifier = Modifier
-            .padding(16.dp),
-        fontWeight = FontWeight.Bold
-    )
 }

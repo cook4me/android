@@ -70,4 +70,19 @@ open class ObjectRepository(
             Log.e("ObjectRepo", "Error querying documents: ${e.message}")
             emptyList()
         }
+
+    /*
+    * This function is designed with cope with the Event data class, though it's still generic.
+    * Instead of calling .toObject(), it simply returns the DocumentSnapshot, and we deal with
+    * it later.
+    * If nothing is found, it returns null.
+    * */
+    suspend fun <A : Any> getWithId(id: String): DocumentSnapshot? =
+        try {
+            val result = store.collection(objectPath).document(id).get().await()
+            result
+        } catch (e: FirebaseFirestoreException) {
+            Log.e("ObjectRepo", "Error querying documents: ${e.message}")
+            null
+        }
 }

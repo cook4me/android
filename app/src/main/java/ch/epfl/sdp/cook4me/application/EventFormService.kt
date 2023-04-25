@@ -44,6 +44,15 @@ class EventFormService(private val objectRepository: ObjectRepository = ObjectRe
     }
 
     /*
+    * To get the event of given id.
+    * If nothing is found, null is returned
+    * */
+    suspend fun getEventWithId(id: String): Event? {
+        val result = objectRepository.getWithId<Event>(id)
+        return result?.let { documentSnapshotToEvent(it) }
+    }
+
+    /*
     * Notes: Firebase could not serialize to java.untl.Calender, I will add an constructor in Event.kt
     * to construct an Event object from a map.
     * This function is used to convert a document snapshot to an event object manually.

@@ -16,12 +16,12 @@ class PermissionManager(
     private val permissionStatusProvider: PermissionStatusProvider
 ) {
     @Composable
-    fun withPermission(content: @Composable () -> Unit) {
-        handlePermissionStates(content)
+    fun WithPermission(content: @Composable () -> Unit) {
+        HandlePermissionStates(content)
     }
 
     @Composable
-    private fun handlePermissionStates(
+    private fun HandlePermissionStates(
         content: @Composable () -> Unit
     ) {
         val context = LocalContext.current
@@ -30,7 +30,7 @@ class PermissionManager(
             content()
         } else {
             if (permissionsRequested) {
-                permissionStatusProvider.requestAllPermissions()
+                permissionStatusProvider.RequestAllPermissions()
             }
             Column {
                 Text(

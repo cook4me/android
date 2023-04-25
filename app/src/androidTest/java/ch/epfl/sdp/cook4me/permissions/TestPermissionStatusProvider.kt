@@ -24,7 +24,7 @@ class TestPermissionStatusProvider(
     }
 
     @Composable
-    override fun requestAllPermissions() {
+    override fun RequestAllPermissions() {
         permissionsMap.replaceAll { _, v -> Pair(true, v.second) }
     }
 

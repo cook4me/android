@@ -22,7 +22,6 @@ class MapPermissionWrapper {
                 permissionStatusProvider = permissionStatusProvider,
                 modifier = Modifier.fillMaxSize(),
                 markers = dummyMarkers,
-                testing = true
             )
         }
 
@@ -38,7 +37,6 @@ class MapPermissionWrapper {
                 permissionStatusProvider = permissionStatusProvider,
                 modifier = Modifier.fillMaxSize(),
                 markers = dummyMarkers,
-                testing = true
             )
         }
 

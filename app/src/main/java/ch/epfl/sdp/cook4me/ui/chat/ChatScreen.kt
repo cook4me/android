@@ -23,7 +23,7 @@ fun ChatScreen() {
         ),
         appContext = context,
     )
-    val client = ChatClient.Builder("dxj82nhtb27k", appContext = context)
+    val client = ChatClient.Builder("b67pax5b2wdq", appContext = context)
         .withPlugin(offlinePluginFactory)
         .logLevel(ChatLogLevel.ALL)
         .build()

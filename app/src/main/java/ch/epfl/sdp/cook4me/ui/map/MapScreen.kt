@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
@@ -35,6 +36,7 @@ import com.google.maps.android.compose.rememberMarkerState
 
 private const val ZOOM_DEFAULT_VALUE = 15f
 private const val MAP_SCREEN_PROPORTION = 0.8f
+
 data class MarkerData(
     val position: LatLng,
     val title: String,
@@ -71,15 +73,22 @@ fun GoogleMapView(
     content: @Composable () -> Unit = {},
     markers: List<MarkerData> = emptyList(),
     selectedEventId: String = "",
-    userLocationDisplayed: Boolean = false
+    userLocationDisplayed: Boolean = false,
+    onCreateNewEventClick: () -> Unit = {},
+    onDetailedEventClick: () -> Unit = {},
 ) {
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
-        mutableStateOf(MapProperties(mapType = MapType.NORMAL, isMyLocationEnabled = userLocationDisplayed))
+        mutableStateOf(
+            MapProperties(
+                mapType = MapType.NORMAL,
+                isMyLocationEnabled = userLocationDisplayed
+            )
+        )
     }
-    var onClickUniversity = {
-        uniLocation: LatLng ->
-        cameraPositionState.position = CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
+    val onClickUniversity = { uniLocation: LatLng ->
+        cameraPositionState.position =
+            CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
     var selectedMarker by remember { mutableStateOf(findMarkerById(markers, selectedEventId)) }
     var navigateToEvent by remember { mutableStateOf(false) }
@@ -88,6 +97,10 @@ fun GoogleMapView(
             .fillMaxWidth()
             .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
+        CreateNewItemButton(
+            itemType = stringResource(R.string.event),
+            onClick = onCreateNewEventClick
+        )
         MapTypeControls(
             onMapTypeClick = {
                 mapProperties = mapProperties.copy(mapType = it)
@@ -128,7 +141,10 @@ fun GoogleMapView(
                             backgroundColor = MaterialTheme.colors.onPrimary,
                             contentColor = MaterialTheme.colors.primary
                         ),
-                        onClick = { navigateToEvent = !navigateToEvent }
+                        onClick = {
+                            navigateToEvent = !navigateToEvent
+                            onDetailedEventClick()
+                        }
                     ) {
                         Text(text = "Explore event", style = MaterialTheme.typography.body1)
                     }
@@ -166,6 +182,7 @@ fun GoogleMapView(
         }
     }
 }
+
 private fun findMarkerById(markers: List<MarkerData>, markerId: String): MarkerData? =
     markers.find { marker -> marker.id == markerId }
 
