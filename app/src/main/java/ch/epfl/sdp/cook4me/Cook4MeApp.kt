@@ -135,7 +135,7 @@ fun Cook4MeApp(
         }
         composable(route = Screen.EditProfileScreen.name) {
             EditProfileScreen(
-            onCancelListener = { navController.navigate(Screen.OverviewScreen.name) }
+                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) }
             )
         }
         composable(route = Screen.CreateTupperwareScreen.name) { CreateTupperwareScreen() }
