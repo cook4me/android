@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
@@ -108,7 +109,7 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithTag(favFood).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
-
+        
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
                 .onAllNodesWithTag(username)
@@ -143,8 +144,25 @@ class EditProfileScreenTest {
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
 
+        // Wait to be completed
         profileViewModel.isLoading.value = false
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
+    }
+
+    @Test
+    fun editProfileScreenCancelButtonTest(){
+        var isCancelledClicked = false
+
+        composeTestRule.setContent { EditProfileScreen(onCancelListener = { isCancelledClicked = true }) }
+
+        // Check that the cancel button is not clicked
+        assert(!isCancelledClicked)
+
+        // Click on the cancel button
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
+
+        // Check that the cancel button is clicked
+        assert(isCancelledClicked)
     }
 }
