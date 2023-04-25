@@ -111,6 +111,10 @@ class ProfileScreenTest {
     fun profileScreenStateTest() {
         val profileViewModel = ProfileViewModel()
 
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            !profileViewModel.isLoading.value
+        }
+
         composeTestRule.setContent { ProfileScreen(profileViewModel = profileViewModel) }
 
         profileViewModel.isLoading.value = true

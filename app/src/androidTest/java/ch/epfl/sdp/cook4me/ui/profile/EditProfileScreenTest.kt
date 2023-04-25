@@ -89,24 +89,33 @@ class EditProfileScreenTest {
 
     @Test
     fun editScreenTest() {
+        val profileViewModel = ProfileViewModel()
+
         // Set up the test
         val username = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
         val favFood = composeTestRule.activity.getString(R.string.tag_favoriteDish)
         val allergies = composeTestRule.activity.getString(R.string.tag_allergies)
         val bio = composeTestRule.activity.getString(R.string.tag_bio)
 
-        composeTestRule.setContent { EditProfileScreen() }
-
+        // Set input
         val usernameInput = "ronald"
         val favoriteDishInput = "Butterbeer"
         val allergiesInput = "Snails"
         val bioInput = "I'm just the friend of harry"
 
+        // Set up the test
+        composeTestRule.setContent { EditProfileScreen() }
+
+        // Wait for the screen to be loaded
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            !profileViewModel.isLoading.value
+        }
+
         // Clear fields
-        composeTestRule.onNodeWithTag(username).performTextClearance()
-        composeTestRule.onNodeWithTag(favFood).performTextClearance()
-        composeTestRule.onNodeWithTag(bio).performTextClearance()
-        composeTestRule.onNodeWithTag(allergies).performTextClearance()
+        //composeTestRule.onNodeWithTag(username).performTextClearance()
+        //composeTestRule.onNodeWithTag(favFood).performTextClearance()
+        //composeTestRule.onNodeWithTag(bio).performTextClearance()
+        //composeTestRule.onNodeWithTag(allergies).performTextClearance()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
@@ -129,6 +138,7 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
 
+        // Click on the save button
         composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
     }
 
@@ -151,8 +161,13 @@ class EditProfileScreenTest {
     @Test
     fun editProfileScreenCancelButtonTest() {
         var isCancelledClicked = false
+        val profileViewModel = ProfileViewModel()
 
         composeTestRule.setContent { EditProfileScreen(onCancelListener = { isCancelledClicked = true }) }
+
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            !profileViewModel.isLoading.value
+        }
 
         // Check that the cancel button is not clicked
         assert(!isCancelledClicked)
