@@ -2,7 +2,9 @@ package ch.epfl.sdp.cook4me.ui.profile
 
 import android.content.Context
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -106,6 +108,12 @@ class EditProfileScreenTest {
         composeTestRule.onNodeWithTag(favFood).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
+
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithTag(username)
+                .fetchSemanticsNodes().size == 1
+        }
 
         // Set input
         composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
