@@ -2,13 +2,11 @@ package ch.epfl.sdp.cook4me.ui.profile
 
 import android.content.Context
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
@@ -151,7 +149,7 @@ class EditProfileScreenTest {
     }
 
     @Test
-    fun editProfileScreenCancelButtonTest(){
+    fun editProfileScreenCancelButtonTest() {
         var isCancelledClicked = false
 
         composeTestRule.setContent { EditProfileScreen(onCancelListener = { isCancelledClicked = true }) }
