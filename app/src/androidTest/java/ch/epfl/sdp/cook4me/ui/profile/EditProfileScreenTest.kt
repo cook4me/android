@@ -110,6 +110,8 @@ class EditProfileScreenTest {
 
         composeTestRule.onNodeWithTag(username).performScrollTo()
 
+        //print entire screen in console
+
         composeTestRule.waitForIdle()
         // Set input
         composeTestRule.onNodeWithTag(username).performTextInput(usernameInput)
@@ -143,5 +145,21 @@ class EditProfileScreenTest {
         profileViewModel.isLoading.value = false
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
+    }
+
+    @Test
+    fun editProfileScreenCancelButtonTest(){
+        var isCancelledClicked = false
+
+        composeTestRule.setContent { EditProfileScreen(onCancelListener = { isCancelledClicked = true }) }
+
+        // Check that the cancel button is not clicked
+        assert(!isCancelledClicked)
+
+        // Click on the cancel button
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
+
+        // Check that the cancel button is clicked
+        assert(isCancelledClicked)
     }
 }
