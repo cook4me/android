@@ -88,7 +88,7 @@ class EditProfileScreenTest {
     fun editScreenTest() {
         val profileViewModel = ProfileViewModel()
 
-        // Set up the test
+        // Set up the test and wait for the screen to be loaded
         val username = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
         // val favFood = composeTestRule.activity.getString(R.string.tag_favoriteDish)
         // val allergies = composeTestRule.activity.getString(R.string.tag_allergies)
