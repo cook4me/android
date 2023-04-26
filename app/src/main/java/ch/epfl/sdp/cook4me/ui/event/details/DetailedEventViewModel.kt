@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.epfl.sdp.cook4me.application.EventFormService
 import ch.epfl.sdp.cook4me.persistence.repository.EventRepository
 import ch.epfl.sdp.cook4me.ui.event.form.Event
 import kotlinx.coroutines.Dispatchers

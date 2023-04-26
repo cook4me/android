@@ -7,8 +7,10 @@ import kotlinx.coroutines.tasks.await
 
 private const val COLLECTION_PATH = "events"
 
-class EventRepository(private val store: FirebaseFirestore = FirebaseFirestore.getInstance()) : BaseRepository(store,
-    COLLECTION_PATH) {
+class EventRepository(private val store: FirebaseFirestore = FirebaseFirestore.getInstance()) : BaseRepository(
+    store,
+    COLLECTION_PATH
+) {
     /*
 
     * Retrieves event with query name at the given field

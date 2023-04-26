@@ -15,13 +15,13 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.containsInAnyOrder
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.File
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.containsInAnyOrder
-import org.hamcrest.Matchers.`is`
 
 private const val COLLECTION_PATH = "tupperwares"
 private const val USER_NAME = "harry.potter@epfl.ch"
@@ -96,11 +96,11 @@ class TupperwareRepositoryTest {
                 Tupperware("title3", "desc3", USER_NAME),
             )
         )
-        val userFolder = storage.reference.child("images/${USER_NAME}")
+        val userFolder = storage.reference.child("images/$USER_NAME")
         val tupperwareFolders = userFolder.listAll().await()
         assertThat(tupperwareFolders.prefixes.map { it.name }, containsInAnyOrder("title2", "title3"))
-        val title2Folder = storage.reference.child("images/${USER_NAME}/title2").listAll().await()
-        val title3Folder = storage.reference.child("images/${USER_NAME}/title3").listAll().await()
+        val title2Folder = storage.reference.child("images/$USER_NAME/title2").listAll().await()
+        val title3Folder = storage.reference.child("images/$USER_NAME/title3").listAll().await()
         assertThat(title2Folder.items.count(), `is`(1))
         assertThat(title3Folder.items.count(), `is`(2))
     }
@@ -113,7 +113,7 @@ class TupperwareRepositoryTest {
             file
         }
 
-    //TODO: replace with tests for new functionality as part of #32: https://github.com/cook4me/android/issues/32
+    // TODO: replace with tests for new functionality as part of #32: https://github.com/cook4me/android/issues/32
 //    @Test
 //    fun updateExistingTupperwareKeepOnlyRecentTupperware() = runTest {
 //        val entryToBeUpdated = Tupperware(

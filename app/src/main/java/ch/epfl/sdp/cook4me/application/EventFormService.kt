@@ -19,5 +19,4 @@ class EventFormService(private val repository: EventRepository = EventRepository
     } else {
         event.eventProblem
     }
-
 }

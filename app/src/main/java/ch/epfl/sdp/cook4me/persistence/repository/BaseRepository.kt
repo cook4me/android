@@ -1,11 +1,12 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import android.util.Log
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
+@Suppress("UnnecessaryAbstractClass")
+// This class shouldn't be used directly. We enforce this with the abstract keyword
 abstract class BaseRepository(
     private val store: FirebaseFirestore,
     private val objectPath: String
@@ -36,5 +37,4 @@ abstract class BaseRepository(
     suspend fun <A : Any> update(id: String, value: A) {
         store.collection(objectPath).document(id).set(value).await()
     }
-
 }
