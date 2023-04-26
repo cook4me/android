@@ -26,7 +26,9 @@ import com.google.gson.reflect.TypeToken
 
 @Preview(showBackground = true)
 @Composable
-fun PostGrid() {
+fun PostGrid(
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
 
     val dataFileString = getJsonDataFromAsset(context, "PostList.json")
