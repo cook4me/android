@@ -24,7 +24,7 @@ import androidx.navigation.createGraph
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
-import ch.epfl.sdp.cook4me.ui.chat.ChatScreen
+import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -179,7 +179,7 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.ChatScreen.name) {
-            ChatScreen()
+            ChannelScreen(onBackListener = { navController.navigate(Screen.OverviewScreen.name)})
         }
     }
     if (isAuthenticated.value) {
