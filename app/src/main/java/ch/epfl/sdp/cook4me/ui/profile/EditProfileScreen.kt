@@ -5,71 +5,48 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldColors
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.common.form.BiosField
-import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
-import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
-import ch.epfl.sdp.cook4me.ui.common.form.UserField
-import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 @Composable
 fun EditProfileScreen(
-    modifier: Modifier = Modifier,
-    viewModel: ProfileViewModel = remember { ProfileViewModel() },
-    onCancelListener: () -> Unit = {},
+    viewModel: ProfileCreationViewModel = viewModel(),
 ) {
-    val context = LocalContext.current
-    val scaffoldState = rememberScaffoldState()
-    val usernameState =
-        remember {
-            UserNameState(
-                context.getString(R.string.invalid_username_message),
-                viewModel.profileState.value.name
-            )
-        }
-    val allergiesState = remember {
-        NonRequiredTextFieldState("", viewModel.profileState.value.allergies)
-    }
-    val bioState = remember {
-        NonRequiredTextFieldState("", viewModel.profileState.value.bio)
-    }
-    val favoriteDishState = remember {
-        NonRequiredTextFieldState("", viewModel.profileState.value.favoriteDish)
-    }
-
-    val profile = viewModel.profileState.value
-    val isLoading = viewModel.isLoading.value
+    val username by viewModel.username
+    val favoriteDish by viewModel.favoriteDish
+    val allergies by viewModel.allergies
+    val bio by viewModel.bio
+    val userImage by viewModel.userImage
 
     val imagePicker =
         rememberLauncherForActivityResult(
@@ -87,87 +64,104 @@ fun EditProfileScreen(
         imagePicker.launch("image/*")
     }
 
-    Box(
-        modifier = modifier.fillMaxSize()
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(8.dp)
     ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                modifier = modifier
-                    .align(Alignment.Center)
-                    .testTag("CircularProgressIndicator")
-            )
-        } else {
-            Scaffold(
-                scaffoldState = scaffoldState,
-                content = { padding ->
-                    Column(
-                        modifier = modifier
-                            .testTag(stringResource(R.string.Login_Screen_Tag))
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                            .verticalScroll(rememberScrollState())
-                            .padding(padding),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        SaveCancelButtons(viewModel::onSubmit, onCancelListener)
-                        ImageHolderProfileUpdateScreen(
-                            onClickAddImage = { onClickAddImage() },
-                            image = profile.userImage.toUri(),
-                        )
-                        // Textfield for the Username
-                        UserField(
-                            usernameState.text,
-                            usernameState.showErrors(),
-                            {
-                                usernameState.text = it
-                                viewModel.addUsername(it)
-                            },
-                        )
+        SaveCancelButtons(viewModel::onSubmit)
+        ImageHolder_profileUpdateScreen(
+            onClickAddImage = { onClickAddImage() },
+            image = userImage,
+        )
 
-                        // Textfield for the Favorite dish
-                        ProfileInfosField(
-                            icon = Icons.Filled.Info,
-                            preview = stringResource(id = R.string.tag_favoriteDish),
-                            value = favoriteDishState.text,
-                            isError = false,
-                            onNewValue = {
-                                favoriteDishState.text = it
-                                viewModel.addFavoriteDish(it)
-                            }
-                        )
+        // Textfield for the userna
+        // TODO IMPLEMENT A CLEAN WAme
+        ColumnTextBtnProfileUpdateScreen(
+            stringResource(R.string.tag_username),
+            username,
+            viewModel::addUsername,
+        )
 
-                        ProfileInfosField(
-                            icon = Icons.Filled.Info,
-                            preview = stringResource(id = R.string.tag_allergies),
-                            value = allergiesState.text,
-                            isError = false,
-                            onNewValue = {
-                                allergiesState.text = it
-                                viewModel.addAllergies(it)
-                            }
-                        )
+        // Textfield for the Favorite dish
+        ColumnTextBtnProfileUpdateScreen(
+            stringResource(R.string.tag_favoriteDish),
+            favoriteDish,
+            viewModel::addFavoriteDish,
+        )
 
-                        // Textfield for the bio
-                        BiosField(
-                            icon = Icons.Filled.Info,
-                            preview = stringResource(id = R.string.tag_bio),
-                            value = bioState.text,
-                            isError = false,
-                            onNewValue = {
-                                bioState.text = it
-                                viewModel.addBio(it)
-                            }
-                        )
-                    }
-                }
-            )
-        }
+        ColumnTextBtnProfileUpdateScreen(
+            stringResource(R.string.tag_allergies),
+            allergies,
+            viewModel::addAllergies,
+        )
+
+        // Textfield for the bio
+        BioProfileUpdateScreen(
+            stringResource(R.string.tag_bio),
+            bio,
+            viewModel::addBio,
+        )
     }
 }
 
 @Composable
-fun ImageHolderProfileUpdateScreen(
+fun BioProfileUpdateScreen(
+    displayLabel: String,
+    inputText: String,
+    change: (String) -> Unit
+) {
+    InputRow {
+        Text(
+            text = displayLabel,
+            modifier = Modifier
+                .width(100.dp)
+                .padding(top = 7.dp)
+        )
+        TextField(
+            value = inputText,
+            onValueChange = { change(it) },
+            placeholder = { Text(stringResource(R.string.default_bio)) },
+            colors = colorsTextfieldProfileUpdateScreen(),
+            singleLine = false,
+            modifier = Modifier
+                .height(150.dp)
+                .testTag(displayLabel)
+        )
+    }
+}
+
+@Composable
+fun ColumnTextBtnProfileUpdateScreen(
+    label: String,
+    inputText: String,
+    change: (String) -> Unit
+) {
+    InputRow {
+        Text(
+            text = label, modifier = Modifier.width(100.dp)
+        )
+        TextField(
+            placeholder = {
+                Text(
+                    inputText
+                )
+            },
+            value = inputText,
+            modifier = Modifier.testTag(label),
+            onValueChange = { change(it) },
+            colors = colorsTextfieldProfileUpdateScreen()
+        )
+    }
+}
+
+@Composable
+fun colorsTextfieldProfileUpdateScreen(): TextFieldColors = TextFieldDefaults.textFieldColors(
+    backgroundColor = Color.Transparent, textColor = Color.Black
+)
+
+@Composable
+fun ImageHolder_profileUpdateScreen(
     onClickAddImage: () -> Unit,
     image: Uri,
 ) {
@@ -183,7 +177,7 @@ fun ImageHolderProfileUpdateScreen(
                 .padding(8.dp)
                 .size(100.dp)
         ) {
-            ImageProfileUpdateScreen(
+            Image_profileUpdateScreen(
                 onClickAddImage = onClickAddImage,
                 image = image,
             )
@@ -193,7 +187,7 @@ fun ImageHolderProfileUpdateScreen(
 }
 
 @Composable
-fun ImageProfileUpdateScreen(
+fun Image_profileUpdateScreen(
     onClickAddImage: () -> Unit,
     image: Uri,
 ) {
@@ -210,16 +204,28 @@ fun ImageProfileUpdateScreen(
 }
 
 @Composable
-private fun SaveCancelButtons(onSummit: () -> Unit, onCancelListener: () -> Unit) {
+private fun SaveCancelButtons(onSummit: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        TextButtons(onClick = onCancelListener, nameBtn = stringResource(R.string.btn_cancel))
+        TextButtons(onClick = {}, nameBtn = stringResource(R.string.btn_cancel))
 
         TextButtons(onClick = onSummit, nameBtn = stringResource(R.string.btn_save))
+    }
+}
+
+@Composable
+private fun InputRow(content: @Composable RowScope.() -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 4.dp, end = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        content()
     }
 }
 

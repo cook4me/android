@@ -2,22 +2,17 @@ package ch.epfl.sdp.cook4me.ui.profile
 
 import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,52 +20,31 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel = remember {
-        ProfileViewModel()
-    }
+    profileCreationViewModel: ProfileCreationViewModel = ProfileCreationViewModel()
 ) {
-    val profile = profileViewModel.profileState.value
-    val userNameState = rememberSaveable { mutableStateOf("") }
-    val isLoading = profileViewModel.isLoading.value
-    Box(
-        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier.padding(12.dp)
     ) {
-        if (isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .testTag("CircularProgressIndicator")
-            )
-        } else {
-            userNameState.value = profile.name
-            Column(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .fillMaxHeight()
-            ) {
-                ProfileImageAndUsername(
-                    profile.userImage.toUri(), profile.name
-                )
+        ProfileImageAndUsername(
+            profileCreationViewModel.userImage.value, profileCreationViewModel.username.value
+        )
 
-                // Textfield for the Favorite dish
-                FavoriteDishProfileScreen(profile.favoriteDish)
+        // Textfield for the Favorite dish
+        FavoriteDishProfileScreen(profileCreationViewModel.favoriteDish.value)
 
-                // Textfield for the Allergies
-                AllergiesProfileScreen(profile.allergies)
+        // Textfield for the Allergies
+        AllergiesProfileScreen(profileCreationViewModel.allergies.value)
 
-                // Textfield for the bio
-                BioProfileScreen(profile.bio)
+        // Textfield for the bio
+        BioProfileScreen(profileCreationViewModel.bio.value)
 
-                // Grid with post within
-                PostGrid() // put images inside
-            }
-        }
+        // Grid with post within
+        PostGrid() // put images inside
     }
 }
 
@@ -108,8 +82,13 @@ fun ProfileImageAndUsername(userImage: Uri, name: String) {
 
 @Composable
 fun UsernameProfileScreen(name: String) {
+    var userName = name
+    if (name.isEmpty()) {
+        userName = stringResource(R.string.default_username)
+    }
+
     Text(
-        text = name,
+        text = userName,
         modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
         fontWeight = FontWeight.Bold,
     )
@@ -117,6 +96,11 @@ fun UsernameProfileScreen(name: String) {
 
 @Composable
 fun FavoriteDishProfileScreen(favoriteDish: String) {
+    var favDish = favoriteDish
+    if (favoriteDish.isEmpty()) {
+        favDish = stringResource(R.string.default_favoriteDish)
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -130,7 +114,7 @@ fun FavoriteDishProfileScreen(favoriteDish: String) {
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
-            text = favoriteDish,
+            text = favDish,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -139,7 +123,12 @@ fun FavoriteDishProfileScreen(favoriteDish: String) {
 }
 
 @Composable
-fun AllergiesProfileScreen(allergies: String) {
+fun AllergiesProfileScreen(allergiesIn: String) {
+    var allergies = allergiesIn
+    if (allergiesIn.isEmpty()) {
+        allergies = stringResource(R.string.default_allergies)
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -162,7 +151,12 @@ fun AllergiesProfileScreen(allergies: String) {
 }
 
 @Composable
-fun BioProfileScreen(bio: String) {
+fun BioProfileScreen(bioIn: String) {
+    var bio = bioIn
+    if (bioIn.isEmpty()) {
+        bio = stringResource(R.string.default_bio)
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()

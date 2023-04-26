@@ -20,7 +20,7 @@ class AccountService(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     fun getCurrentUser(): FirebaseUser? =
         auth.currentUser
 
-    fun getCurrentUserWithEmail(): String? {
+    fun getCurrentUserEmail(): String? {
         val currentUser: FirebaseUser? = getCurrentUser()
         return currentUser?.email
     }
