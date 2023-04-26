@@ -6,8 +6,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import ch.epfl.sdp.cook4me.application.AccountService
 import io.getstream.chat.android.client.ChatClient
-import io.getstream.chat.android.client.api.models.QueryChannelsRequest
-import io.getstream.chat.android.client.api.models.querysort.QuerySortByField
 import io.getstream.chat.android.client.models.Filters
 import io.getstream.chat.android.client.models.User
 import io.getstream.chat.android.compose.ui.channels.ChannelsScreen
@@ -25,7 +23,7 @@ fun ChannelScreen(
 ) {
     // using the current user email as the user id for the stream chat
     // log in with the user.
-    // e.g. email is darth.vadar@epfl.ch then id is darth-vadar
+    // e.g. email is darth.vadar@epfl.ch then id is darthvadar
     val userEmail = accountService.getCurrentUserEmail()
     val fullName = remember { mutableStateOf("") }
     val user = remember {
@@ -49,8 +47,13 @@ fun ChannelScreen(
     }
     val selectedChannelId = remember { mutableStateOf("") }
 
+
     ChatTheme {
         ChannelsScreen(
+            filters = Filters.and(
+                Filters.eq("type", "messaging"),
+                Filters.`in`("members", listOf(user.value.id)),
+            ),
             title = "Channel List of ${fullName.value}",
             isShowingSearch = true,
             onItemClick = { channel ->
