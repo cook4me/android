@@ -67,7 +67,9 @@ private enum class Screen {
 val calendar = Calendar.getInstance()
 
 sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title: String) {
-    object Tupperwares : BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+    object Tupperwares :
+        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
@@ -134,7 +136,16 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.EditProfileScreen.name) { EditProfileScreen() }
-        composable(route = Screen.CreateTupperwareScreen.name) { CreateTupperwareScreen() }
+        composable(route = Screen.CreateTupperwareScreen.name) {
+            CreateTupperwareScreen(
+                onCancel = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                },
+                onSuccessfulSubmit = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                }
+            )
+        }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
         // the uid of event is predefined on firestore. this is just for show.
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
@@ -184,7 +195,11 @@ fun Cook4MeApp(
                 }
             }
         ) { scaffoldPadding ->
-            NavHost(navController = navController, graph = navGraph, modifier = Modifier.padding(scaffoldPadding))
+            NavHost(
+                navController = navController,
+                graph = navGraph,
+                modifier = Modifier.padding(scaffoldPadding)
+            )
         }
     } else {
         NavHost(navController = navController, graph = navGraph)

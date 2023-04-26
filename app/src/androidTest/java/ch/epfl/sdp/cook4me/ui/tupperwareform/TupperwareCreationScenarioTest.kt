@@ -47,7 +47,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                CreateTupperwareScreen()
+                CreateTupperwareScreen({}, {})
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -63,7 +63,7 @@ class TupperwareCreationScenarioTest {
     @Test
     fun descriptionFieldIsDisplayed() {
         composeTestRule.setContent {
-            CreateTupperwareScreen()
+            CreateTupperwareScreen({}, {})
         }
         composeTestRule.onNodeWithText(text = "Description").assertIsDisplayed()
         composeTestRule.onNodeWithTag("description").assertIsDisplayed()
@@ -72,7 +72,7 @@ class TupperwareCreationScenarioTest {
     @Test
     fun titleFieldIsDisplayed() {
         composeTestRule.setContent {
-            CreateTupperwareScreen()
+            CreateTupperwareScreen({}, {})
         }
         composeTestRule.onNodeWithText(text = "Tupperware Name").assertIsDisplayed()
         composeTestRule.onNodeWithTag("title").assertIsDisplayed()
@@ -82,7 +82,7 @@ class TupperwareCreationScenarioTest {
     fun headerIsDisplayed() {
 
         composeTestRule.setContent {
-            CreateTupperwareScreen()
+            CreateTupperwareScreen({}, {})
         }
         composeTestRule.onNodeWithText(text = "Header").assertIsDisplayed()
     }
@@ -91,7 +91,7 @@ class TupperwareCreationScenarioTest {
     fun buttonRowIsDisplayed() {
 
         composeTestRule.setContent {
-            CreateTupperwareScreen()
+            CreateTupperwareScreen({}, {})
         }
         composeTestRule.onNodeWithText(text = "Cancel").assertIsDisplayed()
         composeTestRule.onNodeWithText(text = "Done").assertIsDisplayed()
@@ -103,7 +103,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                CreateTupperwareScreen()
+                CreateTupperwareScreen({}, {})
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -137,7 +137,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                CreateTupperwareScreen()
+                CreateTupperwareScreen({}, {})
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -154,7 +154,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                CreateTupperwareScreen()
+                CreateTupperwareScreen({}, {})
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
