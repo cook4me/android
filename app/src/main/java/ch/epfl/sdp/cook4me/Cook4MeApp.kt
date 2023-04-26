@@ -37,6 +37,7 @@ import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
+import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -77,7 +78,10 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title
 @Composable
 fun Cook4MeApp(
     permissionStatusProvider: PermissionStatusProvider = ComposePermissionStatusProvider(
-        listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        listOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.CAMERA
+        )
     )
 ) {
     // initialize the view model for the sign up screen
@@ -138,7 +142,11 @@ fun Cook4MeApp(
                 onCancelListener = { navController.navigate(Screen.OverviewScreen.name) }
             )
         }
-        composable(route = Screen.CreateTupperwareScreen.name) { CreateTupperwareScreen() }
+        composable(route = Screen.CreateTupperwareScreen.name) {
+            CreateTupperwarePermissionWrapper(
+                permissionStatusProvider = permissionStatusProvider
+            )
+        }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
         // the uid of event is predefined on firestore. this is just for show.
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
