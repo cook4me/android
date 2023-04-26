@@ -87,8 +87,8 @@ class ProfileRepositoryTest {
 
         profile1!!.name = "megan2.0"
 
-        profileRepository.update(profile1.id, profile1)
-        val profile2 = profileRepository.getById(newEntry1.id)
+        profileRepository.update(newEntry1.id, profile1)
+        val profile2 = profileRepository.getById(profile1.id)
         MatcherAssert.assertThat(profile2, Matchers.equalTo(profile1))
     }
 }

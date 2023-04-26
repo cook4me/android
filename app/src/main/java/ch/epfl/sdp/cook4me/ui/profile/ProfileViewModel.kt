@@ -16,11 +16,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ProfileViewModel(
-    onSummitSuccessListener: () -> Unit = {},
     private val repository: ProfileRepository = ProfileRepository(),
     private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
-    ) : ViewModel() {
+) : ViewModel() {
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
     private val _formError = mutableStateOf(false)
     val isLoading = mutableStateOf(true) // not private for testing
@@ -72,7 +71,7 @@ class ProfileViewModel(
         profileState.value.userImage = image.toString()
     }
 
-    fun onSubmit(onSummitSuccessListener: () -> Unit) {
+    fun onSubmit(onSuccessListener: () -> Unit) {
         if (profileState.value.name.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
             _formError.value = true
         } else {
@@ -87,7 +86,8 @@ class ProfileViewModel(
                         profileState.value.favoriteDish,
                         profileState.value.userImage
                     )
-                    onSummitSuccessListener()
+                    onSuccessListener()
+                    isLoading.value = false
                 }
             }
         }

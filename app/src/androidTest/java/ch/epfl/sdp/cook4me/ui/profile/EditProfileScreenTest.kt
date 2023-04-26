@@ -146,7 +146,9 @@ class EditProfileScreenTest {
     fun editProfileScreenStateTest() {
         val profileViewModel = ProfileViewModel()
 
-        composeTestRule.setContent { EditProfileScreen(viewModel = profileViewModel) }
+        composeTestRule.setContent {
+            EditProfileScreen(viewModel = profileViewModel)
+        }
 
         profileViewModel.isLoading.value = true
 
@@ -163,7 +165,10 @@ class EditProfileScreenTest {
         var isCancelledClicked = false
         val profileViewModel = ProfileViewModel()
 
-        composeTestRule.setContent { EditProfileScreen(onCancelListener = { isCancelledClicked = true }) }
+        composeTestRule.setContent { EditProfileScreen(
+            onCancelListener = { isCancelledClicked = true },
+            viewModel = profileViewModel
+        ) }
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             !profileViewModel.isLoading.value
@@ -177,5 +182,35 @@ class EditProfileScreenTest {
 
         // Check that the cancel button is clicked
         assert(isCancelledClicked)
+    }
+
+    @Test
+    fun editProfileScreenSaveButtonIsClicked() {
+        var isSaveClicked = false
+        val profileViewModel = ProfileViewModel()
+
+        composeTestRule.setContent {
+                EditProfileScreen(
+                    onSuccessListener = { isSaveClicked = true },
+                    viewModel = profileViewModel
+                )
+        }
+
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            !profileViewModel.isLoading.value
+        }
+
+        // Check that the cancel button is not clicked
+        assert(!isSaveClicked)
+
+        // Click on the cancel button
+        composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
+
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            !profileViewModel.isLoading.value
+        }
+
+        // Check that the cancel button is clicked
+        assert(isSaveClicked)
     }
 }
