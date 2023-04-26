@@ -128,4 +128,16 @@ class NavigationScenarioTest {
         composeTestRule.onNodeWithText("Create a new Event").performClick()
         composeTestRule.waitUntilExists(hasText("Name of the event?"))
     }
+
+    @Test
+    fun navigateToCreateTupperware() {
+        composeTestRule.setContent {
+            Cook4MeApp(permissionStatusProvider = permissionStatusProvider)
+        }
+        composeTestRule.onNodeWithText("nope").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Tups").performClick()
+        composeTestRule.waitUntilExists(hasText("nope"))
+        composeTestRule.onNodeWithText("Create a new Tupperware").performClick()
+        composeTestRule.waitUntilExists(hasText("Description"))
+    }
 }
