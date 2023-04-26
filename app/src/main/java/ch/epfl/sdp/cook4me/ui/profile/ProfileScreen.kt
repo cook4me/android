@@ -153,9 +153,9 @@ fun FavoriteDishProfileScreen(favoriteDish: String, modifier: Modifier) {
 @Composable
 fun AllergiesProfileScreen(allergies: String, modifier: Modifier) {
     Row(
-        modifier = modifier.
-            fillMaxWidth().
-            padding(start = 8.dp, end = 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

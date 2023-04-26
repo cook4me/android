@@ -55,7 +55,7 @@ class ProfileRepositoryTest {
             photos = listOf("ImageOfMegan1", "ImageOfMegan2"),
         )
         val newEntry2 = Profile(
-            id = "id1",
+            id = "id2",
             name = "megan",
             bio = "super hot",
             allergies = "turkey",
@@ -65,8 +65,8 @@ class ProfileRepositoryTest {
         )
         profileRepository.add(newEntry1)
         profileRepository.add(newEntry2)
-        val profile1 = profileRepository.getById("id1")
-        val profile2 = profileRepository.getById("id2")
+        val profile1 = profileRepository.getById(newEntry1.id)
+        val profile2 = profileRepository.getById(newEntry2.id)
         MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
         MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
     }
@@ -83,13 +83,12 @@ class ProfileRepositoryTest {
             photos = listOf("ImageOfMegan1", "ImageOfMegan2"),
         )
         profileRepository.add(newEntry1)
-        val profile1 = profileRepository.getById("id1")
+        val profile1 = profileRepository.getById(newEntry1.id)
 
         profile1!!.name = "megan2.0"
 
-        profileRepository.update("id1", profile1)
-
-        val profile2 = profileRepository.getById("id1")
+        profileRepository.update(profile1.id, profile1)
+        val profile2 = profileRepository.getById(newEntry1.id)
         MatcherAssert.assertThat(profile2, Matchers.equalTo(profile1))
     }
 }

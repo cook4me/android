@@ -48,6 +48,7 @@ fun EditProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = remember { ProfileViewModel() },
     onCancelListener: () -> Unit = {},
+    onSuccessListener: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
@@ -110,7 +111,11 @@ fun EditProfileScreen(
                         verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        SaveCancelButtons(viewModel::onSubmit, onCancelListener)
+                        SaveCancelButtons(
+                            { viewModel.onSubmit(onSuccessListener) },
+                            onCancelListener,
+                        )
+
                         ImageHolderProfileUpdateScreen(
                             onClickAddImage = { onClickAddImage() },
                             image = profile.userImage.toUri(),
@@ -210,7 +215,10 @@ fun ImageProfileUpdateScreen(
 }
 
 @Composable
-private fun SaveCancelButtons(onSummit: () -> Unit, onCancelListener: () -> Unit) {
+private fun SaveCancelButtons(
+    onSummit: () -> Unit,
+    onCancelListener: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

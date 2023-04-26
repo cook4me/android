@@ -16,10 +16,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ProfileViewModel(
+    onSummitSuccessListener: () -> Unit = {},
     private val repository: ProfileRepository = ProfileRepository(),
     private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
-) : ViewModel() {
+    ) : ViewModel() {
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
     private val _formError = mutableStateOf(false)
     val isLoading = mutableStateOf(true) // not private for testing
@@ -34,7 +35,7 @@ class ProfileViewModel(
             // load the profile again if it is null
             while (profile == null) {
                 @Suppress("MagicNumber")
-                delay(1000) // Wait for 1 second before retrying
+                delay(2000) // Wait for 1 second before retrying
                 profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
             }
 
@@ -71,12 +72,13 @@ class ProfileViewModel(
         profileState.value.userImage = image.toString()
     }
 
-    fun onSubmit() {
+    fun onSubmit(onSummitSuccessListener: () -> Unit) {
         if (profileState.value.name.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
             _formError.value = true
         } else {
             viewModelScope.launch {
                 _id?.let {
+                    isLoading.value = true
                     service.submitForm(
                         it,
                         profileState.value.name,
@@ -85,6 +87,7 @@ class ProfileViewModel(
                         profileState.value.favoriteDish,
                         profileState.value.userImage
                     )
+                    onSummitSuccessListener()
                 }
             }
         }
