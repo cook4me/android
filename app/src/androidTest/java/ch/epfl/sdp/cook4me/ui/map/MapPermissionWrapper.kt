@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.navigation.map
+package ch.epfl.sdp.cook4me.ui.map
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
