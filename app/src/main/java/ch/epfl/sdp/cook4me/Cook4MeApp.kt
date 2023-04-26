@@ -26,7 +26,6 @@ import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.event.details.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.event.form.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.event.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.navigation.BottomNavigationBar
 import ch.epfl.sdp.cook4me.ui.navigation.mainScreens
@@ -36,15 +35,16 @@ import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipe.form.CreateRecipeScreen
-import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperware.form.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
+import ch.epfl.sdp.cook4me.ui.user.login.LoginScreen
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 /**
  * enum values that represent the screens in the app
- */
-enum class Screen {
+*/
+private enum class Screen {
     Login,
     CreateTupperwareScreen,
     TupperwareSwipeScreen,
@@ -132,9 +132,11 @@ fun Cook4MeApp(
         }
         composable(route = Screen.EditProfileScreen.name) { EditProfileScreen() }
         composable(route = Screen.CreateTupperwareScreen.name) {
-            CreateTupperwareScreen(onCancel = {
-                navController.navigate(Screen.TupperwareSwipeScreen.name)
-            }, onSuccessfulSubmit = {
+            CreateTupperwareScreen(
+                onCancel = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                },
+                onSuccessfulSubmit = {
                     navController.navigate(Screen.TupperwareSwipeScreen.name)
                 }
             )

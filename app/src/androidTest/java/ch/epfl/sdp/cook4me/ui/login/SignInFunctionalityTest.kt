@@ -14,6 +14,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import assertThrowsAsync
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
+import ch.epfl.sdp.cook4me.ui.user.login.LoginScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.EventFormService
+import ch.epfl.sdp.cook4me.persistence.repository.EventRepository
 import ch.epfl.sdp.cook4me.ui.event.form.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class DetailedEventViewModel(
     eventId: String,
-    eventService: EventFormService = EventFormService(),
+    repository: EventRepository = EventRepository(),
 ) : ViewModel() {
     private val _eventState = mutableStateOf(Event())
     val eventState: State<Event> = _eventState
@@ -21,7 +22,7 @@ class DetailedEventViewModel(
 
     init {
         viewModelScope.launch {
-            val eventQueried = eventService.getEventWithId(eventId)
+            val eventQueried = repository.getEventWithId(eventId)
             eventQueried?.let {
                 withContext(Dispatchers.Main) {
                     _eventState.value = it

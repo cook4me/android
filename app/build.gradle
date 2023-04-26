@@ -108,10 +108,11 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.2.2"
     implementation "com.google.accompanist:accompanist-permissions:0.30.0"
 
-    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'androidx.test:rules:1.5.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation('org.hamcrest:hamcrest:2.2')

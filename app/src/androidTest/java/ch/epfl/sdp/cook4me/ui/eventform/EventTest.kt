@@ -1,5 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.eventform
 
+import ch.epfl.sdp.cook4me.ui.event.form.Event
+import ch.epfl.sdp.cook4me.ui.event.form.addParticipant
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

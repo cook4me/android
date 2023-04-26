@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.ui.common.ImageSelector
 import ch.epfl.sdp.cook4me.ui.common.form.BulletPointTextField
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTextField
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTitleText
@@ -41,7 +42,6 @@ import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.FormState
 import ch.epfl.sdp.cook4me.ui.common.form.GenericSeparators
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
-import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
 import ch.epfl.sdp.cook4me.ui.tupperware.form.ComposeFileProvider
 import ch.epfl.sdp.cook4me.ui.tupperware.form.CustomDivider
 

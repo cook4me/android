@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.login
+package ch.epfl.sdp.cook4me.ui.user.login
 
 import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme

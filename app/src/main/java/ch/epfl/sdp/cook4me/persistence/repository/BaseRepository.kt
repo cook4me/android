@@ -6,9 +6,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
-open class BaseRepository(
-    protected val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
-    private val objectPath: String = ""
+abstract class BaseRepository(
+    private val store: FirebaseFirestore,
+    private val objectPath: String
 ) {
 
     suspend fun <A : Any> add(value: A) {
@@ -37,56 +37,4 @@ open class BaseRepository(
         store.collection(objectPath).document(id).set(value).await()
     }
 
-    /*
-    * A function to query from firestore with given attribute.
-    * @param field: the field to query. e.g.: "id", "name", "description"
-    * @param query: the query to search for. e.g. "darth.vadar" (for the field of name)
-    * returns a list of document snapshots.
-    *
-    * I didn't return a Map because it does not apply to the
-    * Event class (reason see below) and I don't want to introduce anything about Event class here,
-    * since this repository is supposed to be generic.
-    * */
-
-    /*
-    * Notes: Firebase could not serialize to java.untl.Calender, I will add an constructor in Event.kt
-    * to construct an Event object from a map.
-    * */
-
-    /*
-    * Usage: In your service:
-    * Initialize the repository;
-    * suspend fun getWithGivenField(field: String, query: Any): Map<String, DataClass> {
-        val result = objectRepository.getWithGivenField<DataClass>(field, query)
-        return result.map { it.id to it.toObject(DataClass::class.java) }.toMap()
-      }
-     * This will return a map of id to DataClass object.
-     * If your dataclass sadly is not able to be serialized by firebase, add
-         a secondary constructor to your dataclass to construct it from a map.
-     * Want a demo? See EventFormService.kt and Event.kt
-    * */
-    suspend fun <A : Any> getWithGivenField(field: String, query: Any): List<DocumentSnapshot> =
-        try {
-            val result = store.collection(objectPath).whereEqualTo(field, query).get().await()
-            result.documents
-        } catch (e: FirebaseFirestoreException) {
-            // handling the exception, if anything goes wrong, return an empty list
-            Log.e("BaseRepository", "Error querying documents: ${e.message}")
-            emptyList()
-        }
-
-    /*
-    * This function is designed with cope with the Event data class, though it's still generic.
-    * Instead of calling .toObject(), it simply returns the DocumentSnapshot, and we deal with
-    * it later.
-    * If nothing is found, it returns null.
-    * */
-    suspend fun <A : Any> getWithId(id: String): DocumentSnapshot? =
-        try {
-            val result = store.collection(objectPath).document(id).get().await()
-            result
-        } catch (e: FirebaseFirestoreException) {
-            Log.e("BaseRepository", "Error querying documents: ${e.message}")
-            null
-        }
 }

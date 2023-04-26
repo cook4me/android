@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.application
 
-import ch.epfl.sdp.cook4me.persistence.repository.BaseRepository
-import ch.epfl.sdp.cook4me.ui.eventform.Event
+import ch.epfl.sdp.cook4me.persistence.repository.EventRepository
+import ch.epfl.sdp.cook4me.ui.event.form.Event
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -12,9 +12,8 @@ import java.util.Calendar
 
 class EventFormServiceTest {
 
-    private val mockBaseRepository = mockk<BaseRepository>(relaxed = true)
-
-    private val eventFormService = EventFormService(mockBaseRepository)
+    private val mockRepository = mockk<EventRepository>(relaxed = true)
+    private val eventFormService = EventFormService(mockRepository)
 
     @Test
     fun submitValidEventStoresEvent() = runBlocking {
@@ -32,13 +31,13 @@ class EventFormServiceTest {
             isPrivate = true,
             creator = "creator"
         )
-        coEvery { mockBaseRepository.add(match { event.isValidEvent }) } returns Unit
+        coEvery { mockRepository.add(match { event.isValidEvent }) } returns Unit
         val result = withTimeout(500L) {
             eventFormService.submitForm(event)
         }
         // assert mockObjectRepository.add was called
         coVerify {
-            mockBaseRepository.add(match { event.isValidEvent })
+            mockRepository.add(match { event.isValidEvent })
         }
         assert(result == null)
     }
@@ -51,7 +50,7 @@ class EventFormServiceTest {
         }
         // assert mockObjectRepository.add was not called
         coVerify(exactly = 0) {
-            mockBaseRepository.add(match { event.isValidEvent })
+            mockRepository.add(match { event.isValidEvent })
         }
         assert(result != null)
     }
