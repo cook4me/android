@@ -77,7 +77,7 @@ fun GoogleMapView(
     onCreateNewEventClick: () -> Unit = {},
     onDetailedEventClick: () -> Unit = {},
 ) {
-    var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
+    val uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
         mutableStateOf(
             MapProperties(
