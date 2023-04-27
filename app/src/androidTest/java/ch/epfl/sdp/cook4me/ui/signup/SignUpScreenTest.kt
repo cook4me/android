@@ -25,7 +25,7 @@ class SignUpScreenTest {
         val password = composeTestRule.activity.getString(R.string.tag_password)
         // Find the save button by its content description
         val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)
-        val blankPassword = composeTestRule.activity.getString(R.string.password_blank)
+        // val blankPassword = composeTestRule.activity.getString(R.string.password_blank)
         val blankMail = composeTestRule.activity.getString(R.string.invalid_email_message)
 
         val emailInput = "donald.duck@epfl.ch"
@@ -49,7 +49,7 @@ class SignUpScreenTest {
 
         // test snackbar
         composeTestRule.onNodeWithTag(saveBtn).performClick()
-        // composeTestRule.onNodeWithText(blankPassword).assertIsDisplayed() TODO : fix this
+        // composeTestRule.onNodeWithText(blankPassword).assertIsDisplayed() TODO : fix the snackbar
 
         // set input password
         composeTestRule.onNodeWithTag(password).performTextInput(passwordInput)

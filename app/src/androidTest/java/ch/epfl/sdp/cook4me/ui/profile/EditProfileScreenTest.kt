@@ -93,10 +93,10 @@ class EditProfileScreenTest {
         // This test does not work because of some issue not finding the text fields
         // after the clearence of the text fields this happends on connected test
         // but not when the test is run on its own
-        val usernameInput = "ronald"
-        val favoriteDishInput = "Butterbeer"
-        val allergiesInput = "Snails"
-        val bioInput = "I'm just the friend of harry"
+        // val usernameInput = "ronald"
+        // val favoriteDishInput = "Butterbeer"
+        // val allergiesInput = "Snails"
+        // val bioInput = "I'm just the friend of harry"
 
         // Set up the test
         composeTestRule.setContent { EditProfileScreen() }
