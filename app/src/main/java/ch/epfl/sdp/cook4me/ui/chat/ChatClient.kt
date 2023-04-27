@@ -13,8 +13,8 @@ fun provideChatClient(apiKey: String, context: Context) =
         .logLevel(ChatLogLevel.ALL)
         .build()
 
-private fun provideOfflinePluginFactory(appContext: Context): StreamOfflinePluginFactory {
-    return StreamOfflinePluginFactory(
+private fun provideOfflinePluginFactory(appContext: Context): StreamOfflinePluginFactory =
+    StreamOfflinePluginFactory(
         config = Config(
             backgroundSyncEnabled = true,
             userPresence = true,
@@ -23,4 +23,3 @@ private fun provideOfflinePluginFactory(appContext: Context): StreamOfflinePlugi
         ),
         appContext = appContext
     )
-}

@@ -13,7 +13,7 @@ fun MessageScreen(
     channelId: String,
     onBackListener: () -> Unit = {},
 ) {
-    ChatTheme (
+    ChatTheme(
         shapes = StreamShapes.defaultShapes().copy(
             avatar = RoundedCornerShape(8.dp),
             attachment = RoundedCornerShape(16.dp),
@@ -25,8 +25,9 @@ fun MessageScreen(
         MessagesScreen(
             channelId = channelId,
             messageLimit = 30,
-            onBackPressed = { onBackListener() }
+            onBackPressed = { onBackListener() },
         )
-
     }
 }
+
+

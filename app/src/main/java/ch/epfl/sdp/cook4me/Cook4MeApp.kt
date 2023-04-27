@@ -15,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,7 +25,6 @@ import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
-import ch.epfl.sdp.cook4me.ui.chat.provideChatClient
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -43,11 +41,6 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
-import io.getstream.chat.android.client.ChatClient
-import io.getstream.chat.android.client.logger.ChatLogLevel
-import io.getstream.chat.android.offline.model.message.attachments.UploadAttachmentsNetworkType
-import io.getstream.chat.android.offline.plugin.configuration.Config
-import io.getstream.chat.android.offline.plugin.factory.StreamOfflinePluginFactory
 import java.util.Calendar
 
 /**
@@ -94,7 +87,6 @@ fun Cook4MeApp(
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
-
 
     // Navigation controller
     val navController = rememberNavController()
@@ -188,7 +180,7 @@ fun Cook4MeApp(
         }
         composable(route = Screen.ChatScreen.name) {
             ChannelScreen(
-                onBackListener = { navController.navigate(Screen.OverviewScreen.name)},
+                onBackListener = { navController.navigate(Screen.OverviewScreen.name) },
             )
         }
     }
