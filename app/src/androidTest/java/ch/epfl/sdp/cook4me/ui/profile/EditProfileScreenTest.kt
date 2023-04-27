@@ -29,13 +29,13 @@ class EditProfileScreenTest {
     private lateinit var context: Context
     private lateinit var firestore: FirebaseFirestore
     private val COLLECTION_PATH = "profiles"
-    private val id = "harry.potter@epfl.ch"
+    private val id = "donald.duck@epfl.ch"
     private val user = mapOf(
         "favoriteDish" to "Spaghetti",
         "allergies" to "Hazelnut",
         "bio" to "Gourmet",
-        "id" to "harry.potter@epfl.ch",
-        "name" to "Harry",
+        "id" to "donald.duck@epfl.ch",
+        "name" to "Donald Duck",
         "photos" to listOf<String>(""),
         "userImage" to "",
     )
@@ -65,8 +65,8 @@ class EditProfileScreenTest {
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         runBlocking {
-            auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
+            auth.createUserWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
+            auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
         }
         runBlocking {
             firestore.collection(COLLECTION_PATH).document(id).set(user).await()
@@ -79,7 +79,7 @@ class EditProfileScreenTest {
             firestore.collection(COLLECTION_PATH).document(id).delete().await()
         }
         runBlocking {
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
+            auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
             auth.currentUser?.delete()
         }
     }

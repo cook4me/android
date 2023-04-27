@@ -81,12 +81,14 @@ class AddProfileInfoScreenTest {
 
         // create onSigUpFailure and onSignUpSuccess
         var signUpSuccess = false
+        var signUpFail = false
 
         // Set the content of the ComposeTestRule
         composeTestRule.setContent {
             AddProfileInfoScreen(
                 onSuccessfulSignUp = { signUpSuccess = true },
-                viewModel = signUpViewModel
+                viewModel = signUpViewModel,
+                onSignUpFailure = { signUpFail = true }
             )
         }
 
@@ -128,6 +130,8 @@ class AddProfileInfoScreenTest {
             signUpSuccess
         }
 
+        assert(!signUpFail)
+
         // check that the user is created correctly
         val profileViewModel = ProfileViewModel()
 
@@ -151,6 +155,7 @@ class AddProfileInfoScreenTest {
     @Test
     fun navigationTest() {
         var signUpSuccess = false
+        var signUpFail = false
         // Set up the view model
         val signUpViewModel = SignUpViewModel()
 
@@ -160,7 +165,8 @@ class AddProfileInfoScreenTest {
         composeTestRule.setContent {
             AddProfileInfoScreen(
                 onSuccessfulSignUp = { signUpSuccess = true },
-                viewModel = signUpViewModel
+                viewModel = signUpViewModel,
+                onSignUpFailure = { signUpFail = true }
             )
         }
 

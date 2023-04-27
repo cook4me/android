@@ -55,6 +55,7 @@ fun AddProfileInfoScreen(
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel,
     onSuccessfulSignUp: () -> Unit,
+    onSignUpFailure: () -> Unit
 ) {
     val context = LocalContext.current
     val usernameState =
@@ -172,7 +173,7 @@ fun AddProfileInfoScreen(
                                 inProgress = true
                                 viewModel.onSubmit(
                                     onSignUpSuccess = onSuccessfulSignUp,
-                                    onSignUpFailure = {},
+                                    onSignUpFailure = onSignUpFailure,
                                 )
                             } catch (e: FirebaseAuthException) {
                                 scaffoldState.snackbarHostState.showSnackbar(

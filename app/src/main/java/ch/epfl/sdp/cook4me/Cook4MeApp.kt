@@ -156,7 +156,8 @@ fun Cook4MeApp(
                     navController.navigate(
                         startScreen
                     )
-                }
+                },
+                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
         composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
