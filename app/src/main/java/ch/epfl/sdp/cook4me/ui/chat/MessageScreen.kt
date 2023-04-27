@@ -8,6 +8,7 @@ import io.getstream.chat.android.compose.ui.messages.MessagesScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
 import io.getstream.chat.android.compose.ui.theme.StreamShapes
 
+// not used now.
 @Composable
 fun MessageScreen(
     channelId: String,
@@ -29,5 +30,3 @@ fun MessageScreen(
         )
     }
 }
-
-

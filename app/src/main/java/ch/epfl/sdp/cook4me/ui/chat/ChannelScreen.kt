@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import ch.epfl.sdp.cook4me.application.AccountService
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.Filters
@@ -24,14 +25,14 @@ fun ChannelScreen(
     accountService: AccountService = AccountService(),
     onBackListener: () -> Unit = {},
 ) {
+    val context = LocalContext.current
     val userEmail = accountService.getCurrentUserEmail()
     val fullName = remember { mutableStateOf("") }
-    val selectedChannelId = remember { mutableStateOf("") }
+//    val selectedChannelId = remember { mutableStateOf("") }
     val isConnected = remember { mutableStateOf(false) }
     val user = remember {
         mutableStateOf(User(id = fullName.value))
     }
-    // client.disconnect(true).enqueue()
     userEmail?.let { email ->
         val nameParts = email.split("@")[0].split(".")
         val firstName = nameParts[0].trim()
@@ -60,9 +61,14 @@ fun ChannelScreen(
                     ),
                     title = "Channel List of ${fullName.value}",
                     isShowingSearch = true,
-                    onItemClick = { channel ->
+                    /*onItemClick = { channel ->
                         selectedChannelId.value = channel.cid
+                    },*/
+                    onItemClick = { channel ->
+                        val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
+                        startActivity(context, intent, null)
                     },
+
                     onBackPressed = { onBackListener() },
                     onHeaderAvatarClick = {
                         client.disconnect(true).enqueue()
@@ -77,7 +83,9 @@ fun ChannelScreen(
                         ).enqueue { result ->
                             if (result.isSuccess) {
                                 val channel = result.data()
-                                selectedChannelId.value = channel.cid
+                                // selectedChannelId.value = channel.cid
+                                val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
+                                startActivity(context, intent, null)
                             } else {
                                 // println(result.error().message) <- detekt is not happy with this
                                 println("create channel failed")
@@ -85,12 +93,12 @@ fun ChannelScreen(
                         }
                     },
                 )
-                if (selectedChannelId.value.isNotEmpty()) {
+                /*if (selectedChannelId.value.isNotEmpty()) {
                     MessageScreen(
                         channelId = selectedChannelId.value,
                         onBackListener = { selectedChannelId.value = "" },
                     )
-                }
+                }*/
             }
         } else {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
