@@ -19,6 +19,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,6 +40,7 @@ class AddProfileInfoScreenTest {
     private val bioInput = "I love cooking"
     private val emailInput = "donald.duck@epfl.ch"
     private val passwordInput = "123456"
+    private val COLLECTION_PATH = "profiles"
 
     @Before
     fun setUp() {
@@ -62,6 +66,29 @@ class AddProfileInfoScreenTest {
         }
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+    }
+
+    @After
+    fun cleanUp() {
+        runBlocking {
+            try {
+                // delete collection from firebase
+                firestore.collection(COLLECTION_PATH).whereEqualTo("email", emailInput).get()
+                    .await().documents.forEach {
+                        firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
+                    }
+            } catch (e: Exception) {
+                // do nothing
+            }
+            try {
+                // check if the user exists already from a previous test
+                // if a previous test failed, the user might still exist
+                auth.signInWithEmailAndPassword(emailInput, passwordInput).await()
+                auth.currentUser?.delete()
+            } catch (e: Exception) {
+                // do nothing
+            }
+        }
     }
 
     @Test
@@ -144,12 +171,27 @@ class AddProfileInfoScreenTest {
         assert(profileViewModel.profile.value.allergies == allergiesInput)
         assert(profileViewModel.profile.value.bio == bioInput)
 
-        // check that the user is created
-        auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
-        assert(auth.currentUser != null)
+        runBlocking {
+            // delete collection from firebase
+            firestore.collection(COLLECTION_PATH).whereEqualTo("email", emailInput).get()
+                .await().documents.forEach {
+                    //check if the profile was stored correctly
+                    assert(it["name"] == usernameInput)
+                    assert(it["email"] == emailInput)
+                    assert(it["favoriteDish"] == favFoodInput)
+                    assert(it["allergies"] == allergiesInput)
+                    assert(it["bio"] == bioInput)
 
-        // clean up
-        auth.currentUser?.delete()
+                    firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
+                }
+
+            // check that the user is created
+            auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput).await()
+            assert(auth.currentUser != null)
+
+            // clean up
+            auth.currentUser?.delete()
+        }
     }
 
     @Test
@@ -200,11 +242,19 @@ class AddProfileInfoScreenTest {
             signUpSuccess
         }
 
-        // check that the user is created
-        auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
-        assert(auth.currentUser != null)
+        runBlocking {
+            // delete collection from firebase
+            firestore.collection(COLLECTION_PATH).whereEqualTo("email", emailInput).get()
+                .await().documents.forEach {
+                    firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
+                }
 
-        // clean up
-        auth.currentUser?.delete()
+            // check that the user is created
+            auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput).await()
+            assert(auth.currentUser != null)
+
+            // clean up
+            auth.currentUser?.delete()
+        }
     }
 }

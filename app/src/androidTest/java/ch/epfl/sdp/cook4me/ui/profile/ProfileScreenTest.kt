@@ -6,6 +6,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.platform.app.InstrumentationRegistry
+import ch.epfl.sdp.cook4me.BottomNavScreen
+import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,17 +27,16 @@ class ProfileScreenTest {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
-    private lateinit var firestore: FirebaseFirestore
+    private lateinit var repository: ProfileRepository
     private val COLLECTION_PATH = "profiles"
-    private val id = "harry.potter@epfl.ch"
-    private val user = mapOf(
-        "favoriteDish" to "Spaghetti",
-        "allergies" to "Hazelnut",
-        "bio" to "Gourmet",
-        "id" to "harry.potter@epfl.ch",
-        "name" to "Harry",
-        "photos" to listOf<String>(""),
-        "userImage" to "",
+    private val user = Profile(
+        email = "donald.duck@epfl.ch",
+        name = "Donald",
+        allergies = "Hazelnut",
+        bio = "I am a duck",
+        favoriteDish = "Spaghetti",
+        userImage = "Image of Donald",
+        photos = listOf(""),
     )
 
     @Before
@@ -59,15 +61,12 @@ class ProfileScreenTest {
             // emulator already set
             // do nothing
         }
-        firestore = FirebaseFirestore.getInstance()
+        repository = ProfileRepository()
         auth = FirebaseAuth.getInstance()
         runBlocking {
-            auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-        }
-        // add the user to the database
-        runBlocking {
-            firestore.collection(COLLECTION_PATH).document(id).set(user).await()
+            auth.createUserWithEmailAndPassword(user.email, "123456").await()
+            auth.signInWithEmailAndPassword(user.email, "123456").await()
+            repository.add(user)
         }
     }
 
@@ -75,20 +74,14 @@ class ProfileScreenTest {
     fun cleanUp() {
         runBlocking {
             // delete the user from the database
-            firestore.collection(COLLECTION_PATH).document(id).delete().await()
-        }
-        runBlocking {
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
+            repository.delete(user.email)
+            auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
             auth.currentUser?.delete()
         }
     }
 
     @Test
     fun profileLoadCorrectValuesTest() {
-        val usernameInput = "Harry"
-        val favoriteDishInput = "Spaghetti"
-        val allergiesInput = "Hazelnut"
-        val bioInput = "Gourmet"
         val profileViewModel = ProfileViewModel()
 
         composeTestRule.setContent {
@@ -101,10 +94,10 @@ class ProfileScreenTest {
             !profileViewModel.isLoading.value
         }
 
-        composeTestRule.onNodeWithText(usernameInput).assertExists()
-        composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
-        composeTestRule.onNodeWithText(allergiesInput).assertExists()
-        composeTestRule.onNodeWithText(bioInput).assertExists()
+        composeTestRule.onNodeWithText(user.name).assertExists()
+        composeTestRule.onNodeWithText(user.favoriteDish).assertExists()
+        composeTestRule.onNodeWithText(user.allergies).assertExists()
+        composeTestRule.onNodeWithText(user.bio).assertExists()
     }
 
     @Test
