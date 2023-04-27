@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthEmailException
+import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
@@ -71,8 +74,16 @@ class SignUpViewModel(
             viewModelScope.launch {
                 try {
                     accountService.register(_profileState.value.email, _password.value)
-                } catch (e: Exception) {
-                    onSignUpFailure()
+                } catch (e: FirebaseAuthException) {
+                    if (e is FirebaseNetworkException) {
+                        onSignUpFailure()
+                    } else if (e is FirebaseAuthEmailException) {
+                        onSignUpFailure()
+                    } else if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
+                        onSignUpFailure()
+                    } else {
+                        throw e
+                    }
                 }
                 repository.add(_profileState.value)
                 onSignUpSuccess()
@@ -80,4 +91,3 @@ class SignUpViewModel(
         }
     }
 }
-
