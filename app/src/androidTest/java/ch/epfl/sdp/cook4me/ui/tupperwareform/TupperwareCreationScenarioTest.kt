@@ -9,7 +9,6 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
@@ -26,10 +25,8 @@ import ch.epfl.sdp.cook4me.matchListWithoutOrder
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import io.mockk.confirmVerified
 import io.mockk.mockk
-import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
-import matchListWithoutOrder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
