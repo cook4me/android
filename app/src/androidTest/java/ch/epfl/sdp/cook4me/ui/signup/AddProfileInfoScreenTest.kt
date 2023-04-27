@@ -177,7 +177,7 @@ class AddProfileInfoScreenTest {
                     // assert(it["email"] == emailInput)
                     // assert(it["favoriteDish"] == favFoodInput)
                     // assert(it["allergies"] == allergiesInput)
-                // assert(it["bio"] == bioInput) //TODO PASSING LOCALLY BUT NOT ON CI
+                    // assert(it["bio"] == bioInput) //TODO PASSING LOCALLY BUT NOT ON CI
 
                     firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
                 }
