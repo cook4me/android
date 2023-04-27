@@ -28,7 +28,6 @@ class ProfileScreenTest {
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
     private lateinit var repository: ProfileRepository
-    private val COLLECTION_PATH = "profiles"
     private val user = Profile(
         email = "donald.duck@epfl.ch",
         name = "Donald",

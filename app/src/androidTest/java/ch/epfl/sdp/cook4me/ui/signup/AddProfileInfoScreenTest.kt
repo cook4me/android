@@ -77,10 +77,6 @@ class AddProfileInfoScreenTest {
                     .await().documents.forEach {
                         firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
                     }
-            } catch (e: Exception) {
-                // do nothing
-            }
-            try {
                 // check if the user exists already from a previous test
                 // if a previous test failed, the user might still exist
                 auth.signInWithEmailAndPassword(emailInput, passwordInput).await()

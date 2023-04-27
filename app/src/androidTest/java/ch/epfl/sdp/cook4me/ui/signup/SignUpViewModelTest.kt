@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.profile.ProfileViewModel
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -24,8 +25,7 @@ class SignUpViewModelTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
-    private lateinit var firestore: FirebaseFirestore
-    private val COLLECTION_PATH = "profiles"
+    private lateinit var repository: ProfileRepository
 
     private val username = "Donald Duck"
     private val allergies = "Peanuts"
@@ -58,7 +58,7 @@ class SignUpViewModelTest {
             // emulator already set
             // do nothing
         }
-        firestore = FirebaseFirestore.getInstance()
+        repository = ProfileRepository()
         auth = FirebaseAuth.getInstance()
     }
 
@@ -66,19 +66,10 @@ class SignUpViewModelTest {
     fun cleanUp() {
         runBlocking {
             try {
-                // delete collection from firebase
-                firestore.collection(COLLECTION_PATH).whereEqualTo("email", email).get()
-                    .await().documents.forEach {
-                        firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
-                    }
-            } catch (e: Exception) {
-                // do nothing
-            }
-            try {
-                // check if the user exists already from a previous test
-                // if a previous test failed, the user might still exist
+                // try catch block because not every test uses a user
+                repository.delete( id = email )
                 auth.signInWithEmailAndPassword(email, password).await()
-                auth.currentUser?.delete()
+                auth.currentUser?.delete()?.await()
             } catch (e: Exception) {
                 // do nothing
             }
@@ -145,9 +136,9 @@ class SignUpViewModelTest {
         // check that the user is created correctly
         assert(profileViewModel.profile.value.name == username)
         assert(profileViewModel.profile.value.favoriteDish == favoriteDish)
-        // assert(profileViewModel.profile.value.allergies == allergies)
-        // assert(profileViewModel.profile.value.bio == bio) TODO: why is bio not fetching from the firebasemulator?
-        // assert(profileViewModel.profile.value.email == email)
+        assert(profileViewModel.profile.value.allergies == allergies)
+        assert(profileViewModel.profile.value.bio == bio)
+        assert(profileViewModel.profile.value.email == email)
     }
 
     @Test

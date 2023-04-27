@@ -40,6 +40,7 @@ class ProfileViewModel(
 
             profile.let {
                 withContext(Dispatchers.Main) {
+                    _profileState.value.email = it.email
                     _profileState.value.name = it.name
                     _profileState.value.allergies = it.allergies
                     _profileState.value.bio = it.bio
@@ -79,7 +80,7 @@ class ProfileViewModel(
                 _id?.let {
                     isLoading.value = true
                     service.submitForm(
-                        it,
+                        it, // Email as id
                         profile.value.name,
                         profile.value.allergies,
                         profile.value.bio,
