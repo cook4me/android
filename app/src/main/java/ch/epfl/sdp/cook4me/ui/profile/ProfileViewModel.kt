@@ -25,7 +25,7 @@ class ProfileViewModel(
     val isLoading = mutableStateOf(true) // not private for testing
     val formError: State<Boolean> = _formError
     private val _profileState = mutableStateOf(Profile())
-    val profileState = _profileState
+    val profile = _profileState
 
     init {
         viewModelScope.launch {
@@ -52,27 +52,27 @@ class ProfileViewModel(
     }
 
     fun addUsername(username: String) {
-        profileState.value.name = username
+        profile.value.name = username
     }
 
     fun addAllergies(allergies: String) {
-        profileState.value.allergies = allergies
+        profile.value.allergies = allergies
     }
 
     fun addBio(bio: String) {
-        profileState.value.bio = bio
+        profile.value.bio = bio
     }
 
     fun addFavoriteDish(favoriteDish: String) {
-        profileState.value.favoriteDish = favoriteDish
+        profile.value.favoriteDish = favoriteDish
     }
 
     fun addUserImage(image: Uri) {
-        profileState.value.userImage = image.toString()
+        profile.value.userImage = image.toString()
     }
 
     fun onSubmit(onSuccessListener: () -> Unit) {
-        if (profileState.value.name.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
+        if (profile.value.name.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
             _formError.value = true
         } else {
             viewModelScope.launch {
@@ -80,11 +80,11 @@ class ProfileViewModel(
                     isLoading.value = true
                     service.submitForm(
                         it,
-                        profileState.value.name,
-                        profileState.value.allergies,
-                        profileState.value.bio,
-                        profileState.value.favoriteDish,
-                        profileState.value.userImage
+                        profile.value.name,
+                        profile.value.allergies,
+                        profile.value.bio,
+                        profile.value.favoriteDish,
+                        profile.value.userImage
                     )
                     onSuccessListener()
                     isLoading.value = false

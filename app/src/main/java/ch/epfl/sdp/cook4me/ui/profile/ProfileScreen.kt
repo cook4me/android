@@ -36,7 +36,7 @@ fun ProfileScreen(
         ProfileViewModel()
     }
 ) {
-    val profile = profileViewModel.profileState.value
+    val profile = profileViewModel.profile.value
     val userNameState = rememberSaveable { mutableStateOf("") }
     val isLoading = profileViewModel.isLoading.value
     Box(

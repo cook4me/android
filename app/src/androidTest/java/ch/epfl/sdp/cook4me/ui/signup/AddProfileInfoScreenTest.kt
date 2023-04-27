@@ -3,7 +3,6 @@ package ch.epfl.sdp.cook4me.ui.signup
 import AddProfileInfoScreen
 import android.content.Context
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -13,6 +12,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.profile.ProfileViewModel
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -30,7 +30,6 @@ class AddProfileInfoScreenTest {
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
     private lateinit var firestore: FirebaseFirestore
-    private val COLLECTION_PATH = "profiles"
     // Set input
     private val usernameInput = "donald"
     private val favFoodInput = "pizza"
@@ -87,21 +86,22 @@ class AddProfileInfoScreenTest {
         composeTestRule.setContent {
             AddProfileInfoScreen(
                 onSuccessfulSignUp = { signUpSuccess = true },
-                viewModel = SignUpViewModel() ,
+                viewModel = signUpViewModel
             )
         }
 
-        // Add email and password to the view model from sign up screen
-        signUpViewModel.addEmail(emailInput)
-        signUpViewModel.addPassword(passwordInput)        // Clear fields
+        // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(favFood).performTextClearance()
 
+        // Add email and password to the view model from sign up screen
+        signUpViewModel.addEmail(emailInput)
+        signUpViewModel.addPassword(passwordInput)
+
         // Click the save button
         composeTestRule.onNodeWithTag(saveBtn).performClick()
-
         // Verify that the click was not handled because no input
         composeTestRule.onNodeWithText(blankUser).assertIsDisplayed()
 
@@ -127,6 +127,18 @@ class AddProfileInfoScreenTest {
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             signUpSuccess
         }
+
+        // check that the user is created correctly
+        val profileViewModel = ProfileViewModel()
+
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            !profileViewModel.isLoading.value
+        }
+
+        assert(profileViewModel.profile.value.name == usernameInput)
+        assert(profileViewModel.profile.value.favoriteDish == favFoodInput)
+        assert(profileViewModel.profile.value.allergies == allergiesInput)
+        assert(profileViewModel.profile.value.bio == bioInput)
 
         // check that the user is created
         auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
@@ -164,7 +176,6 @@ class AddProfileInfoScreenTest {
 
         // Set input
         val username = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
-        val usernameInput = "donald"
 
         // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
