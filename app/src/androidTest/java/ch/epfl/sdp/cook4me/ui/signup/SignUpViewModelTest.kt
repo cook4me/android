@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.signup
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -91,6 +92,7 @@ class SignUpViewModelTest {
         assert(signUpViewModel.isValidUsername(username))
     }
 
+    @SuppressLint("AssertionSideEffect")
     @Test
     fun testCheckForm() {
         val signUpViewModel = SignUpViewModel()

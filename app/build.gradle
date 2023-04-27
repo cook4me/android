@@ -69,13 +69,13 @@ android {
     lintOptions {
         baseline file("lint-baseline.xml")
         warningsAsErrors true
+        checkTestSources true
     }
 }
 
 detekt {
     autoCorrect = true
     config = files('../detekt.yml')
-    autoCorrect = true
 }
 
 jacoco {

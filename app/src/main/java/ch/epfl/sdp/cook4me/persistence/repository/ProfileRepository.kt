@@ -18,13 +18,13 @@ class ProfileRepository(
             .first()?.toObject(Profile::class.java)
 
     suspend fun update(id: String, value: Profile) {
-        //update the value of the profile with the given id
+        // update the value of the profile with the given id
         store.collection(COLLECTION_PATH).whereEqualTo("email", id).get().await()
             .first()?.reference?.set(value)?.await()
     }
 
     suspend fun delete(id: String) {
-        //delete the profile with the given id
+        // delete the profile with the given id
         store.collection(COLLECTION_PATH).whereEqualTo("email", id).get().await()
             .first()?.reference?.delete()?.await()
     }
