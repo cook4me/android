@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import io.getstream.chat.android.compose.ui.messages.MessagesScreen
