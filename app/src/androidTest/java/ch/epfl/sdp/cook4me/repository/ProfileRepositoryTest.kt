@@ -64,12 +64,12 @@ class ProfileRepositoryTest {
             photos = listOf("ImageOfMegan1", "ImageOfMegan2"),
         )
         runBlocking {
-        profileRepository.add(newEntry1)
-        profileRepository.add(newEntry2)
-        val profile1 = profileRepository.getById(newEntry1.email)
-        val profile2 = profileRepository.getById(newEntry2.email)
-        MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
-        MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
+            profileRepository.add(newEntry1)
+            profileRepository.add(newEntry2)
+            val profile1 = profileRepository.getById(newEntry1.email)
+            val profile2 = profileRepository.getById(newEntry2.email)
+            MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
+            MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
         }
     }
 

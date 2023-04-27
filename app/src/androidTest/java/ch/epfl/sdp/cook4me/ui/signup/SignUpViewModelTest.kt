@@ -113,13 +113,14 @@ class SignUpViewModelTest {
         // check that its valid after adding it
         assert(signUpViewModel.checkForm())
 
-        // create onSigmUpFailure and onSignUpSuccess
+        // create onSignUpFailure and onSignUpSuccess
         var isSignUpFailed = false
         var isSignUpSuccess = false
 
         signUpViewModel.onSubmit(
             onSignUpFailure = { isSignUpFailed = true },
-            onSignUpSuccess = { isSignUpSuccess = true })
+            onSignUpSuccess = { isSignUpSuccess = true }
+        )
 
         // wait on signupSuccess
         composeTestRule.waitUntil(timeoutMillis = 5000) {
