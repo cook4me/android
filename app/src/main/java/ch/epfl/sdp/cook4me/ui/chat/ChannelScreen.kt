@@ -1,10 +1,14 @@
 package ch.epfl.sdp.cook4me.ui.chat
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import ch.epfl.sdp.cook4me.application.AccountService
@@ -30,9 +34,12 @@ fun ChannelScreen(
     // e.g. email is darth.vadar@epfl.ch then id is darthvadar
     val userEmail = accountService.getCurrentUserEmail()
     val fullName = remember { mutableStateOf("") }
+    val selectedChannelId = remember { mutableStateOf("") }
+    val isConnected = remember { mutableStateOf(false) }
     val user = remember {
         mutableStateOf(User(id = fullName.value))
     }
+    //client.disconnect(true).enqueue()
     userEmail?.let { email ->
         val nameParts = email.split("@")[0].split(".")
         val firstName = nameParts[0].trim()
@@ -43,55 +50,65 @@ fun ChannelScreen(
         client.connectUser(user.value, token).enqueue { result ->
             if (result.isSuccess) {
                 // Connected
+                isConnected.value = true
             } else {
                 // Handle result.error()
                 println(result.error().message)
             }
         }
     }
-    val selectedChannelId = remember { mutableStateOf("") }
 
-    ChatTheme {
-        ChannelsScreen(
-            filters = Filters.and(
-                Filters.eq("type", "messaging"),
-                Filters.`in`("members", listOf(user.value.id)),
-            ),
-            title = "Channel List of ${fullName.value}",
-            isShowingSearch = true,
-            onItemClick = { channel ->
-                selectedChannelId.value = channel.cid
-            },
-            // the code is working now because I passed nothing to the
-            // onbacklistener in the cook4meapp.kt
-            // however if I change it to navController.navigate(Screen.OverviewScreen.name) (or any other navigation)
-            // the channel screen no longer displays channels.
-            // if i just pass a println, then everything is fine (wtf????)
 
-            // also, if I include navcontroller in the constructor, it also doesn't work
-            onBackPressed = { onBackListener() },
-            onHeaderAvatarClick = {
-                client.disconnect(true).enqueue()
-            },
-            onHeaderActionClick = {
-                // just creating a channel of 2 ppl
-                client.createChannel(
-                    channelType = "messaging",
-                    channelId = "",
-                    memberIds = listOf(fullName.value, "danielbucher"),
-                    extraData = emptyMap()
-                ).enqueue { result ->
-                    if (result.isSuccess) {
-                        val channel = result.data()
-                        selectedChannelId.value = channel.cid
-                    } else {
-                        println(result.error().message)
+Box {
+    if(isConnected.value) {
+        ChatTheme {
+            ChannelsScreen(
+                filters = Filters.and(
+                    Filters.eq("type", "messaging"),
+                    Filters.`in`("members", listOf(user.value.id)),
+                ),
+                title = "Channel List of ${fullName.value}",
+                isShowingSearch = true,
+                onItemClick = { channel ->
+                    selectedChannelId.value = channel.cid
+                },
+                // the code is working now because I passed nothing to the
+                // onbacklistener in the cook4meapp.kt
+                // however if I change it to navController.navigate(Screen.OverviewScreen.name) (or any other navigation)
+                // the channel screen no longer displays channels.
+                // if i just pass a println, then everything is fine (wtf????)
+
+                // also, if I include navcontroller in the constructor, it also doesn't work
+                onBackPressed = { onBackListener() },
+                onHeaderAvatarClick = {
+                    client.disconnect(true).enqueue()
+                },
+                onHeaderActionClick = {
+                    // just creating a channel of 2 ppl
+                    client.createChannel(
+                        channelType = "messaging",
+                        channelId = "",
+                        memberIds = listOf(fullName.value, "danielbucher"),
+                        extraData = emptyMap()
+                    ).enqueue { result ->
+                        if (result.isSuccess) {
+                            val channel = result.data()
+                            selectedChannelId.value = channel.cid
+                        } else {
+                            println(result.error().message)
+                        }
                     }
-                }
-            },
-        )
-        if (selectedChannelId.value.isNotEmpty()) {
-            MessageScreen(channelId = selectedChannelId.value, onBackListener = { selectedChannelId.value = "" })
+                },
+            )
+            if (selectedChannelId.value.isNotEmpty()) {
+                MessageScreen(channelId = selectedChannelId.value, onBackListener = { selectedChannelId.value = "" })
+            }
         }
     }
+    else {
+        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+    }
+
+}
+
 }
