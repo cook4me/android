@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me.ui.signup
 import AddProfileInfoScreen
 import android.content.Context
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -29,6 +30,14 @@ class AddProfileInfoScreenTest {
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
     private lateinit var firestore: FirebaseFirestore
+    private val COLLECTION_PATH = "profiles"
+    // Set input
+    private val usernameInput = "donald"
+    private val favFoodInput = "pizza"
+    private val allergiesInput = "gluten"
+    private val bioInput = "I love cooking"
+    private val emailInput = "donald.duck@epfl.ch"
+    private val passwordInput = "123456"
 
     @Before
     fun setUp() {
@@ -68,25 +77,23 @@ class AddProfileInfoScreenTest {
         val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)
         val blankUser = composeTestRule.activity.getString(R.string.invalid_username_message)
 
-        // Set input
-        val usernameInput = "donald"
-        val favFoodInput = "pizza"
-        val allergiesInput = "gluten"
-        val bioInput = "I love cooking"
-        val emailInput = "donald.duck@epfl.ch"
-        val passwordInput = "123456"
-
         // Set up the view model
         val signUpViewModel = SignUpViewModel()
 
-        // Add email and password to the view model from sign up screen
-        signUpViewModel.addEmail(emailInput)
-        signUpViewModel.addPassword(passwordInput)
+        // create onSigUpFailure and onSignUpSuccess
+        var signUpSuccess = false
 
         // Set the content of the ComposeTestRule
-        composeTestRule.setContent { AddProfileInfoScreen(onSuccessfulSignUp = {}, viewModel = SignUpViewModel()) }
+        composeTestRule.setContent {
+            AddProfileInfoScreen(
+                onSuccessfulSignUp = { signUpSuccess = true },
+                viewModel = SignUpViewModel() ,
+            )
+        }
 
-        // Clear fields
+        // Add email and password to the view model from sign up screen
+        signUpViewModel.addEmail(emailInput)
+        signUpViewModel.addPassword(passwordInput)        // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
@@ -112,21 +119,38 @@ class AddProfileInfoScreenTest {
         composeTestRule.onNodeWithText(favFoodInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
+
+        // Click the save button this creates user in firebase
+        composeTestRule.onNodeWithTag(saveBtn).performClick()
+
+        //wait on signupSuccess
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            signUpSuccess
+        }
+
+        // check that the user is created
+        auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
+        assert(auth.currentUser != null)
+
+        // clean up
+        auth.currentUser?.delete()
     }
 
     @Test
     fun navigationTest() {
-        var isClicked = false
-        composeTestRule.setContent {
-            AddProfileInfoScreen(onSuccessfulSignUp = { isClicked = true })
-        }
-        // Find the save button by its content description
-        val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)
-        val emailInput = "donald.duck@epfl.ch"
-        val passwordInput = "123456"
-
+        var signUpSuccess = false
         // Set up the view model
         val signUpViewModel = SignUpViewModel()
+
+        // Find the save button by its content description
+        val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)
+
+        composeTestRule.setContent {
+            AddProfileInfoScreen(
+                onSuccessfulSignUp = { signUpSuccess = true },
+                viewModel = signUpViewModel
+            )
+        }
 
         // Add email and password to the view model from sign up screen
         signUpViewModel.addEmail(emailInput)
@@ -136,11 +160,10 @@ class AddProfileInfoScreenTest {
         composeTestRule.onNodeWithTag(saveBtn).performClick()
 
         // Verify that the click was not handled because no input
-        assert(!isClicked)
+        assert(!signUpSuccess)
 
         // Set input
         val username = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
-
         val usernameInput = "donald"
 
         // Clear fields
@@ -152,11 +175,19 @@ class AddProfileInfoScreenTest {
         // Wait ot be completed
         composeTestRule.waitForIdle()
 
-        // Click the save button
-        // commneted for cirrus
+        // Click the save this creates user in firebaseEmulator
         composeTestRule.onNodeWithTag(saveBtn).performClick()
 
-        // Verify that the click was handled
-        assert(isClicked)
+        //wait on signupSuccess
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            signUpSuccess
+        }
+
+        // check that the user is created
+        auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
+        assert(auth.currentUser != null)
+
+        // clean up
+        auth.currentUser?.delete()
     }
 }

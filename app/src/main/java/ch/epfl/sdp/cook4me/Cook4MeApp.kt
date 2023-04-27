@@ -81,7 +81,7 @@ fun Cook4MeApp(
     )
 ) {
     // initialize the view model for the sign up screen
-    val singUpViewModel = SignUpViewModel()
+    val singUpViewModel = remember { SignUpViewModel() }
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
@@ -145,8 +145,8 @@ fun Cook4MeApp(
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
-                onSuccessfullSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
-                signUpViewModel = singUpViewModel,
+                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
+                viewModel = singUpViewModel,
             )
         }
         composable(route = Screen.SignUpUserInfos.name) {

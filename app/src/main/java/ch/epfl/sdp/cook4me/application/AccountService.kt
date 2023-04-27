@@ -1,6 +1,8 @@
 package ch.epfl.sdp.cook4me.application
 
 import android.util.Patterns
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +39,7 @@ class AccountService(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     fun isValidPassword(password: String): Boolean =
         password.isNotBlank() && password.length >= _minPasswordLength
 
-    suspend fun register(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password).await()
+    suspend fun register(email: String, password: String): AuthResult {
+        return auth.createUserWithEmailAndPassword(email, password).await()
     }
 }

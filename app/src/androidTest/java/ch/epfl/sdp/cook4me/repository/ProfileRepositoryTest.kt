@@ -46,7 +46,7 @@ class ProfileRepositoryTest {
     @Test
     fun storeNewProfile() = runTest {
         val newEntry1 = Profile(
-            id = "id1",
+            email = "id1",
             name = "megan",
             bio = "super hot",
             allergies = "turkey",
@@ -55,7 +55,7 @@ class ProfileRepositoryTest {
             photos = listOf("ImageOfMegan1", "ImageOfMegan2"),
         )
         val newEntry2 = Profile(
-            id = "id2",
+            email = "id2",
             name = "megan",
             bio = "super hot",
             allergies = "turkey",
@@ -65,8 +65,8 @@ class ProfileRepositoryTest {
         )
         profileRepository.add(newEntry1)
         profileRepository.add(newEntry2)
-        val profile1 = profileRepository.getById(newEntry1.id)
-        val profile2 = profileRepository.getById(newEntry2.id)
+        val profile1 = profileRepository.getById(newEntry1.email)
+        val profile2 = profileRepository.getById(newEntry2.email)
         MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
         MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
     }
@@ -74,7 +74,7 @@ class ProfileRepositoryTest {
     @Test
     fun updateExistingProfile() = runTest {
         val newEntry1 = Profile(
-            id = "id1",
+            email = "id1",
             name = "megan",
             bio = "super hot",
             allergies = "turkey",
@@ -83,12 +83,12 @@ class ProfileRepositoryTest {
             photos = listOf("ImageOfMegan1", "ImageOfMegan2"),
         )
         profileRepository.add(newEntry1)
-        val profile1 = profileRepository.getById(newEntry1.id)
+        val profile1 = profileRepository.getById(newEntry1.email)
 
         profile1!!.name = "megan2.0"
 
-        profileRepository.update(newEntry1.id, profile1)
-        val profile2 = profileRepository.getById(profile1.id)
+        profileRepository.update(newEntry1.email, profile1)
+        val profile2 = profileRepository.getById(profile1.email)
         MatcherAssert.assertThat(profile2, Matchers.equalTo(profile1))
     }
 }

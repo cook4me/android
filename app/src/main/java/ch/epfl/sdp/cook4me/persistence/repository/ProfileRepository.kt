@@ -14,7 +14,7 @@ class ProfileRepository(
     }
 
     suspend fun getById(id: String) =
-        store.collection(COLLECTION_PATH).whereEqualTo("id", id).get().await()
+        store.collection(COLLECTION_PATH).whereEqualTo("email", id).get().await()
             .first()?.toObject(Profile::class.java)
 
     suspend fun update(id: String, value: Profile) {

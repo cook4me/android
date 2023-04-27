@@ -86,7 +86,30 @@ class SignUpViewModelTest {
         // check that its valid after adding it
         assert(signUpViewModel.checkForm())
 
-        signUpViewModel.onSubmit()
+        // create onSigmUpFailure and onSignUpSuccess
+        var isSignUpFailed = false
+        var isSignUpSuccess = false
+
+        signUpViewModel.onSubmit(
+            onSignUpFailure = { isSignUpFailed = true },
+            onSignUpSuccess = { isSignUpSuccess = true }
+        )
+
+        //wait on signupSuccess
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            isSignUpSuccess
+        }
+
+        // check that the function was called correctly
+        assert(!isSignUpFailed)
+        assert(isSignUpSuccess)
+
+        // check that the user is created
+        auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, password)
+        assert(auth.currentUser != null)
+
+        // clean up
+        auth.currentUser?.delete()
     }
 
     @Test
@@ -95,20 +118,24 @@ class SignUpViewModelTest {
         val username = "Donald Duck"
         val allergies = "Peanuts"
         val favoriteDish = "Pizza"
+        val email = "donald.duck@epfl.ch"
+        val password = "123456"
+        val userImage = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
         val bio = "I am a duck"
-        val formError = true
-
-        signUpViewModel.checkForm()
 
         signUpViewModel.addUsername(username)
         signUpViewModel.addAllergies(allergies)
         signUpViewModel.addFavoriteDish(favoriteDish)
         signUpViewModel.addBio(bio)
+        signUpViewModel.addEmail(email)
+        signUpViewModel.addPassword(password)
+        signUpViewModel.addUserImage(userImage.toUri())
 
-        assert(signUpViewModel.username.value == username)
-        assert(signUpViewModel.allergies.value == allergies)
-        assert(signUpViewModel.favoriteDish.value == favoriteDish)
-        assert(signUpViewModel.bio.value == bio)
-        assert(signUpViewModel.formError.value == formError)
+        assert(signUpViewModel.profile.value.name == username)
+        assert(signUpViewModel.profile.value.allergies == allergies)
+        assert(signUpViewModel.profile.value.favoriteDish == favoriteDish)
+        assert(signUpViewModel.profile.value.bio == bio)
+        assert(signUpViewModel.profile.value.email == email)
+        assert(signUpViewModel.profile.value.userImage == userImage)
     }
 }
