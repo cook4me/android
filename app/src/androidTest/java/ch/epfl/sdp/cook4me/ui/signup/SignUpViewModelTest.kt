@@ -11,7 +11,6 @@ import ch.epfl.sdp.cook4me.ui.profile.ProfileViewModel
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.runBlocking
@@ -68,8 +67,11 @@ class SignUpViewModelTest {
         runBlocking {
             try {
                 // try catch block because not every test uses a user
-                repository.delete( id = email )
-                auth.signInWithEmailAndPassword(email, password).await()
+                repository.delete(id = email)
+                auth.signInWithEmailAndPassword(
+                    email,
+                    password,
+                ).await()
                 auth.currentUser?.delete()?.await()
             } catch (e: Exception) {
                 // do nothing
@@ -115,10 +117,11 @@ class SignUpViewModelTest {
         var isSignUpFailed = false
         var isSignUpSuccess = false
 
-        signUpViewModel.onSubmit(onSignUpFailure = { isSignUpFailed = true },
+        signUpViewModel.onSubmit(
+            onSignUpFailure = { isSignUpFailed = true },
             onSignUpSuccess = { isSignUpSuccess = true })
 
-        //wait on signupSuccess
+        // wait on signupSuccess
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             isSignUpSuccess
         }
@@ -130,7 +133,7 @@ class SignUpViewModelTest {
         // check that the user is created correctly
         val profileViewModel = ProfileViewModel()
 
-        //wait on profileViewModel
+        // wait on profileViewModel
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             !profileViewModel.isLoading.value
         }

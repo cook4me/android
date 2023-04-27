@@ -16,7 +16,6 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.runBlocking
@@ -164,10 +163,12 @@ class EditProfileScreenTest {
         var isCancelledClicked = false
         val profileViewModel = ProfileViewModel()
 
-        composeTestRule.setContent { EditProfileScreen(
-            onCancelListener = { isCancelledClicked = true },
-            viewModel = profileViewModel
-        ) }
+        composeTestRule.setContent {
+            EditProfileScreen(
+                onCancelListener = { isCancelledClicked = true },
+                viewModel = profileViewModel
+            )
+        }
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             !profileViewModel.isLoading.value
@@ -189,10 +190,10 @@ class EditProfileScreenTest {
         val profileViewModel = ProfileViewModel()
 
         composeTestRule.setContent {
-                EditProfileScreen(
-                    onSuccessListener = { isSaveClicked = true },
-                    viewModel = profileViewModel
-                )
+            EditProfileScreen(
+                onSuccessListener = { isSaveClicked = true },
+                viewModel = profileViewModel
+            )
         }
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {

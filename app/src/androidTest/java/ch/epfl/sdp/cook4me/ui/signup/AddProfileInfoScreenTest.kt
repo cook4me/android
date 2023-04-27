@@ -33,6 +33,7 @@ class AddProfileInfoScreenTest {
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
     private lateinit var firestore: FirebaseFirestore
+
     // Set input
     private val usernameInput = "donald"
     private val favFoodInput = "pizza"
@@ -148,7 +149,7 @@ class AddProfileInfoScreenTest {
         // Click the save button this creates user in firebase
         composeTestRule.onNodeWithTag(saveBtn).performClick()
 
-        //wait on signupSuccess
+        // wait on signupSuccess
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             signUpSuccess
         }
@@ -171,7 +172,7 @@ class AddProfileInfoScreenTest {
             // delete collection from firebase
             firestore.collection(COLLECTION_PATH).whereEqualTo("email", emailInput).get()
                 .await().documents.forEach {
-                    //check if the profile was stored correctly
+                    // check if the profile was stored correctly
                     assert(it["name"] == usernameInput)
                     assert(it["email"] == emailInput)
                     assert(it["favoriteDish"] == favFoodInput)
@@ -182,7 +183,8 @@ class AddProfileInfoScreenTest {
                 }
 
             // check that the user is created
-            auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput).await()
+            auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
+                .await()
             assert(auth.currentUser != null)
 
             // clean up
@@ -233,7 +235,7 @@ class AddProfileInfoScreenTest {
         // Click the save this creates user in firebaseEmulator
         composeTestRule.onNodeWithTag(saveBtn).performClick()
 
-        //wait on signupSuccess
+        // wait on signupSuccess
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             signUpSuccess
         }
@@ -246,7 +248,8 @@ class AddProfileInfoScreenTest {
                 }
 
             // check that the user is created
-            auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput).await()
+            auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
+                .await()
             assert(auth.currentUser != null)
 
             // clean up
