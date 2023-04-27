@@ -19,7 +19,7 @@ class CreateTupperwarePermissionWrapperTest {
         val permissionStatusProvider = TestPermissionStatusProvider(mapOf("camera" to Pair(true, false)))
 
         composeTestRule.setContent {
-            CreateTupperwarePermissionWrapper(permissionStatusProvider = permissionStatusProvider)
+            CreateTupperwarePermissionWrapper(permissionStatusProvider = permissionStatusProvider, {}, {})
         }
 
         composeTestRule.onNodeWithText(text = "Description").assertIsDisplayed()
@@ -30,7 +30,7 @@ class CreateTupperwarePermissionWrapperTest {
         val permissionStatusProvider = TestPermissionStatusProvider(mapOf("camera" to Pair(false, false)))
 
         composeTestRule.setContent {
-            CreateTupperwarePermissionWrapper(permissionStatusProvider = permissionStatusProvider)
+            CreateTupperwarePermissionWrapper(permissionStatusProvider = permissionStatusProvider, {}, {})
         }
 
         composeTestRule.onNodeWithText("The camera permission will grant a better experience in the app").assertIsDisplayed()

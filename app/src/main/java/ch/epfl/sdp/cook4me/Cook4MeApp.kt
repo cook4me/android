@@ -38,7 +38,6 @@ import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
@@ -68,7 +67,9 @@ private enum class Screen {
 val calendar = Calendar.getInstance()
 
 sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title: String) {
-    object Tupperwares : BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+    object Tupperwares :
+        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
@@ -144,7 +145,13 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
             CreateTupperwarePermissionWrapper(
-                permissionStatusProvider = permissionStatusProvider
+                permissionStatusProvider = permissionStatusProvider,
+                onCancel = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                },
+                onSuccessfulSubmit = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                }
             )
         }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
@@ -196,7 +203,11 @@ fun Cook4MeApp(
                 }
             }
         ) { scaffoldPadding ->
-            NavHost(navController = navController, graph = navGraph, modifier = Modifier.padding(scaffoldPadding))
+            NavHost(
+                navController = navController,
+                graph = navGraph,
+                modifier = Modifier.padding(scaffoldPadding)
+            )
         }
     } else {
         NavHost(navController = navController, graph = navGraph)
