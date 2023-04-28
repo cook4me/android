@@ -9,7 +9,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.application.AccountService
 import io.getstream.chat.android.client.ChatClient
 import io.mockk.mockk
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,5 +62,12 @@ class ChatTest {
                 .fetchSemanticsNodes().size == 1
         }
         composeTestRule.onNodeWithTag("Channel Screen TAG").assertIsDisplayed()
+    }
+
+    @Test
+    fun testProvideChatClient() {
+        val client = provideChatClient("somekey", composeTestRule.activity)
+        assert(client != null)
+        assertTrue(client is ChatClient)
     }
 }
