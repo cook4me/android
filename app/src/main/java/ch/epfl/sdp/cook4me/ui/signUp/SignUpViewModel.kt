@@ -9,7 +9,6 @@ import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import com.google.firebase.FirebaseNetworkException
-import com.google.firebase.auth.FirebaseAuthEmailException
 import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
 

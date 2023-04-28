@@ -108,6 +108,7 @@ class SignUpViewModelTest {
         var isSignUpFailed = false
         var isSignUpSuccess = false
 
+        // check that that is not possible to sign up without an username
         signUpViewModel.onSubmit(
             onSignUpFailure = { isSignUpFailed = true },
             onSignUpSuccess = { isSignUpSuccess = true }
@@ -208,6 +209,10 @@ class SignUpViewModelTest {
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             isSignUpSuccess
         }
+
+        // resassign values
+        isSignUpFailed = false
+        isSignUpSuccess = false
 
         // 2. signup
         signUpViewModel.onSubmit(
