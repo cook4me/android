@@ -40,7 +40,6 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
-import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
@@ -61,10 +60,6 @@ private enum class Screen {
     SignUpUserInfos,
     RecipeFeed,
 }
-
-/* Testing around the Detailed Event Screen */
-// initializing the testing event
-val calendar = Calendar.getInstance()
 
 sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title: String) {
     object Tupperwares : BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
@@ -140,7 +135,7 @@ fun Cook4MeApp(
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen(onCancelClick = {
             navController.navigate(
                 Screen.Event.name
-            )})
+            ) })
         }
         // the uid of event is predefined on firestore. this is just for show.
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
@@ -161,7 +156,7 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {},
-        onCancelButtonClick = { navController.navigate(Screen.RecipeFeed.name) }) }
+            onCancelButtonClick = { navController.navigate(Screen.RecipeFeed.name) }) }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
