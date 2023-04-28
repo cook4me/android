@@ -47,7 +47,7 @@ class AddProfileInfoScreenTest {
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         /*
-        * IMPORTANT:
+        * IMPORTANT:  
         * (Below code is already functional, no need to change anything)
         * Make sure you do this try-catch block,
         * otherwise when doing CI, there will be an exception:
