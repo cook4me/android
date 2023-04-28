@@ -15,7 +15,8 @@ import ch.epfl.sdp.cook4me.ui.common.form.CustomTitleText
 // TODO add images
 @Composable
 fun RecipeScreen(recipe: Recipe) {
-    val recipeBasicInfo = "Servings: ${recipe.servings} | Cooking time: ${recipe.cookingTime} | Difficulty: ${recipe.difficulty}"
+    val recipeBasicInfo = "Servings: ${recipe.servings} | Cooking time: ${recipe.cookingTime} | " +
+        "Difficulty: ${recipe.difficulty}"
     val recipeIngredients = "Ingredients: \n ${recipe.ingredients.map{s -> "\t - $s"}.joinToString("\n")}"
     val recipeSteps = "Steps: \n ${recipe.recipeSteps.map{s -> "\t - $s"}.joinToString("\n")}"
     val fillMaxWidth = Modifier.fillMaxWidth()
@@ -23,8 +24,17 @@ fun RecipeScreen(recipe: Recipe) {
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             CustomTitleText(text = recipe.name)
         }
-        CustomTextField(contentDescription = "recipeInfo", onValueChange = {}, readOnly = true, value = recipeBasicInfo, modifier = fillMaxWidth)
-        CustomTextField(contentDescription = "recipeIngredients", onValueChange = {}, readOnly = true, value = recipeIngredients, modifier = fillMaxWidth)
-        CustomTextField(contentDescription = "recipeSteps", onValueChange = {}, readOnly = true, value = recipeSteps, modifier = fillMaxWidth)
+        CustomTextField(
+            contentDescription = "recipeInfo", onValueChange = {}, readOnly = true,
+            value = recipeBasicInfo, modifier = fillMaxWidth
+        )
+        CustomTextField(
+            contentDescription = "recipeIngredients", onValueChange = {}, readOnly = true,
+            value = recipeIngredients, modifier = fillMaxWidth
+        )
+        CustomTextField(
+            contentDescription = "recipeSteps", onValueChange = {}, readOnly = true,
+            value = recipeSteps, modifier = fillMaxWidth
+        )
     }
 }

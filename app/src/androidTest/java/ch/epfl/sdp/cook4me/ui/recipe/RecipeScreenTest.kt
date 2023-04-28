@@ -15,9 +15,11 @@ class RecipeScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private val dummyRecipe = Recipe(name="Pizza", ingredients = listOf("Tomato", "Cheese", "Dough"),
+    private val dummyRecipe = Recipe(
+        name = "Pizza", ingredients = listOf("Tomato", "Cheese", "Dough"),
         recipeSteps = listOf("Put the tomato on the dough", "Put the cheese on the tomato"),
-        difficulty = "Easy", cookingTime = "30min", servings = 4)
+        difficulty = "Easy", cookingTime = "30min", servings = 4
+    )
 
     @Test
     fun titleCorrectlyDisplayed() {
