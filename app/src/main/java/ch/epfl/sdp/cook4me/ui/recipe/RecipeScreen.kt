@@ -7,18 +7,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTextField
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTitleText
 
-val dummyRecipe = Recipe(name="Pizza", ingredients = listOf("Tomato", "Cheese", "Dough"), recipeSteps = listOf("Put the tomato on the dough", "Put the cheese on the tomato"), difficulty = "Easy", cookingTime = "30min", servings = 4)
-
-// TODO add images 
-@Preview(showBackground = true)
+// TODO add images
 @Composable
-fun RecipeScreen(recipe: Recipe = dummyRecipe) {
+fun RecipeScreen(recipe: Recipe) {
     val recipeBasicInfo = "Servings: ${recipe.servings} | Cooking time: ${recipe.cookingTime} | Difficulty: ${recipe.difficulty}"
     val recipeIngredients = "Ingredients: \n ${recipe.ingredients.map{s -> "\t - $s"}.joinToString("\n")}"
     val recipeSteps = "Steps: \n ${recipe.recipeSteps.map{s -> "\t - $s"}.joinToString("\n")}"
