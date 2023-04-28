@@ -13,6 +13,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -121,5 +123,17 @@ class RecipeCreationScenarioTest {
 
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc))
+    }
+
+    @Test
+    fun cancelButtonCallsOnCancel() {
+        var onCancelCalled = false
+        val onCancel = { onCancelCalled = true }
+        composeTestRule.setContent {
+            CreateRecipeScreen(submitForm, onCancel)
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
+        assertThat(onCancelCalled, `is`(true))
     }
 }

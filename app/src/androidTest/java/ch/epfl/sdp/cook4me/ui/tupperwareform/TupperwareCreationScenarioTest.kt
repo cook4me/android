@@ -21,6 +21,9 @@ import androidx.compose.ui.test.performTextInput
 import androidx.core.app.ActivityOptionsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -160,6 +163,18 @@ class TupperwareCreationScenarioTest {
         composeTestRule.onNodeWithTag("AddImage").performClick()
         composeTestRule.waitUntilDisplayed(hasTestTag("image"))
         composeTestRule.onNodeWithTag("image", useUnmergedTree = true).assertIsDisplayed()
+    }
+
+    @Test
+    fun cancelButtonCallsOnCancel(){
+        var isCalled = false
+        composeTestRule.setContent {
+            CreateTupperwareScreen(onCancelClick = {
+                isCalled = true
+            })
+        }
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
+        assertThat(isCalled, `is`(true))
     }
 
     private val registryOwner = object : ActivityResultRegistryOwner {
