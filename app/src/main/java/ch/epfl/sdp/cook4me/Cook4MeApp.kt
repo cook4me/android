@@ -134,8 +134,14 @@ fun Cook4MeApp(
             )
         }
         composable(route = Screen.EditProfileScreen.name) { EditProfileScreen() }
-        composable(route = Screen.CreateTupperwareScreen.name) { CreateTupperwareScreen() }
-        composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
+        composable(route = Screen.CreateTupperwareScreen.name) { CreateTupperwareScreen(
+            onCancelClick = { navController.navigate(BottomNavScreen.Tupperwares.route) }
+        ) }
+        composable(route = Screen.CreateEventScreen.name) { CreateEventScreen(onCancelClick = {
+            navController.navigate(
+                Screen.Event.name
+            )})
+        }
         // the uid of event is predefined on firestore. this is just for show.
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
         composable(route = Screen.SignUpScreen.name) {
@@ -154,7 +160,8 @@ fun Cook4MeApp(
                 }
             )
         }
-        composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
+        composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {},
+        onCancelButtonClick = { navController.navigate(Screen.RecipeFeed.name) }) }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))

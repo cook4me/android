@@ -27,11 +27,14 @@ import java.util.Calendar
 /**
  * Component that shows the form to create an event
  * @param eventService the service that will be used to create the event
+ * @param accountService the service that will be used to get the current user
+ * @param onCancelClick the function that will be called when the user clicks on the cancel button
  */
 @Composable
 fun CreateEventScreen(
     eventService: EventFormService = EventFormService(),
-    accountService: AccountService = AccountService()
+    accountService: AccountService = AccountService(),
+    onCancelClick: () -> Unit = {},
 ) {
     val event = remember {
         mutableStateOf(Event())
@@ -93,7 +96,7 @@ fun CreateEventScreen(
         FormButtons(
             onCancelText = R.string.ButtonRowCancel,
             onSaveText = R.string.ButtonRowDone,
-            onCancelClick = { /*TODO*/ },
+            onCancelClick = onCancelClick,
             onSaveClick = {
                 // call suspend function
                 runBlocking {

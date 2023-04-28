@@ -70,7 +70,8 @@ private val difficultyOptions = listOf("Easy", "Medium", "Hard")
 
 @Composable
 fun CreateRecipeScreen(
-    submitForm: (Recipe) -> Unit = {}
+    submitForm: (Recipe) -> Unit = {},
+    onCancelButtonClick: () -> Unit = {},
 ) {
     val images = remember { mutableStateListOf<Uri>() }
 
@@ -117,6 +118,7 @@ fun CreateRecipeScreen(
             onClickAddImage = { onClickAddImage() },
             submitForm = submitForm,
             images = images,
+            onCancelButtonClick = onCancelButtonClick,
         )
     }
 }
@@ -127,6 +129,7 @@ private fun RecipeForm(
     onClickTakePhoto: () -> Unit,
     onClickAddImage: () -> Unit,
     submitForm: (Recipe) -> Unit = {},
+    onCancelButtonClick: () -> Unit = {},
     images: List<Uri> = listOf(),
 ) {
     val context = LocalContext.current
@@ -218,7 +221,7 @@ private fun RecipeForm(
             .height(80.dp),
         onCancelText = R.string.ButtonRowCancel,
         onSaveText = R.string.ButtonRowDone,
-        onCancelClick = { },
+        onCancelClick = onCancelButtonClick,
         onSaveClick = {
             form.enableShowErrors()
             if (form.isValid) {

@@ -38,7 +38,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
 
 @Composable
-fun CreateTupperwareScreen() {
+fun CreateTupperwareScreen(onCancelClick: () -> Unit = {}) {
     val images = remember { mutableStateListOf<Uri>() }
 
     var imageUri by remember {
@@ -97,7 +97,8 @@ fun CreateTupperwareScreen() {
             onClickAddImage = { onClickAddImage() },
             onClickTakePhoto = { onClickTakePhoto() },
             onClickImage = {},
-            images,
+            onCancelClick = onCancelClick,
+            images = images,
             onSubmit = {}
         )
     }
@@ -109,6 +110,7 @@ private fun TupperwareForm(
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
     onClickImage: () -> Unit = {},
+    onCancelClick: () -> Unit = {},
     images: List<Uri>,
     onSubmit: () -> Unit
 ) {
@@ -178,7 +180,7 @@ private fun TupperwareForm(
     FormButtons(
         onCancelText = R.string.ButtonRowCancel,
         onSaveText = R.string.ButtonRowDone,
-        onCancelClick = { /*TODO*/ },
+        onCancelClick = onCancelClick,
         onSaveClick = {
             titleState.enableShowErrors()
             descriptionState.enableShowErrors()
