@@ -14,6 +14,7 @@ import io.getstream.chat.android.client.models.Filters
 import io.getstream.chat.android.client.models.User
 import io.getstream.chat.android.compose.ui.channels.ChannelsScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
+import kotlinx.coroutines.runBlocking
 
 // Refactor needed: https://github.com/cook4me/android/issues/155
 @Composable
@@ -26,6 +27,9 @@ fun ChannelScreen(
     onBackListener: () -> Unit = {},
 ) {
     // var selectedChannelId by remember {mutableStateOf("")}
+    runBlocking {
+        client.disconnect(true).enqueue()
+    }
     val context = LocalContext.current
     val userEmail = accountService.getCurrentUserEmail()
     val fullName = remember { mutableStateOf("") }
