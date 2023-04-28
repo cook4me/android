@@ -102,7 +102,7 @@ class SignUpViewModelTest {
         // check that its not valid before adding it
         assert(!signUpViewModel.checkForm())
         assert(!signUpViewModel.isValidUsername(username))
-        assert(signUpViewModel.profile.value.name== "")
+        assert(signUpViewModel.profile.value.name == "")
 
         // create onSignUpFailure and onSignUpSuccess
         var isSignUpFailed = false
