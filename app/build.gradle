@@ -76,7 +76,6 @@ android {
 detekt {
     autoCorrect = true
     config = files('../detekt.yml')
-    input = files("src/main/java", "src/test/java")
 }
 
 jacoco {
