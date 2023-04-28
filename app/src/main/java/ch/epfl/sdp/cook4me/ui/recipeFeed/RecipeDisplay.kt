@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.ui.recipe.RecipeScreen
 
 const val RECIPE_TITLE_RATIO = 0.8F
 
@@ -50,24 +51,19 @@ fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}) {
                     .fillMaxWidth(RECIPE_TITLE_RATIO)
                     .padding(8.dp),
             ) {
-                Text(
-                    text = recipe.name,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(8.dp)
-                )
-                Text(
-                    text = recipe.cookingTime,
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(8.dp)
-                )
                 if (clicked.value) {
+                    RecipeScreen(recipe = recipe)
+                } else {
                     Text(
-                        text = "This is a recipe",
+                        text = recipe.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(8.dp)
+                    )
+                    Text(
+                        text = recipe.cookingTime,
                         fontSize = 16.sp,
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
