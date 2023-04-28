@@ -70,14 +70,13 @@ class SignUpViewModel(
     ) {
         if (_profileState.value.name.isBlank() || _password.value.isBlank() || _profileState.value.email.isBlank()) {
             _formError.value = true
+            onSignUpFailure()
         } else {
             viewModelScope.launch {
                 try {
                     accountService.register(_profileState.value.email, _password.value)
                 } catch (e: FirebaseAuthException) {
                     if (e is FirebaseNetworkException) {
-                        onSignUpFailure()
-                    } else if (e is FirebaseAuthEmailException) {
                         onSignUpFailure()
                     } else if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
                         onSignUpFailure()

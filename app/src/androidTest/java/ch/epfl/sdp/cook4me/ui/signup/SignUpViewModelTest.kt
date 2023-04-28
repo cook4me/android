@@ -101,6 +101,22 @@ class SignUpViewModelTest {
 
         // check that its not valid before adding it
         assert(!signUpViewModel.checkForm())
+        assert(!signUpViewModel.isValidUsername(username))
+        assert(signUpViewModel.profile.value.name== "")
+
+        // create onSignUpFailure and onSignUpSuccess
+        var isSignUpFailed = false
+        var isSignUpSuccess = false
+
+        signUpViewModel.onSubmit(
+            onSignUpFailure = { isSignUpFailed = true },
+            onSignUpSuccess = { isSignUpSuccess = true }
+        )
+
+        // check that the function was called correctly
+        assert(signUpViewModel.formError.value)
+        assert(isSignUpFailed)
+        assert(!isSignUpSuccess)
 
         signUpViewModel.addUsername(username)
         signUpViewModel.addAllergies(allergies)
@@ -113,9 +129,8 @@ class SignUpViewModelTest {
         // check that its valid after adding it
         assert(signUpViewModel.checkForm())
 
-        // create onSignUpFailure and onSignUpSuccess
-        var isSignUpFailed = false
-        var isSignUpSuccess = false
+        isSignUpFailed = false
+        isSignUpSuccess = false
 
         signUpViewModel.onSubmit(
             onSignUpFailure = { isSignUpFailed = true },
