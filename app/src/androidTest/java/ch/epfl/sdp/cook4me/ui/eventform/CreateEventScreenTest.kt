@@ -60,13 +60,15 @@ class CreateEventScreenTest {
     fun cancelButtonClickCallsOnCancel() {
         var onCancelCalled = false
         composeTestRule.setContent {
-            CreateEventScreen(onCancelClick = {
-                onCancelCalled = true
-            })
+            CreateEventScreen(
+                onCancelClick = {
+                    onCancelCalled = true
+                }
+            )
         }
 
         composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
-        assertThat(onCancelCalled,`is`(true))
+        assertThat(onCancelCalled, `is`(true))
     }
 
     private fun ComposeContentTestRule.waitUntilExists(

@@ -166,12 +166,14 @@ class TupperwareCreationScenarioTest {
     }
 
     @Test
-    fun cancelButtonCallsOnCancel(){
+    fun cancelButtonCallsOnCancel() {
         var isCalled = false
         composeTestRule.setContent {
-            CreateTupperwareScreen(onCancelClick = {
-                isCalled = true
-            })
+            CreateTupperwareScreen(
+                onCancelClick = {
+                    isCalled = true
+                }
+            )
         }
         composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
         assertThat(isCalled, `is`(true))
