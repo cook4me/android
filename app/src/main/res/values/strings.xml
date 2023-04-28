@@ -145,5 +145,6 @@
     <string name="permission_message_singular_recommendation">The %1\$s permission will grant a better experience in the app</string>
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
-
+    <!-- Chat -->
+    <string name="Loading_Screen_Tag">Loading Screen TAG</string>
 </resources>

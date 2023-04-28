@@ -113,6 +113,7 @@ fun LoginScreen(
                                 accountService.authenticate(emailState.text, passwordState.text)
                                 onSuccessfulLogin()
                             } catch (e: FirebaseAuthInvalidUserException) {
+                                inProgress = false
                                 scaffoldState
                                     .snackbarHostState
                                     .showSnackbar(context.getString(R.string.sign_in_screen_non_exist_user))
@@ -121,6 +122,7 @@ fun LoginScreen(
                                     e.stackTraceToString()
                                 )
                             } catch (e: FirebaseAuthInvalidCredentialsException) {
+                                inProgress = false
                                 scaffoldState
                                     .snackbarHostState
                                     .showSnackbar(context.getString(R.string.sign_in_screen_wrong_password))

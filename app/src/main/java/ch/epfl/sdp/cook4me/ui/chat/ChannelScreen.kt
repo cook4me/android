@@ -15,6 +15,7 @@ import io.getstream.chat.android.client.models.User
 import io.getstream.chat.android.compose.ui.channels.ChannelsScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
 
+// Refactor needed: https://github.com/cook4me/android/issues/155
 @Composable
 fun ChannelScreen(
     client: ChatClient = provideChatClient(
@@ -24,10 +25,10 @@ fun ChannelScreen(
     accountService: AccountService = AccountService(),
     onBackListener: () -> Unit = {},
 ) {
+    // var selectedChannelId by remember {mutableStateOf("")}
     val context = LocalContext.current
     val userEmail = accountService.getCurrentUserEmail()
     val fullName = remember { mutableStateOf("") }
-//    val selectedChannelId = remember { mutableStateOf("") }
     val isConnected = remember { mutableStateOf(false) }
     val user = remember {
         mutableStateOf(User(id = fullName.value))
@@ -39,10 +40,8 @@ fun ChannelScreen(
         val token = client.devToken(user.value.id)
         client.connectUser(user.value, token).enqueue { result ->
             if (result.isSuccess) {
-                // Connected
                 isConnected.value = true
             } else {
-                // println(result.error().message) <--- detekt is not happy with this
                 println("connection not successful")
             }
         }
@@ -58,14 +57,17 @@ fun ChannelScreen(
                     ),
                     title = "Channel List of ${fullName.value}",
                     isShowingSearch = true,
-                    /*onItemClick = { channel ->
-                        selectedChannelId.value = channel.cid
-                    },*/
+                    /*
+                    * Old code (for message screen) for selecting a channel
+
+                    onItemClick = { channel ->
+                        selectedChannelId = channel.cid
+                    },
+                    */
                     onItemClick = { channel ->
                         val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
                         startActivity(context, intent, null)
                     },
-
                     onBackPressed = { onBackListener() },
                     onHeaderAvatarClick = {
                         client.disconnect(true).enqueue()
@@ -83,18 +85,22 @@ fun ChannelScreen(
                                 val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
                                 startActivity(context, intent, null)
                             } else {
-                                // println(result.error().message) <- detekt is not happy with this
                                 println("create channel failed")
                             }
                         }
                     },
                 )
-                /*if (selectedChannelId.value.isNotEmpty()) {
+                /*
+                * Old code (for message screen) for calling message screen
+                * with the given channel id
+
+                if (selectedChannelId.isNotEmpty()) {
                     MessageScreen(
-                        channelId = selectedChannelId.value,
-                        onBackListener = { selectedChannelId.value = "" },
+                        channelId = selectedChannelId,
+                        onBackListener = { selectedChannelId = "" },
                     )
-                }*/
+                }
+                */
             }
         } else {
             LoadingScreen()
