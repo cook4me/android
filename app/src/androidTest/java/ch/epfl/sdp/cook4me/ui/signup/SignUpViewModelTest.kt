@@ -129,6 +129,7 @@ class SignUpViewModelTest {
 
         // check that its valid after adding it
         assert(signUpViewModel.checkForm())
+        assert(signUpViewModel.formError.value)
 
         isSignUpFailed = false
         isSignUpSuccess = false
