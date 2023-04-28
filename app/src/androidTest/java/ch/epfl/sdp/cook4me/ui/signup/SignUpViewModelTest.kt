@@ -166,4 +166,43 @@ class SignUpViewModelTest {
         assert(signUpViewModel.profile.value.email == email)
         assert(signUpViewModel.profile.value.userImage == userImage)
     }
+
+    @Test
+    fun signupTwiceWithSameEmail() {
+        val signUpViewModel = SignUpViewModel()
+
+        signUpViewModel.addUsername(username)
+        signUpViewModel.addAllergies(allergies)
+        signUpViewModel.addFavoriteDish(favoriteDish)
+        signUpViewModel.addEmail(email)
+        signUpViewModel.addBio(bio)
+        signUpViewModel.addPassword(password)
+        signUpViewModel.addUserImage(userImage.toUri())
+
+        // create onSignUpFailure and onSignUpSuccess
+        var isSignUpFailed = false
+        var isSignUpSuccess = false
+
+        // 1. signup
+        signUpViewModel.onSubmit(
+            onSignUpFailure = { isSignUpFailed = true },
+            onSignUpSuccess = { isSignUpSuccess = true }
+        )
+
+        // wait on signupSuccess
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            isSignUpSuccess
+        }
+
+        // 2. signup
+        signUpViewModel.onSubmit(
+            onSignUpFailure = { isSignUpFailed = true },
+            onSignUpSuccess = { isSignUpSuccess = true }
+        )
+
+        // wait on signupSuccess
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            isSignUpFailed
+        }
+    }
 }
