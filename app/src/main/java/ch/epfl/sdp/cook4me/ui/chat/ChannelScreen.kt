@@ -7,7 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.core.content.ContextCompat.startActivity
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.Filters
@@ -51,7 +53,11 @@ fun ChannelScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag(context.getString(R.string.Channel_Screen_Tag))
+    ) {
         if (isConnected.value) {
             ChatTheme {
                 ChannelsScreen(
