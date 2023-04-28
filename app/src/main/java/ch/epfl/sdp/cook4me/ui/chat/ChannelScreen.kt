@@ -33,10 +33,8 @@ fun ChannelScreen(
         mutableStateOf(User(id = fullName.value))
     }
     userEmail?.let { email ->
-        val nameParts = email.split("@")[0].split(".")
-        val firstName = nameParts[0].trim()
-        val secondName = nameParts[1].trim()
-        fullName.value = "$firstName$secondName"
+        val nameParts = email.split("@")[0].replace(".", "")
+        fullName.value = nameParts.trim()
         user.value = User(id = fullName.value)
         val token = client.devToken(user.value.id)
         client.connectUser(user.value, token).enqueue { result ->
@@ -76,7 +74,7 @@ fun ChannelScreen(
                         client.createChannel(
                             channelType = "messaging",
                             channelId = "",
-                            memberIds = listOf(fullName.value, "danielbucher"),
+                            memberIds = listOf(fullName.value, "notexistinguser"),
                             extraData = emptyMap()
                         ).enqueue { result ->
                             if (result.isSuccess) {
