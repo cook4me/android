@@ -1,11 +1,10 @@
 package ch.epfl.sdp.cook4me.ui.chat
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat.startActivity
@@ -51,7 +50,7 @@ fun ChannelScreen(
         }
     }
 
-    Box {
+    Box(modifier = Modifier.fillMaxSize()) {
         if (isConnected.value) {
             ChatTheme {
                 ChannelsScreen(
@@ -74,7 +73,6 @@ fun ChannelScreen(
                         client.disconnect(true).enqueue()
                     },
                     onHeaderActionClick = {
-                        // just creating a channel of 2 ppl
                         client.createChannel(
                             channelType = "messaging",
                             channelId = "",
@@ -101,7 +99,7 @@ fun ChannelScreen(
                 }*/
             }
         } else {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            LoadingScreen()
         }
     }
 }
