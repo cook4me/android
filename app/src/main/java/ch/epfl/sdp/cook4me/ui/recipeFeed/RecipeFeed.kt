@@ -56,8 +56,8 @@ fun RecipeFeed(
     }
 
     LaunchedEffect(Unit) {
-        recipeList.value = service.getRecipesWithNotes()
         userVotes.value = service.getRecipePersonalVotes()
+        recipeList.value = service.getRecipesWithNotes()
     }
 
     val coroutineScope = rememberCoroutineScope()

@@ -7,6 +7,9 @@ import java.util.logging.Logger
 
 /**
  * Service that handles the recipe feed (get and update notes)
+ * @param recipeRepository the repository of recipes
+ * @param recipeNoteRepository the repository of recipe notes
+ * @param accountService the service that handles the account (to get the current user)
  */
 class RecipeFeedService(
     private val recipeRepository: RecipeRepository = RecipeRepository(),
@@ -42,7 +45,7 @@ class RecipeFeedService(
         if (currentNote === null) {
             recipeNoteRepository.addRecipeNote(recipeId, note, userId)
         } else {
-            recipeNoteRepository.updateRecipeNote(recipeId, note + currentNote, userId)
+            recipeNoteRepository.updateRecipeNote(recipeId, note + currentNote, userId, note)
         }
 
         return note + (currentNote ?: 0)
