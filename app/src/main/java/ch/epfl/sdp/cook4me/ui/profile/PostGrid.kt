@@ -26,7 +26,9 @@ import com.google.gson.reflect.TypeToken
 
 @Preview(showBackground = true)
 @Composable
-fun PostGrid() {
+fun PostGrid(
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
 
     val dataFileString = getJsonDataFromAsset(context, "PostList.json")
@@ -39,28 +41,31 @@ fun PostGrid() {
         modifier = Modifier.padding(10.dp)
     ) {
         items(postData) { post ->
-            PostDataItem(post)
+            PostDataItem(
+                post,
+                modifier,
+            )
         }
     }
 }
 
 @Composable
-fun PostDataItem(data: Post) {
+fun PostDataItem(data: Post, modifier: Modifier) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .clickable() {
             }
             .fillMaxSize(),
         elevation = 10.dp, shape = RoundedCornerShape(5.dp)
     ) {
-        Column(modifier = Modifier) {
-            MockImageSelection(data = data)
+        Column(modifier = modifier) {
+            MockImageSelection(data = data, modifier = modifier)
         }
     }
 }
 
 @Composable
-fun MockImageSelection(data: Post) {
+fun MockImageSelection(data: Post, modifier: Modifier) {
     Image(
         painter = painterResource(
             id = when (data.id) {
@@ -70,7 +75,7 @@ fun MockImageSelection(data: Post) {
             }
         ),
         contentDescription = "Grid Image",
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .clip(RoundedCornerShape(10.dp)),
         alignment = Alignment.Center

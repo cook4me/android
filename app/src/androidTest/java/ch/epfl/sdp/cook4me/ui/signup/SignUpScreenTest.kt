@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import org.junit.Rule
 import org.junit.Test
 
@@ -24,13 +25,18 @@ class SignUpScreenTest {
         val password = composeTestRule.activity.getString(R.string.tag_password)
         // Find the save button by its content description
         val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)
-        val blankPassword = composeTestRule.activity.getString(R.string.password_blank)
+        // val blankPassword = composeTestRule.activity.getString(R.string.password_blank)
         val blankMail = composeTestRule.activity.getString(R.string.invalid_email_message)
 
         val emailInput = "donald.duck@epfl.ch"
         val passwordInput = "123456"
 
-        composeTestRule.setContent { SignUpScreen(onSuccessfullSignUp = {}) }
+        composeTestRule.setContent {
+            SignUpScreen(
+                onSuccessfulSignUp = {},
+                viewModel = SignUpViewModel(),
+            )
+        }
 
         // Clear fields
         composeTestRule.onNodeWithTag(email).performTextClearance()
@@ -43,7 +49,7 @@ class SignUpScreenTest {
 
         // test snackbar
         composeTestRule.onNodeWithTag(saveBtn).performClick()
-        // composeTestRule.onNodeWithText(blankPassword).assertIsDisplayed() TODO : fix this
+        // composeTestRule.onNodeWithText(blankPassword).assertIsDisplayed() TODO : fix the snackbar
 
         // set input password
         composeTestRule.onNodeWithTag(password).performTextInput(passwordInput)
@@ -62,7 +68,10 @@ class SignUpScreenTest {
     fun navigationTest() {
         var isClicked = false
         composeTestRule.setContent {
-            SignUpScreen(onSuccessfullSignUp = { isClicked = true })
+            SignUpScreen(
+                onSuccessfulSignUp = { isClicked = true },
+                viewModel = SignUpViewModel(),
+            )
         }
         // Find the save button by its content description
         val saveBtn = composeTestRule.activity.getString(R.string.btn_continue)

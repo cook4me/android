@@ -42,8 +42,8 @@ import kotlinx.coroutines.launch
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     accountService: AccountService = AccountService(),
-    onSuccessfullSignUp: () -> Unit,
-    signUpViewModel: SignUpViewModel = SignUpViewModel(),
+    onSuccessfulSignUp: () -> Unit,
+    viewModel: SignUpViewModel,
 ) {
     val context = LocalContext.current
     val emailState = remember { EmailState(context.getString(R.string.invalid_email_message)) }
@@ -118,9 +118,9 @@ fun SignUpScreen(
                                 if (!accountService.isValidPassword(password = passwordState.text)) {
                                     throw FirebaseAuthException("password", "isMalFormed")
                                 }
-                                signUpViewModel.addPassword(password = passwordState.text)
-                                signUpViewModel.addEmail(email = emailState.text)
-                                onSuccessfullSignUp()
+                                viewModel.addPassword(password = passwordState.text)
+                                viewModel.addEmail(email = emailState.text)
+                                onSuccessfulSignUp()
                             } catch (e: FirebaseAuthEmailException) {
                                 scaffoldState
                                     .snackbarHostState
