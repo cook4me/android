@@ -18,12 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
  * Component that shows an upvote/downvote icon (similar to reddit f.ex)
  * @param counterValue the current value of the counter
  * @param onChange the function that will be called when the counter changes, the int parameter is the relative change
+ * @param userVote the current vote of the user (0 if none, 1 if upvote, -1 if downvote)
  */
 @Preview(showBackground = true)
 @Composable
-fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}) {
-    val upvote = remember { mutableStateOf(false) }
-    val downvote = remember { mutableStateOf(false) }
+fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int = 0) {
+    val upvote = remember { mutableStateOf(userVote==1) }
+    val downvote = remember { mutableStateOf(userVote==-1) }
     val notPressedColor = Color.Black
     val pressedColor = Color.Red
     val localCounterValue = remember { mutableStateOf(counterValue) }
