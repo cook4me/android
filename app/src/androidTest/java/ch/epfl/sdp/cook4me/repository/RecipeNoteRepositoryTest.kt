@@ -16,6 +16,7 @@ import org.junit.Before
 import org.junit.Test
 
 private const val COLLECTION_PATH = "recipeNotes"
+private const val USER_VOTE_PATH = "userVotes"
 
 @ExperimentalCoroutinesApi
 class RecipeNoteRepositoryTest {
@@ -40,6 +41,11 @@ class RecipeNoteRepositoryTest {
             val querySnapshot = store.collection(COLLECTION_PATH).get().await()
             for (documentSnapshot in querySnapshot.documents) {
                 store.collection(COLLECTION_PATH).document(documentSnapshot.id).delete().await()
+            }
+
+            val userVotesSnapshot = store.collection(USER_VOTE_PATH).get().await()
+            for (documentSnapshot in userVotesSnapshot.documents) {
+                store.collection(USER_VOTE_PATH).document(documentSnapshot.id).delete().await()
             }
         }
     }
