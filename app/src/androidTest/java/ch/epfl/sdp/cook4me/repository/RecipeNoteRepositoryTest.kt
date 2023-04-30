@@ -57,7 +57,7 @@ class RecipeNoteRepositoryTest {
     fun updateRecipeNoteReturnsTheNewNote() = runTest {
         recipeNoteRepository.addRecipeNote("recipeId", 1)
         recipeNoteRepository.addRecipeNote("recipeId2", 2)
-        recipeNoteRepository.updateRecipeNote("recipeId", 3)
+        recipeNoteRepository.updateRecipeNote("recipeId", 3, "a@gmail.com",0)
         val allRecipeNotes = recipeNoteRepository.retrieveAllRecipeNotes()
         assertThat(allRecipeNotes.values, containsInAnyOrder(3, 2))
     }
@@ -74,5 +74,29 @@ class RecipeNoteRepositoryTest {
         recipeNoteRepository.addRecipeNote("recipeId", 1)
         val recipeNote = recipeNoteRepository.getRecipeNote("recipeId")
         assertThat(recipeNote, `is`(1))
+    }
+
+    @Test
+    fun addRecipeNoteWithUserCreatesNewUserVote() = runTest {
+        recipeNoteRepository.addRecipeNote("recipeId", 1, "user")
+        val userVote = recipeNoteRepository.retrieveAllUserVotes("user").get("recipeId")
+        assertThat(userVote, `is`(1))
+    }
+
+    @Test
+    fun updateRecipeNoteWithNotVotedUserCreateNewUserVote() = runTest {
+        recipeNoteRepository.addRecipeNote("recipeId", 1)
+        recipeNoteRepository.updateRecipeNote("recipeId", 2, "user", 1)
+        val userVote = recipeNoteRepository.retrieveAllUserVotes("user").get("recipeId")
+        assertThat(userVote, `is`(1))
+    }
+
+    @Test
+    fun updateRecipeNoteWithVotedUserUpdatesUserVote() = runTest {
+        // here user clicks on upvote twice => final vote is 0
+        recipeNoteRepository.addRecipeNote("recipeId", 1, "user")
+        recipeNoteRepository.updateRecipeNote("recipeId", 0, "user", -1)
+        val userVote = recipeNoteRepository.retrieveAllUserVotes("user").get("recipeId")
+        assertThat(userVote, `is`(0))
     }
 }

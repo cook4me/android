@@ -15,8 +15,9 @@ import org.junit.Test
 class RecipeFeedServiceTest {
     private val mockRecipeRepository = mockk<RecipeRepository>(relaxed = true)
     private val mockRecipeNoteRepository = mockk<RecipeNoteRepository>(relaxed = true)
+    private val mockAccountService = mockk<AccountService>(relaxed = true)
 
-    private val recipeFeedService = RecipeFeedService(mockRecipeRepository, mockRecipeNoteRepository)
+    private val recipeFeedService = RecipeFeedService(mockRecipeRepository, mockRecipeNoteRepository, mockAccountService)
 
     @Test
     fun getRecipesWithNotesReturnsListOfRecipesWithNotes() = runBlocking {
@@ -37,17 +38,35 @@ class RecipeFeedServiceTest {
     }
 
     @Test
+    fun notLoggedInUserDoesntUpdateNotes() = runBlocking {
+        val recipeId = "id1"
+
+        coEvery { mockRecipeNoteRepository.getRecipeNote(recipeId) } returns 2
+        coEvery { mockAccountService.getCurrentUserWithEmail() } returns null
+
+        val newNote = recipeFeedService.updateRecipeNotes(recipeId, 1)
+
+        // assert updateRecipeNote was not called
+        coVerify(exactly = 0) {
+            mockRecipeNoteRepository.updateRecipeNote(recipeId, 2 + 1, "", 1)
+        }
+
+        assertThat(newNote, `is`(2))
+    }
+
+    @Test
     fun updateExistingRecipeNoteUpdatesNotes() = runBlocking {
         val recipeId = "id1"
 
-        coEvery { mockRecipeNoteRepository.getRecipeNote(recipeId) } returns 1
-        coEvery { mockRecipeNoteRepository.updateRecipeNote(recipeId, 2) } returns Unit
+        coEvery { mockRecipeNoteRepository.getRecipeNote(recipeId) } returns 2
+        coEvery { mockAccountService.getCurrentUserWithEmail() } returns "email"
+        coEvery { mockRecipeNoteRepository.updateRecipeNote(recipeId, 2, "email", 1) } returns Unit
 
-        val newNote = recipeFeedService.updateRecipeNotes(recipeId, 2)
+        val newNote = recipeFeedService.updateRecipeNotes(recipeId, 1)
 
         // assert updateRecipeNote was called with the correct parameters
         coVerify {
-            mockRecipeNoteRepository.updateRecipeNote(recipeId, 2 + 1)
+            mockRecipeNoteRepository.updateRecipeNote(recipeId, 2 + 1, "email", 1)
         }
 
         assertThat(newNote, `is`(3))
