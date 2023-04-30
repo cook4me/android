@@ -52,7 +52,7 @@ class RecipeRepositoryTest {
         val newEntry2 = Recipe(name = "newEntry2")
         recipeRepository.add(newEntry1)
         recipeRepository.add(newEntry2)
-        val allRecipes = recipeRepository.getAll()
+        val allRecipes = recipeRepository.getAll<Recipe>()
         assertThat(allRecipes.values, containsInAnyOrder(newEntry1, newEntry2))
     }
 
@@ -60,10 +60,10 @@ class RecipeRepositoryTest {
     fun updateExistingRecipeKeepOnlyRecentRecipe() = runTest {
         val entryToBeUpdated = Recipe(name = "entryToBeUpdated")
         recipeRepository.add(entryToBeUpdated)
-        val allRecipesBeforeUpdate = recipeRepository.getAll()
+        val allRecipesBeforeUpdate = recipeRepository.getAll<Recipe>()
         val updatedEntry = entryToBeUpdated.copy(name = "updated")
         recipeRepository.update(allRecipesBeforeUpdate.keys.first(), updatedEntry)
-        val allRecipesAfterUpdate = recipeRepository.getAll()
+        val allRecipesAfterUpdate = recipeRepository.getAll<Recipe>()
         assertThat(allRecipesAfterUpdate.values, contains(updatedEntry))
         assertThat(allRecipesAfterUpdate.values, not(contains(entryToBeUpdated)))
     }
@@ -73,8 +73,8 @@ class RecipeRepositoryTest {
         recipeRepository.add(Recipe(name = "newEntry1"))
         recipeRepository.add(Recipe(name = "newEntry2"))
         recipeRepository.add(Recipe(name = "newEntry3"))
-        val allRecipes = recipeRepository.getAll()
-        val actual = recipeRepository.getById(allRecipes.keys.first())
+        val allRecipes = recipeRepository.getAll<Recipe>()
+        val actual = recipeRepository.getById<Recipe>(allRecipes.keys.first())
         assertThat(actual, `is`(allRecipes.values.first()))
     }
 }

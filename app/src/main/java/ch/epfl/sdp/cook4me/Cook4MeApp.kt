@@ -125,7 +125,6 @@ fun Cook4MeApp(
 
         // Profile-related screens
         composable(BottomNavScreen.Profile.route) { ProfileScreen() }
-
         composable(route = Screen.EditProfileScreen.name) {
             EditProfileScreen(
                 onCancelListener = { navController.navigate(Screen.OverviewScreen.name) },
@@ -153,7 +152,12 @@ fun Cook4MeApp(
                 onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
             )
         }
-        composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
+        composable(route = Screen.CreateRecipeScreen.name) {
+            CreateRecipeScreen(
+                onCancelClick = { navController.navigateUp() },
+                onSuccessfulSubmit = { navController.navigateUp() },
+            )
+        }
 
         // Authentication-related screens
         composable(route = Screen.SignUpScreen.name) {
