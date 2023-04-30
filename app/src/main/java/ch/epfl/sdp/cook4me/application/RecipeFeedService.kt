@@ -3,13 +3,15 @@ package ch.epfl.sdp.cook4me.application
 import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeNoteRepository
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
+import java.util.logging.Logger
 
 /**
- * Service that handles the recipe feed
+ * Service that handles the recipe feed (get and update notes)
  */
 class RecipeFeedService(
     private val recipeRepository: RecipeRepository = RecipeRepository(),
-    private val recipeNoteRepository: RecipeNoteRepository = RecipeNoteRepository()
+    private val recipeNoteRepository: RecipeNoteRepository = RecipeNoteRepository(),
+    private val accountService: AccountService = AccountService(),
 ) {
 
     /**
@@ -29,12 +31,32 @@ class RecipeFeedService(
      * @return the new note of the recipe
      */
     suspend fun updateRecipeNotes(recipeId: String, note: Int): Int {
+        val userId = accountService.getCurrentUserWithEmail()
         val currentNote = recipeNoteRepository.getRecipeNote(recipeId)
-        if (currentNote === null) {
-            recipeNoteRepository.addRecipeNote(recipeId, note)
-        } else {
-            recipeNoteRepository.updateRecipeNote(recipeId, note + currentNote)
+
+        if (userId === null) {
+            Logger.getGlobal().warning("User not logged in")
+            return currentNote ?: 0
         }
+
+        if (currentNote === null) {
+            recipeNoteRepository.addRecipeNote(recipeId, note, userId)
+        } else {
+            recipeNoteRepository.updateRecipeNote(recipeId, note + currentNote, userId)
+        }
+
         return note + (currentNote ?: 0)
+    }
+
+    /**
+     * Retrieves the personal votes of the user
+     * @return a map of recipe id to the vote of the user
+     */
+    suspend fun getRecipePersonalVotes(): Map<String, Int>{
+        val userId = accountService.getCurrentUserWithEmail()
+        if (userId === null) {
+            return mapOf()
+        }
+        return recipeNoteRepository.retrieveAllUserVotes(userId)
     }
 }
