@@ -29,4 +29,17 @@ class RecipeRepository(
             }
         }
     }
+
+    override suspend fun delete(id: String) {
+        super.delete(id)
+        auth.currentUser?.email?.let { email ->
+            val images = storage.reference
+                .child("/images/$email/recipes/$id")
+                .listAll()
+                .await()
+            images.items.forEach {
+                it.delete().await()
+            }
+        }
+    }
 }

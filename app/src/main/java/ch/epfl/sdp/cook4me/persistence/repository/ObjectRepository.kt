@@ -20,6 +20,10 @@ open class ObjectRepository(
         store.collection(objectPath).add(value).await()
     }
 
+    open suspend fun delete(id: String) {
+        store.collection(objectPath).document(id).delete().await()
+    }
+
     suspend fun <A : Any> getAll(ofClass: Class<A>): Map<String, A> {
         val result = store.collection(objectPath).get().await()
         return result.map { it.id }.zip(result.toObjects(ofClass)).toMap()
