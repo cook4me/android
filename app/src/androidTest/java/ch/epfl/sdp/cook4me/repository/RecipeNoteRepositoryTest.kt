@@ -96,7 +96,7 @@ class RecipeNoteRepositoryTest {
         // here user clicks on upvote twice => final vote is 0
         recipeNoteRepository.addRecipeNote("recipeId", 1, "user")
         recipeNoteRepository.updateRecipeNote("recipeId", 0, "user", -1)
-        val userVote = recipeNoteRepository.retrieveAllUserVotes("user").get("recipeId")
+        val userVote = recipeNoteRepository.retrieveAllUserVotes("user")["recipeId"]
         assertThat(userVote, `is`(0))
     }
 }
