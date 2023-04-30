@@ -11,9 +11,13 @@ open class ObjectRepository(
     private val objectPath: String = ""
 ) {
 
-    suspend fun <A : Any> add(value: A): String {
+    suspend fun <A : Any> addAndGetId(value: A): String {
         val documentRef = store.collection(objectPath).add(value).await()
         return documentRef.id
+    }
+
+    suspend fun <A : Any> add(value: A) {
+        store.collection(objectPath).add(value).await()
     }
 
     suspend fun <A : Any> getAll(ofClass: Class<A>): Map<String, A> {
@@ -73,7 +77,7 @@ open class ObjectRepository(
         }
 
     /*
-    * IMPORTANT: Needed as long as the event class uses a Calendar object
+    * IMPORTANT: Needed as long as the event class uses a Calendar
     * This function is designed with cope with the Event data class, though it's still generic.
     * Instead of calling .toObject(), it simply returns the DocumentSnapshot, and we deal with
     * it later.

@@ -20,7 +20,7 @@ class RecipeFeedServiceTest {
 
     @Test
     fun getRecipesWithNotesReturnsListOfRecipesWithNotes() = runBlocking {
-        coEvery { mockRecipeRepository.getAll() } returns mapOf("id1" to Recipe(), "id2" to Recipe())
+        coEvery { mockRecipeRepository.getAll<Recipe>() } returns mapOf("id1" to Recipe(), "id2" to Recipe())
         coEvery { mockRecipeNoteRepository.retrieveAllRecipeNotes() } returns mapOf("id1" to 1, "id2" to 2)
         val result = recipeFeedService.getRecipesWithNotes()
         assertThat(result.map { it.recipeId }, containsInAnyOrder("id1", "id2"))
@@ -29,7 +29,7 @@ class RecipeFeedServiceTest {
 
     @Test
     fun getRecipeWithNoNoteReturnsDefaultNote() = runBlocking {
-        coEvery { mockRecipeRepository.getAll() } returns mapOf("id1" to Recipe(), "id2" to Recipe())
+        coEvery { mockRecipeRepository.getAll<Recipe>() } returns mapOf("id1" to Recipe(), "id2" to Recipe())
         coEvery { mockRecipeNoteRepository.retrieveAllRecipeNotes() } returns mapOf("id1" to 1)
         val result = recipeFeedService.getRecipesWithNotes()
         assertThat(result.map { it.recipeId }, containsInAnyOrder("id1", "id2"))
