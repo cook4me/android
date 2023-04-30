@@ -86,7 +86,7 @@ fun Cook4MeApp(
     )
 ) {
     // initialize the view model for the sign up screen
-    val singUpViewModel = remember { SignUpViewModel() }
+    val signUpViewModel = remember { SignUpViewModel() }
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
@@ -105,11 +105,35 @@ fun Cook4MeApp(
         .currentBackStackEntryAsState().value?.destination?.route in screensWithBottomBar
 
     val navGraph = navController.createGraph(startDestination = startScreen) {
+        // Tupperware-related screens
+        composable(route = Screen.CreateTupperwareScreen.name) {
+            CreateTupperwarePermissionWrapper(
+                permissionStatusProvider = permissionStatusProvider,
+                onCancel = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                },
+                onSuccessfulSubmit = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                }
+            )
+        }
         composable(BottomNavScreen.Tupperwares.route) {
             TupperwareSwipeScreen(
                 onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) }
             )
         }
+
+        // Profile-related screens
+        composable(BottomNavScreen.Profile.route) { ProfileScreen() }
+
+        composable(route = Screen.EditProfileScreen.name) {
+            EditProfileScreen(
+                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) },
+                onSuccessListener = { navController.navigate(Screen.OverviewScreen.name) },
+            )
+        }
+
+        // Event-related screens
         composable(BottomNavScreen.Events.route) {
             MapPermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
@@ -117,7 +141,51 @@ fun Cook4MeApp(
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
             )
         }
-        composable(BottomNavScreen.Profile.route) { ProfileScreen() }
+        composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
+        // the uid of event is predefined on firestore. this is just for show.
+        composable(route = Screen.DetailedEventScreen.name) {
+            DetailedEventScreen("IcxAvzg7RfckSxw9K5I0")
+        }
+
+        // Recipe-related screens
+        composable(route = Screen.RecipeFeed.name) {
+            RecipeFeed(
+                onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
+            )
+        }
+        composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
+
+        // Authentication-related screens
+        composable(route = Screen.SignUpScreen.name) {
+            SignUpScreen(
+                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
+                viewModel = signUpViewModel,
+            )
+        }
+        composable(route = Screen.SignUpUserInfos.name) {
+            AddProfileInfoScreen(
+                viewModel = signUpViewModel,
+                onSuccessfulSignUp = {
+                    navController.navigate(
+                        startScreen
+                    )
+                },
+                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
+            )
+        }
+        composable(route = Screen.Login.name) {
+            LoginScreen(
+                onSuccessfulLogin = {
+                    isAuthenticated.value = true
+                    navController.navigate(startScreen) {
+                        // This popUp blocks the user being able to go back once logged in
+                        popUpTo(Screen.Login.name) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        // Overview screen
         composable(BottomNavScreen.Menu.route) {
             OverviewScreen(
                 onMapClick = { navController.navigate(Screen.Event.name) },
@@ -138,63 +206,11 @@ fun Cook4MeApp(
                 onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
-        composable(route = Screen.EditProfileScreen.name) {
-            EditProfileScreen(
-                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) },
-                onSuccessListener = { navController.navigate(Screen.OverviewScreen.name) },
-            )
-        }
-        composable(route = Screen.CreateTupperwareScreen.name) {
-            CreateTupperwarePermissionWrapper(
-                permissionStatusProvider = permissionStatusProvider,
-                onCancel = {
-                    navController.navigate(Screen.TupperwareSwipeScreen.name)
-                },
-                onSuccessfulSubmit = {
-                    navController.navigate(Screen.TupperwareSwipeScreen.name)
-                }
-            )
-        }
-        composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
-        // the uid of event is predefined on firestore. this is just for show.
-        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
-        composable(route = Screen.SignUpScreen.name) {
-            SignUpScreen(
-                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
-                viewModel = singUpViewModel,
-            )
-        }
-        composable(route = Screen.SignUpUserInfos.name) {
-            AddProfileInfoScreen(
-                viewModel = singUpViewModel,
-                onSuccessfulSignUp = {
-                    navController.navigate(
-                        startScreen
-                    )
-                },
-                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
-            )
-        }
-        composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
+
+        // Other
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
-        }
-        composable(route = Screen.RecipeFeed.name) {
-            RecipeFeed(
-                onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
-            )
-        }
-        composable(route = Screen.Login.name) {
-            LoginScreen(
-                onSuccessfulLogin = {
-                    isAuthenticated.value = true
-                    navController.navigate(startScreen) {
-                        // This popUp blocks the user being able to go back once logged in
-                        popUpTo(Screen.Login.name) { inclusive = true }
-                    }
-                }
-            )
         }
     }
     if (isAuthenticated.value) {
