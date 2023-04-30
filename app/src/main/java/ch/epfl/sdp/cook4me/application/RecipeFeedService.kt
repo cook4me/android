@@ -55,7 +55,7 @@ class RecipeFeedService(
      * Retrieves the personal votes of the user
      * @return a map of recipe id to the vote of the user
      */
-    suspend fun getRecipePersonalVotes(): Map<String, Int>{
+    suspend fun getRecipePersonalVotes(): Map<String, Int> {
         val userId = accountService.getCurrentUserWithEmail()
         if (userId === null) {
             return mapOf()

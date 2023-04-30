@@ -57,7 +57,7 @@ class RecipeNoteRepositoryTest {
     fun updateRecipeNoteReturnsTheNewNote() = runTest {
         recipeNoteRepository.addRecipeNote("recipeId", 1)
         recipeNoteRepository.addRecipeNote("recipeId2", 2)
-        recipeNoteRepository.updateRecipeNote("recipeId", 3, "a@gmail.com",0)
+        recipeNoteRepository.updateRecipeNote("recipeId", 3, "a@gmail.com", 0)
         val allRecipeNotes = recipeNoteRepository.retrieveAllRecipeNotes()
         assertThat(allRecipeNotes.values, containsInAnyOrder(3, 2))
     }
