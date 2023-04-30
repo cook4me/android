@@ -30,7 +30,7 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
      * @param note the note of the recipe
      * @param userId the id of the user (email) who added the note (null if empty vote)
      */
-    suspend fun addRecipeNote(id: String, note: Int, userId: String?) {
+    suspend fun addRecipeNote(id: String, note: Int, userId: String? = null) {
         store.collection(RECIPE_NOTE_PATH).add(mapOf("id" to id, "note" to note)).await()
         if (userId != null) {
             store.collection(USER_VOTE_PATH).add(mapOf("id" to id, "userId" to userId, "note" to note)).await()
