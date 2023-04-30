@@ -76,16 +76,32 @@ class RecipeFeedServiceTest {
     fun updatingNonExistingRecipeNoteCreatesNote() = runBlocking {
         val recipeId = "id1"
 
+        coEvery { mockAccountService.getCurrentUserWithEmail() } returns "email"
         coEvery { mockRecipeNoteRepository.getRecipeNote(recipeId) } returns null
-        coEvery { mockRecipeNoteRepository.addRecipeNote(recipeId, 2) } returns Unit
+        coEvery { mockRecipeNoteRepository.addRecipeNote(recipeId, 2, "email") } returns Unit
 
         val newNote = recipeFeedService.updateRecipeNotes(recipeId, 2)
 
         // assert addRecipeNote was called with the correct parameters
         coVerify {
-            mockRecipeNoteRepository.addRecipeNote(recipeId, 2)
+            mockRecipeNoteRepository.addRecipeNote(recipeId, 2, "email")
         }
 
         assertThat(newNote, `is`(2))
+    }
+
+    @Test
+    fun getRecipePersonalVotesWithNoUserReturnsEmptyMap() = runBlocking {
+        coEvery { mockAccountService.getCurrentUserWithEmail() } returns null
+        val result = recipeFeedService.getRecipePersonalVotes()
+        assertThat(result, `is`(emptyMap()))
+    }
+
+    @Test
+    fun getRecipePersonalVotesWithUserReturnsMap() = runBlocking {
+        coEvery { mockAccountService.getCurrentUserWithEmail() } returns "email"
+        coEvery { mockRecipeNoteRepository.retrieveAllUserVotes("email") } returns mapOf("id1" to 1)
+        val result = recipeFeedService.getRecipePersonalVotes()
+        assertThat(result, `is`(mapOf("id1" to 1)))
     }
 }
