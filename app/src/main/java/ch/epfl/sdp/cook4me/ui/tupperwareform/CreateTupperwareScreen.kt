@@ -109,7 +109,7 @@ fun CreateTupperwareScreen(
             onCancel = onCancel,
             onSubmit = { title, description ->
                 scope.launch {
-                    repository.addAndGetId(title, description, images)
+                    repository.add(title, description, images)
                     onSuccessfulSubmit()
                 }
             }

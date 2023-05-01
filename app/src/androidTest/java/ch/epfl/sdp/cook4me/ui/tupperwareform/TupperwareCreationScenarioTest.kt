@@ -67,7 +67,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.onNodeWithText("Done").performClick()
         verify {
             runBlocking {
-                mockTupperwareRepository.addAndGetId(
+                mockTupperwareRepository.add(
                     expectedTitle,
                     expectedDescription,
                     matchListWithoutOrder(testUri)

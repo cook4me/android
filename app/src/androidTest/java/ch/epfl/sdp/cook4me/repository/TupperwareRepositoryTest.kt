@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.repository
 
 import android.net.Uri
-import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.model.Tupperware
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -72,13 +71,13 @@ class TupperwareRepositoryTest {
             generateTempFiles(3)
         }
         val urls = files.map { Uri.fromFile(it) }
-        val id1 = tupperwareRepository.addAndGetId(title = "title1", description = "desc1", images = listOf())
-        tupperwareRepository.addAndGetId(
+        val id1 = tupperwareRepository.add(title = "title1", description = "desc1", images = listOf())
+        tupperwareRepository.add(
             title = "title2",
             description = "desc2",
             images = listOf(urls.first())
         )
-        tupperwareRepository.addAndGetId(
+        tupperwareRepository.add(
             title = "title3",
             description = "desc3",
             images = urls.drop(1)
@@ -112,9 +111,11 @@ class TupperwareRepositoryTest {
         val file = withContext(Dispatchers.IO) {
             generateTempFiles(2)
         }
-        val urls = file.map{ Uri.fromFile(it) }
+        val urls = file.map { Uri.fromFile(it) }
         val tup = Tupperware("title1", "desc1", USER_NAME)
-        val tupId = tupperwareRepository.addAndGetId(tup.title, tup.description, urls)
+        tupperwareRepository.add(tup.title, tup.description, urls)
+        val tupId = tupperwareRepository
+            .getWithGivenField<Tupperware>("title", "${tup.title}").first().id
         runBlocking { tupperwareRepository.delete(tupId) }
         val tups = tupperwareRepository.getAll<Tupperware>()
         assert(tups.isEmpty())

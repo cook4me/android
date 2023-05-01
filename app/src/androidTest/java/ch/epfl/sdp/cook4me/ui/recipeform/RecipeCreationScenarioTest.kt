@@ -96,7 +96,7 @@ class RecipeCreationScenarioTest {
         composeTestRule.onNodeWithText("Done").performClick()
         verify {
             runBlocking {
-                mockRecipeRepository.addAndGetId(
+                mockRecipeRepository.add(
                     expectedRecipe,
                     matchListWithoutOrder(testUri)
                 )
