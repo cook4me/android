@@ -3,18 +3,15 @@ package ch.epfl.sdp.cook4me.ui.tupperwareswipe
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -25,11 +22,7 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -47,6 +40,7 @@ import com.alexstyl.swipeablecard.rememberSwipeableCardState
 import com.alexstyl.swipeablecard.swipableCard
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import com.alexstyl.swipeablecard.SwipeableCardState
 
 data class Tupp(
@@ -89,13 +83,12 @@ fun TupperwareSwipeScreen(
         ) {
             Box(
                 Modifier
-                    .padding(24.dp)
-                    .weight(0.2f),
-//                .fillMaxSize()
-//                    .aspectRatio(1f),
+                    .padding(16.dp)
+                    .weight(0.87f),
                 contentAlignment = Alignment.Center
             ) {
                 if (allDone) {
+
                     Text("all done")
                 } else {
                     states.forEach { (tupperware, state) ->
@@ -109,46 +102,48 @@ fun TupperwareSwipeScreen(
                 }
             }
 
-            if (!allDone) {
-                Row(
-                    Modifier
-                        .padding(horizontal = 24.dp, vertical = 32.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    CircleButton(
-                        onClick = {
-                            scope.launch {
-                                val last = states
-                                    .reversed()
-                                    .firstOrNull {
-                                        it.second.offset.value == Offset(0f, 0f)
-                                    }?.second
-                                last?.swipe(Direction.Left)
-                            }
-                        },
-                        icon = Icons.Rounded.Close
-                    )
-                    CircleButton(
-                        onClick = {
-                                  //TODO
-                        },
-                        icon = Icons.Rounded.Info
-                    )
-                    CircleButton(
-                        onClick = {
-                            scope.launch {
-                                val last = states
-                                    .reversed()
-                                    .firstOrNull {
-                                        it.second.offset.value == Offset(0f, 0f)
-                                    }?.second
-                                last?.swipe(Direction.Right)
-                            }
-                        },
-                        icon = Icons.Rounded.Favorite
-                    )
-                }
+            Row(
+                Modifier
+                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                    .weight(0.13f)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                CircleButton(
+                    onClick = {
+                        scope.launch {
+                            val last = states
+                                .reversed()
+                                .firstOrNull {
+                                    it.second.offset.value == Offset(0f, 0f)
+                                }?.second
+                            last?.swipe(Direction.Left)
+                        }
+                    },
+                    enabled = !allDone,
+                    icon = Icons.Rounded.Close
+                )
+                CircleButton(
+                    onClick = {
+                        //TODO
+                    },
+                    enabled = !allDone,
+                    icon = Icons.Rounded.Info
+                )
+                CircleButton(
+                    onClick = {
+                        scope.launch {
+                            val last = states
+                                .reversed()
+                                .firstOrNull {
+                                    it.second.offset.value == Offset(0f, 0f)
+                                }?.second
+                            last?.swipe(Direction.Right)
+                        }
+                    },
+                    enabled = !allDone,
+                    icon = Icons.Rounded.Favorite
+                )
             }
         }
     }
@@ -169,29 +164,23 @@ private fun TupperwareCard(
                 //already handled by the callbacks of the buttons
             }
         )) {
-        if (tupperware.title == "Guacamole") {
-         Box {
-             Text(tupperware.description)
-         }
-        }
-        else {
-                Box {
-                    Image(
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize(),
-                        painter = painterResource(tupperware.imageId),
-                        contentDescription = null,
-                    )
-                    Column(Modifier.align(Alignment.BottomStart)) {
-                        Text(
-                            text = tupperware.title,
-                            color = MaterialTheme.colors.onPrimary,
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(10.dp)
-                        )
-                    }
-                }
+
+        Box {
+            Image(
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+                painter = painterResource(tupperware.imageId),
+                contentDescription = null,
+            )
+            Column(Modifier.align(Alignment.BottomStart)) {
+                Text(
+                    text = tupperware.title,
+                    color = MaterialTheme.colors.onPrimary,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
         }
     }
 }
@@ -200,14 +189,16 @@ private fun TupperwareCard(
 private fun CircleButton(
     onClick: () -> Unit,
     icon: ImageVector,
+    enabled: Boolean
 ) {
     IconButton(
         modifier = Modifier
             .clip(CircleShape)
-            .background(MaterialTheme.colors.primary)
+            .background(if (enabled) MaterialTheme.colors.primary else Color.Gray)
             .size(56.dp)
-            .border(2.dp, MaterialTheme.colors.primary, CircleShape),
-        onClick = onClick
+            .border(2.dp, if (enabled) MaterialTheme.colors.primary else Color.Gray, CircleShape),
+        onClick = onClick,
+        enabled = enabled
     ) {
         Icon(
             icon, null,
