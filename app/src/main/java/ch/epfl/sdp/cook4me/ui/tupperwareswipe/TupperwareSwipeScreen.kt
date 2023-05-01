@@ -3,16 +3,18 @@ package ch.epfl.sdp.cook4me.ui.tupperwareswipe
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -21,9 +23,13 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -40,6 +46,8 @@ import com.alexstyl.swipeablecard.ExperimentalSwipeableCardApi
 import com.alexstyl.swipeablecard.rememberSwipeableCardState
 import com.alexstyl.swipeablecard.swipableCard
 import kotlinx.coroutines.launch
+import androidx.compose.ui.Alignment
+import com.alexstyl.swipeablecard.SwipeableCardState
 
 data class Tupp(
     val title: String,
@@ -65,7 +73,6 @@ val tupperwareList = listOf(
     )
 )
 
-@OptIn(ExperimentalSwipeableCardApi::class)
 @Composable
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
@@ -76,46 +83,35 @@ fun TupperwareSwipeScreen(
 
     Column {
         CreateNewItemButton(itemType = "Tupperware", onClick = onCreateNewTupperware)
-//        Hint(hint)
-        Box(
-            Modifier
-                .padding(24.dp)
-//                .fillMaxSize()
-                .aspectRatio(1f)
-//                .align(Alignment.Center)
+        Column(
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            if (allDone) {
-                Text("all done")
-            } else {
-                states.forEach { (tupperware, state) ->
-                    if (state.swipedDirection == null) {
-                        TupperwareCard(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .swipableCard(
-                                    state = state,
-                                    blockedDirections = listOf(Direction.Up, Direction.Down),
-                                    onSwiped = {
-                                        //already handled by the callbacks of the buttons
-                                    }
-                                ),
-                            tupperware = tupperware
-                        )
+            Box(
+                Modifier
+                    .padding(24.dp)
+                    .weight(0.2f),
+//                .fillMaxSize()
+//                    .aspectRatio(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                if (allDone) {
+                    Text("all done")
+                } else {
+                    states.forEach { (tupperware, state) ->
+                        if (state.swipedDirection == null) {
+                            TupperwareCard(
+                                state,
+                                tupperware = tupperware
+                            )
+                        }
                     }
                 }
             }
-            }
 
-        if (!allDone) {
-            Row(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
+            if (!allDone) {
                 Row(
                     Modifier
-//                .align(Alignment.Vertical.Bottom)
                         .padding(horizontal = 24.dp, vertical = 32.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
@@ -132,6 +128,12 @@ fun TupperwareSwipeScreen(
                             }
                         },
                         icon = Icons.Rounded.Close
+                    )
+                    CircleButton(
+                        onClick = {
+                                  //TODO
+                        },
+                        icon = Icons.Rounded.Info
                     )
                     CircleButton(
                         onClick = {
@@ -152,32 +154,47 @@ fun TupperwareSwipeScreen(
     }
 }
 
+@OptIn(ExperimentalSwipeableCardApi::class)
 @Composable
 private fun TupperwareCard(
-    modifier: Modifier,
+    state: SwipeableCardState,
     tupperware: Tupp,
 ) {
-    Card(modifier) {
-        Box {
-            Image(
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(tupperware.imageId),
-                contentDescription = null
-            )
-            Column(Modifier.align(Alignment.BottomStart)) {
-                Text(
-                    text = tupperware.title,
-                    color = MaterialTheme.colors.onPrimary,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(10.dp)
-                )
+    Card(modifier = Modifier
+        .fillMaxSize()
+        .swipableCard(
+            state = state,
+            blockedDirections = listOf(Direction.Up, Direction.Down),
+            onSwiped = {
+                //already handled by the callbacks of the buttons
             }
+        )) {
+        if (tupperware.title == "Guacamole") {
+         Box {
+             Text(tupperware.description)
+         }
+        }
+        else {
+                Box {
+                    Image(
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                        painter = painterResource(tupperware.imageId),
+                        contentDescription = null,
+                    )
+                    Column(Modifier.align(Alignment.BottomStart)) {
+                        Text(
+                            text = tupperware.title,
+                            color = MaterialTheme.colors.onPrimary,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.padding(10.dp)
+                        )
+                    }
+                }
         }
     }
 }
-
 
 @Composable
 private fun CircleButton(
