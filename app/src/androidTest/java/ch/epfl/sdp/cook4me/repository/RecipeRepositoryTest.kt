@@ -115,6 +115,17 @@ class RecipeRepositoryTest {
     }
 
     @Test
+    fun getRecipeByName() = runTest {
+        val expectedRecipe = Recipe(name = "newEntry1", difficulty = "Hard")
+        recipeRepository.add(expectedRecipe)
+        recipeRepository.add(Recipe(name = "newEntry2"))
+        recipeRepository.add(Recipe(name = "newEntry3"))
+        val actual = recipeRepository.getWithGivenField<Recipe>("name", "newEntry1")
+            .map { it.toObject(Recipe::class.java) }.first()
+        assertThat(actual, `is`(expectedRecipe))
+    }
+
+    @Test
     fun getRecipeById() = runTest {
         recipeRepository.add(Recipe(name = "newEntry1"))
         recipeRepository.add(Recipe(name = "newEntry2"))
