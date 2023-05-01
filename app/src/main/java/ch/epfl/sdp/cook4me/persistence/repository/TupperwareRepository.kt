@@ -11,7 +11,7 @@ import java.util.UUID
 private const val COLLECTION_PATH = "tupperwares"
 
 class TupperwareRepository(
-    store: FirebaseFirestore = FirebaseFirestore.getInstance(),
+    private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val storage: FirebaseStorage = FirebaseStorage.getInstance(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) :
@@ -26,6 +26,11 @@ class TupperwareRepository(
                 storageRef.child("/images/$email/tupperwares/$tupperwareId/${UUID.randomUUID()}")
             ref.putFile(path).await()
         }
+    }
+
+    suspend fun getAllExceptFrom(userId: String): Map<String, Tupperware> {
+        val result = store.collection(COLLECTION_PATH).whereNotEqualTo("user", auth.currentUser).get().await()
+        return result.map { it.id }.zip(result.toObjects(Tupperware::class.java)).toMap()
     }
 
     override suspend fun delete(id: String) {
