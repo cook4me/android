@@ -1,8 +1,8 @@
 package ch.epfl.sdp.cook4me.persistence.model
 
+@Suppress("DataClassShouldBeImmutable")
 data class Tupperware(
-    val title: String = "",
-    val description: String = "",
-    val tags: List<String> = listOf(),
-    val images: List<String> = listOf()
+    var title: String = "",
+    var description: String = "",
+    var user: String = ""
 )

@@ -21,6 +21,12 @@ import androidx.compose.ui.test.performTextInput
 import androidx.core.app.ActivityOptionsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.matchListWithoutOrder
+import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
+import io.mockk.confirmVerified
+import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,12 +48,13 @@ class TupperwareCreationScenarioTest {
 
     @Test
     fun submittingValidTupFormShouldOutputCorrectTupperwareObject() {
+        val mockTupperwareRepository = mockk<TupperwareRepository>(relaxed = true)
         val expectedTitle = "Pizza"
         val expectedDescription = "Yeah the photo is not lying it's not good..."
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                CreateTupperwareScreen()
+                CreateTupperwareScreen({}, {}, mockTupperwareRepository)
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -58,12 +65,22 @@ class TupperwareCreationScenarioTest {
         composeTestRule.onNodeWithTag("description")
             .performTextInput(expectedDescription)
         composeTestRule.onNodeWithText("Done").performClick()
+        verify {
+            runBlocking {
+                mockTupperwareRepository.add(
+                    expectedTitle,
+                    expectedDescription,
+                    matchListWithoutOrder(testUri)
+                )
+            }
+        }
+        confirmVerified(mockTupperwareRepository)
     }
 
     @Test
     fun descriptionFieldIsDisplayed() {
         composeTestRule.setContent {
-            CreateTupperwareScreen()
+            CreateTupperwareScreen({}, {})
         }
         composeTestRule.onNodeWithText(text = "Description").assertIsDisplayed()
         composeTestRule.onNodeWithTag("description").assertIsDisplayed()
@@ -72,7 +89,7 @@ class TupperwareCreationScenarioTest {
     @Test
     fun titleFieldIsDisplayed() {
         composeTestRule.setContent {
-            CreateTupperwareScreen()
+            CreateTupperwareScreen({}, {})
         }
         composeTestRule.onNodeWithText(text = "Tupperware Name").assertIsDisplayed()
         composeTestRule.onNodeWithTag("title").assertIsDisplayed()
@@ -82,7 +99,7 @@ class TupperwareCreationScenarioTest {
     fun headerIsDisplayed() {
 
         composeTestRule.setContent {
-            CreateTupperwareScreen()
+            CreateTupperwareScreen({}, {})
         }
         composeTestRule.onNodeWithText(text = "Header").assertIsDisplayed()
     }
@@ -91,7 +108,7 @@ class TupperwareCreationScenarioTest {
     fun buttonRowIsDisplayed() {
 
         composeTestRule.setContent {
-            CreateTupperwareScreen()
+            CreateTupperwareScreen({}, {})
         }
         composeTestRule.onNodeWithText(text = "Cancel").assertIsDisplayed()
         composeTestRule.onNodeWithText(text = "Done").assertIsDisplayed()
@@ -103,7 +120,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                CreateTupperwareScreen()
+                CreateTupperwareScreen({}, {})
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -137,7 +154,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                CreateTupperwareScreen()
+                CreateTupperwareScreen({}, {})
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -154,7 +171,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.setContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
-                CreateTupperwareScreen()
+                CreateTupperwareScreen({}, {})
             }
         }
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -163,17 +180,18 @@ class TupperwareCreationScenarioTest {
     }
 
     private val registryOwner = object : ActivityResultRegistryOwner {
-        override val activityResultRegistry: ActivityResultRegistry = object : ActivityResultRegistry() {
-            override fun <I : Any?, O : Any?> onLaunch(
-                requestCode: Int,
-                contract: ActivityResultContract<I, O>,
-                input: I,
-                options: ActivityOptionsCompat?
-            ) {
-                // don't launch an activity, just respond with the test Uri
-                val intent = Intent().setData(testUri)
-                this.dispatchResult(requestCode, Activity.RESULT_OK, intent)
+        override val activityResultRegistry: ActivityResultRegistry =
+            object : ActivityResultRegistry() {
+                override fun <I : Any?, O : Any?> onLaunch(
+                    requestCode: Int,
+                    contract: ActivityResultContract<I, O>,
+                    input: I,
+                    options: ActivityOptionsCompat?
+                ) {
+                    // don't launch an activity, just respond with the test Uri
+                    val intent = Intent().setData(testUri)
+                    this.dispatchResult(requestCode, Activity.RESULT_OK, intent)
+                }
             }
-        }
     }
 }

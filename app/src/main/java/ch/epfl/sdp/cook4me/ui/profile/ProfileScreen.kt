@@ -31,51 +31,63 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(
+    modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = remember {
         ProfileViewModel()
     }
 ) {
-    val profile = profileViewModel.profileState.value
+    val profile = profileViewModel.profile.value
     val userNameState = rememberSaveable { mutableStateOf("") }
     val isLoading = profileViewModel.isLoading.value
     Box(
-        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+        modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier
+                modifier = modifier
                     .align(Alignment.Center)
                     .testTag("CircularProgressIndicator")
             )
         } else {
             userNameState.value = profile.name
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .padding(12.dp)
                     .fillMaxHeight()
             ) {
                 ProfileImageAndUsername(
-                    profile.userImage.toUri(), profile.name
+                    profile.userImage.toUri(),
+                    profile.name,
+                    modifier
                 )
 
                 // Textfield for the Favorite dish
-                FavoriteDishProfileScreen(profile.favoriteDish)
+                FavoriteDishProfileScreen(
+                    profile.favoriteDish,
+                    modifier,
+                )
 
                 // Textfield for the Allergies
-                AllergiesProfileScreen(profile.allergies)
+                AllergiesProfileScreen(
+                    profile.allergies,
+                    modifier,
+                )
 
                 // Textfield for the bio
-                BioProfileScreen(profile.bio)
+                BioProfileScreen(
+                    profile.bio,
+                    modifier,
+                )
 
                 // Grid with post within
-                PostGrid() // put images inside
+                PostGrid(modifier) // put images inside
             }
         }
     }
 }
 
 @Composable
-fun ProfileImageAndUsername(userImage: Uri, name: String) {
+fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
     // draws the image of the profile
     val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
@@ -87,14 +99,14 @@ fun ProfileImageAndUsername(userImage: Uri, name: String) {
     )
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Card(
             shape = CircleShape,
-            modifier = Modifier
+            modifier = modifier
                 .padding(8.dp)
                 .size(100.dp)
                 .testTag(stringResource(R.string.tag_defaultProfileImage))
@@ -102,36 +114,36 @@ fun ProfileImageAndUsername(userImage: Uri, name: String) {
             Image(painter = painter, contentDescription = "")
         }
 
-        UsernameProfileScreen(name)
+        UsernameProfileScreen(name, modifier)
     }
 }
 
 @Composable
-fun UsernameProfileScreen(name: String) {
+fun UsernameProfileScreen(name: String, modifier: Modifier) {
     Text(
         text = name,
-        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
+        modifier = modifier.padding(top = 8.dp, bottom = 8.dp),
         fontWeight = FontWeight.Bold,
     )
 }
 
 @Composable
-fun FavoriteDishProfileScreen(favoriteDish: String) {
+fun FavoriteDishProfileScreen(favoriteDish: String, modifier: Modifier) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = stringResource(R.string.tag_favoriteDish),
-            modifier = Modifier
+            modifier = modifier
                 .width(100.dp)
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
             text = favoriteDish,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
         )
@@ -139,22 +151,22 @@ fun FavoriteDishProfileScreen(favoriteDish: String) {
 }
 
 @Composable
-fun AllergiesProfileScreen(allergies: String) {
+fun AllergiesProfileScreen(allergies: String, modifier: Modifier) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = stringResource(R.string.tag_allergies),
-            modifier = Modifier
+            modifier = modifier
                 .width(100.dp)
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
             text = allergies,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
         )
@@ -162,22 +174,22 @@ fun AllergiesProfileScreen(allergies: String) {
 }
 
 @Composable
-fun BioProfileScreen(bio: String) {
+fun BioProfileScreen(bio: String, modifier: Modifier) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(start = 4.dp, end = 4.dp),
+            .padding(start = 8.dp, end = 8.dp),
         verticalAlignment = Alignment.Top
     ) {
         Text(
             text = stringResource(R.string.tag_bio),
-            modifier = Modifier
+            modifier = modifier
                 .width(100.dp)
                 .padding(top = 8.dp, bottom = 8.dp)
         )
         Text(
             text = bio,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         )

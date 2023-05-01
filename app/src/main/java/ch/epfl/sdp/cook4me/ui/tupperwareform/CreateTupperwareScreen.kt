@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,13 +33,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
+import kotlinx.coroutines.launch
 
 @Composable
-fun CreateTupperwareScreen() {
+fun CreateTupperwareScreen(
+    onCancel: () -> Unit,
+    onSuccessfulSubmit: () -> Unit,
+    repository: TupperwareRepository = TupperwareRepository()
+) {
     val images = remember { mutableStateListOf<Uri>() }
 
     var imageUri by remember {
@@ -66,6 +73,7 @@ fun CreateTupperwareScreen() {
     )
 
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     fun onClickAddImage() {
         imagePicker.launch("image/*")
@@ -98,7 +106,13 @@ fun CreateTupperwareScreen() {
             onClickTakePhoto = { onClickTakePhoto() },
             onClickImage = {},
             images,
-            onSubmit = {}
+            onCancel = onCancel,
+            onSubmit = { title, description ->
+                scope.launch {
+                    repository.add(title, description, images)
+                    onSuccessfulSubmit()
+                }
+            }
         )
     }
 }
@@ -110,12 +124,18 @@ private fun TupperwareForm(
     onClickTakePhoto: () -> Unit,
     onClickImage: () -> Unit = {},
     images: List<Uri>,
-    onSubmit: () -> Unit
+    onCancel: () -> Unit,
+    onSubmit: (String, String) -> Unit
 ) {
     val context = LocalContext.current
     val titleState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
-    val descriptionState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
+    val descriptionState =
+        remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
     val formIsValid = titleState.isValid && descriptionState.isValid
+
+    var inProgress by remember {
+        mutableStateOf(false)
+    }
 
     Box(
         modifier = modifier
@@ -150,7 +170,8 @@ private fun TupperwareForm(
                     .height(50.dp)
                     .onFocusChanged {
                         titleState.onFocusChange(it.isFocused)
-                    }.testTag("title")
+                    }
+                    .testTag("title")
                     .fillMaxWidth(),
                 question = R.string.TupCreateFormTupName,
                 value = titleState.text,
@@ -165,7 +186,8 @@ private fun TupperwareForm(
                     .height(150.dp)
                     .onFocusChanged {
                         descriptionState.onFocusChange(it.isFocused)
-                    }.testTag("description")
+                    }
+                    .testTag("description")
                     .fillMaxWidth(),
                 question = R.string.TupCreateFormDesc,
                 value = descriptionState.text,
@@ -178,12 +200,14 @@ private fun TupperwareForm(
     FormButtons(
         onCancelText = R.string.ButtonRowCancel,
         onSaveText = R.string.ButtonRowDone,
-        onCancelClick = { /*TODO*/ },
+        onCancelClick = onCancel,
+        isLoading = inProgress,
         onSaveClick = {
             titleState.enableShowErrors()
             descriptionState.enableShowErrors()
             if (formIsValid) {
-                onSubmit()
+                inProgress = true
+                onSubmit(titleState.text, descriptionState.text)
             } else {
                 // TODO: show snackbar
             }

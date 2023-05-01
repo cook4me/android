@@ -7,9 +7,14 @@ import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 @Composable
 fun CreateTupperwarePermissionWrapper(
     permissionStatusProvider: PermissionStatusProvider,
+    onCancel: () -> Unit,
+    onSuccessfulSubmit: () -> Unit
 ) {
     val permissionManager = PermissionManager(permissionStatusProvider)
     permissionManager.WithPermission {
-        CreateTupperwareScreen()
+        CreateTupperwareScreen(
+            onCancel,
+            onSuccessfulSubmit
+        )
     }
 }

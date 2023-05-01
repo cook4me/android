@@ -3,7 +3,8 @@ package ch.epfl.sdp.cook4me.persistence.model
 @Suppress("DataClassShouldBeImmutable")
 // need mutable data class to use toObjects and toObject function of firestore
 data class Recipe(
-    var name: String = "",
+    val user: String = "",
+    val name: String = "",
     val id: Int = 0,
     val ingredients: List<String> = listOf(),
     val recipeSteps: List<String> = listOf(),
