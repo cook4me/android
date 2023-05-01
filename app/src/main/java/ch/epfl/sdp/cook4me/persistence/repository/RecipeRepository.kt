@@ -16,7 +16,7 @@ class RecipeRepository(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) :
     ObjectRepository(store, COLLECTION_PATH) {
-    suspend fun add(recipe: Recipe, images: List<Uri>) {
+    suspend fun addAndGetId(recipe: Recipe, images: List<Uri>): String? {
         auth.currentUser?.email?.let { email ->
             val recipeId = super.addAndGetId(recipe.copy(user = email))
             val storageRef = storage.reference
@@ -27,7 +27,9 @@ class RecipeRepository(
                     )
                 ref.putFile(path).await()
             }
+            return recipeId
         }
+        return null
     }
 
     override suspend fun delete(id: String) {

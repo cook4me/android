@@ -16,7 +16,7 @@ class TupperwareRepository(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) :
     ObjectRepository(store, COLLECTION_PATH) {
-    suspend fun add(title: String, description: String, images: List<Uri>) {
+    suspend fun addAndGetId(title: String, description: String, images: List<Uri>): String {
         val email = auth.currentUser?.email
         checkNotNull(email)
         val tupperwareId = super.addAndGetId(Tupperware(title, description, email))
@@ -26,7 +26,10 @@ class TupperwareRepository(
                 storageRef.child("/images/$email/tupperwares/$tupperwareId/${UUID.randomUUID()}")
             ref.putFile(path).await()
         }
+        return tupperwareId
     }
+
+
 
     override suspend fun delete(id: String) {
         super.delete(id)

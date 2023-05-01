@@ -19,6 +19,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.contains
 import org.hamcrest.Matchers.containsInAnyOrder
+import org.hamcrest.Matchers.empty
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -76,13 +77,30 @@ class RecipeRepositoryTest {
         val urls = files.map { Uri.fromFile(it) }
         val newEntry1 = Recipe(name = "newEntry1", user = USER_NAME)
         val newEntry2 = Recipe(name = "newEntry2", user = USER_NAME)
-        recipeRepository.add(newEntry1, urls)
-        recipeRepository.add(newEntry2, urls.drop(1))
+        recipeRepository.addAndGetId(newEntry1, urls)
+        recipeRepository.addAndGetId(newEntry2, urls.drop(1))
         val allRecipes = recipeRepository.getAll<Recipe>()
         assertThat(allRecipes.values, containsInAnyOrder(newEntry1, newEntry2))
         val userFolder = storage.reference.child("images/$USER_NAME/recipes")
         val recipeFolder = userFolder.listAll().await()
         assertThat(recipeFolder.prefixes.count(), `is`(2))
+    }
+
+    @Test
+    fun deleteRecipe() = runTest {
+        val file = withContext(Dispatchers.IO) {
+            generateTempFiles(2)
+        }
+        val urls = file.map{ Uri.fromFile(it) }
+        val newEntry1 = Recipe(name = "newEntry1", user = USER_NAME)
+        val recipeId = recipeRepository.addAndGetId(newEntry1, urls)
+        recipeId?.let{
+            runBlocking { recipeRepository.delete(it) }
+        }
+        val recipes = recipeRepository.getAll<Recipe>()
+        assert(recipes.isEmpty())
+        val images = storage.reference.child("images/$USER_NAME/recipes").listAll().await()
+        assert(images.prefixes.isEmpty())
     }
 
     @Test

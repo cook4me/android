@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.repository
 
 import android.net.Uri
+import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.model.Tupperware
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import com.google.firebase.auth.FirebaseAuth
@@ -71,13 +72,13 @@ class TupperwareRepositoryTest {
             generateTempFiles(3)
         }
         val urls = files.map { Uri.fromFile(it) }
-        val id1 = tupperwareRepository.add(title = "title1", description = "desc1", images = listOf())
-        tupperwareRepository.add(
+        val id1 = tupperwareRepository.addAndGetId(title = "title1", description = "desc1", images = listOf())
+        tupperwareRepository.addAndGetId(
             title = "title2",
             description = "desc2",
             images = listOf(urls.first())
         )
-        tupperwareRepository.add(
+        tupperwareRepository.addAndGetId(
             title = "title3",
             description = "desc3",
             images = urls.drop(1)
@@ -104,6 +105,21 @@ class TupperwareRepositoryTest {
             .child("images/$USER_NAME/tupperwares/${tupIdsSortedbyTitle[2]}").listAll().await()
         assertThat(title2Folder.items.count(), `is`(1))
         assertThat(title3Folder.items.count(), `is`(2))
+    }
+
+    @Test
+    fun deleteRecipe() = runTest {
+        val file = withContext(Dispatchers.IO) {
+            generateTempFiles(2)
+        }
+        val urls = file.map{ Uri.fromFile(it) }
+        val tup = Tupperware("title1", "desc1", USER_NAME)
+        val tupId = tupperwareRepository.addAndGetId(tup.title, tup.description, urls)
+        runBlocking { tupperwareRepository.delete(tupId) }
+        val tups = tupperwareRepository.getAll<Tupperware>()
+        assert(tups.isEmpty())
+        val images = storage.reference.child("images/$USER_NAME/tupperwares").listAll().await()
+        assert(images.prefixes.isEmpty())
     }
 
     private fun generateTempFiles(count: Int): List<File> =
