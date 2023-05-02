@@ -6,7 +6,6 @@ import io.getstream.chat.android.client.logger.ChatLogLevel
 import io.getstream.chat.android.offline.model.message.attachments.UploadAttachmentsNetworkType
 import io.getstream.chat.android.offline.plugin.configuration.Config
 import io.getstream.chat.android.offline.plugin.factory.StreamOfflinePluginFactory
-
 fun provideChatClient(apiKey: String, context: Context) =
     ChatClient.Builder(apiKey, context)
         .withPlugin(provideOfflinePluginFactory(context))
