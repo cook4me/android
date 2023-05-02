@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -14,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,7 +27,7 @@ import ch.epfl.sdp.cook4me.R
 @Composable
 fun DetailedEventScreen(
     eventId: String,
-    detailedEventViewModel: DetailedEventViewModel = DetailedEventViewModel(eventId),
+    detailedEventViewModel: DetailedEventViewModel = DetailedEventViewModel(eventId, context = LocalContext.current),
 ) {
     val event = detailedEventViewModel.eventState.value
     val isLoading = detailedEventViewModel.isLoading.value
@@ -70,6 +72,7 @@ fun DetailedEventScreen(
 
                 SectionWithTitle(title = stringResource(R.string.event_time), content = event.eventDate)
                 Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
+
             }
         }
     }
