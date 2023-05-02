@@ -95,4 +95,17 @@ open class ObjectRepository(
             Log.e("ObjectRepo", "Error querying documents: ${e.message}")
             null
         }
+
+    /*
+    * Retrieves all documents in a collection
+    * If nothing is found, it returns empty list
+    * */
+    suspend fun <A : Any> retrieveAllDocuments(): List<DocumentSnapshot> =
+        try {
+            val result = store.collection(objectPath).get().await()
+            result.documents
+        } catch (e: FirebaseFirestoreException) {
+            Log.e("ObjectRepo", "Error querying documents: ${e.message}")
+            emptyList<DocumentSnapshot>()
+        }
 }

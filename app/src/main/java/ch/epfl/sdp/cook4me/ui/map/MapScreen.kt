@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
@@ -72,11 +73,15 @@ fun GoogleMapView(
     onMapLoaded: () -> Unit = {},
     content: @Composable () -> Unit = {},
     markers: List<MarkerData> = emptyList(),
+    mapViewModel: MapViewModel = MapViewModel(),
     selectedEventId: String = "",
     userLocationDisplayed: Boolean = false,
     onCreateNewEventClick: () -> Unit = {},
-    onDetailedEventClick: () -> Unit = {},
+    onDetailedEventClick: (String) -> Unit = {},
 ) {
+    val loadedMarkers by mapViewModel.markers
+    val isLoading by mapViewModel.isLoading
+
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
         mutableStateOf(
@@ -90,7 +95,7 @@ fun GoogleMapView(
         cameraPositionState.position =
             CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
-    var selectedMarker by remember { mutableStateOf(findMarkerById(markers, selectedEventId)) }
+    var selectedMarker by remember { mutableStateOf(findMarkerById(loadedMarkers, selectedEventId)) }
     var navigateToEvent by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
@@ -143,7 +148,10 @@ fun GoogleMapView(
                         ),
                         onClick = {
                             navigateToEvent = !navigateToEvent
-                            onDetailedEventClick()
+                            if (selectedMarker is MarkerData) {
+                                val eventId = (selectedMarker as MarkerData).id
+                                onDetailedEventClick(eventId)
+                            }
                         }
                     ) {
                         Text(text = "Explore event", style = MaterialTheme.typography.body1)
@@ -164,7 +172,7 @@ fun GoogleMapView(
                 onMapLoaded.invoke()
             },
         ) {
-            markers.map { marker ->
+            loadedMarkers.map { marker ->
                 val markerState = rememberMarkerState(position = marker.position)
                 MarkerInfoWindowContent(
                     state = markerState,
@@ -218,4 +226,12 @@ private fun MapButton(text: String, onClick: () -> Unit, modifier: Modifier = Mo
     ) {
         Text(text = text, style = MaterialTheme.typography.body1)
     }
+}
+
+@Preview
+@Composable
+fun MapPreview() {
+    GoogleMapView(
+        modifier = Modifier.fillMaxWidth()
+    )
 }

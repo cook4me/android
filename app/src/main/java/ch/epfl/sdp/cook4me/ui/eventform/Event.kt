@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.eventform
 
+import com.google.firebase.firestore.GeoPoint
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -12,6 +13,7 @@ data class Event(
     val description: String = "",
     val dateTime: Calendar = Calendar.getInstance(),
     val location: String = "",
+    val latLng: Pair<Double, Double> = Pair(0.0, 0.0),
     val maxParticipants: Int = 0,
     val participants: List<String> = listOf(),
     val creator: String = "",
@@ -46,7 +48,7 @@ data class Event(
     val eventInformation: String
         get() = "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\n" +
             "Location: $location\n Max participants: $maxParticipants\nParticipants: $participants\n" +
-            "Creator: $creator\nId: $id\nIs private: $isPrivate"
+            "Creator: $creator\nId: $id\nIs private: $isPrivate\n Latitude-Longitude: $latLng"
 
     val eventDate: String
         get() = "$dateAsFormattingDate"
@@ -70,7 +72,8 @@ data class Event(
         participants = map["participants"] as? List<String> ?: listOf(),
         creator = map["creator"] as? String ?: "",
         id = map["id"] as? String ?: "",
-        isPrivate = map["isPrivate"] as? Boolean ?: false
+        isPrivate = map["isPrivate"] as? Boolean ?: false,
+        latLng = (map["latLng"] as? GeoPoint)?.let { Pair(it.latitude, it.longitude) } ?: Pair(0.0, 0.0)
     )
 }
 

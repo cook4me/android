@@ -13,7 +13,7 @@ fun MapPermissionWrapper(
     modifier: Modifier = Modifier,
     markers: List<MarkerData> = dummyMarkers,
     onCreateNewEventClick: () -> Unit = {},
-    onDetailedEventClick: () -> Unit = {},
+    onDetailedEventClick: (String) -> Unit = {},
 ) {
     val permissionManager = PermissionManager(permissionStatusProvider)
     permissionManager.WithPermission {

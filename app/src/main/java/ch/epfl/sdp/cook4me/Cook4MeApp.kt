@@ -16,11 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
@@ -59,7 +61,13 @@ private enum class Screen {
     SignUpScreen,
     PostDetails,
     SignUpUserInfos,
-    RecipeFeed,
+    RecipeFeed
+}
+
+sealed class ScreenWithArgs(val name: String) {
+    object DetailedEventScreen : ScreenWithArgs("detailed_event_screen/{eventId}") {
+        fun createRoute(eventId: String) = "detailed_event_screen/$eventId"
+    }
 }
 
 /* Testing around the Detailed Event Screen */
@@ -114,7 +122,9 @@ fun Cook4MeApp(
             MapPermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
                 onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
+                onDetailedEventClick = { eventId ->
+                    navController.navigate(ScreenWithArgs.DetailedEventScreen.createRoute(eventId))
+                },
             )
         }
         composable(BottomNavScreen.Profile.route) { ProfileScreen() }
@@ -157,7 +167,11 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
         // the uid of event is predefined on firestore. this is just for show.
-        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
+        composable(
+            route = ScreenWithArgs.DetailedEventScreen.name,
+            arguments = listOf(navArgument("eventId") { type = NavType.StringType })
+        ) { backStackEntry -> DetailedEventScreen(backStackEntry.arguments?.getString("eventId").orEmpty())
+        }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
                 onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
