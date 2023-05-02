@@ -69,4 +69,17 @@ class ChatTest {
         assert(client != null)
         assertTrue(client is ChatClient)
     }
+
+    @Test
+    fun testChatService() {
+        val mockClient = mockk<ChatClient>(relaxed = true)
+        val mockAccountService = mockk<AccountService>(relaxed = true)
+        val createFunc = createChatWithEmail(
+            "someemail",
+            client = mockClient,
+            accountService = mockAccountService,
+            context = composeTestRule.activity
+        )
+        assert(createFunc != null)
+    }
 }
