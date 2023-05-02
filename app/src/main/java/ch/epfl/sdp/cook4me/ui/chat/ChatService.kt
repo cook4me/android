@@ -14,6 +14,7 @@ import io.getstream.chat.android.client.models.User
  * @param accountService: the account service, by default, refer to application/AccountService for a look.
  * @param client: the chat client, refer to overviewScreen or ChannelScreen for a look.
  * @param context: the context of the current activity, refer to overviewScreen or ChannelScreen for a look.
+ *                  usually is Localcontext.current
  */
 fun createChatWithEmail(
     targetEmail: String,
