@@ -90,6 +90,12 @@ class ChatTest {
             accountService = mockAccountService,
             context = composeTestRule.activity
         )
+        val createPairFunc = createChatWithPairs(
+            "someemail",
+            "someotheremail",
+            client = mockClient,
+        )
         assert(createFunc != null)
+        assert(createPairFunc != null)
     }
 }
