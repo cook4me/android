@@ -56,7 +56,7 @@ fun ProfileScreen(
                     .fillMaxHeight()
             ) {
                 ProfileImageAndUsername(
-                    profile.userImage.toUri(),
+                    Uri.EMPTY, //TODO add image
                     profile.name,
                     modifier
                 )
@@ -94,7 +94,7 @@ fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
         if (userImage.toString().isEmpty()) {
             R.drawable.ic_user
         } else {
-            imageURI.value = userImage.toString()
+            userImage
         }
     )
 

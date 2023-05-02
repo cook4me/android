@@ -69,6 +69,11 @@ fun AddProfileInfoScreen(
     val bioState = remember {
         NonRequiredTextFieldState("", "")
     }
+    val userImage = remember { mutableStateOf<Uri>(
+        //get Uri from R.drawable.ic_user
+        Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+    ) }
+
 
     var inProgress by remember {
         mutableStateOf(false)
@@ -82,9 +87,7 @@ fun AddProfileInfoScreen(
             contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
                 if (uri != null) {
-                    viewModel.addUserImage(
-                        uri
-                    )
+                    userImage.value = uri
                 }
             }
         )
@@ -110,7 +113,7 @@ fun AddProfileInfoScreen(
 
                 ImageHolder_AddProfileInfoScreen(
                     onClickAddImage = { onClickAddImage() },
-                    image = viewModel.profile.value.userImage.toUri(),
+                    image = userImage.value, //todo add Image
                 )
 
                 // Textfield for the Username

@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.application
 
+import android.net.Uri
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 
@@ -11,7 +12,6 @@ class ProfileServiceWithRepository(private val repository: ProfileRepository = P
         allergies: String,
         bio: String,
         favoriteDish: String,
-        userImage: String,
     ) {
         repository.update(
             id,
@@ -21,7 +21,6 @@ class ProfileServiceWithRepository(private val repository: ProfileRepository = P
                 allergies,
                 bio,
                 favoriteDish,
-                userImage,
             )
         )
     }

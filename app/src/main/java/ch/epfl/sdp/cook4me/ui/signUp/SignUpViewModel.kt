@@ -47,10 +47,6 @@ class SignUpViewModel(
         _profileState.value.favoriteDish = favoriteDish
     }
 
-    fun addUserImage(image: Uri) {
-        _profileState.value.userImage = image.toString()
-    }
-
     fun isValidUsername(username: String): Boolean =
         _profileState.value.name == username // TODO better check
 

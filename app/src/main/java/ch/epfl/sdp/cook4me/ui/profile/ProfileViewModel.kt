@@ -23,7 +23,6 @@ class ProfileViewModel(
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
     private val _formError = mutableStateOf(false)
     val isLoading = mutableStateOf(true) // not private for testing
-    val formError: State<Boolean> = _formError
     private val _profileState = mutableStateOf(Profile())
     val profile = _profileState
 
@@ -45,7 +44,6 @@ class ProfileViewModel(
                     _profileState.value.allergies = it.allergies
                     _profileState.value.bio = it.bio
                     _profileState.value.favoriteDish = it.favoriteDish
-                    _profileState.value.userImage = it.userImage
                     isLoading.value = false
                 }
             }
@@ -68,10 +66,6 @@ class ProfileViewModel(
         profile.value.favoriteDish = favoriteDish
     }
 
-    fun addUserImage(image: Uri) {
-        profile.value.userImage = image.toString()
-    }
-
     fun onSubmit(onSuccessListener: () -> Unit) {
         if (profile.value.name.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
             _formError.value = true
@@ -85,7 +79,6 @@ class ProfileViewModel(
                         profile.value.allergies,
                         profile.value.bio,
                         profile.value.favoriteDish,
-                        profile.value.userImage
                     )
                     onSuccessListener()
                     isLoading.value = false

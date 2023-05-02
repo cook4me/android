@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +43,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.UserField
 import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+
 
 @Composable
 fun EditProfileScreen(
@@ -68,18 +70,17 @@ fun EditProfileScreen(
     val favoriteDishState = remember {
         NonRequiredTextFieldState("", viewModel.profile.value.favoriteDish)
     }
-
-    val profile = viewModel.profile.value
+    var profile = viewModel.profile.value
     val isLoading = viewModel.isLoading.value
+
+    val image = remember { mutableStateOf<Uri>(Uri.EMPTY) }
 
     val imagePicker =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
                 if (uri != null) {
-                    viewModel.addUserImage(
-                        uri
-                    )
+                    image.value = uri
                 }
             }
         )
@@ -115,10 +116,10 @@ fun EditProfileScreen(
                             { viewModel.onSubmit(onSuccessListener) },
                             onCancelListener,
                         )
-
+                        // Image    TODO: Add a way to change the image
                         ImageHolderProfileUpdateScreen(
                             onClickAddImage = { onClickAddImage() },
-                            image = profile.userImage.toUri(),
+                            image = image.value,
                         )
                         // Textfield for the Username
                         UserField(
@@ -202,17 +203,26 @@ fun ImageProfileUpdateScreen(
     onClickAddImage: () -> Unit,
     image: Uri,
 ) {
+    val context = LocalContext.current
+    var userimage = image
+    if (image == "".toUri()){
+        userimage = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+    }
+
     AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current).data(image).build(),
+        model = ImageRequest.Builder(context).data(userimage).build(),
         contentDescription = "",
         modifier = Modifier
             .fillMaxHeight()
             .testTag("ProfileImage")
             .wrapContentSize()
-            .clickable { onClickAddImage() },
-        contentScale = ContentScale.Crop
+            .clickable { onClickAddImage() }
+        ,
+        contentScale = ContentScale.Crop,
+         // Add key parameter to force recompose when image changes
     )
 }
+
 
 @Composable
 private fun SaveCancelButtons(
