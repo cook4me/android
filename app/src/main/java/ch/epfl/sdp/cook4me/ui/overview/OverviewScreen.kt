@@ -44,9 +44,9 @@ fun OverviewScreen(
     // Listen to the navigation state and navigate to the correct screen
     val navigationState = overviewViewModel.navigationState
 
-    // testing of createChatWithEmail
+    // testing of createChatWithEmail (down)
     val context = LocalContext.current
-    // testing of createChatWithEmail
+    // testing of createChatWithEmail (up)
 
     if (navigationState.value == 1) {
         overviewViewModel.navigationState.value = 0
