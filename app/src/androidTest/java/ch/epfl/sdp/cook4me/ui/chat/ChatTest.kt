@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.chat
 
 import androidx.activity.ComponentActivity
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
@@ -32,7 +33,16 @@ class ChatTest {
         }
         composeTestRule.onNodeWithTag("Loading Screen TAG").assertIsDisplayed()
     }
-
+    @Test
+    fun testChannelScreen() {
+        val mockClient = mockk<ChatClient>(relaxed = true)
+        val mockAccountService = mockk<AccountService>(relaxed = true)
+        val screen = mutableStateOf<Unit>(Unit)
+        composeTestRule.setContent {
+            screen.value = ChannelScreen(mockClient, mockAccountService)
+        }
+        assert(screen.value != null)
+    }
     @Test
     fun testChannelScreenPerformsLoading() {
         val mockClient = mockk<ChatClient>(relaxed = true)
