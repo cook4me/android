@@ -15,7 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
+// just for the coverage!! (╯°Д°)╯ ┻━┻
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class ChatTest {
