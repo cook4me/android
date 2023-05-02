@@ -28,7 +28,8 @@ fun ChannelScreen(
     accountService: AccountService = AccountService(),
     onBackListener: () -> Unit = {},
 ) {
-    // var selectedChannelId by remember {mutableStateOf("")}
+    // disconnecting the client before connecting again, otherwise will
+    // cause error: too many connections
     runBlocking {
         client.disconnect(true).enqueue()
     }
@@ -39,10 +40,13 @@ fun ChannelScreen(
     val user = remember {
         mutableStateOf(User(id = fullName.value))
     }
+    // The user email is always not null, it's a bit of boilerplate.
     userEmail?.let { email ->
+        // parsing email to get the name (user id)
         val nameParts = email.split("@")[0].replace(".", "")
         fullName.value = nameParts.trim()
         user.value = User(id = fullName.value)
+        // generating user token and connecting the user
         val token = client.devToken(user.value.id)
         client.connectUser(user.value, token).enqueue { result ->
             if (result.isSuccess) {
@@ -67,13 +71,8 @@ fun ChannelScreen(
                     ),
                     title = "Channel List of ${fullName.value}",
                     isShowingSearch = true,
-                    /*
-                    * Old code (for message screen) for selecting a channel
-
-                    onItemClick = { channel ->
-                        selectedChannelId = channel.cid
-                    },
-                    */
+                    // When clicking on a channel in the channel list, open up
+                    // the corresponding message screen
                     onItemClick = { channel ->
                         val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
                         startActivity(context, intent, null)
@@ -82,35 +81,7 @@ fun ChannelScreen(
                     onHeaderAvatarClick = {
                         client.disconnect(true).enqueue()
                     },
-                    onHeaderActionClick = {
-                        client.createChannel(
-                            channelType = "messaging",
-                            channelId = "",
-                            memberIds = listOf(fullName.value, "notexistinguser"),
-                            extraData = emptyMap()
-                        ).enqueue { result ->
-                            if (result.isSuccess) {
-                                val channel = result.data()
-                                // selectedChannelId.value = channel.cid
-                                val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
-                                startActivity(context, intent, null)
-                            } else {
-                                println("create channel failed")
-                            }
-                        }
-                    },
                 )
-                /*
-                * Old code (for message screen) for calling message screen
-                * with the given channel id
-
-                if (selectedChannelId.isNotEmpty()) {
-                    MessageScreen(
-                        channelId = selectedChannelId,
-                        onBackListener = { selectedChannelId = "" },
-                    )
-                }
-                */
             }
         } else {
             LoadingScreen()
