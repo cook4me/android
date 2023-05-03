@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.BottomNavScreen
 import ch.epfl.sdp.cook4me.R
 
+
 val mainDestinations = listOf(
     BottomNavScreen.Tupperwares,
     BottomNavScreen.Recipes,

@@ -31,7 +31,6 @@ import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.navigation.BottomNavigationBar
 import ch.epfl.sdp.cook4me.ui.navigation.mainDestinations
-import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
@@ -43,6 +42,7 @@ import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 
+
 /**
  * enum values that represent the screens in the app
  */
@@ -50,7 +50,6 @@ private enum class Screen {
     Login,
     CreateTupperwareScreen,
     TupperwareSwipeScreen,
-    OverviewScreen,
     ProfileScreen,
     CreateRecipeScreen,
     EditProfileScreen,
@@ -74,10 +73,10 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object Menu : BottomNavScreen(Screen.OverviewScreen.name, Icons.Filled.Menu, "Menu")
-    object MyTupperwares : BottomNavScreen(Screen.OverviewScreen.name, null, "My Tups")
-    object MyRecipes : BottomNavScreen(Screen.OverviewScreen.name, null, "My Recipes")
-    object MyEvents : BottomNavScreen(Screen.OverviewScreen.name, null, "My Events")
+    object Menu : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.Menu, "Menu")
+    object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
+    object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
+    object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
 }
 
 @Composable
@@ -122,30 +121,10 @@ fun Cook4MeApp(
             )
         }
         composable(BottomNavScreen.Profile.route) { ProfileScreen() }
-        composable(BottomNavScreen.Menu.route) {
-            OverviewScreen(
-                onMapClick = { navController.navigate(Screen.Event.name) },
-                onProfileClick = { navController.navigate(Screen.ProfileScreen.name) },
-                onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
-                onAddTupperwareClick = {
-                    navController.navigate(Screen.CreateTupperwareScreen.name)
-                },
-                onSwipeTupperwareClick = {
-                    navController.navigate(BottomNavScreen.Tupperwares.route)
-                },
-                onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
-                onPostClick = { navController.navigate(Screen.PostDetails.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
-                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
-                signOutNavigation = { navController.navigate(Screen.Login.name) },
-                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
-            )
-        }
         composable(route = Screen.EditProfileScreen.name) {
             EditProfileScreen(
-                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) },
-                onSuccessListener = { navController.navigate(Screen.OverviewScreen.name) },
+                onCancelListener = { navController.navigate(Screen.ProfileScreen.name) },
+                onSuccessListener = { navController.navigate(Screen.ProfileScreen.name) },
             )
         }
         composable(route = Screen.CreateTupperwareScreen.name) {

@@ -74,10 +74,6 @@
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
     <string name="Login_Screen_Tag">LoginScreen</string>
 
-    <!-- Overview Screen -->
-    <string name="Overview_Screen_Tag">OverviewScreen</string>
-    <string name="Current_user_header">You are logged in with: </string>
-
     <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
