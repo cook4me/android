@@ -160,7 +160,7 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
         // the uid of event is predefined on firestore. this is just for show.
-        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
+        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("pSkhty73UrT4f55lIOov") }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
                 onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.core.content.ContextCompat.startActivity
+import ch.epfl.sdp.cook4me.BuildConfig
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import io.getstream.chat.android.client.ChatClient
@@ -22,7 +23,7 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun ChannelScreen(
     client: ChatClient = provideChatClient(
-        apiKey = "w9pumuqjxk3m",
+        apiKey = BuildConfig.CHAT_API_KEY,
         context = LocalContext.current
     ),
     accountService: AccountService = AccountService(),
