@@ -3,7 +3,6 @@ package ch.epfl.sdp.cook4me.ui.profile
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
@@ -31,8 +30,6 @@ class ProfileViewModelTest {
         allergies = "Hazelnut",
         bio = "I am a duck",
         favoriteDish = "Spaghetti",
-        userImage = "Image of Donald",
-        photos = listOf(""),
     )
 
     @Before
@@ -92,7 +89,6 @@ class ProfileViewModelTest {
         assert(profileViewModel.profile.value.favoriteDish == user.favoriteDish)
         assert(profileViewModel.profile.value.bio == user.bio)
         assert(profileViewModel.profile.value.email == user.email)
-        assert(profileViewModel.profile.value.userImage == user.userImage)
 
         // create onSignUpFailure and onSignUpSuccess
         var isUpdateSuccess = false
@@ -102,11 +98,11 @@ class ProfileViewModelTest {
             onSuccessListener = { isUpdateSuccess = true }
         )
 
+
         profileViewModel.addUsername(user.name)
         profileViewModel.addAllergies(user.allergies)
         profileViewModel.addFavoriteDish(user.favoriteDish)
         profileViewModel.addBio(user.bio)
-        profileViewModel.addUserImage(user.userImage.toUri())
 
         profileViewModel.onSubmit(
             onSuccessListener = { isUpdateSuccess = true },

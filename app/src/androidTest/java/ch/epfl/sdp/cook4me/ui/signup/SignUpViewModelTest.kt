@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.profile.ProfileViewModel
@@ -125,7 +124,6 @@ class SignUpViewModelTest {
         signUpViewModel.addEmail(email)
         signUpViewModel.addBio(bio)
         signUpViewModel.addPassword(password)
-        signUpViewModel.addUserImage(userImage.toUri())
 
         // check that its valid after adding it
         assert(signUpViewModel.checkForm())
@@ -174,14 +172,12 @@ class SignUpViewModelTest {
         signUpViewModel.addBio(bio)
         signUpViewModel.addEmail(email)
         signUpViewModel.addPassword(password)
-        signUpViewModel.addUserImage(userImage.toUri())
 
         assert(signUpViewModel.profile.value.name == username)
         assert(signUpViewModel.profile.value.allergies == allergies)
         assert(signUpViewModel.profile.value.favoriteDish == favoriteDish)
         assert(signUpViewModel.profile.value.bio == bio)
         assert(signUpViewModel.profile.value.email == email)
-        assert(signUpViewModel.profile.value.userImage == userImage)
     }
 
     @Test
@@ -194,7 +190,6 @@ class SignUpViewModelTest {
         signUpViewModel.addEmail(email)
         signUpViewModel.addBio(bio)
         signUpViewModel.addPassword(password)
-        signUpViewModel.addUserImage(userImage.toUri())
 
         // create onSignUpFailure and onSignUpSuccess
         var isSignUpFailed = false

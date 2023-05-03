@@ -35,7 +35,6 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            runBlocking {
                 //run blocking  to wait for the profile to be loaded
                 //therefore avoid race condition on the isloaded value
                 var profile =
@@ -71,7 +70,6 @@ class ProfileViewModel(
                 }
 
                 isLoading.value = false
-            }
         }
     }
 

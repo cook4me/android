@@ -35,8 +35,6 @@ class EditProfileScreenTest {
         allergies = "Hazelnut",
         bio = "I am a duck",
         favoriteDish = "Spaghetti",
-        userImage = "Image of Donald",
-        photos = listOf(""),
     )
 
     @Before
