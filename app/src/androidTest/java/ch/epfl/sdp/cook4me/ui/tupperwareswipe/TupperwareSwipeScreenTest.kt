@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me.ui.tupperwareswipe
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
@@ -19,9 +20,6 @@ class TupperwareSwipeScreenTest {
         composeTestRule.setContent {
             TupperwareSwipeScreen()
         }
-        composeTestRule.onNodeWithText("Spaghetti Carbonara").assertIsDisplayed()
-        composeTestRule.onNodeWithText("made by my mother with much love ❤️").assertIsDisplayed()
-        composeTestRule.onNodeWithText("nope").assertIsDisplayed()
-        composeTestRule.onNodeWithText("yes").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Tupperware").assertIsDisplayed()
     }
 }

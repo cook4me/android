@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -55,7 +56,7 @@ fun TupperwareSwipeScreen(
                 contentAlignment = Alignment.Center
             ) {
                 if (allDone) {
-                    Text("all done") // TODO
+                    Text("all done") // TODO: https://github.com/cook4me/android/issues/185
                 } else {
                     states.forEach { (tupperware, state) ->
                         if (state.swipedDirection == null) {
@@ -79,9 +80,10 @@ fun TupperwareSwipeScreen(
                         swipe(Direction.Left)
                     },
                     enabled = !allDone,
-                    icon = Icons.Rounded.Close
+                    icon = Icons.Rounded.Close,
+
                 )
-                // TODO: display info
+                // TODO: https://github.com/cook4me/android/issues/189
 //                CircleButton(
 //                    onClick = {
 //                    },
@@ -100,6 +102,7 @@ fun TupperwareSwipeScreen(
     }
 }
 
+//TODO: will be removed with https://github.com/cook4me/android/issues/183
 data class DummyTupperware(
     val title: String,
     val description: String,
