@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.recipe
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -26,7 +27,7 @@ class RecipeScreenTest {
         composeTestRule.setContent {
             RecipeScreen(dummyRecipe)
         }
-        composeTestRule.onNodeWithText(dummyRecipe.name).assertExists()
+        composeTestRule.onNodeWithText(dummyRecipe.name).assertIsDisplayed()
     }
 
     @Test
@@ -35,7 +36,7 @@ class RecipeScreenTest {
             RecipeScreen(dummyRecipe)
         }
         val recipeBasicInfo = "Servings: ${dummyRecipe.servings} | Cooking time: ${dummyRecipe.cookingTime} | Difficulty: ${dummyRecipe.difficulty}"
-        composeTestRule.onNodeWithText(recipeBasicInfo).assertExists()
+        composeTestRule.onNodeWithText(recipeBasicInfo).assertIsDisplayed()
     }
 
     @Test
@@ -45,7 +46,7 @@ class RecipeScreenTest {
         }
         val ingredients = "Ingredients: \n ${dummyRecipe.ingredients.map{s -> "\t - $s"}.joinToString("\n")}"
         val steps = "Steps: \n ${dummyRecipe.recipeSteps.map{s -> "\t - $s"}.joinToString("\n")}"
-        composeTestRule.onNodeWithText(ingredients).assertExists()
-        composeTestRule.onNodeWithText(steps).assertExists()
+        composeTestRule.onNodeWithText(ingredients).assertIsDisplayed()
+        composeTestRule.onNodeWithText(steps).assertIsDisplayed()
     }
 }
