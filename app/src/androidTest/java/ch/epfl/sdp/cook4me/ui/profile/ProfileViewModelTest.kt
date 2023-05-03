@@ -98,7 +98,6 @@ class ProfileViewModelTest {
             onSuccessListener = { isUpdateSuccess = true }
         )
 
-
         profileViewModel.addUsername(user.name)
         profileViewModel.addAllergies(user.allergies)
         profileViewModel.addFavoriteDish(user.favoriteDish)
