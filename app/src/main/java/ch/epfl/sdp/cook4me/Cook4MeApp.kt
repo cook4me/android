@@ -30,7 +30,7 @@ import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.navigation.BottomNavigationBar
-import ch.epfl.sdp.cook4me.ui.navigation.mainScreens
+import ch.epfl.sdp.cook4me.ui.navigation.mainDestinations
 import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.profile.PostDetails
@@ -104,7 +104,7 @@ fun Cook4MeApp(
         Screen.Login.name
     }
 
-    val screensWithBottomBar = mainScreens.map { it.route }
+    val screensWithBottomBar = mainDestinations.map { it.route }
     val shouldShowBottomBar = navController
         .currentBackStackEntryAsState().value?.destination?.route in screensWithBottomBar
 

@@ -138,6 +138,7 @@
     <string name="permission_message_plural">The following permissions are important: %1\$s. Please grant all of them for the app to function properly.</string>
     <string name="permission_message_singular_recommendation">The %1\$s permission will grant a better experience in the app</string>
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
+    <string name="bottom_bar_more_button_text">More</string>
 
 
 </resources>

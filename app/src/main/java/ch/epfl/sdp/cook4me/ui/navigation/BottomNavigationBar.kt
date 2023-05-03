@@ -19,31 +19,29 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.BottomNavScreen
 import ch.epfl.sdp.cook4me.R
 
-val mainScreens = listOf(
+
+val mainDestinations = listOf(
     BottomNavScreen.Tupperwares,
     BottomNavScreen.Recipes,
     BottomNavScreen.Events,
 )
+
+val dropDownMenuDestinations = listOf(
+    BottomNavScreen.MyTupperwares,
+    BottomNavScreen.MyRecipes,
+    BottomNavScreen.MyEvents,
+    BottomNavScreen.Profile,
+)
+
+
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun BottomNavigationBar(navigateTo: (String)->Unit = {}, currentRoute: String) {
-    val mainDestinations = listOf(
-        BottomNavScreen.Tupperwares,
-        BottomNavScreen.Recipes,
-        BottomNavScreen.Events,
-    )
-
-    val dropDownMenuDestinations = listOf(
-        BottomNavScreen.MyTupperwares,
-        BottomNavScreen.MyRecipes,
-        BottomNavScreen.MyEvents,
-        BottomNavScreen.Profile,
-    )
-
     var expanded by remember { mutableStateOf(false)}
 
     BottomNavigation(
@@ -71,7 +69,7 @@ fun BottomNavigationBar(navigateTo: (String)->Unit = {}, currentRoute: String) {
             BottomNavigationItem(
                 modifier = Modifier.fillMaxWidth(),
                 icon = { Icon(moreIcon, contentDescription = null) },
-                label = { Text("More") },
+                label = { Text(stringResource(R.string.bottom_bar_more_button_text)) },
                 selected = expanded,
                 onClick = {},
             )
