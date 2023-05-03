@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ch.epfl.sdp.cook4me.BuildConfig
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.chat.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.chat.createChatWithEmail
@@ -82,7 +83,7 @@ fun DetailedEventScreen(
                         createChatWithEmail(
                             targetEmail = event.id,
                             client = provideChatClient(
-                                apiKey = "w9pumuqjxk3m",
+                                apiKey = BuildConfig.CHAT_API_KEY,
                                 context = context
                             ),
                             context = context

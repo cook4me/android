@@ -13,6 +13,14 @@ android {
     compileSdk 33
 
     defaultConfig {
+        // Read chat api key from local.properties
+        def properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def CHAT_API_KEY = properties.getProperty('CHAT_API_KEY', '')
+
+        // Add API key as build config field
+        buildConfigField 'String', 'CHAT_API_KEY', "\"${CHAT_API_KEY}\""
+
         applicationId 'ch.epfl.sdp.cook4me'
         minSdk 24
         targetSdk 33

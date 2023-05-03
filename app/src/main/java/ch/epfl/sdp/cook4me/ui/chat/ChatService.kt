@@ -12,7 +12,7 @@ import io.getstream.chat.android.client.models.User
  * @param targetEmail: the email of the user who is the current user is going to
  * start a chat with.
  * @param accountService: the account service, by default, refer to application/AccountService for a look.
- * @param client: the chat client, refer to overviewScreen or ChannelScreen for a look.
+ * @param client: the chat client, refer to ChannelScreen for a look.
  * @param context: the context of the current activity, refer to overviewScreen or ChannelScreen for a look.
  *                  usually is Localcontext.current
  */
@@ -71,7 +71,7 @@ fun createChatWithEmail(
  *
  * @param userEmail: the email of one user
  * @param targetEmail: the email of the other user
- * @param client: the chat client, refer to overviewScreen or ChannelScreen for a look.
+ * @param client: the chat client, refer to ChannelScreen for a look.
  *
  * I'm not defining any actions upon a successful creation of a channel, will do later when
  * we have a clear logic of tups matches.
