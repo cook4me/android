@@ -24,6 +24,7 @@ import androidx.navigation.createGraph
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
+import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -58,6 +59,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    ChatScreen,
     SignUpUserInfos,
     RecipeFeed,
 }
@@ -135,6 +137,7 @@ fun Cook4MeApp(
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
                 onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
                 signOutNavigation = { navController.navigate(Screen.Login.name) },
+                onChatClick = { navController.navigate(Screen.ChatScreen.name) },
                 onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
@@ -199,6 +202,11 @@ fun Cook4MeApp(
                         popUpTo(Screen.Login.name) { inclusive = true }
                     }
                 }
+            )
+        }
+        composable(route = Screen.ChatScreen.name) {
+            ChannelScreen(
+                onBackListener = { navController.navigate(Screen.OverviewScreen.name) },
             )
         }
     }

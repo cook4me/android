@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.ui.recipe.RecipeScreen
 
 const val RECIPE_TITLE_RATIO = 0.8F
 
@@ -29,9 +30,10 @@ const val RECIPE_TITLE_RATIO = 0.8F
  * @param recipe the recipe to display
  * @param note the note of the recipe
  * @param onNoteUpdate the function to call when the note is updated
+ * @param userVote the vote of the user
  */
 @Composable
-fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}) {
+fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}, userVote: Int = 0) {
     val clicked = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -50,24 +52,19 @@ fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}) {
                     .fillMaxWidth(RECIPE_TITLE_RATIO)
                     .padding(8.dp),
             ) {
-                Text(
-                    text = recipe.name,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(8.dp)
-                )
-                Text(
-                    text = recipe.cookingTime,
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(8.dp)
-                )
                 if (clicked.value) {
+                    RecipeScreen(recipe = recipe)
+                } else {
                     Text(
-                        text = "This is a recipe",
+                        text = recipe.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(8.dp)
+                    )
+                    Text(
+                        text = recipe.cookingTime,
                         fontSize = 16.sp,
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
@@ -76,7 +73,7 @@ fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}) {
                 }
             }
             // put on the right side a voteIcon
-            VoteIcon(counterValue = note, onChange = onNoteUpdate)
+            VoteIcon(counterValue = note, onChange = onNoteUpdate, userVote = userVote)
         }
     }
 }

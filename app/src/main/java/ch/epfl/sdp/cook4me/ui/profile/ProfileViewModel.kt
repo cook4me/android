@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
 import android.net.Uri
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,7 +22,6 @@ class ProfileViewModel(
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
     private val _formError = mutableStateOf(false)
     val isLoading = mutableStateOf(true) // not private for testing
-    val formError: State<Boolean> = _formError
     private val _profileState = mutableStateOf(Profile())
     val profile = _profileState
 

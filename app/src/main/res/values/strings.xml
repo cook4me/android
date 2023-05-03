@@ -8,9 +8,10 @@
     <string name="navigate_to_add_event">Add event</string>
     <string name="navigate_to_add_signup">Sign up</string>
     <string name="navigate_to_postView">Post</string>
+    <string name="navigate_to_chat">Chat</string>
     <string name="navigate_to_recipe_feed">Recipe feed</string>
     <string name="sign_out">Sign out</string>
-    
+
     <!-- ui/simpleComponent strings   -->
     <string name="navigate_to_add_recipe">Add Recipe</string>
 
@@ -139,5 +140,7 @@
     <string name="permission_message_singular_recommendation">The %1\$s permission will grant a better experience in the app</string>
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
-
+    <!-- Chat -->
+    <string name="Loading_Screen_Tag">Loading Screen TAG</string>
+    <string name="Channel_Screen_Tag">Channel Screen TAG</string>
 </resources>
