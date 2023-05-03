@@ -175,7 +175,12 @@ fun Cook4MeApp(
                 onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
-        composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
+        composable(route = Screen.CreateRecipeScreen.name) {
+            CreateRecipeScreen(
+                onSuccessfulSubmit = { navController.navigateUp() },
+                onCancelClick = { navController.navigateUp() }
+            )
+        }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
