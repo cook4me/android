@@ -45,38 +45,10 @@ import java.util.Calendar
 /**
  * enum values that represent the screens in the app
  */
-private enum class Screen {
-    Login,
-    CreateTupperwareScreen,
-    TupperwareSwipeScreen,
-    ProfileScreen,
-    CreateRecipeScreen,
-    EditProfileScreen,
-    Event,
-    CreateEventScreen,
-    DetailedEventScreen,
-    SignUpScreen,
-    PostDetails,
-    SignUpUserInfos,
-    RecipeFeed,
-}
 
 /* Testing around the Detailed Event Screen */
 // initializing the testing event
 val calendar = Calendar.getInstance()
-
-sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val title: String) {
-    object Tupperwares :
-        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
-
-    object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
-    object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
-    object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object Menu : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.Menu, "Menu")
-    object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
-    object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
-    object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
-}
 
 @Composable
 fun Cook4MeApp(
