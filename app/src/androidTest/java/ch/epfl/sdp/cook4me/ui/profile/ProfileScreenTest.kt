@@ -109,9 +109,15 @@ class ProfileScreenTest {
 
         profileViewModel.isLoading.value = true
 
+        // Wait for a moment to allow Compose to recompose
+        composeTestRule.waitForIdle()
+
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
 
         profileViewModel.isLoading.value = false
+
+        // Wait for a moment to allow Compose to recompose
+        composeTestRule.waitForIdle()
 
         composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
     }

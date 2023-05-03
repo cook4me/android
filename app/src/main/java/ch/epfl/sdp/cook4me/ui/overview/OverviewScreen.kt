@@ -13,12 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.chat.createChatWithEmail
+import ch.epfl.sdp.cook4me.ui.chat.provideChatClient
 
 @Composable
 fun OverviewScreen(
@@ -34,11 +37,17 @@ fun OverviewScreen(
     onRecipeFeedClick: () -> Unit,
     signOutNavigation: () -> Unit,
     onDetailedEventClick: () -> Unit,
+    onChatClick: () -> Unit,
     modifier: Modifier = Modifier,
     overviewViewModel: OverviewViewModel = viewModel()
 ) {
     // Listen to the navigation state and navigate to the correct screen
     val navigationState = overviewViewModel.navigationState
+
+    // testing of createChatWithEmail (down)
+    val context = LocalContext.current
+    // testing of createChatWithEmail (up)
+
     if (navigationState.value == 1) {
         overviewViewModel.navigationState.value = 0
         signOutNavigation()
@@ -100,6 +109,24 @@ fun OverviewScreen(
             }
             Button(onClick = { overviewViewModel.onSignOutButtonClicked() }) {
                 Text(stringResource(R.string.sign_out))
+            }
+            Button(onClick = onChatClick) {
+                Text(stringResource(R.string.navigate_to_chat))
+            }
+            // this button is used to create a chat between the current user and pau.
+            Button(
+                onClick = {
+                    createChatWithEmail(
+                        "pau.romeu@epfl.ch",
+                        client = provideChatClient(
+                            apiKey = "w9pumuqjxk3m",
+                            context = context
+                        ),
+                        context = context
+                    )
+                }
+            ) {
+                Text("create chat")
             }
         }
     }

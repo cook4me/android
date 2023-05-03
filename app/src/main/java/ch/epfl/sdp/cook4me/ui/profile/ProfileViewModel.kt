@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class ProfileViewModel(
@@ -95,20 +96,21 @@ class ProfileViewModel(
             _formError.value = true
         } else {
             viewModelScope.launch {
-                _id?.let {
-                    isLoading.value = true
-                    service.submitForm(
-                        it, // Email as id
-                        profile.value.name,
-                        profile.value.allergies,
-                        profile.value.bio,
-                        profile.value.favoriteDish,
-                    )
-                    onSuccessListener()
-                    isLoading.value = false
+                runBlocking {
+                    _id?.let {
+                        isLoading.value = true
+                        service.submitForm(
+                            it, // Email as id
+                            profile.value.name,
+                            profile.value.allergies,
+                            profile.value.bio,
+                            profile.value.favoriteDish,
+                        )
+                        onSuccessListener()
+                        isLoading.value = false
+                    }
                 }
             }
         }
     }
-
 }
