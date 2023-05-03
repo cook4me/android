@@ -15,17 +15,20 @@ import androidx.compose.ui.platform.testTag
 import ch.epfl.sdp.cook4me.R
 import kotlinx.coroutines.delay
 
+const val DELAY_TIME = 100L
+const val MOD_NUMBER = 3
+const val ADD_NUMBER = 1
+
 // A loading screen that is displayed when the user is waiting for the chat to load
 // It shows a changing text with different number of dots
 @Composable
-@Suppress("MagicNumber")
 fun LoadingScreen() {
     val loadingDots = remember { mutableStateOf(1) }
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(100)
-            loadingDots.value = loadingDots.value % 3 + 1
+            delay(DELAY_TIME)
+            loadingDots.value = loadingDots.value % MOD_NUMBER + ADD_NUMBER
         }
     }
 
