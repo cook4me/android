@@ -42,7 +42,6 @@ import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
 
-
 /**
  * enum values that represent the screens in the app
  */
