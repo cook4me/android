@@ -22,7 +22,7 @@ fun createChatWithEmail(
     client: ChatClient,
     context: Context,
 ) {
-    val userEmail = accountService.getCurrentUserEmail()
+    val userEmail = accountService.getCurrentUserWithEmail()
     userEmail?.let {
         // parsing email to get the name (user id)
         val namePartsUser = userEmail.split("@")[0].replace(".", "")

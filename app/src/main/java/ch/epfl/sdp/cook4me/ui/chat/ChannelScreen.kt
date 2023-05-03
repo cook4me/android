@@ -34,7 +34,7 @@ fun ChannelScreen(
         client.disconnect(true).enqueue()
     }
     val context = LocalContext.current
-    val userEmail = accountService.getCurrentUserEmail()
+    val userEmail = accountService.getCurrentUserWithEmail()
     val fullName = remember { mutableStateOf("") }
     val isConnected = remember { mutableStateOf(false) }
     val user = remember {
