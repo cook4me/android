@@ -26,7 +26,7 @@ class DetailedEventViewModel(
             // this delay somehow solves the detailed event keeps loading problem
             // I DONT KNOW WHY
             delay(DELAY_TIME)
-            var eventQueried = eventService.getEventWithId(eventId)
+            val eventQueried = eventService.getEventWithId(eventId)
 
             eventQueried?.let {
                 withContext(Dispatchers.Main) {
