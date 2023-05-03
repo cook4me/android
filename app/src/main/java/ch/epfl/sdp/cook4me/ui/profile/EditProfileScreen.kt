@@ -64,10 +64,10 @@ fun EditProfileScreen(
     var allergies = viewModel.profile.value.allergies
 
     val usernameState =
-            UserNameState(
-                context.getString(R.string.invalid_username_message),
-                username,
-            )
+        UserNameState(
+            context.getString(R.string.invalid_username_message),
+            username,
+        )
 
     val allergiesState = NonRequiredTextFieldState(allergies)
     val bioState = NonRequiredTextFieldState(bio)
@@ -92,7 +92,6 @@ fun EditProfileScreen(
             }
         )
 
-
     fun onClickAddImage() {
         imagePicker.launch("image/*")
     }
@@ -108,7 +107,7 @@ fun EditProfileScreen(
             )
         } else {
             // Way to force the values to be updated after loading the profile
-            if (firstExecution){
+            if (firstExecution) {
                 allergiesState.text = allergies
                 favoriteDishState.text = favoriteDish
                 bioState.text = bio
@@ -222,7 +221,7 @@ fun ImageProfileUpdateScreen(
 ) {
     val context = LocalContext.current
     var userimage = image
-    if (image == "".toUri()){
+    if (image == "".toUri()) {
         userimage = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
     }
 
@@ -233,13 +232,11 @@ fun ImageProfileUpdateScreen(
             .fillMaxHeight()
             .testTag("ProfileImage")
             .wrapContentSize()
-            .clickable { onClickAddImage() }
-        ,
+            .clickable { onClickAddImage() },
         contentScale = ContentScale.Crop,
-         // Add key parameter to force recompose when image changes
+        // Add key parameter to force recompose when image changes
     )
 }
-
 
 @Composable
 private fun SaveCancelButtons(

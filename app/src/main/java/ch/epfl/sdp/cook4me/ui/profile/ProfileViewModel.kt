@@ -11,7 +11,6 @@ import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
-import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -30,46 +29,58 @@ class ProfileViewModel(
     val isLoading = mutableStateOf(true) // not private for testing
     private val _profileState = mutableStateOf(Profile())
     val profile = _profileState
-    val _profileImage = mutableStateOf<Uri>(Uri.EMPTY)
+    private val _profileImage = mutableStateOf<Uri>(Uri.EMPTY)
     val profileImage: State<Uri> = _profileImage
 
     init {
         viewModelScope.launch {
-                //run blocking  to wait for the profile to be loaded
-                //therefore avoid race condition on the isloaded value
-                var profile =
+            // run blocking  to wait for the profile to be loaded
+            // therefore avoid race condition on the isloaded value
+            var profile =
+                accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+
+            // load the profile again if it is null
+            while (profile == null) {
+                @Suppress("MagicNumber")
+                delay(2000) // Wait for 1 second before retrying
+                profile =
                     accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+            }
 
-                // load the profile again if it is null
-                while (profile == null) {
-                    @Suppress("MagicNumber")
-                    delay(2000) // Wait for 1 second before retrying
-                    profile =
-                        accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
-                }
-
-                try {
-                    profile.let {
-                        withContext(Dispatchers.Main) {
-                            _profileState.value.email = it.email
-                            _profileState.value.name = it.name
-                            _profileState.value.allergies = it.allergies
-                            _profileState.value.bio = it.bio
-                            _profileState.value.favoriteDish = it.favoriteDish
-                        }
+            try {
+                profile.let {
+                    withContext(Dispatchers.Main) {
+                        _profileState.value.email = it.email
+                        _profileState.value.name = it.name
+                        _profileState.value.allergies = it.allergies
+                        _profileState.value.bio = it.bio
+                        _profileState.value.favoriteDish = it.favoriteDish
                     }
-                } catch (e: NoSuchElementException) {
-                    onFailure()
                 }
+            } catch (e: NoSuchElementException) {
+                if (e.message == "Collection is empty") {
+                    // TODO : check if this is the right message
+                    //  and the right exception
+                    onFailure()
+                } else {
+                    throw e
+                }
+            }
 
-                try {
-                    _profileImage.value = profileImageRepository.get()
-                } catch (e: FirebaseFirestoreException) {
+            try {
+                _profileImage.value = profileImageRepository.get()
+            } catch (e: NoSuchElementException) {
+                if (e.message == "Collection is empty") {
+                    // TODO : check if this is the right
+                    //  message on the right exception
                     _profileImage.value =
                         Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+                } else {
+                    throw e
                 }
+            }
 
-                isLoading.value = false
+            isLoading.value = false
         }
     }
 

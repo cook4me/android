@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
 import coil.compose.rememberAsyncImagePainter
 
@@ -88,7 +87,6 @@ fun ProfileScreen(
 @Composable
 fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
     // draws the image of the profile
-    val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
         if (userImage.toString().isEmpty()) {
             R.drawable.ic_user

@@ -24,7 +24,7 @@ class SignUpViewModel(
     private val _profileState = mutableStateOf(Profile())
     val profile: State<Profile> = _profileState
 
-    val _profileImage = mutableStateOf<Uri>(Uri.EMPTY)
+    private val _profileImage = mutableStateOf<Uri>(Uri.EMPTY)
     val profileImage: State<Uri> = _profileImage
 
     fun addUsername(username: String) {

@@ -37,7 +37,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
@@ -48,8 +47,6 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.firebase.auth.FirebaseAuthException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -63,7 +60,7 @@ fun AddProfileInfoScreen(
     val usernameState =
         remember { UserNameState(context.getString(R.string.invalid_username_message)) }
     val favoriteDishState = remember {
-        NonRequiredTextFieldState( "")
+        NonRequiredTextFieldState("")
     }
     val allergiesState = remember {
         NonRequiredTextFieldState("")
@@ -72,12 +69,9 @@ fun AddProfileInfoScreen(
         NonRequiredTextFieldState("")
     }
     val userImage = remember { mutableStateOf<Uri>(
-        //get Uri from R.drawable.ic_user
+        // get Uri from R.drawable.ic_user
         Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
     ) }
-
-
-
 
     var inProgress by remember {
         mutableStateOf(false)
