@@ -22,13 +22,13 @@ data class Recipe(
         // if all fields same except creationTime, then they are same
         // since creationTime is modified when recipe is added to firestore
         return user == other.user &&
-                name == other.name &&
-                id == other.id &&
-                ingredients == other.ingredients &&
-                recipeSteps == other.recipeSteps &&
-                photos == other.photos &&
-                difficulty == other.difficulty &&
-                servings == other.servings &&
-                cookingTime == other.cookingTime
+            name == other.name &&
+            id == other.id &&
+            ingredients == other.ingredients &&
+            recipeSteps == other.recipeSteps &&
+            photos == other.photos &&
+            difficulty == other.difficulty &&
+            servings == other.servings &&
+            cookingTime == other.cookingTime
     }
 }
