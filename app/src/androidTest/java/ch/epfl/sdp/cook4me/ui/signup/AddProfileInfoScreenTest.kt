@@ -2,6 +2,7 @@ package ch.epfl.sdp.cook4me.ui.signup
 
 import AddProfileInfoScreen
 import android.content.Context
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -121,6 +122,7 @@ class AddProfileInfoScreenTest {
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(favFood).performTextClearance()
+        signUpViewModel.addUserImage(Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user"))
 
         // Add email and password to the view model from sign up screen
         signUpViewModel.addEmail(emailInput)
@@ -145,6 +147,7 @@ class AddProfileInfoScreenTest {
         composeTestRule.onNodeWithText(favFoodInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
+        composeTestRule.onNodeWithTag("defaultProfileImage").assertDoesNotExist()
 
         // Click the save button this creates user in firebase
         composeTestRule.onNodeWithTag(saveBtn).performClick()

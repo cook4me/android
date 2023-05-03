@@ -43,6 +43,10 @@ class SignUpViewModel(
         _profileState.value.allergies = allergies
     }
 
+    fun addUserImage(uri: Uri) {
+        _profileImage.value = uri
+    }
+
     fun addBio(bio: String) {
         _profileState.value.bio = bio
     }
