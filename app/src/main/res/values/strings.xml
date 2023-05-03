@@ -48,6 +48,7 @@
     <string name="event_participants">Participants:</string>
     <string name="event_who_can_see_event">Who can see the event:</string>
     <string name="event_time">Event time:</string>
+    <string name="detailed_event_create_chat">Chat with event owner</string>
 
     <!-- CreateTupperwareScreen -->
     <string name="image_selector_add_image">+</string>

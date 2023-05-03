@@ -11,6 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+const val DELAY_TIME = 1000L
 class DetailedEventViewModel(
     eventId: String,
     eventService: EventFormService = EventFormService(),
@@ -24,9 +25,9 @@ class DetailedEventViewModel(
         viewModelScope.launch {
             // this delay somehow solves the detailed event keeps loading problem
             // I DONT KNOW WHY
-            delay(1000)
+            delay(DELAY_TIME)
             var eventQueried = eventService.getEventWithId(eventId)
-            println("!!!!!!!"+eventQueried)
+
             eventQueried?.let {
                 withContext(Dispatchers.Main) {
                     _eventState.value = it

@@ -158,5 +158,8 @@ class DetailedEventScreenTest {
         composeTestRule.onNodeWithStringId(R.string.event_time).assertIsDisplayed()
         composeTestRule.onNodeWithText(eventDate).performScrollTo()
         composeTestRule.onNodeWithText(eventDate).assertIsDisplayed()
+
+        composeTestRule.onNodeWithStringId(R.string.detailed_event_create_chat).performScrollTo()
+        composeTestRule.onNodeWithStringId(R.string.detailed_event_create_chat).assertIsDisplayed()
     }
 }
