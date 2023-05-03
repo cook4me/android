@@ -68,10 +68,12 @@ fun AddProfileInfoScreen(
     val bioState = remember {
         NonRequiredTextFieldState("")
     }
-    val userImage = remember { mutableStateOf<Uri>(
-        // get Uri from R.drawable.ic_user
-        Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
-    ) }
+    val userImage = remember {
+        mutableStateOf<Uri>(
+            // get Uri from R.drawable.ic_user
+            Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+        )
+    }
 
     var inProgress by remember {
         mutableStateOf(false)
