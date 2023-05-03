@@ -11,7 +11,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -102,7 +101,7 @@ fun TupperwareSwipeScreen(
     }
 }
 
-//TODO: will be removed with https://github.com/cook4me/android/issues/183
+// TODO: will be removed with https://github.com/cook4me/android/issues/183
 data class DummyTupperware(
     val title: String,
     val description: String,
