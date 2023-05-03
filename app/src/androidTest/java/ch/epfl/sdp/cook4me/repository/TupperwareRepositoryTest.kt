@@ -56,14 +56,9 @@ class TupperwareRepositoryTest {
     @After
     fun cleanUp() {
         runBlocking {
-            val images = storage.reference.child("images")
             val querySnapshot = store.collection(COLLECTION_PATH).get().await()
             for (documentSnapshot in querySnapshot.documents) {
-                store.collection(COLLECTION_PATH).document(documentSnapshot.id).delete().await()
-            }
-            val all = images.listAll().await()
-            all.items.forEach {
-                it.delete().await()
+                tupperwareRepository.delete(documentSnapshot.id)
             }
             auth.signInWithEmailAndPassword(USER_NAME, "123456").await()
             auth.currentUser?.delete()
@@ -76,7 +71,7 @@ class TupperwareRepositoryTest {
             generateTempFiles(3)
         }
         val urls = files.map { Uri.fromFile(it) }
-        tupperwareRepository.add(title = "title1", description = "desc1", images = listOf())
+        val id1 = tupperwareRepository.add(title = "title1", description = "desc1", images = listOf())
         tupperwareRepository.add(
             title = "title2",
             description = "desc2",
@@ -96,13 +91,36 @@ class TupperwareRepositoryTest {
                 Tupperware("title3", "desc3", USER_NAME),
             )
         )
-        val userFolder = storage.reference.child("images/$USER_NAME")
-        val tupperwareFolders = userFolder.listAll().await()
-        assertThat(tupperwareFolders.prefixes.map { it.name }, containsInAnyOrder("title2", "title3"))
-        val title2Folder = storage.reference.child("images/$USER_NAME/title2").listAll().await()
-        val title3Folder = storage.reference.child("images/$USER_NAME/title3").listAll().await()
+        val tupIdsSortedbyTitle = allTupperware.toList().sortedBy { it.second.title }.map { it.first }
+        val userTupperwareFolder = storage.reference.child("images/$USER_NAME/tupperwares")
+        val tupperwareFolders = userTupperwareFolder.listAll().await()
+        assertThat(
+            tupperwareFolders.prefixes.map { it.name },
+            containsInAnyOrder(tupIdsSortedbyTitle[1], tupIdsSortedbyTitle[2])
+        )
+        val title2Folder = storage.reference
+            .child("images/$USER_NAME/tupperwares/${tupIdsSortedbyTitle[1]}").listAll().await()
+        val title3Folder = storage.reference
+            .child("images/$USER_NAME/tupperwares/${tupIdsSortedbyTitle[2]}").listAll().await()
         assertThat(title2Folder.items.count(), `is`(1))
         assertThat(title3Folder.items.count(), `is`(2))
+    }
+
+    @Test
+    fun deleteRecipe() = runTest {
+        val file = withContext(Dispatchers.IO) {
+            generateTempFiles(2)
+        }
+        val urls = file.map { Uri.fromFile(it) }
+        val tup = Tupperware("title1", "desc1", USER_NAME)
+        tupperwareRepository.add(tup.title, tup.description, urls)
+        val tupId = tupperwareRepository
+            .getWithGivenField<Tupperware>("title", "${tup.title}").first().id
+        runBlocking { tupperwareRepository.delete(tupId) }
+        val tups = tupperwareRepository.getAll<Tupperware>()
+        assert(tups.isEmpty())
+        val images = storage.reference.child("images/$USER_NAME/tupperwares").listAll().await()
+        assert(images.prefixes.isEmpty())
     }
 
     private fun generateTempFiles(count: Int): List<File> =

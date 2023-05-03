@@ -63,7 +63,7 @@ class NavigationScenarioTest {
             auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             recipeRepository.add(recipe)
-            val recipeId = recipeRepository.getAll().toList()[0].first
+            val recipeId = recipeRepository.getAll<Recipe>().toList()[0].first
             recipeNoteRepo.addRecipeNote(recipeId, 9)
         }
     }
