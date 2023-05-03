@@ -3,13 +3,10 @@ package ch.epfl.sdp.cook4me.ui.profile
 import android.content.Context
 import android.net.Uri
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
-import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
@@ -33,7 +30,7 @@ class ProfileScreenTest {
     private lateinit var context: Context
     private lateinit var repository: ProfileRepository
     private lateinit var profileImageRepository: ProfileImageRepository
-    val profileImage = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/tiramisu.jpg")
+    val profileImage = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
 
     private val user = Profile(
         email = "donald.duck@epfl.ch",
