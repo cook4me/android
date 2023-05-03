@@ -15,13 +15,15 @@ class ProfileImageRepository(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) :
     ObjectRepository(store, COLLECTION_PATH) {
-    suspend fun add(image: Uri) {
+    suspend fun add(image: Uri): Uri {
         val email = auth.currentUser?.email
         checkNotNull(email)
         val storageRef = storage.reference
 
         val ref = storageRef.child("/images/$email/profileImage/${UUID.randomUUID()}")
         ref.putFile(image).await()
+
+        return ref.downloadUrl.await()
     }
 
     suspend fun get(): Uri {

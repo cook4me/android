@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextClearance
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Profile
@@ -83,9 +84,9 @@ class EditProfileScreenTest {
 
         // Set up the test and wait for the screen to be loaded
         val username = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
-        // val favFood = composeTestRule.activity.getString(R.string.tag_favoriteDish)
-        // val allergies = composeTestRule.activity.getString(R.string.tag_allergies)
-        // val bio = composeTestRule.activity.getString(R.string.tag_bio)
+        val favFood = composeTestRule.activity.getString(R.string.tag_favoriteDish)
+        val allergies = composeTestRule.activity.getString(R.string.tag_allergies)
+        val bio = composeTestRule.activity.getString(R.string.tag_bio)
 
         // Set input
         // This test does not work because of some issue not finding the text fields
@@ -105,10 +106,10 @@ class EditProfileScreenTest {
         }
 
         // Clear fields
-        // composeTestRule.onNodeWithTag(username).performTextClearance()
-        // composeTestRule.onNodeWithTag(favFood).performTextClearance()
-        // composeTestRule.onNodeWithTag(bio).performTextClearance()
-        // composeTestRule.onNodeWithTag(allergies).performTextClearance()
+        composeTestRule.onNodeWithTag(username).performTextClearance()
+        composeTestRule.onNodeWithTag(favFood).performTextClearance()
+        composeTestRule.onNodeWithTag(bio).performTextClearance()
+        composeTestRule.onNodeWithTag(allergies).performTextClearance()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
