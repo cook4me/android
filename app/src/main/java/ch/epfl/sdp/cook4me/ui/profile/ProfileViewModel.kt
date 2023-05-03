@@ -9,7 +9,9 @@ import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.ProfileService
 import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
 import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
+import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,12 +21,16 @@ class ProfileViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
     private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
+    private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
+    onFailure: () -> Unit = {},
 ) : ViewModel() {
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
     private val _formError = mutableStateOf(false)
     val isLoading = mutableStateOf(true) // not private for testing
     private val _profileState = mutableStateOf(Profile())
     val profile = _profileState
+    val _profileImage = mutableStateOf<Uri>(Uri.EMPTY)
+    val profileImage: State<Uri> = _profileImage
 
     init {
         viewModelScope.launch {
@@ -37,17 +43,34 @@ class ProfileViewModel(
                 profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
             }
 
-            profile.let {
-                withContext(Dispatchers.Main) {
-                    _profileState.value.email = it.email
-                    _profileState.value.name = it.name
-                    _profileState.value.allergies = it.allergies
-                    _profileState.value.bio = it.bio
-                    _profileState.value.favoriteDish = it.favoriteDish
-                    isLoading.value = false
+            try {
+                profile.let {
+                    withContext(Dispatchers.Main) {
+                        _profileState.value.email = it.email
+                        _profileState.value.name = it.name
+                        _profileState.value.allergies = it.allergies
+                        _profileState.value.bio = it.bio
+                        _profileState.value.favoriteDish = it.favoriteDish
+                    }
                 }
+            } catch (e: FirebaseFirestoreException) {
+                onFailure()
+            } catch (e: NoSuchElementException) {
+                onFailure()
             }
+
+            try{
+                _profileImage.value = profileImageRepository.get()
+            } catch (e: FirebaseFirestoreException) {
+                _profileImage.value = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+            }
+
+            isLoading.value = false
         }
+    }
+
+    fun addProfileImage(uri: Uri) {
+        _profileImage.value = uri
     }
 
     fun addUsername(username: String) {
@@ -86,4 +109,5 @@ class ProfileViewModel(
             }
         }
     }
+
 }

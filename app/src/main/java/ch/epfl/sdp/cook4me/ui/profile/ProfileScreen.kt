@@ -39,6 +39,8 @@ fun ProfileScreen(
     val profile = profileViewModel.profile.value
     val userNameState = rememberSaveable { mutableStateOf("") }
     val isLoading = profileViewModel.isLoading.value
+    val image = profileViewModel.profileImage.value
+
     Box(
         modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
@@ -56,7 +58,7 @@ fun ProfileScreen(
                     .fillMaxHeight()
             ) {
                 ProfileImageAndUsername(
-                    Uri.EMPTY, //TODO add image
+                    image,
                     profile.name,
                     modifier
                 )
@@ -78,9 +80,6 @@ fun ProfileScreen(
                     profile.bio,
                     modifier,
                 )
-
-                // Grid with post within
-                PostGrid(modifier) // put images inside
             }
         }
     }

@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
@@ -43,12 +44,15 @@ import ch.epfl.sdp.cook4me.ui.common.form.UserField
 import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = remember { ProfileViewModel() },
+    profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
     onCancelListener: () -> Unit = {},
     onSuccessListener: () -> Unit = {},
 ) {
@@ -70,6 +74,7 @@ fun EditProfileScreen(
     val favoriteDishState = NonRequiredTextFieldState(favoriteDish)
     val isLoading = viewModel.isLoading.value
     val image = remember { mutableStateOf<Uri>(Uri.EMPTY) }
+    var firstExecution = true
 
     val imagePicker =
         rememberLauncherForActivityResult(
@@ -77,6 +82,12 @@ fun EditProfileScreen(
             onResult = { uri ->
                 if (uri != null) {
                     image.value = uri
+                    viewModel.addProfileImage(uri)
+                    // Save the image in the database
+                    CoroutineScope(Dispatchers.Main).launch {
+                        profileImageRepository.delete() // Delete the previous image
+                        profileImageRepository.add(uri) // Add the new image
+                    }
                 }
             }
         )
@@ -96,6 +107,15 @@ fun EditProfileScreen(
                     .testTag("CircularProgressIndicator")
             )
         } else {
+            // Way to force the values to be updated after loading the profile
+            if (firstExecution){
+                allergiesState.text = allergies
+                favoriteDishState.text = favoriteDish
+                bioState.text = bio
+                image.value = viewModel.profileImage.value
+                firstExecution = !firstExecution
+            }
+
             Scaffold(
                 scaffoldState = scaffoldState,
                 content = { padding ->
@@ -113,7 +133,7 @@ fun EditProfileScreen(
                             { viewModel.onSubmit(onSuccessListener) },
                             onCancelListener,
                         )
-                        // Image    TODO: Add a way to change the image
+                        // Image TODO: Add a way to change the image
                         ImageHolderProfileUpdateScreen(
                             onClickAddImage = { onClickAddImage() },
                             image = image.value,
