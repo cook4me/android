@@ -51,7 +51,12 @@ fun RecipeFeed(
         mutableStateOf(listOf<RecipeNote>())
     }
 
+    val userVotes = remember {
+        mutableStateOf(mapOf<String, Int>())
+    }
+
     LaunchedEffect(Unit) {
+        userVotes.value = service.getRecipePersonalVotes()
         recipeList.value = service.getRecipesWithNotes()
     }
 
@@ -77,7 +82,8 @@ fun RecipeFeed(
                     coroutineScope.launch {
                         service.updateRecipeNotes(recipe, note)
                     }
-                }
+                },
+                userVotes = userVotes.value
             )
         }
         Box(modifier = Modifier.fillMaxHeight(EMPTY_SPACE_RATIO))
