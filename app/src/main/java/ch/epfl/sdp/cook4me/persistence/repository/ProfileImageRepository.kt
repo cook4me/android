@@ -29,7 +29,14 @@ class ProfileImageRepository(
         checkNotNull(email)
         val storageRef = storage.reference
         val images = storageRef.child("/images/$email/profileImage").listAll().await()
-        return images.items[0].downloadUrl.await()
+
+        // Check if the items list is not empty
+        if (images.items.isNotEmpty()) {
+            return images.items[0].downloadUrl.await()
+        } else {
+            // Handle the case when there are no items in the list
+            return Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+        }
     }
 
     suspend fun delete() {

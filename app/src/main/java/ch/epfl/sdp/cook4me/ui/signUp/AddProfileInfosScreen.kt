@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
@@ -47,6 +48,8 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.firebase.auth.FirebaseAuthException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -74,6 +77,8 @@ fun AddProfileInfoScreen(
     ) }
 
 
+
+
     var inProgress by remember {
         mutableStateOf(false)
     }
@@ -87,6 +92,7 @@ fun AddProfileInfoScreen(
             onResult = { uri ->
                 if (uri != null) {
                     userImage.value = uri
+                    viewModel.addProfileImage(uri)
                 }
             }
         )
@@ -112,7 +118,7 @@ fun AddProfileInfoScreen(
 
                 ImageHolder_AddProfileInfoScreen(
                     onClickAddImage = { onClickAddImage() },
-                    image = userImage.value, //todo add Image
+                    image = userImage.value,
                 )
 
                 // Textfield for the Username
