@@ -63,7 +63,7 @@ class NavigationScenarioTest {
             auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             recipeRepository.add(recipe)
-            val recipeId = recipeRepository.getAll().toList()[0].first
+            val recipeId = recipeRepository.getAll<Recipe>().toList()[0].first
             recipeNoteRepo.addRecipeNote(recipeId, 9)
         }
     }
@@ -127,5 +127,17 @@ class NavigationScenarioTest {
         composeTestRule.onNodeWithText("Events").performClick()
         composeTestRule.onNodeWithText("Create a new Event").performClick()
         composeTestRule.waitUntilExists(hasText("Name of the event?"))
+    }
+
+    @Test
+    fun navigateToCreateTupperware() {
+        composeTestRule.setContent {
+            Cook4MeApp(permissionStatusProvider = permissionStatusProvider)
+        }
+        composeTestRule.onNodeWithText("nope").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Tups").performClick()
+        composeTestRule.waitUntilExists(hasText("nope"))
+        composeTestRule.onNodeWithText("Create a new Tupperware").performClick()
+        composeTestRule.waitUntilExists(hasText("Description"))
     }
 }

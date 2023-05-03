@@ -38,7 +38,7 @@ import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
+import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
@@ -69,7 +69,9 @@ private enum class Screen {
 val calendar = Calendar.getInstance()
 
 sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title: String) {
-    object Tupperwares : BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+    object Tupperwares :
+        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
@@ -79,11 +81,14 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title
 @Composable
 fun Cook4MeApp(
     permissionStatusProvider: PermissionStatusProvider = ComposePermissionStatusProvider(
-        listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        listOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.CAMERA
+        )
     )
 ) {
     // initialize the view model for the sign up screen
-    val singUpViewModel = SignUpViewModel()
+    val singUpViewModel = remember { SignUpViewModel() }
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
@@ -136,15 +141,30 @@ fun Cook4MeApp(
                 onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
-        composable(route = Screen.EditProfileScreen.name) { EditProfileScreen() }
-        composable(route = Screen.CreateTupperwareScreen.name) { CreateTupperwareScreen() }
+        composable(route = Screen.EditProfileScreen.name) {
+            EditProfileScreen(
+                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) },
+                onSuccessListener = { navController.navigate(Screen.OverviewScreen.name) },
+            )
+        }
+        composable(route = Screen.CreateTupperwareScreen.name) {
+            CreateTupperwarePermissionWrapper(
+                permissionStatusProvider = permissionStatusProvider,
+                onCancel = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                },
+                onSuccessfulSubmit = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                }
+            )
+        }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
         // the uid of event is predefined on firestore. this is just for show.
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
-                onSuccessfullSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
-                signUpViewModel = singUpViewModel,
+                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
+                viewModel = singUpViewModel,
             )
         }
         composable(route = Screen.SignUpUserInfos.name) {
@@ -154,10 +174,16 @@ fun Cook4MeApp(
                     navController.navigate(
                         startScreen
                     )
-                }
+                },
+                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
-        composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
+        composable(route = Screen.CreateRecipeScreen.name) {
+            CreateRecipeScreen(
+                onSuccessfulSubmit = { navController.navigateUp() },
+                onCancelClick = { navController.navigateUp() }
+            )
+        }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
@@ -192,7 +218,11 @@ fun Cook4MeApp(
                 }
             }
         ) { scaffoldPadding ->
-            NavHost(navController = navController, graph = navGraph, modifier = Modifier.padding(scaffoldPadding))
+            NavHost(
+                navController = navController,
+                graph = navGraph,
+                modifier = Modifier.padding(scaffoldPadding)
+            )
         }
     } else {
         NavHost(navController = navController, graph = navGraph)
