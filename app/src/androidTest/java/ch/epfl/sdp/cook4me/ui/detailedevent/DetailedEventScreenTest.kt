@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -161,5 +163,18 @@ class DetailedEventScreenTest {
 
         composeTestRule.onNodeWithStringId(R.string.detailed_event_create_chat).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.detailed_event_create_chat).assertIsDisplayed()
+    }
+
+    @Test
+    fun testDetailedEventScreenShowsLoadingScreen() {
+        composeTestRule.setContent {
+            DetailedEventScreen("somefakeid")
+        }
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithTag(context.getString(R.string.Loading_Screen_Tag))
+                .fetchSemanticsNodes().size == 1
+        }
+        composeTestRule.onNodeWithTag(context.getString(R.string.Loading_Screen_Tag)).assertIsDisplayed()
     }
 }
