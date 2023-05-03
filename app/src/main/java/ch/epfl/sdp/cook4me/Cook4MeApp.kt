@@ -86,7 +86,7 @@ fun Cook4MeApp(
     )
 ) {
     // initialize the view model for the sign up screen
-    val singUpViewModel = SignUpViewModel()
+    val singUpViewModel = remember { SignUpViewModel() }
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
@@ -140,7 +140,8 @@ fun Cook4MeApp(
         }
         composable(route = Screen.EditProfileScreen.name) {
             EditProfileScreen(
-                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) }
+                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) },
+                onSuccessListener = { navController.navigate(Screen.OverviewScreen.name) },
             )
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
@@ -159,8 +160,8 @@ fun Cook4MeApp(
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
-                onSuccessfullSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
-                signUpViewModel = singUpViewModel,
+                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
+                viewModel = singUpViewModel,
             )
         }
         composable(route = Screen.SignUpUserInfos.name) {
@@ -170,10 +171,16 @@ fun Cook4MeApp(
                     navController.navigate(
                         startScreen
                     )
-                }
+                },
+                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
-        composable(route = Screen.CreateRecipeScreen.name) { CreateRecipeScreen(submitForm = {}) }
+        composable(route = Screen.CreateRecipeScreen.name) {
+            CreateRecipeScreen(
+                onSuccessfulSubmit = { navController.navigateUp() },
+                onCancelClick = { navController.navigateUp() }
+            )
+        }
         composable(route = Screen.PostDetails.name) {
             val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
             PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))

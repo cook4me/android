@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
@@ -52,8 +53,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddProfileInfoScreen(
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = SignUpViewModel(),
+    viewModel: SignUpViewModel,
     onSuccessfulSignUp: () -> Unit,
+    onSignUpFailure: () -> Unit
 ) {
     val context = LocalContext.current
     val usernameState =
@@ -67,8 +69,6 @@ fun AddProfileInfoScreen(
     val bioState = remember {
         NonRequiredTextFieldState("", "")
     }
-
-    val userImage by viewModel.userImage
 
     var inProgress by remember {
         mutableStateOf(false)
@@ -110,7 +110,7 @@ fun AddProfileInfoScreen(
 
                 ImageHolder_AddProfileInfoScreen(
                     onClickAddImage = { onClickAddImage() },
-                    image = userImage,
+                    image = viewModel.profile.value.userImage.toUri(),
                 )
 
                 // Textfield for the Username
@@ -171,8 +171,10 @@ fun AddProfileInfoScreen(
                         } else {
                             try {
                                 inProgress = true
-                                viewModel.onSubmit()
-                                onSuccessfulSignUp()
+                                viewModel.onSubmit(
+                                    onSignUpSuccess = onSuccessfulSignUp,
+                                    onSignUpFailure = onSignUpFailure,
+                                )
                             } catch (e: FirebaseAuthException) {
                                 scaffoldState.snackbarHostState.showSnackbar(
                                     context.getString(R.string.Add_profile_infos_invalid_user),

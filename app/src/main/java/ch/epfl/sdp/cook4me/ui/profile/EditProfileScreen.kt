@@ -48,6 +48,7 @@ fun EditProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = remember { ProfileViewModel() },
     onCancelListener: () -> Unit = {},
+    onSuccessListener: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
@@ -55,20 +56,20 @@ fun EditProfileScreen(
         remember {
             UserNameState(
                 context.getString(R.string.invalid_username_message),
-                viewModel.profileState.value.name
+                viewModel.profile.value.name
             )
         }
     val allergiesState = remember {
-        NonRequiredTextFieldState("", viewModel.profileState.value.allergies)
+        NonRequiredTextFieldState("", viewModel.profile.value.allergies)
     }
     val bioState = remember {
-        NonRequiredTextFieldState("", viewModel.profileState.value.bio)
+        NonRequiredTextFieldState("", viewModel.profile.value.bio)
     }
     val favoriteDishState = remember {
-        NonRequiredTextFieldState("", viewModel.profileState.value.favoriteDish)
+        NonRequiredTextFieldState("", viewModel.profile.value.favoriteDish)
     }
 
-    val profile = viewModel.profileState.value
+    val profile = viewModel.profile.value
     val isLoading = viewModel.isLoading.value
 
     val imagePicker =
@@ -110,7 +111,11 @@ fun EditProfileScreen(
                         verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        SaveCancelButtons(viewModel::onSubmit, onCancelListener)
+                        SaveCancelButtons(
+                            { viewModel.onSubmit(onSuccessListener) },
+                            onCancelListener,
+                        )
+
                         ImageHolderProfileUpdateScreen(
                             onClickAddImage = { onClickAddImage() },
                             image = profile.userImage.toUri(),
@@ -210,7 +215,10 @@ fun ImageProfileUpdateScreen(
 }
 
 @Composable
-private fun SaveCancelButtons(onSummit: () -> Unit, onCancelListener: () -> Unit) {
+private fun SaveCancelButtons(
+    onSummit: () -> Unit,
+    onCancelListener: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

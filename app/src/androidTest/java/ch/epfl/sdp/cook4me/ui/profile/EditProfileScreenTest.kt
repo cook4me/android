@@ -8,10 +8,11 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.runBlocking
@@ -27,17 +28,15 @@ class EditProfileScreenTest {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var context: Context
-    private lateinit var firestore: FirebaseFirestore
-    private val COLLECTION_PATH = "profiles"
-    private val id = "harry.potter@epfl.ch"
-    private val user = mapOf(
-        "favoriteDish" to "Spaghetti",
-        "allergies" to "Hazelnut",
-        "bio" to "Gourmet",
-        "id" to "harry.potter@epfl.ch",
-        "name" to "Harry",
-        "photos" to listOf<String>(""),
-        "userImage" to "",
+    private lateinit var repository: ProfileRepository
+    private val user = Profile(
+        email = "donald.duck@epfl.ch",
+        name = "Donald",
+        allergies = "Hazelnut",
+        bio = "I am a duck",
+        favoriteDish = "Spaghetti",
+        userImage = "Image of Donald",
+        photos = listOf(""),
     )
 
     @Before
@@ -62,24 +61,20 @@ class EditProfileScreenTest {
             // emulator already set
             // do nothing
         }
-        firestore = FirebaseFirestore.getInstance()
+        repository = ProfileRepository()
         auth = FirebaseAuth.getInstance()
         runBlocking {
-            auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-        }
-        runBlocking {
-            firestore.collection(COLLECTION_PATH).document(id).set(user).await()
+            auth.createUserWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
+            auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
+            repository.add(user)
         }
     }
 
     @After
     fun cleanUp() {
         runBlocking {
-            firestore.collection(COLLECTION_PATH).document(id).delete().await()
-        }
-        runBlocking {
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
+            repository.delete(user.email)
+            auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
             auth.currentUser?.delete()
         }
     }
@@ -146,7 +141,9 @@ class EditProfileScreenTest {
     fun editProfileScreenStateTest() {
         val profileViewModel = ProfileViewModel()
 
-        composeTestRule.setContent { EditProfileScreen(viewModel = profileViewModel) }
+        composeTestRule.setContent {
+            EditProfileScreen(viewModel = profileViewModel)
+        }
 
         profileViewModel.isLoading.value = true
 
@@ -163,7 +160,12 @@ class EditProfileScreenTest {
         var isCancelledClicked = false
         val profileViewModel = ProfileViewModel()
 
-        composeTestRule.setContent { EditProfileScreen(onCancelListener = { isCancelledClicked = true }) }
+        composeTestRule.setContent {
+            EditProfileScreen(
+                onCancelListener = { isCancelledClicked = true },
+                viewModel = profileViewModel
+            )
+        }
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             !profileViewModel.isLoading.value
@@ -177,5 +179,35 @@ class EditProfileScreenTest {
 
         // Check that the cancel button is clicked
         assert(isCancelledClicked)
+    }
+
+    @Test
+    fun editProfileScreenSaveButtonIsClicked() {
+        var isSaveClicked = false
+        val profileViewModel = ProfileViewModel()
+
+        composeTestRule.setContent {
+            EditProfileScreen(
+                onSuccessListener = { isSaveClicked = true },
+                viewModel = profileViewModel
+            )
+        }
+
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            !profileViewModel.isLoading.value
+        }
+
+        // Check that the cancel button is not clicked
+        assert(!isSaveClicked)
+
+        // Click on the cancel button
+        composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
+
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            !profileViewModel.isLoading.value
+        }
+
+        // Check that the cancel button is clicked
+        assert(isSaveClicked)
     }
 }

@@ -8,14 +8,17 @@ import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
  * Displays a scrollable list of recipes
  * @param recipeList the list of (id with the recipe) with the note to display
  * @param onNoteUpdate the function to call when the note is updated (recipeId, note)
+ * @param userVotes the map of the user votes (recipeId, note) if no votes -> empty key
  */
 @Composable
-fun RecipeListScreen(recipeList: List<RecipeNote>, onNoteUpdate: (String, Int) -> Unit) {
+fun RecipeListScreen(recipeList: List<RecipeNote>, onNoteUpdate: (String, Int) -> Unit, userVotes: Map<String, Int>) {
     LazyColumn {
         items(recipeList.size) { index ->
             RecipeDisplay(
-                recipeList[index].recipe, recipeList[index].note,
-                onNoteUpdate = { note -> onNoteUpdate(recipeList[index].recipeId, note) }
+                recipe = recipeList[index].recipe,
+                note = recipeList[index].note,
+                onNoteUpdate = { note -> onNoteUpdate(recipeList[index].recipeId, note) },
+                userVote = userVotes[recipeList[index].recipeId] ?: 0
             )
         }
     }

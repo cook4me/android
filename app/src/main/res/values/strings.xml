@@ -83,7 +83,7 @@
     <string name="tag_favoriteDish">Favorite dish</string>
     <string name="tag_bio">Bio</string>
     <string name="tag_defaultProfileImage">defaultProfilImage</string>
-    <string name="btn_save">save</string>
+    <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
     <string name="tag_password">Password</string>
     <string name="tag_email">Email</string>

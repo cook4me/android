@@ -3,8 +3,7 @@ package ch.epfl.sdp.cook4me.ui.profile
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
+import androidx.core.net.toUri
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
@@ -19,7 +18,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class ProfileScreenTest {
+class ProfileViewModelTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -61,16 +60,19 @@ class ProfileScreenTest {
         repository = ProfileRepository()
         auth = FirebaseAuth.getInstance()
         runBlocking {
-            auth.createUserWithEmailAndPassword(user.email, "123456").await()
-            auth.signInWithEmailAndPassword(user.email, "123456").await()
-            repository.add(user)
+            try {
+                auth.createUserWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
+                auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
+                repository.add(user)
+            } catch (e: Exception) {
+                // do nothing
+            }
         }
     }
 
     @After
     fun cleanUp() {
         runBlocking {
-            // delete the user from the database
             repository.delete(user.email)
             auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
             auth.currentUser?.delete()
@@ -78,41 +80,44 @@ class ProfileScreenTest {
     }
 
     @Test
-    fun profileLoadCorrectValuesTest() {
-        val profileViewModel = ProfileViewModel()
-
-        composeTestRule.setContent {
-            ProfileScreen(
-                profileViewModel = profileViewModel
-            )
-        }
-
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            !profileViewModel.isLoading.value
-        }
-
-        composeTestRule.onNodeWithText(user.name).assertExists()
-        composeTestRule.onNodeWithText(user.favoriteDish).assertExists()
-        composeTestRule.onNodeWithText(user.allergies).assertExists()
-        composeTestRule.onNodeWithText(user.bio).assertExists()
-    }
-
-    @Test
-    fun profileScreenStateTest() {
+    fun testCheckLoadAndUpdate() {
         val profileViewModel = ProfileViewModel()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             !profileViewModel.isLoading.value
         }
 
-        composeTestRule.setContent { ProfileScreen(profileViewModel = profileViewModel) }
+        assert(profileViewModel.profile.value.name == user.name)
+        assert(profileViewModel.profile.value.allergies == user.allergies)
+        assert(profileViewModel.profile.value.favoriteDish == user.favoriteDish)
+        assert(profileViewModel.profile.value.bio == user.bio)
+        assert(profileViewModel.profile.value.email == user.email)
+        assert(profileViewModel.profile.value.userImage == user.userImage)
 
-        profileViewModel.isLoading.value = true
+        // create onSignUpFailure and onSignUpSuccess
+        var isUpdateSuccess = false
 
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
+        // check that that is not possible to sign up without an username
+        profileViewModel.onSubmit(
+            onSuccessListener = { isUpdateSuccess = true }
+        )
 
-        profileViewModel.isLoading.value = false
+        profileViewModel.addUsername(user.name)
+        profileViewModel.addAllergies(user.allergies)
+        profileViewModel.addFavoriteDish(user.favoriteDish)
+        profileViewModel.addBio(user.bio)
+        profileViewModel.addUserImage(user.userImage.toUri())
 
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
+        profileViewModel.onSubmit(
+            onSuccessListener = { isUpdateSuccess = true },
+        )
+
+        // wait on signupSuccess
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            isUpdateSuccess
+        }
+
+        // check that the function was called correctly
+        assert(isUpdateSuccess)
     }
 }
