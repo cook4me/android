@@ -156,14 +156,15 @@ class AddProfileInfoScreenTest {
 
         assert(!signUpFail)
 
-        // check that the user is created correctly
-        val profileViewModel = ProfileViewModel()
-
         runBlocking {
+            // check that the user is created correctly
+            val profileViewModel = ProfileViewModel()
+
             composeTestRule.waitUntil(timeoutMillis = 5000) {
                 !profileViewModel.isLoading.value
             }
 
+            // check if the profile was stored correctly
             assert(profileViewModel.profile.value.name == usernameInput)
             assert(profileViewModel.profile.value.favoriteDish == favFoodInput)
             assert(profileViewModel.profile.value.allergies == allergiesInput)
