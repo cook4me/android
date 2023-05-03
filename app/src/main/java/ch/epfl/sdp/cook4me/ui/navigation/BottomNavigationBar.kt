@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.navigation
 
-
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.BottomNavigation
@@ -24,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.BottomNavScreen
 import ch.epfl.sdp.cook4me.R
 
-
 val mainDestinations = listOf(
     BottomNavScreen.Tupperwares,
     BottomNavScreen.Recipes,
@@ -38,17 +36,15 @@ val dropDownMenuDestinations = listOf(
     BottomNavScreen.Profile,
 )
 
-
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun BottomNavigationBar(navigateTo: (String)->Unit = {}, currentRoute: String) {
-    var expanded by remember { mutableStateOf(false)}
+fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String) {
+    var expanded by remember { mutableStateOf(false) }
 
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background,
         elevation = 8.dp
     ) {
-
         mainDestinations.forEach { screen ->
             BottomNavigationItem(
                 modifier = Modifier.weight(1f),
@@ -63,7 +59,7 @@ fun BottomNavigationBar(navigateTo: (String)->Unit = {}, currentRoute: String) {
         ExposedDropdownMenuBox(
             modifier = Modifier.weight(1f),
             expanded = expanded,
-            onExpandedChange = {expanded = !expanded},
+            onExpandedChange = { expanded = !expanded },
         ) {
             val moreIcon = painterResource(id = R.drawable.baseline_more_horiz_24)
             BottomNavigationItem(
@@ -91,4 +87,3 @@ fun BottomNavigationBar(navigateTo: (String)->Unit = {}, currentRoute: String) {
         }
     }
 }
-

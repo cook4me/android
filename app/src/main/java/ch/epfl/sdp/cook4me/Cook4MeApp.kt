@@ -75,9 +75,9 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
     object Menu : BottomNavScreen(Screen.OverviewScreen.name, Icons.Filled.Menu, "Menu")
-    object MyTupperwares: BottomNavScreen(Screen.OverviewScreen.name, null, "My Tups")
-    object MyRecipes: BottomNavScreen(Screen.OverviewScreen.name, null, "My Recipes")
-    object MyEvents: BottomNavScreen(Screen.OverviewScreen.name, null, "My Events")
+    object MyTupperwares : BottomNavScreen(Screen.OverviewScreen.name, null, "My Tups")
+    object MyRecipes : BottomNavScreen(Screen.OverviewScreen.name, null, "My Recipes")
+    object MyEvents : BottomNavScreen(Screen.OverviewScreen.name, null, "My Events")
 }
 
 @Composable
