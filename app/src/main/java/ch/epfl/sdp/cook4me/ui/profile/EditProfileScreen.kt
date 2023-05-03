@@ -54,25 +54,21 @@ fun EditProfileScreen(
 ) {
     val context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
+    var username = viewModel.profile.value.name
+    var bio = viewModel.profile.value.bio
+    var favoriteDish = viewModel.profile.value.favoriteDish
+    var allergies = viewModel.profile.value.allergies
+
     val usernameState =
-        remember {
             UserNameState(
                 context.getString(R.string.invalid_username_message),
-                viewModel.profile.value.name
+                username,
             )
-        }
-    val allergiesState = remember {
-        NonRequiredTextFieldState("", viewModel.profile.value.allergies)
-    }
-    val bioState = remember {
-        NonRequiredTextFieldState("", viewModel.profile.value.bio)
-    }
-    val favoriteDishState = remember {
-        NonRequiredTextFieldState("", viewModel.profile.value.favoriteDish)
-    }
-    var profile = viewModel.profile.value
-    val isLoading = viewModel.isLoading.value
 
+    val allergiesState = NonRequiredTextFieldState(allergies)
+    val bioState = NonRequiredTextFieldState(bio)
+    val favoriteDishState = NonRequiredTextFieldState(favoriteDish)
+    val isLoading = viewModel.isLoading.value
     val image = remember { mutableStateOf<Uri>(Uri.EMPTY) }
 
     val imagePicker =
@@ -84,6 +80,7 @@ fun EditProfileScreen(
                 }
             }
         )
+
 
     fun onClickAddImage() {
         imagePicker.launch("image/*")
