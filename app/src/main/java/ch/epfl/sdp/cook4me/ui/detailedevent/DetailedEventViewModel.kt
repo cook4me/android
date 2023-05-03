@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.EventFormService
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -21,7 +22,11 @@ class DetailedEventViewModel(
 
     init {
         viewModelScope.launch {
-            val eventQueried = eventService.getEventWithId(eventId)
+            // this delay somehow solves the detailed event keeps loading problem
+            // I DONT KNOW WHY
+            delay(1000)
+            var eventQueried = eventService.getEventWithId(eventId)
+            println("!!!!!!!"+eventQueried)
             eventQueried?.let {
                 withContext(Dispatchers.Main) {
                     _eventState.value = it

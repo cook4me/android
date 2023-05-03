@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.chat.LoadingScreen
 
 /**
  * A component screen that displays details of an event
@@ -31,7 +32,7 @@ fun DetailedEventScreen(
     val isLoading = detailedEventViewModel.isLoading.value
     Box {
         if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            LoadingScreen()
         } else {
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
