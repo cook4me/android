@@ -36,38 +36,43 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            var profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+            runBlocking {
+                //run blocking to wait for the profile to be loaded
+                //therefore avoid race condition on the isloaded value
+                var profile =
+                    accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
 
-            // load the profile again if it is null
-            while (profile == null) {
-                @Suppress("MagicNumber")
-                delay(2000) // Wait for 1 second before retrying
-                profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
-            }
-
-            try {
-                profile.let {
-                    withContext(Dispatchers.Main) {
-                        _profileState.value.email = it.email
-                        _profileState.value.name = it.name
-                        _profileState.value.allergies = it.allergies
-                        _profileState.value.bio = it.bio
-                        _profileState.value.favoriteDish = it.favoriteDish
-                    }
+                // load the profile again if it is null
+                while (profile == null) {
+                    @Suppress("MagicNumber")
+                    delay(2000) // Wait for 1 second before retrying
+                    profile =
+                        accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
                 }
-            } catch (e: FirebaseFirestoreException) {
-                onFailure()
-            } catch (e: NoSuchElementException) {
-                onFailure()
-            }
 
-            try{
-                _profileImage.value = profileImageRepository.get()
-            } catch (e: FirebaseFirestoreException) {
-                _profileImage.value = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
-            }
+                try {
+                    profile.let {
+                        withContext(Dispatchers.Main) {
+                            _profileState.value.email = it.email
+                            _profileState.value.name = it.name
+                            _profileState.value.allergies = it.allergies
+                            _profileState.value.bio = it.bio
+                            _profileState.value.favoriteDish = it.favoriteDish
+                        }
+                    }
+                } catch (e: NoSuchElementException) {
+                    onFailure()
+                }
 
-            isLoading.value = false
+                try {
+                    _profileImage.value = profileImageRepository.get()
+                } catch (e: FirebaseFirestoreException) {
+                    _profileImage.value =
+                        Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+                }
+
+                isLoading.value = false
+            }
         }
     }
 
