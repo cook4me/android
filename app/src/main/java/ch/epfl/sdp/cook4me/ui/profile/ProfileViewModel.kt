@@ -11,7 +11,6 @@ import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
-import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -37,7 +36,7 @@ class ProfileViewModel(
     init {
         viewModelScope.launch {
             runBlocking {
-                //run blocking to wait for the profile to be loaded
+                //run blocking  to wait for the profile to be loaded
                 //therefore avoid race condition on the isloaded value
                 var profile =
                     accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
