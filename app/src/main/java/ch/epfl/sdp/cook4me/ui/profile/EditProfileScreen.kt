@@ -112,7 +112,7 @@ fun EditProfileScreen(
                 favoriteDishState.text = favoriteDish
                 bioState.text = bio
                 image.value = viewModel.profileImage.value
-                firstExecution = !firstExecution
+                firstExecution = false
             }
 
             Scaffold(
