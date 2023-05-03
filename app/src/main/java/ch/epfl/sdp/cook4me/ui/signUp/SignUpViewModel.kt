@@ -75,13 +75,11 @@ class SignUpViewModel(
                 try {
                     accountService.register(_profileState.value.email, _password.value)
                 } catch (e: FirebaseAuthException) {
-                    if (e is FirebaseNetworkException) {
+                   if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
                         onSignUpFailure()
-                    } else if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
-                        onSignUpFailure()
-                    } else {
-                        throw e
-                    }
+                   } else {
+                       throw e
+                   }
                 }
                 repository.add(_profileState.value)
                 onSignUpSuccess()
