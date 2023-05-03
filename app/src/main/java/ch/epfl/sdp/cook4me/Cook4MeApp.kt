@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -66,7 +67,7 @@ private enum class Screen {
 // initializing the testing event
 val calendar = Calendar.getInstance()
 
-sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title: String) {
+sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val title: String) {
     object Tupperwares :
         BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
 
@@ -74,6 +75,9 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
     object Menu : BottomNavScreen(Screen.OverviewScreen.name, Icons.Filled.Menu, "Menu")
+    object MyTupperwares: BottomNavScreen(Screen.OverviewScreen.name, null, "My Tups")
+    object MyRecipes: BottomNavScreen(Screen.OverviewScreen.name, null, "My Recipes")
+    object MyEvents: BottomNavScreen(Screen.OverviewScreen.name, null, "My Events")
 }
 
 @Composable
@@ -202,11 +206,32 @@ fun Cook4MeApp(
             )
         }
     }
+
+    val navigateTo: (String) -> Unit = { route ->
+        navController.navigate(route) {
+            // Pop up to the start destination of the graph to
+            // avoid building up a large stack of destinations
+            // on the back stack as users select items
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            // Avoid multiple copies of the same destination when
+            // re-selecting the same item
+            launchSingleTop = true
+            // Restore state when navigating back
+            restoreState = true
+        }
+    }
+
     if (isAuthenticated.value) {
         Scaffold(
             bottomBar = {
                 if (shouldShowBottomBar) {
-                    BottomNavigationBar(navController)
+                    BottomNavigationBar(
+                        navigateTo,
+                        navController
+                            .currentBackStackEntryAsState().value?.destination?.route.orEmpty()
+                    )
                 }
             }
         ) { scaffoldPadding ->
