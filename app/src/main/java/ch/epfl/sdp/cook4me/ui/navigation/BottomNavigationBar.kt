@@ -72,8 +72,8 @@ fun BottomNavigationBar(navigateTo: (String)->Unit = {}, currentRoute: String) {
                 modifier = Modifier.fillMaxWidth(),
                 icon = { Icon(moreIcon, contentDescription = null) },
                 label = { Text("More") },
-                selected = false,
-                onClick = {  },
+                selected = expanded,
+                onClick = {},
             )
             ExposedDropdownMenu(
                 modifier = Modifier.exposedDropdownSize(false).width(120.dp),
