@@ -1,5 +1,7 @@
 package ch.epfl.sdp.cook4me.persistence.model
 
+import com.google.firebase.Timestamp
+
 @Suppress("DataClassShouldBeImmutable")
 // need mutable data class to use toObjects and toObject function of firestore
 data class Recipe(
@@ -12,4 +14,5 @@ data class Recipe(
     val difficulty: String = "",
     val servings: Int = 0,
     val cookingTime: String = "",
+    val creationTime: Timestamp = Timestamp.now(),
 )
