@@ -61,8 +61,6 @@ fun GoogleMapView(
     val loadedMarkers by mapViewModel.markers
     val isLoading by mapViewModel.isLoading
 
-    println("LOADED MARKERS: " + loadedMarkers)
-
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
         mutableStateOf(

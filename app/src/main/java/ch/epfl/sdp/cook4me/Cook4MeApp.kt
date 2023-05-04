@@ -5,6 +5,7 @@ import SignUpScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
@@ -26,6 +27,7 @@ import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
+import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -60,6 +62,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    ChatScreen,
     SignUpUserInfos,
     RecipeFeed
 }
@@ -82,6 +85,7 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
     object Menu : BottomNavScreen(Screen.OverviewScreen.name, Icons.Filled.Menu, "Menu")
+    object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
 }
 
 @Composable
@@ -214,6 +218,11 @@ fun Cook4MeApp(
                         popUpTo(Screen.Login.name) { inclusive = true }
                     }
                 }
+            )
+        }
+        composable(route = Screen.ChatScreen.name) {
+            ChannelScreen(
+                onBackListener = { navController.navigate(Screen.RecipeFeed.name) },
             )
         }
     }

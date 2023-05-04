@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.common.form
+package ch.epfl.sdp.cook4me.ui.form
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Assert.assertEquals
 import org.junit.Rule

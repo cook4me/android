@@ -11,7 +11,6 @@ class ProfileServiceWithRepository(private val repository: ProfileRepository = P
         allergies: String,
         bio: String,
         favoriteDish: String,
-        userImage: String,
     ) {
         repository.update(
             id,
@@ -21,7 +20,6 @@ class ProfileServiceWithRepository(private val repository: ProfileRepository = P
                 allergies,
                 bio,
                 favoriteDish,
-                userImage,
             )
         )
     }

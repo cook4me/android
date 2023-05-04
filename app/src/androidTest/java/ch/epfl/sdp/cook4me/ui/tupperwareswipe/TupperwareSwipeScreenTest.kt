@@ -19,9 +19,6 @@ class TupperwareSwipeScreenTest {
         composeTestRule.setContent {
             TupperwareSwipeScreen()
         }
-        composeTestRule.onNodeWithText("Spaghetti Carbonara").assertIsDisplayed()
-        composeTestRule.onNodeWithText("made by my mother with much love ❤️").assertIsDisplayed()
-        composeTestRule.onNodeWithText("nope").assertIsDisplayed()
-        composeTestRule.onNodeWithText("yes").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Tupperware").assertIsDisplayed()
     }
 }

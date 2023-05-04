@@ -10,7 +10,7 @@
     <string name="navigate_to_postView">Post</string>
     <string name="navigate_to_recipe_feed">Recipe feed</string>
     <string name="sign_out">Sign out</string>
-    
+
     <!-- ui/simpleComponent strings   -->
     <string name="navigate_to_add_recipe">Add Recipe</string>
 
@@ -47,6 +47,7 @@
     <string name="event_participants">Participants:</string>
     <string name="event_who_can_see_event">Who can see the event:</string>
     <string name="event_time">Event time:</string>
+    <string name="detailed_event_create_chat">Chat with event owner</string>
 
     <!-- CreateTupperwareScreen -->
     <string name="image_selector_add_image">+</string>
@@ -82,7 +83,7 @@
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
     <string name="tag_bio">Bio</string>
-    <string name="tag_defaultProfileImage">defaultProfilImage</string>
+    <string name="tag_defaultProfileImage">defaultProfileImage</string>
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
     <string name="tag_password">Password</string>
@@ -139,5 +140,7 @@
     <string name="permission_message_singular_recommendation">The %1\$s permission will grant a better experience in the app</string>
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
-
+    <!-- Chat -->
+    <string name="Loading_Screen_Tag">Loading Screen TAG</string>
+    <string name="Channel_Screen_Tag">Channel Screen TAG</string>
 </resources>

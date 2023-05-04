@@ -10,5 +10,8 @@ echo MAPS_API_KEY=$MAPS_API_KEY >> local.properties
 # Takes $GOOGLE_SERVICES and writes it to ./app/google-services.json
 echo $GOOGLE_SERVICES > ./app/google-services.json
 
+# Takes $CHAT_API_KEY and writes it to local.properties
+echo CHAT_API_KEY=$CHAT_API_KEY >> local.properties
+
 
 

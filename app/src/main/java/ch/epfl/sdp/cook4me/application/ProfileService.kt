@@ -7,6 +7,5 @@ interface ProfileService {
         allergies: String,
         bio: String,
         favoriteDish: String,
-        userImage: String,
     )
 }
