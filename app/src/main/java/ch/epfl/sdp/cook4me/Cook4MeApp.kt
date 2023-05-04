@@ -207,7 +207,7 @@ fun Cook4MeApp(
         }
         composable(route = Screen.ChatScreen.name) {
             ChannelScreen(
-                onBackListener = { navController.navigate(Screen.OverviewScreen.name) },
+                onBackListener = { navController.navigate(Screen.RecipeFeed.name) },
             )
         }
     }
