@@ -41,9 +41,7 @@ class NavigationScenarioTest {
             "TestPermission2" to Pair(true, true)
         )
     )
-    private fun getString(id: Int): String {
-        return composeTestRule.activity.getString(id)
-    }
+
     @Before
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -81,9 +79,8 @@ class NavigationScenarioTest {
         composeTestRule.setContent {
             Cook4MeApp(permissionStatusProvider = permissionStatusProvider)
         }
-        composeTestRule.onNodeWithText("nope").assertDoesNotExist()
         composeTestRule.onNodeWithText("Tups").performClick()
-        composeTestRule.waitUntilExists(hasText("nope"))
+        composeTestRule.waitUntilExists(hasText("Create a new Tupperware"))
     }
 
     @Test
@@ -134,9 +131,7 @@ class NavigationScenarioTest {
         composeTestRule.setContent {
             Cook4MeApp(permissionStatusProvider = permissionStatusProvider)
         }
-        composeTestRule.onNodeWithText("nope").assertDoesNotExist()
         composeTestRule.onNodeWithText("Tups").performClick()
-        composeTestRule.waitUntilExists(hasText("nope"))
         composeTestRule.onNodeWithText("Create a new Tupperware").performClick()
         composeTestRule.waitUntilExists(hasText("Description"))
     }

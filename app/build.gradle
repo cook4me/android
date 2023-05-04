@@ -116,6 +116,8 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.2.2"
     implementation "com.google.accompanist:accompanist-permissions:0.30.0"
 
+    implementation 'com.alexstyl.swipeablecard:swipeablecard:0.1.0'
+
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
@@ -139,14 +141,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.3"
     androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.4.3'
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.4.3'
-    androidTestImplementation 'androidx.navigation:navigation-testing:2.5.3'
     //noinspection GradleDependency see: https://github.com/mockk/mockk/issues/297#issuecomment-901924678
     androidTestImplementation 'io.mockk:mockk-android:1.12.3'
-
-    debugImplementation 'androidx.compose.ui:ui-tooling:1.4.3'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest:1.4.3'
 }
 
 tasks.withType(Test) {
