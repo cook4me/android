@@ -214,6 +214,9 @@ class AddProfileInfoScreenTest {
             )
         }
 
+        // add userImage
+        signUpViewModel.addProfileImage(Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user"))
+
         // Add email and password to the view model from sign up screen
         signUpViewModel.addEmail(emailInput)
         signUpViewModel.addPassword(passwordInput)
@@ -223,6 +226,7 @@ class AddProfileInfoScreenTest {
 
         // Verify that the click was not handled because no input
         assert(!signUpSuccess)
+        assert(!signUpFail)
 
         // Set input
         val username = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
