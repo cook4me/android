@@ -22,21 +22,6 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 
-enum class Screen {
-    Login,
-    CreateTupperwareScreen,
-    TupperwareSwipeScreen,
-    ProfileScreen,
-    CreateRecipeScreen,
-    EditProfileScreen,
-    Event,
-    CreateEventScreen,
-    DetailedEventScreen,
-    SignUpScreen,
-    SignUpUserInfo,
-    RecipeFeed,
-}
-
 @Composable
 fun Cook4MeNavHost(
     modifier: Modifier = Modifier,
@@ -124,4 +109,19 @@ fun Cook4MeNavHost(
             )
         }
     }
+}
+
+enum class Screen {
+    Login,
+    CreateTupperwareScreen,
+    TupperwareSwipeScreen,
+    ProfileScreen,
+    CreateRecipeScreen,
+    EditProfileScreen,
+    Event,
+    CreateEventScreen,
+    DetailedEventScreen,
+    SignUpScreen,
+    SignUpUserInfo,
+    RecipeFeed,
 }

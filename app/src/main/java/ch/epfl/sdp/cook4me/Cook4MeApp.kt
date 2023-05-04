@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -27,6 +26,7 @@ import java.util.Calendar
 val calendar = Calendar.getInstance()
 val unauthenticatedStartScreen = Screen.Login.name
 val authenticatedStartScreen = Screen.RecipeFeed.name
+
 /*
 * This could probably be refactored more with a ViewModel but State Handling is a little harder
 * so this will have to do

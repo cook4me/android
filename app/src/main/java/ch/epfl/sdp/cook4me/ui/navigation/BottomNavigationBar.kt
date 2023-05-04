@@ -29,32 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 
-sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val title: String) {
-    object Tupperwares :
-        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
-
-    object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
-    object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
-    object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object Menu : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.Menu, "Menu")
-    object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
-    object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
-    object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
-}
-
-val mainDestinations = listOf(
-    BottomNavScreen.Tupperwares,
-    BottomNavScreen.Recipes,
-    BottomNavScreen.Events,
-)
-
-val dropDownMenuDestinations = listOf(
-    BottomNavScreen.MyTupperwares,
-    BottomNavScreen.MyRecipes,
-    BottomNavScreen.MyEvents,
-    BottomNavScreen.Profile,
-)
-
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String) {
@@ -106,3 +80,29 @@ fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String)
         }
     }
 }
+
+sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val title: String) {
+    object Tupperwares :
+        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+
+    object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
+    object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
+    object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
+    object Menu : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.Menu, "Menu")
+    object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
+    object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
+    object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
+}
+
+val mainDestinations = listOf(
+    BottomNavScreen.Tupperwares,
+    BottomNavScreen.Recipes,
+    BottomNavScreen.Events,
+)
+
+val dropDownMenuDestinations = listOf(
+    BottomNavScreen.MyTupperwares,
+    BottomNavScreen.MyRecipes,
+    BottomNavScreen.MyEvents,
+    BottomNavScreen.Profile,
+)
