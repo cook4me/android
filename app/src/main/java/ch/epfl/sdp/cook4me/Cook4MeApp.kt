@@ -59,7 +59,6 @@ private enum class Screen {
     RecipeFeed,
 }
 
-
 /* Testing around the Detailed Event Screen */
 // initializing the testing event
 val calendar = Calendar.getInstance()
