@@ -5,6 +5,7 @@ import SignUpScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
@@ -71,10 +72,10 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object Menu : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.Menu, "Menu")
     object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
     object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
     object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
+    object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
 }
 
 @Composable
