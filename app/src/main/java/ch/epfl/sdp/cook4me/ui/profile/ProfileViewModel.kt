@@ -58,9 +58,7 @@ class ProfileViewModel(
                     }
                 }
             } catch (e: NoSuchElementException) {
-                if (e.message == "Collection is empty") {
-                    // TODO : check if this is the right message
-                    //  and the right exception
+                if (e.message == "Collection is empty.") {
                     onFailure()
                 } else {
                     throw e
@@ -70,9 +68,7 @@ class ProfileViewModel(
             try {
                 _profileImage.value = profileImageRepository.get()
             } catch (e: NoSuchElementException) {
-                if (e.message == "Collection is empty") {
-                    // TODO : check if this is the right
-                    //  message on the right exception
+                if (e.message == "Collection is empty.") {
                     _profileImage.value =
                         Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
                 } else {

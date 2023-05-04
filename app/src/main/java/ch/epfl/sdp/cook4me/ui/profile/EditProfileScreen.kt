@@ -132,7 +132,6 @@ fun EditProfileScreen(
                             { viewModel.onSubmit(onSuccessListener) },
                             onCancelListener,
                         )
-                        // Image TODO: Add a way to change the image
                         ImageHolderProfileUpdateScreen(
                             onClickAddImage = { onClickAddImage() },
                             image = image.value,

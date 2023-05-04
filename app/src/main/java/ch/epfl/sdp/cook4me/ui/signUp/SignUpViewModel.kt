@@ -78,7 +78,9 @@ class SignUpViewModel(
             viewModelScope.launch {
                 try {
                     accountService.register(_profileState.value.email, _password.value)
-                    profileImageRepository.add(profileImage.value)
+                    if(profileImage.value != Uri.EMPTY){
+                        profileImageRepository.add(profileImage.value)
+                    }
                     repository.add(_profileState.value)
                 } catch (e: FirebaseAuthException) {
                     if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {

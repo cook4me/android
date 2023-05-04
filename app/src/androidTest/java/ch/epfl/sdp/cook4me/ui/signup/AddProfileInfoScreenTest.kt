@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.signup
 
 import AddProfileInfoScreen
-import android.content.Context
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -11,15 +10,16 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
-import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.ui.profile.ProfileViewModel
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.junit.After
@@ -27,13 +27,16 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+private val COLLECTION_PATH_PROFILES = "profiles"
+
 class AddProfileInfoScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    private lateinit var profileImageRepository: ProfileImageRepository
+    private lateinit var store: FirebaseFirestore
+    private lateinit var storage: FirebaseStorage
     private lateinit var auth: FirebaseAuth
-    private lateinit var context: Context
-    private lateinit var firestore: FirebaseFirestore
 
     // Set input
     private val usernameInput = "donald"
@@ -42,50 +45,37 @@ class AddProfileInfoScreenTest {
     private val bioInput = "I love cooking"
     private val emailInput = "donald.duck@epfl.ch"
     private val passwordInput = "123456"
-    private val COLLECTION_PATH = "profiles"
 
     @Before
     fun setUp() {
-        context = InstrumentationRegistry.getInstrumentation().targetContext
-        /*
-        * IMPORTANT:
-        * (Below code is already functional, no need to change anything)
-        * Make sure you do this try-catch block,
-        * otherwise when doing CI, there will be an exception:
-        * kotlin.UninitializedPropertyAccessException: lateinit property firestore has not been initialized
-        * */
-        try {
-            Firebase.firestore.useEmulator("10.0.2.2", 8080)
-        } catch (e: IllegalStateException) {
-            // emulator already set
-            // do nothing
-        }
-        try {
-            Firebase.auth.useEmulator("10.0.2.2", 9099)
-        } catch (e: IllegalStateException) {
-            // emulator already set
-            // do nothing
-        }
-        firestore = FirebaseFirestore.getInstance()
+        // Connect to local firestore emulator
+        store = FirebaseFirestore.getInstance()
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setHost("10.0.2.2:8080") // connect to local firestore emulator
+            .setSslEnabled(false)
+            .setPersistenceEnabled(false)
+            .build()
+        store.firestoreSettings = settings
+        Firebase.auth.useEmulator("10.0.2.2", 9099)
+        storage = FirebaseStorage.getInstance()
+        storage.useEmulator("10.0.2.2", 9199)
         auth = FirebaseAuth.getInstance()
+        profileImageRepository = ProfileImageRepository(store, storage, auth)
     }
 
     @After
     fun cleanUp() {
         runBlocking {
-            try {
-                // delete collection from firebase
-                firestore.collection(COLLECTION_PATH).whereEqualTo("email", emailInput).get()
-                    .await().documents.forEach {
-                        firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
-                    }
-                // check if the user exists already from a previous test
-                // if a previous test failed, the user might still exist
-                auth.signInWithEmailAndPassword(emailInput, passwordInput).await()
-                auth.currentUser?.delete()
-            } catch (e: Exception) {
-                // do nothing
-            }
+            auth.signInWithEmailAndPassword(emailInput, passwordInput).await()
+            // delete collection from firebase
+            store.collection(COLLECTION_PATH_PROFILES).whereEqualTo("email", emailInput).get()
+                .await().documents.forEach {
+                    store.collection(COLLECTION_PATH_PROFILES).document(it.id).delete().await()
+                }
+
+            profileImageRepository.delete()
+            // delete user from firebase
+            auth.currentUser?.delete()
         }
     }
 
@@ -173,26 +163,10 @@ class AddProfileInfoScreenTest {
             assert(profileViewModel.profile.value.allergies == allergiesInput)
             assert(profileViewModel.profile.value.bio == bioInput)
 
-            // delete collection from firebase
-            firestore.collection(COLLECTION_PATH).whereEqualTo("email", emailInput).get()
-                .await().documents.forEach {
-                    // check if the profile was stored correctly
-                    // assert(it["name"] == usernameInput)
-                    // assert(it["email"] == emailInput)
-                    // assert(it["favoriteDish"] == favFoodInput)
-                    // assert(it["allergies"] == allergiesInput)
-                    // assert(it["bio"] == bioInput) //TODO PASSING LOCALLY BUT NOT ON CI
-
-                    firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
-                }
-
             // check that the user is created
             auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
                 .await()
             assert(auth.currentUser != null)
-
-            // clean up
-            auth.currentUser?.delete()
         }
     }
 
@@ -249,19 +223,10 @@ class AddProfileInfoScreenTest {
         }
 
         runBlocking {
-            // delete collection from firebase
-            firestore.collection(COLLECTION_PATH).whereEqualTo("email", emailInput).get()
-                .await().documents.forEach {
-                    firestore.collection(COLLECTION_PATH).document(it.id).delete().await()
-                }
-
             // check that the user is created
             auth.signInWithEmailAndPassword(signUpViewModel.profile.value.email, passwordInput)
                 .await()
             assert(auth.currentUser != null)
-
-            // clean up
-            auth.currentUser?.delete()
         }
     }
 }

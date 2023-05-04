@@ -1,21 +1,23 @@
 package ch.epfl.sdp.cook4me.ui.profile
 
-import android.content.Context
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
-import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.junit.After
@@ -27,9 +29,13 @@ class EditProfileScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
+    private lateinit var profileImageRepository: ProfileImageRepository
+    private lateinit var store: FirebaseFirestore
+    private lateinit var storage: FirebaseStorage
     private lateinit var auth: FirebaseAuth
-    private lateinit var context: Context
     private lateinit var repository: ProfileRepository
+    private var userImage: Uri =
+        Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_launcher_foreground")
     private val user = Profile(
         email = "donald.duck@epfl.ch",
         name = "Donald",
@@ -40,32 +46,25 @@ class EditProfileScreenTest {
 
     @Before
     fun setUp() {
-        context = InstrumentationRegistry.getInstrumentation().targetContext
-        /*
-        * IMPORTANT:
-        * (Below code is already functional, no need to change anything)
-        * Make sure you do this try-catch block,
-        * otherwise when doing CI, there will be an exception:
-        * kotlin.UninitializedPropertyAccessException: lateinit property firestore has not been initialized
-        * */
-        try {
-            Firebase.firestore.useEmulator("10.0.2.2", 8080)
-        } catch (e: IllegalStateException) {
-            // emulator already set
-            // do nothing
-        }
-        try {
-            Firebase.auth.useEmulator("10.0.2.2", 9099)
-        } catch (e: IllegalStateException) {
-            // emulator already set
-            // do nothing
-        }
-        repository = ProfileRepository()
+        // Connect to local firestore emulator
+        store = FirebaseFirestore.getInstance()
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setHost("10.0.2.2:8080") // connect to local firestore emulator
+            .setSslEnabled(false)
+            .setPersistenceEnabled(false)
+            .build()
+        store.firestoreSettings = settings
+        Firebase.auth.useEmulator("10.0.2.2", 9099)
+        storage = FirebaseStorage.getInstance()
+        storage.useEmulator("10.0.2.2", 9199)
+        repository = ProfileRepository(store)
         auth = FirebaseAuth.getInstance()
+        profileImageRepository = ProfileImageRepository(store, storage, auth)
         runBlocking {
             auth.createUserWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
             auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
             repository.add(user)
+            userImage = profileImageRepository.add(userImage)
         }
     }
 
@@ -73,6 +72,7 @@ class EditProfileScreenTest {
     fun cleanUp() {
         runBlocking {
             repository.delete(user.email)
+            profileImageRepository.delete()
             auth.signInWithEmailAndPassword("donald.duck@epfl.ch", "123456").await()
             auth.currentUser?.delete()
         }
@@ -104,6 +104,9 @@ class EditProfileScreenTest {
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             !profileViewModel.isLoading.value
         }
+
+        // Verify that the image is displayed
+        composeTestRule.onNodeWithTag("defaultProfileImage").assertExists()
 
         // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
