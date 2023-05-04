@@ -62,7 +62,6 @@ class NavigationScenarioTest {
         composeTestRule.onNodeWithText(destination.title).performScrollTo().performClick()
     }
 
-
     @Before
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
@@ -89,7 +88,6 @@ class NavigationScenarioTest {
             )
         }
     }
-
 
     @Test
     fun startScreenIsCorrectlyShown() {

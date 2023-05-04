@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me
 
 import android.Manifest
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable

@@ -9,7 +9,7 @@ import ch.epfl.sdp.cook4me.permissions.TestPermissionStatusProvider
 import org.junit.Rule
 import org.junit.Test
 
-class MapPermissionWrapper {
+class TestMapPermissionWrapper {
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -20,8 +20,7 @@ class MapPermissionWrapper {
         composeTestRule.setContent {
             MapPermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
-                modifier = Modifier.fillMaxSize(),
-                markers = dummyMarkers,
+                modifier = Modifier.fillMaxSize()
             )
         }
 
@@ -36,7 +35,6 @@ class MapPermissionWrapper {
             MapPermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
                 modifier = Modifier.fillMaxSize(),
-                markers = dummyMarkers,
             )
         }
 

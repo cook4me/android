@@ -11,9 +11,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -98,13 +98,20 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
     object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
     object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
     object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
+    object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
+}
 
+sealed class ScreenWithArgs(val name: String) {
+    object DetailedEventScreen : ScreenWithArgs("detailed_event_screen/{eventId}") {
+        fun createRoute(eventId: String) = "detailed_event_screen/$eventId"
+    }
 }
 
 val mainDestinations = listOf(
     BottomNavScreen.Tupperwares,
     BottomNavScreen.Recipes,
     BottomNavScreen.Events,
+    BottomNavScreen.Chat
 )
 
 val dropDownMenuDestinations = listOf(

@@ -45,7 +45,8 @@ class EventTest {
             Participants: [participant1, participant2]
             Creator: creator
             Id: id
-            Is private: true"""
+            Is private: true
+            Latitude-Longitude:(0.0,0.0)"""
         // remove all the spaces
         expected = expected.replace("\\s".toRegex(), "")
         val actual = event.eventInformation.replace("\\s".toRegex(), "")

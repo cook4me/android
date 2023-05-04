@@ -6,10 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
+import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -61,7 +64,12 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
         // the uid of event is predefined on firestore. this is just for show.
-        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
+        composable(
+            route = ScreenWithArgs.DetailedEventScreen.name,
+            arguments = listOf(navArgument("eventId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            DetailedEventScreen(backStackEntry.arguments?.getString("eventId").orEmpty())
+        }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
                 onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfo.name) },
@@ -108,6 +116,11 @@ fun Cook4MeNavHost(
                 onSuccessListener = { navController.navigate(Screen.ProfileScreen.name) },
             )
         }
+        composable(route = Screen.ChatScreen.name) {
+            ChannelScreen(
+                onBackListener = { navController.navigate(Screen.RecipeFeed.name) },
+            )
+        }
     }
 }
 
@@ -124,4 +137,5 @@ enum class Screen {
     SignUpScreen,
     SignUpUserInfo,
     RecipeFeed,
+    ChatScreen
 }
