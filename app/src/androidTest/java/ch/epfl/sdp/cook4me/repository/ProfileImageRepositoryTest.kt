@@ -56,7 +56,7 @@ class ProfileImageRepositoryTest {
     fun cleanUp() {
         runBlocking {
             val querySnapshot = store.collection(COLLECTION_PATH).get().await()
-            for (documentSnapshAot in querySnapshot.documents) {
+            for (documentSnapshot in querySnapshot.documents) {
                 profileImageRepository.delete()
             }
             auth.signInWithEmailAndPassword(USER_NAME, "123456").await()
