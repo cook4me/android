@@ -14,6 +14,8 @@ import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,6 +55,20 @@ class CreateEventScreenTest {
         composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performClick()
         composeTestRule.waitUntilExists(hasText("error"))
         coVerify { mockEventService.submitForm(match { !it.isValidEvent }) }
+    }
+
+    fun cancelButtonClickCallsOnCancel() {
+        var onCancelCalled = false
+        composeTestRule.setContent {
+            CreateEventScreen(
+                onCancelClick = {
+                    onCancelCalled = true
+                }
+            )
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
+        assertThat(onCancelCalled, `is`(true))
     }
 
     private fun ComposeContentTestRule.waitUntilExists(
