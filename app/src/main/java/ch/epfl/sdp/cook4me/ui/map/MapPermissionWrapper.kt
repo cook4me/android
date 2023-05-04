@@ -11,7 +11,6 @@ import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 fun MapPermissionWrapper(
     permissionStatusProvider: PermissionStatusProvider,
     modifier: Modifier = Modifier,
-    markers: List<MarkerData> = emptyList<MarkerData>(),
     onCreateNewEventClick: () -> Unit = {},
     onDetailedEventClick: (String) -> Unit = {},
 ) {
@@ -19,7 +18,6 @@ fun MapPermissionWrapper(
     permissionManager.WithPermission {
         GoogleMapView(
             modifier = modifier.fillMaxSize(),
-            markers = markers,
             onCreateNewEventClick = onCreateNewEventClick,
             userLocationDisplayed = permissionStatusProvider is ComposePermissionStatusProvider,
             onDetailedEventClick = onDetailedEventClick,

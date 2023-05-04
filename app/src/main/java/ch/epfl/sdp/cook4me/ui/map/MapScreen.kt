@@ -51,7 +51,6 @@ fun GoogleMapView(
     cameraPositionState: CameraPositionState = rememberCameraPositionState(),
     onMapLoaded: () -> Unit = {},
     content: @Composable () -> Unit = {},
-    markers: List<MarkerData> = emptyList(),
     mapViewModel: MapViewModel = MapViewModel(),
     selectedEventId: String = "",
     userLocationDisplayed: Boolean = false,
@@ -59,7 +58,6 @@ fun GoogleMapView(
     onDetailedEventClick: (String) -> Unit = {},
 ) {
     val loadedMarkers by mapViewModel.markers
-    val isLoading by mapViewModel.isLoading
 
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
@@ -74,7 +72,9 @@ fun GoogleMapView(
         cameraPositionState.position =
             CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
-    var selectedMarker by remember { mutableStateOf(findMarkerById(loadedMarkers, selectedEventId))}
+
+    var selectedMarker by remember { mutableStateOf(findMarkerById(loadedMarkers, selectedEventId)) }
+
     var navigateToEvent by remember { mutableStateOf(false) }
 
     Column(
