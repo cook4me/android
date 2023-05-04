@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.detailedevent
 
-import android.content.Context
 import android.util.Log
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import com.google.firebase.FirebaseException
@@ -10,13 +9,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
 const val EVENT_PATH = "events"
-
-data class SetupResult(
-    val auth: FirebaseAuth,
-    val firestore: FirebaseFirestore,
-    val eventId: String,
-    val context: Context
-)
 
 fun setUpEvents(): Triple<FirebaseAuth, FirebaseFirestore, String> {
 
