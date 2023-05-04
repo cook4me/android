@@ -33,6 +33,7 @@ class ProfileImageRepositoryTest {
 
     @Before
     fun setUp() {
+        // Connect to local firestore emulator
         store = FirebaseFirestore.getInstance()
         val settings = FirebaseFirestoreSettings.Builder()
             .setHost("10.0.2.2:8080") // connect to local firestore emulator
