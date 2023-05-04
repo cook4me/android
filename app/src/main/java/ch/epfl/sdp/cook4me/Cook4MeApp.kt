@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
@@ -23,24 +25,25 @@ import java.util.Calendar
 /* Testing around the Detailed Event Screen */
 // initializing the testing event
 val calendar = Calendar.getInstance()
-
+val unauthenticatedStartScreen = Screen.Login.name
+val authenticatedStartScreen = Screen.RecipeFeed.name
 /*
 * This could probably be refactored more with a ViewModel but State Handling is a little harder
 * so this will have to do
 * */
 @Composable
 fun Cook4MeApp(
+    navController: NavHostController = rememberNavController(),
     permissionStatusProvider: PermissionStatusProvider = ComposePermissionStatusProvider(
         listOf(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
     )
 ) {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    val navController = rememberNavController()
     // TODO make it use the real-time firebase Auth data
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
     val startScreen = remember {
         mutableStateOf(
-            if (!isAuthenticated.value) Screen.Login.name else Screen.RecipeFeed.name
+            if (!isAuthenticated.value) unauthenticatedStartScreen else authenticatedStartScreen
         )
     }
 
