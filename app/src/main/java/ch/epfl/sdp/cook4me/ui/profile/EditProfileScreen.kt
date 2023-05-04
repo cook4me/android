@@ -203,6 +203,7 @@ fun ImageHolderProfileUpdateScreen(
             modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
+                .testTag(stringResource(R.string.tag_defaultProfileImage))
         ) {
             ImageProfileUpdateScreen(
                 onClickAddImage = onClickAddImage,
