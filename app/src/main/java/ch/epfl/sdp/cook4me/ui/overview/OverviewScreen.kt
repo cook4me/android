@@ -34,7 +34,6 @@ fun OverviewScreen(
     onRecipeFeedClick: () -> Unit,
     signOutNavigation: () -> Unit,
     onDetailedEventClick: () -> Unit,
-    onChatClick: () -> Unit,
     modifier: Modifier = Modifier,
     overviewViewModel: OverviewViewModel = viewModel()
 ) {
@@ -102,9 +101,6 @@ fun OverviewScreen(
             }
             Button(onClick = { overviewViewModel.onSignOutButtonClicked() }) {
                 Text(stringResource(R.string.sign_out))
-            }
-            Button(onClick = onChatClick) {
-                Text(stringResource(R.string.navigate_to_chat))
             }
         }
     }
