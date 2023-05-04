@@ -74,9 +74,9 @@ fun GoogleMapView(
         cameraPositionState.position =
             CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
-    var selectedMarker = findMarkerById(loadedMarkers, selectedEventId)
+    var selectedMarker by remember { mutableStateOf(findMarkerById(loadedMarkers, selectedEventId))}
     var navigateToEvent by remember { mutableStateOf(false) }
-    println("SELECTED MARKER " + selectedMarker + selectedEventId)
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
