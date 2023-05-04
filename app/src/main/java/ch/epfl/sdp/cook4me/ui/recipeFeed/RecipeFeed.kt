@@ -75,7 +75,7 @@ fun RecipeFeed(
                 recipeList = if (isOrderedByTopRecipes.value) {
                     recipeList.value.sortedByDescending { it.note }
                 } else {
-                    recipeList.value
+                    recipeList.value.sortedByDescending { it.recipe.creationTime }
                 },
                 onNoteUpdate = { recipe, note ->
                     // launch coroutine to update the note

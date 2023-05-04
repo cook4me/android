@@ -25,6 +25,7 @@ import androidx.navigation.createGraph
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
+import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -49,6 +50,7 @@ private enum class Screen {
     Login,
     CreateTupperwareScreen,
     TupperwareSwipeScreen,
+    OverviewScreen,
     ProfileScreen,
     CreateRecipeScreen,
     EditProfileScreen,
@@ -57,6 +59,7 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    ChatScreen,
     SignUpUserInfos,
     RecipeFeed,
 }
@@ -139,7 +142,7 @@ fun Cook4MeApp(
         }
         composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
         // the uid of event is predefined on firestore. this is just for show.
-        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
+        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("pSkhty73UrT4f55lIOov") }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
                 onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
@@ -181,6 +184,11 @@ fun Cook4MeApp(
                         popUpTo(Screen.Login.name) { inclusive = true }
                     }
                 }
+            )
+        }
+        composable(route = Screen.ChatScreen.name) {
+            ChannelScreen(
+                onBackListener = { navController.navigate(Screen.OverviewScreen.name) },
             )
         }
     }

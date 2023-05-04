@@ -156,19 +156,20 @@ class AddProfileInfoScreenTest {
 
         assert(!signUpFail)
 
-        // check that the user is created correctly
-        val profileViewModel = ProfileViewModel()
-
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            !profileViewModel.isLoading.value
-        }
-
-        assert(profileViewModel.profile.value.name == usernameInput)
-        assert(profileViewModel.profile.value.favoriteDish == favFoodInput)
-        assert(profileViewModel.profile.value.allergies == allergiesInput)
-        assert(profileViewModel.profile.value.bio == bioInput)
-
         runBlocking {
+            // check that the user is created correctly
+            val profileViewModel = ProfileViewModel()
+
+            composeTestRule.waitUntil(timeoutMillis = 5000) {
+                !profileViewModel.isLoading.value
+            }
+
+            // check if the profile was stored correctly
+            assert(profileViewModel.profile.value.name == usernameInput)
+            assert(profileViewModel.profile.value.favoriteDish == favFoodInput)
+            assert(profileViewModel.profile.value.allergies == allergiesInput)
+            assert(profileViewModel.profile.value.bio == bioInput)
+
             // delete collection from firebase
             firestore.collection(COLLECTION_PATH).whereEqualTo("email", emailInput).get()
                 .await().documents.forEach {

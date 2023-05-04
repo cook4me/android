@@ -13,6 +13,14 @@ android {
     compileSdk 33
 
     defaultConfig {
+        // Read chat api key from local.properties
+        def properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def CHAT_API_KEY = properties.getProperty('CHAT_API_KEY', '')
+
+        // Add API key as build config field
+        buildConfigField 'String', 'CHAT_API_KEY', "\"${CHAT_API_KEY}\""
+
         applicationId 'ch.epfl.sdp.cook4me'
         minSdk 24
         targetSdk 33
@@ -108,10 +116,18 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.2.2"
     implementation "com.google.accompanist:accompanist-permissions:0.30.0"
 
+    implementation 'com.alexstyl.swipeablecard:swipeablecard:0.1.0'
+
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
+
+    implementation "io.getstream:stream-chat-android-compose:5.12.0"
+    implementation "androidx.compose.material:material-icons-extended:1.4.3"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation('org.hamcrest:hamcrest:2.2')

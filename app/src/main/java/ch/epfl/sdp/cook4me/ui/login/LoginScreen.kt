@@ -122,6 +122,7 @@ fun LoginScreen(
                                     e.stackTraceToString()
                                 )
                             } catch (e: FirebaseAuthInvalidCredentialsException) {
+                                inProgress = false
                                 scaffoldState
                                     .snackbarHostState
                                     .showSnackbar(context.getString(R.string.sign_in_screen_wrong_password))
