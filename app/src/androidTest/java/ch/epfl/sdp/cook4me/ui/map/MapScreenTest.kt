@@ -12,6 +12,11 @@ import androidx.compose.ui.test.printToLog
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.maps.android.compose.CameraPositionState
 import io.mockk.Ordering
 import io.mockk.spyk
@@ -57,6 +62,19 @@ class GoogleMapViewTests {
 
         val mapLoaded = countDownLatch.await(MAPS_LOADING_TIMEOUT, TimeUnit.MILLISECONDS)
         assertTrue("Map loaded", mapLoaded)
+    }
+
+    private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+
+    private fun eventsSetUp() {
+        Firebase.firestore.useEmulator("10.0.2.2", 8080)
+        db = FirebaseFirestore.getInstance()
+        Firebase.auth.useEmulator("10.0.2.2", 9099)
+        auth = FirebaseAuth.getInstance()
+
+
+
     }
 
     @Before
