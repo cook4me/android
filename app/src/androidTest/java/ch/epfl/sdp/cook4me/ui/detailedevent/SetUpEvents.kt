@@ -9,7 +9,7 @@ import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
-const val EVENT_PATH = "events"
+private const val EVENT_PATH = "events"
 private const val FIREBASE_PORT = 8080
 private const val AUTH_PORT = 9099
 
