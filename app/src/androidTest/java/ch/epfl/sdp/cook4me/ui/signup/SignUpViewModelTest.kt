@@ -115,7 +115,7 @@ class SignUpViewModelTest {
         assert(signUpViewModel.profile.value.favoriteDish == favoriteDish)
         assert(signUpViewModel.profile.value.bio == bio)
         assert(signUpViewModel.profile.value.email == email)
-        //assert(signUpViewModel.profileImage.toString() == userImage.toString()) //TODO does assert an error user something
+        // assert(signUpViewModel.profileImage.toString() == userImage.toString()) //TODO does assert an error user something
 
         // check that its valid after adding it
         assert(signUpViewModel.checkForm())

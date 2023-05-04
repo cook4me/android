@@ -106,7 +106,7 @@ class EditProfileScreenTest {
         }
 
         // Verify that the image is displayed
-        //composeTestRule.onNodeWithTag("tag_defaultProfileImage").assertExists()
+        // composeTestRule.onNodeWithTag("tag_defaultProfileImage").assertExists()
 
         // Clear fields
         composeTestRule.onNodeWithTag(username).performTextClearance()
