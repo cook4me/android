@@ -36,7 +36,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
@@ -61,13 +60,19 @@ fun AddProfileInfoScreen(
     val usernameState =
         remember { UserNameState(context.getString(R.string.invalid_username_message)) }
     val favoriteDishState = remember {
-        NonRequiredTextFieldState("", "")
+        NonRequiredTextFieldState("")
     }
     val allergiesState = remember {
-        NonRequiredTextFieldState("", "")
+        NonRequiredTextFieldState("")
     }
     val bioState = remember {
-        NonRequiredTextFieldState("", "")
+        NonRequiredTextFieldState("")
+    }
+    val userImage = remember {
+        mutableStateOf<Uri>(
+            // get Uri from R.drawable.ic_user
+            Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+        )
     }
 
     var inProgress by remember {
@@ -82,9 +87,8 @@ fun AddProfileInfoScreen(
             contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
                 if (uri != null) {
-                    viewModel.addUserImage(
-                        uri
-                    )
+                    userImage.value = uri
+                    viewModel.addProfileImage(uri)
                 }
             }
         )
@@ -110,7 +114,7 @@ fun AddProfileInfoScreen(
 
                 ImageHolder_AddProfileInfoScreen(
                     onClickAddImage = { onClickAddImage() },
-                    image = viewModel.profile.value.userImage.toUri(),
+                    image = userImage.value,
                 )
 
                 // Textfield for the Username

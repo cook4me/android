@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.common.form
+package ch.epfl.sdp.cook4me.ui.form
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -9,6 +9,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
