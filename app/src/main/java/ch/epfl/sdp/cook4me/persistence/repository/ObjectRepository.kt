@@ -6,6 +6,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
+private const val MAX_RETRIEVED_DOCS = 20.toLong()
+
 open class ObjectRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val objectPath: String = ""
@@ -94,5 +96,23 @@ open class ObjectRepository(
         } catch (e: FirebaseFirestoreException) {
             Log.e("ObjectRepo", "Error querying documents: ${e.message}")
             null
+        }
+}
+
+open class ObjectCollectionRepository(
+    private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
+    private val objectPath: String = ""
+) {
+    /*
+    * Retrieves all documents in a collection
+    * If nothing is found, it returns empty list
+    * */
+    suspend fun <A : Any> retrieveAllDocuments(): List<DocumentSnapshot> =
+        try {
+            val result = store.collection(objectPath).limit(MAX_RETRIEVED_DOCS).get().await()
+            result.documents
+        } catch (e: FirebaseFirestoreException) {
+            Log.e("ObjectRepo", "Error querying documents: ${e.message}")
+            emptyList<DocumentSnapshot>()
         }
 }

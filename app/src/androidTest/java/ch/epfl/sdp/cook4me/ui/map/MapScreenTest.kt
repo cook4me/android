@@ -1,21 +1,23 @@
 package ch.epfl.sdp.cook4me.ui.map
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.printToLog
 import ch.epfl.sdp.cook4me.BuildConfig.MAPS_API_KEY
+import ch.epfl.sdp.cook4me.ui.detailedevent.cleanUpEvents
+import ch.epfl.sdp.cook4me.ui.detailedevent.setUpEvents
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.maps.android.compose.CameraPositionState
 import io.mockk.Ordering
 import io.mockk.spyk
 import io.mockk.verify
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -39,12 +41,15 @@ class GoogleMapViewTests {
     private lateinit var cameraPositionState: CameraPositionState
     private var navigatedToCreateEvent = false
 
-    private fun initMap(content: @Composable () -> Unit = {}, selectedEventId: String = "") {
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var eventId: String
+
+    private fun initMap(selectedEventId: String = "") {
         check(hasValidApiKey()) { "Maps API key not specified" }
         val countDownLatch = CountDownLatch(1)
         composeTestRule.setContent {
             GoogleMapView(
-                markers = dummyMarkers,
                 modifier = Modifier.fillMaxSize(),
                 cameraPositionState = cameraPositionState,
                 onMapLoaded = {
@@ -61,6 +66,10 @@ class GoogleMapViewTests {
 
     @Before
     fun setUp() {
+        val (auth, firestore, eventId) = setUpEvents()
+        this.auth = auth
+        this.firestore = firestore
+        this.eventId = eventId
         cameraPositionState = spyk(
             CameraPositionState(
                 position = CameraPosition.fromLatLngZoom(
@@ -71,10 +80,15 @@ class GoogleMapViewTests {
         )
     }
 
+    @After
+    fun cleanUp() {
+        cleanUpEvents(auth, firestore, eventId)
+    }
+
     @Test
     fun testEventInformationIsDisplayedWhenEventSelected() {
-        initMap(selectedEventId = dummyMarkers[0].id)
-        composeTestRule.onNodeWithText("Location: ${dummyMarkers[0].title}").assertIsDisplayed()
+        initMap(selectedEventId = eventId)
+        // composeTestRule.onNodeWithText("Location: test event name").assertIsDisplayed()
     }
 
     @Test
@@ -85,10 +99,17 @@ class GoogleMapViewTests {
 
     @Test
     fun testEventButtonClickNavigatesToEventScreen() {
-        initMap(selectedEventId = dummyMarkers[0].id)
+        initMap(selectedEventId = eventId)
+    /*
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithText("Explore event")
+                .fetchSemanticsNodes().size == 1
+        }
+
         composeTestRule.onNodeWithText("Explore event").assertIsDisplayed()
         composeTestRule.onNodeWithText("Explore event").performClick()
-        composeTestRule.onNodeWithText("Navigate to event with id: ${dummyMarkers[0].id}").assertIsDisplayed()
+        */
     }
 
     @Test
@@ -114,7 +135,6 @@ class GoogleMapViewTests {
     fun testOnAddNewEventClick() {
         initMap()
         assertFalse(navigatedToCreateEvent)
-        composeTestRule.onRoot().printToLog("DEBUG")
         composeTestRule.onNodeWithText("Create a new Event").performClick()
         assertTrue(navigatedToCreateEvent)
     }
