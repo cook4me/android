@@ -53,7 +53,7 @@ class SignInPersistTest {
     }
 
     @Test
-    fun whenUserSignedInAppNavigatesToOverviewScreen() = runTest {
+    fun whenUserSignedInAppNavigatesToStartScreen() = runTest {
         auth.signInWithEmailAndPassword("obi.wan@epfl.ch", "123456").await()
         composeTestRule.setContent {
             Cook4MeApp()

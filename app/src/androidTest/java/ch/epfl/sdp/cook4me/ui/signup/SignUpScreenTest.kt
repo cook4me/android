@@ -10,13 +10,47 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class SignUpScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    private lateinit var repository: ProfileRepository
+    private lateinit var auth: FirebaseAuth
+
+    @Before
+    fun setUp() {
+        /*
+        * IMPORTANT:
+        * (Below code is already functional, no need to change anything)
+        * Make sure you do this try-catch block,
+        * otherwise when doing CI, there will be an exception:
+        * kotlin.UninitializedPropertyAccessException: lateinit property firestore has not been initialized
+        * */
+        try {
+            Firebase.firestore.useEmulator("10.0.2.2", 8080)
+        } catch (e: IllegalStateException) {
+            // emulator already set
+            // do nothing
+        }
+        try {
+            Firebase.auth.useEmulator("10.0.2.2", 9099)
+        } catch (e: IllegalStateException) {
+            // emulator already set
+            // do nothing
+        }
+        repository = ProfileRepository()
+        auth = FirebaseAuth.getInstance()
+    }
 
     @Test
     fun testTextFieldsInput() {
@@ -34,7 +68,10 @@ class SignUpScreenTest {
         composeTestRule.setContent {
             SignUpScreen(
                 onSuccessfulSignUp = {},
-                viewModel = SignUpViewModel(),
+                viewModel = SignUpViewModel(
+                    repository = repository,
+                    accountService = AccountService(auth),
+                ),
             )
         }
 

@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -16,7 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,17 +25,14 @@ import androidx.navigation.createGraph
 import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
-import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.navigation.BottomNavigationBar
-import ch.epfl.sdp.cook4me.ui.navigation.mainScreens
-import ch.epfl.sdp.cook4me.ui.overview.OverviewScreen
+import ch.epfl.sdp.cook4me.ui.navigation.mainDestinations
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
-import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
@@ -44,6 +40,7 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
@@ -52,7 +49,6 @@ private enum class Screen {
     Login,
     CreateTupperwareScreen,
     TupperwareSwipeScreen,
-    OverviewScreen,
     ProfileScreen,
     CreateRecipeScreen,
     EditProfileScreen,
@@ -60,7 +56,6 @@ private enum class Screen {
     CreateEventScreen,
     DetailedEventScreen,
     SignUpScreen,
-    PostDetails,
     ChatScreen,
     SignUpUserInfos,
     RecipeFeed
@@ -72,14 +67,20 @@ sealed class ScreenWithArgs(val name: String) {
     }
 }
 
-sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title: String) {
+/* Testing around the Detailed Event Screen */
+// initializing the testing event
+val calendar = Calendar.getInstance()
+
+sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val title: String) {
     object Tupperwares :
         BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
 
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object Menu : BottomNavScreen(Screen.OverviewScreen.name, Icons.Filled.Menu, "Menu")
+    object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
+    object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
+    object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
     object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
 }
 
@@ -107,7 +108,7 @@ fun Cook4MeApp(
         Screen.Login.name
     }
 
-    val screensWithBottomBar = mainScreens.map { it.route }
+    val screensWithBottomBar = mainDestinations.map { it.route }
     val shouldShowBottomBar = navController
         .currentBackStackEntryAsState().value?.destination?.route in screensWithBottomBar
 
@@ -127,30 +128,10 @@ fun Cook4MeApp(
             )
         }
         composable(BottomNavScreen.Profile.route) { ProfileScreen() }
-        composable(BottomNavScreen.Menu.route) {
-            OverviewScreen(
-                onMapClick = { navController.navigate(Screen.Event.name) },
-                onProfileClick = { navController.navigate(Screen.ProfileScreen.name) },
-                onEditProfileClick = { navController.navigate(Screen.EditProfileScreen.name) },
-                onAddTupperwareClick = {
-                    navController.navigate(Screen.CreateTupperwareScreen.name)
-                },
-                onSwipeTupperwareClick = {
-                    navController.navigate(BottomNavScreen.Tupperwares.route)
-                },
-                onAddEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onAddSignUpClick = { navController.navigate(Screen.SignUpScreen.name) },
-                onPostClick = { navController.navigate(Screen.PostDetails.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
-                onAddRecipeClick = { navController.navigate(Screen.CreateRecipeScreen.name) },
-                signOutNavigation = { navController.navigate(Screen.Login.name) },
-                onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
-            )
-        }
         composable(route = Screen.EditProfileScreen.name) {
             EditProfileScreen(
-                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) },
-                onSuccessListener = { navController.navigate(Screen.OverviewScreen.name) },
+                onCancelListener = { navController.navigate(Screen.ProfileScreen.name) },
+                onSuccessListener = { navController.navigate(Screen.ProfileScreen.name) },
             )
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
@@ -203,10 +184,6 @@ fun Cook4MeApp(
                 onCancelClick = { navController.navigateUp() }
             )
         }
-        composable(route = Screen.PostDetails.name) {
-            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
-            PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
-        }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
                 onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
@@ -229,11 +206,39 @@ fun Cook4MeApp(
             )
         }
     }
+
+    val navigateTo: (String) -> Unit = { route ->
+        navController.navigate(route) {
+            // Pop up to the start destination of the graph to
+            // avoid building up a large stack of destinations
+            // on the back stack as users select items
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            // Avoid multiple copies of the same destination when
+            // re-selecting the same item
+            launchSingleTop = true
+            // Restore state when navigating back
+            restoreState = true
+        }
+    }
+
+    fun signOut() {
+        auth.signOut()
+        isAuthenticated.value = false
+        navController.navigate(Screen.Login.name)
+    }
+
     if (isAuthenticated.value) {
         Scaffold(
             bottomBar = {
                 if (shouldShowBottomBar) {
-                    BottomNavigationBar(navController)
+                    BottomNavigationBar(
+                        navigateTo = navigateTo,
+                        currentRoute = navController
+                            .currentBackStackEntryAsState().value?.destination?.route.orEmpty(),
+                        onClickSignOut = { signOut() }
+                    )
                 }
             }
         ) { scaffoldPadding ->
