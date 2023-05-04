@@ -11,7 +11,7 @@ import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 fun MapPermissionWrapper(
     permissionStatusProvider: PermissionStatusProvider,
     modifier: Modifier = Modifier,
-    markers: List<MarkerData> = dummyMarkers,
+    markers: List<MarkerData> = emptyList<MarkerData>(),
     onCreateNewEventClick: () -> Unit = {},
     onDetailedEventClick: (String) -> Unit = {},
 ) {

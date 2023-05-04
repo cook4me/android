@@ -20,5 +20,6 @@ val testEvent = Event(
     participants = listOf("obi.wang", "harry.potter"),
     creator = "peter griffin",
     id = "harry.potter@epfl.ch",
-    isPrivate = false
+    isPrivate = false,
+    latLng = Pair(46.52298091481133, 6.5657859621449335)
 )

@@ -170,7 +170,8 @@ fun Cook4MeApp(
         composable(
             route = ScreenWithArgs.DetailedEventScreen.name,
             arguments = listOf(navArgument("eventId") { type = NavType.StringType })
-        ) { backStackEntry -> DetailedEventScreen(backStackEntry.arguments?.getString("eventId").orEmpty())
+        ) { backStackEntry ->
+            DetailedEventScreen(backStackEntry.arguments?.getString("eventId").orEmpty())
         }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(

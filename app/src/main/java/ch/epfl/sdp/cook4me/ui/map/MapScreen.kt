@@ -45,27 +45,6 @@ data class MarkerData(
     val description: String
 )
 
-val dummyMarkers = listOf(
-    MarkerData(
-        position = Locations.SATELLITE,
-        id = "satellite",
-        title = "Satellite EPFL",
-        description = "EPFL satellite campus"
-    ),
-    MarkerData(
-        position = Locations.ROLEX_LEARNING_CENTER,
-        title = "EPFL Rolex Learning Center",
-        id = "rolex_learning_center",
-        description = "EPFL library and learning center"
-    ),
-    MarkerData(
-        position = Locations.AGE_POLY,
-        title = "UNIL AgePoly",
-        id = "agepoly",
-        description = "UNIL science and research building"
-    )
-)
-
 @Composable
 fun GoogleMapView(
     modifier: Modifier = Modifier,
@@ -82,6 +61,8 @@ fun GoogleMapView(
     val loadedMarkers by mapViewModel.markers
     val isLoading by mapViewModel.isLoading
 
+    println("LOADED MARKERS: " + loadedMarkers)
+
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
         mutableStateOf(
@@ -95,8 +76,9 @@ fun GoogleMapView(
         cameraPositionState.position =
             CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
-    var selectedMarker by remember { mutableStateOf(findMarkerById(loadedMarkers, selectedEventId)) }
+    var selectedMarker = findMarkerById(loadedMarkers, selectedEventId)
     var navigateToEvent by remember { mutableStateOf(false) }
+    println("SELECTED MARKER " + selectedMarker + selectedEventId)
     Column(
         modifier = Modifier
             .fillMaxWidth()
