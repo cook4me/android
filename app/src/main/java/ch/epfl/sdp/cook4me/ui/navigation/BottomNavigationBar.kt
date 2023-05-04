@@ -31,7 +31,7 @@ import ch.epfl.sdp.cook4me.R
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String) {
+fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String, onClickSignOut: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
     BottomNavigation(
@@ -76,6 +76,13 @@ fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String)
                         content = { Text(text = item.title) },
                     )
                 }
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false
+                        onClickSignOut()
+                    },
+                    content = { Text(text = stringResource(R.string.bottom_bar_sign_out_text)) },
+                )
             }
         }
     }
@@ -88,10 +95,10 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object Menu : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.Menu, "Menu")
     object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
     object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
     object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
+
 }
 
 val mainDestinations = listOf(

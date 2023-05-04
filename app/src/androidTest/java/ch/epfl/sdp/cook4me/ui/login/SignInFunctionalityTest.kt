@@ -95,6 +95,7 @@ class SignInFunctionalityTest {
         composeTestRule.onNodeWithTag(testTagEmailField).performTextInput("mr.nonexist@epfl.ch")
         composeTestRule.onNodeWithTag(testTagPasswordField).performTextInput("123456")
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
+
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
                 .onAllNodesWithText(context.getString(R.string.sign_in_screen_non_exist_user))

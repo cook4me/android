@@ -7,14 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
-import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
     private val accountService: AccountService = AccountService(),
+    private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
 ) : ViewModel() {
     private var _password = mutableStateOf("")
     private var _formError = mutableStateOf(false)
@@ -22,6 +23,9 @@ class SignUpViewModel(
 
     private val _profileState = mutableStateOf(Profile())
     val profile: State<Profile> = _profileState
+
+    private val _profileImage = mutableStateOf<Uri>(Uri.EMPTY)
+    val profileImage: State<Uri> = _profileImage
 
     fun addUsername(username: String) {
         _profileState.value.name = username
@@ -47,8 +51,8 @@ class SignUpViewModel(
         _profileState.value.favoriteDish = favoriteDish
     }
 
-    fun addUserImage(image: Uri) {
-        _profileState.value.userImage = image.toString()
+    fun addProfileImage(uri: Uri) {
+        _profileImage.value = uri
     }
 
     fun isValidUsername(username: String): Boolean =
@@ -74,16 +78,17 @@ class SignUpViewModel(
             viewModelScope.launch {
                 try {
                     accountService.register(_profileState.value.email, _password.value)
+                    if (profileImage.value != Uri.EMPTY) {
+                        profileImageRepository.add(profileImage.value)
+                    }
+                    repository.add(_profileState.value)
                 } catch (e: FirebaseAuthException) {
-                    if (e is FirebaseNetworkException) {
-                        onSignUpFailure()
-                    } else if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
+                    if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
                         onSignUpFailure()
                     } else {
                         throw e
                     }
                 }
-                repository.add(_profileState.value)
                 onSignUpSuccess()
             }
         }

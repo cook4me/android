@@ -53,9 +53,8 @@ open class TextFieldState(
     override fun showErrors() = !isValid && displayErrors
 }
 
-class NonRequiredTextFieldState(errorMsg: String, default: String = "",) : TextFieldState(
+class NonRequiredTextFieldState(default: String = "",) : TextFieldState(
     { true },
-    errorMsg,
     default
 )
 

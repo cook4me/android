@@ -28,7 +28,8 @@ class NavigationBarTest {
         composeTestRule.setContent {
             BottomNavigationBar(
                 navigateTo = navigateTo(destination.route),
-                currentRoute = ""
+                currentRoute = "",
+                onClickSignOut = {},
             )
         }
 
@@ -39,7 +40,8 @@ class NavigationBarTest {
         composeTestRule.setContent {
             BottomNavigationBar(
                 navigateTo = navigateTo(destination.route),
-                currentRoute = ""
+                currentRoute = "",
+                onClickSignOut = {},
             )
         }
 
@@ -69,7 +71,8 @@ class NavigationBarTest {
         composeTestRule.setContent {
             BottomNavigationBar(
                 navigateTo = navigateTo(""),
-                currentRoute = ""
+                currentRoute = "",
+                onClickSignOut = {},
             )
         }
         composeTestRule.onNodeWithStringId(R.string.bottom_bar_more_button_text).performClick()

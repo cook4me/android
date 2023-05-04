@@ -47,8 +47,6 @@ fun Cook4MeApp(
         )
     }
 
-    Log.d("Refactor", "isAuthenticated: ${isAuthenticated.value}   startScreen: ${startScreen.value}")
-
     val screensWithBottomBar = mainDestinations.map { it.route }
     val shouldShowBottomBar = navController
         .currentBackStackEntryAsState().value?.destination?.route in screensWithBottomBar
@@ -75,12 +73,19 @@ fun Cook4MeApp(
         startScreen.value = Screen.RecipeFeed.name
     }
 
+    fun signOut() {
+        auth.signOut()
+        isAuthenticated.value = false
+        navController.navigate(Screen.Login.name)
+    }
+
     Scaffold(
         bottomBar = {
             if (shouldShowBottomBar) {
                 BottomNavigationBar(
                     navigateTo = { route -> navigateToBottomBarRoute(route) },
-                    currentRoute = currentRoute().orEmpty()
+                    currentRoute = currentRoute().orEmpty(),
+                    onClickSignOut = { signOut() }
                 )
             }
         }

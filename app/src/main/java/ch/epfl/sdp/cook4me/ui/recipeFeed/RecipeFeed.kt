@@ -37,6 +37,7 @@ const val MIDDLE_SPACE_RATIO = 0.5F
 /**
  * Displays the recipe feed screen
  * @param service the service to use to get the recipes/notes and update the notes
+ * @param onCreateNewRecipe the callback to call when the user wants to create a new recipe
  */
 @Preview(showBackground = true)
 @Composable
@@ -75,7 +76,7 @@ fun RecipeFeed(
                 recipeList = if (isOrderedByTopRecipes.value) {
                     recipeList.value.sortedByDescending { it.note }
                 } else {
-                    recipeList.value
+                    recipeList.value.sortedByDescending { it.recipe.creationTime }
                 },
                 onNoteUpdate = { recipe, note ->
                     // launch coroutine to update the note
