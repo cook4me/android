@@ -79,7 +79,7 @@ class EditProfileScreenTest {
     }
 
     @Test
-    fun editScreenTest() {
+    fun editScreenTestDisplayValues() {
         val profileViewModel = ProfileViewModel()
 
         // Set up the test and wait for the screen to be loaded
