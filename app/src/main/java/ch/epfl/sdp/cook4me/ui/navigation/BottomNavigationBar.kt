@@ -38,7 +38,7 @@ val dropDownMenuDestinations = listOf(
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String) {
+fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String, onClickSignOut: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
     BottomNavigation(
@@ -83,6 +83,13 @@ fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String)
                         content = { Text(text = item.title) },
                     )
                 }
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false
+                        onClickSignOut()
+                    },
+                    content = { Text(text = stringResource(R.string.bottom_bar_sign_out_text)) },
+                )
             }
         }
     }

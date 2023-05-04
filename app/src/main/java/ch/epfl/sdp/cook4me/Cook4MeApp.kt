@@ -15,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,7 +23,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
-import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
@@ -33,7 +31,6 @@ import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.navigation.BottomNavigationBar
 import ch.epfl.sdp.cook4me.ui.navigation.mainDestinations
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
-import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
@@ -58,7 +55,6 @@ private enum class Screen {
     CreateEventScreen,
     DetailedEventScreen,
     SignUpScreen,
-    PostDetails,
     ChatScreen,
     SignUpUserInfos,
     RecipeFeed,
@@ -166,10 +162,6 @@ fun Cook4MeApp(
                 onCancelClick = { navController.navigateUp() }
             )
         }
-        composable(route = Screen.PostDetails.name) {
-            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
-            PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
-        }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
                 onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
@@ -209,14 +201,21 @@ fun Cook4MeApp(
         }
     }
 
+    fun signOut() {
+        auth.signOut()
+        isAuthenticated.value = false
+        navController.navigate(Screen.Login.name)
+    }
+
     if (isAuthenticated.value) {
         Scaffold(
             bottomBar = {
                 if (shouldShowBottomBar) {
                     BottomNavigationBar(
-                        navigateTo,
-                        navController
-                            .currentBackStackEntryAsState().value?.destination?.route.orEmpty()
+                        navigateTo = navigateTo,
+                        currentRoute = navController
+                            .currentBackStackEntryAsState().value?.destination?.route.orEmpty(),
+                        onClickSignOut = { signOut() }
                     )
                 }
             }
