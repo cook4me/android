@@ -117,7 +117,7 @@ class SignUpViewModelTest {
         assert(signUpViewModel.profile.value.email == email)
         // assert(signUpViewModel.profileImage.toString() == userImage.toString()) //TODO does assert an error user something
 
-        // check that its valid after adding it
+        // check that its valid after adding it all
         assert(signUpViewModel.checkForm())
         assert(signUpViewModel.formError.value)
 
