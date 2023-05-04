@@ -13,6 +13,14 @@ android {
     compileSdk 33
 
     defaultConfig {
+        // Read chat api key from local.properties
+        def properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def CHAT_API_KEY = properties.getProperty('CHAT_API_KEY', '')
+
+        // Add API key as build config field
+        buildConfigField 'String', 'CHAT_API_KEY', "\"${CHAT_API_KEY}\""
+
         applicationId 'ch.epfl.sdp.cook4me'
         minSdk 24
         targetSdk 33
@@ -108,6 +116,8 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.2.2"
     implementation "com.google.accompanist:accompanist-permissions:0.30.0"
 
+    implementation 'com.alexstyl.swipeablecard:swipeablecard:0.1.0'
+
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
@@ -133,8 +143,6 @@ dependencies {
     androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
     //noinspection GradleDependency see: https://github.com/mockk/mockk/issues/297#issuecomment-901924678
     androidTestImplementation 'io.mockk:mockk-android:1.12.3'
-
-    implementation 'com.alexstyl.swipeablecard:swipeablecard:0.1.0'
 }
 
 tasks.withType(Test) {
