@@ -122,7 +122,7 @@ class AddProfileInfoScreenTest {
         composeTestRule.onNodeWithTag(allergies).performTextClearance()
         composeTestRule.onNodeWithTag(bio).performTextClearance()
         composeTestRule.onNodeWithTag(favFood).performTextClearance()
-        signUpViewModel.addUserImage(Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user"))
+        signUpViewModel.addProfileImage(Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user"))
 
         // Add email and password to the view model from sign up screen
         signUpViewModel.addEmail(emailInput)
