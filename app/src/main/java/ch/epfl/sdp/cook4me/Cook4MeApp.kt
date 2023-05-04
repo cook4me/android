@@ -38,6 +38,7 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
@@ -46,7 +47,6 @@ private enum class Screen {
     Login,
     CreateTupperwareScreen,
     TupperwareSwipeScreen,
-    OverviewScreen,
     ProfileScreen,
     CreateRecipeScreen,
     EditProfileScreen,
