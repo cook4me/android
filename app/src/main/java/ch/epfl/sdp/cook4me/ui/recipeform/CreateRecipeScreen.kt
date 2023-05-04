@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
+import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
 import ch.epfl.sdp.cook4me.ui.common.form.BulletPointTextField
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTextField
 import ch.epfl.sdp.cook4me.ui.common.form.CustomTitleText
@@ -44,6 +46,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
 import ch.epfl.sdp.cook4me.ui.tupperwareform.ComposeFileProvider
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CustomDivider
+import kotlinx.coroutines.launch
 
 private val cornerSize = 8.dp
 private val textPadding = 5.dp
@@ -70,10 +73,12 @@ private val difficultyOptions = listOf("Easy", "Medium", "Hard")
 
 @Composable
 fun CreateRecipeScreen(
-    submitForm: (Recipe) -> Unit = {},
-    onCancelButtonClick: () -> Unit = {},
+    repository: RecipeRepository = RecipeRepository(),
+    onCancelClick: () -> Unit = {},
+    onSuccessfulSubmit: () -> Unit = {}
 ) {
     val images = remember { mutableStateListOf<Uri>() }
+    val scope = rememberCoroutineScope()
 
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -116,9 +121,14 @@ fun CreateRecipeScreen(
             Modifier.weight(1f),
             onClickTakePhoto = { onClickTakePhoto() },
             onClickAddImage = { onClickAddImage() },
-            submitForm = submitForm,
+            onCancelClick = onCancelClick,
             images = images,
-            onCancelButtonClick = onCancelButtonClick,
+            submitForm = { recipe ->
+                scope.launch {
+                    repository.add(recipe, images)
+                    onSuccessfulSubmit()
+                }
+            }
         )
     }
 }
@@ -128,10 +138,13 @@ private fun RecipeForm(
     modifier: Modifier = Modifier,
     onClickTakePhoto: () -> Unit,
     onClickAddImage: () -> Unit,
+    onCancelClick: () -> Unit = {},
     submitForm: (Recipe) -> Unit = {},
-    onCancelButtonClick: () -> Unit = {},
     images: List<Uri> = listOf(),
 ) {
+    var inProgress by remember {
+        mutableStateOf(false)
+    }
     val context = LocalContext.current
     val recipeNameState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
     val ingredientsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
@@ -219,12 +232,14 @@ private fun RecipeForm(
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp),
+        isLoading = inProgress,
         onCancelText = R.string.ButtonRowCancel,
         onSaveText = R.string.ButtonRowDone,
-        onCancelClick = onCancelButtonClick,
+        onCancelClick = onCancelClick,
         onSaveClick = {
             form.enableShowErrors()
             if (form.isValid) {
+                inProgress = true
                 submitForm(
                     Recipe(
                         name = recipeNameState.text,
@@ -233,7 +248,6 @@ private fun RecipeForm(
                         servings = servingsState.text.toInt(),
                         difficulty = difficultyState.text,
                         cookingTime = cookingTimeState.text,
-                        photos = listOf()
                     )
                 )
             } else {

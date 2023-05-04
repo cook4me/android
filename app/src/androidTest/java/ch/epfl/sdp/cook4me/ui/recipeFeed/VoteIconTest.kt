@@ -83,4 +83,15 @@ class VoteIconTest {
 
         assertThat(counter, `is`(1))
     }
+
+    @Test
+    fun positiveUserVoteDisplayUpvotedButton() {
+        composeTestRule.setContent {
+            VoteIcon(counterValue = 0, userVote = 1)
+        }
+
+        // this test verifies that the upvote button was pressed by verifying the behavior when the button is pressed
+        composeTestRule.onNodeWithContentDescription("Upvote").performClick()
+        composeTestRule.onNodeWithText("-1").assertIsDisplayed()
+    }
 }

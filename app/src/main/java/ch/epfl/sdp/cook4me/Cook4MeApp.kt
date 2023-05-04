@@ -5,6 +5,7 @@ import SignUpScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
@@ -24,6 +25,7 @@ import androidx.navigation.createGraph
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Post
+import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
@@ -37,7 +39,7 @@ import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwareScreen
+import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -57,26 +59,33 @@ private enum class Screen {
     DetailedEventScreen,
     SignUpScreen,
     PostDetails,
+    ChatScreen,
     SignUpUserInfos,
     RecipeFeed,
 }
 
 sealed class BottomNavScreen(val route: String, val icon: ImageVector, val title: String) {
-    object Tupperwares : BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+    object Tupperwares :
+        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
     object Menu : BottomNavScreen(Screen.OverviewScreen.name, Icons.Filled.Menu, "Menu")
+    object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
 }
 
 @Composable
 fun Cook4MeApp(
     permissionStatusProvider: PermissionStatusProvider = ComposePermissionStatusProvider(
-        listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        listOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.CAMERA
+        )
     )
 ) {
     // initialize the view model for the sign up screen
-    val singUpViewModel = SignUpViewModel()
+    val singUpViewModel = remember { SignUpViewModel() }
     // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
@@ -128,10 +137,21 @@ fun Cook4MeApp(
                 onRecipeFeedClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
-        composable(route = Screen.EditProfileScreen.name) { EditProfileScreen() }
+        composable(route = Screen.EditProfileScreen.name) {
+            EditProfileScreen(
+                onCancelListener = { navController.navigate(Screen.OverviewScreen.name) },
+                onSuccessListener = { navController.navigate(Screen.OverviewScreen.name) },
+            )
+        }
         composable(route = Screen.CreateTupperwareScreen.name) {
-            CreateTupperwareScreen(
-                onCancelClick = { navController.navigate(BottomNavScreen.Tupperwares.route) }
+            CreateTupperwarePermissionWrapper(
+                permissionStatusProvider = permissionStatusProvider,
+                onCancel = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                },
+                onSuccessfulSubmit = {
+                    navController.navigate(Screen.TupperwareSwipeScreen.name)
+                }
             )
         }
         composable(route = Screen.CreateEventScreen.name) {
@@ -144,11 +164,11 @@ fun Cook4MeApp(
             )
         }
         // the uid of event is predefined on firestore. this is just for show.
-        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
+        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("pSkhty73UrT4f55lIOov") }
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
-                onSuccessfullSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
-                signUpViewModel = singUpViewModel,
+                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
+                viewModel = singUpViewModel,
             )
         }
         composable(route = Screen.SignUpUserInfos.name) {
@@ -158,13 +178,14 @@ fun Cook4MeApp(
                     navController.navigate(
                         startScreen
                     )
-                }
+                },
+                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipeScreen(
-                submitForm = {},
-                onCancelButtonClick = { navController.navigate(Screen.RecipeFeed.name) }
+                onSuccessfulSubmit = { navController.navigateUp() },
+                onCancelClick = { navController.navigateUp() }
             )
         }
         composable(route = Screen.PostDetails.name) {
@@ -187,6 +208,11 @@ fun Cook4MeApp(
                 }
             )
         }
+        composable(route = Screen.ChatScreen.name) {
+            ChannelScreen(
+                onBackListener = { navController.navigate(Screen.OverviewScreen.name) },
+            )
+        }
     }
     if (isAuthenticated.value) {
         Scaffold(
@@ -196,7 +222,11 @@ fun Cook4MeApp(
                 }
             }
         ) { scaffoldPadding ->
-            NavHost(navController = navController, graph = navGraph, modifier = Modifier.padding(scaffoldPadding))
+            NavHost(
+                navController = navController,
+                graph = navGraph,
+                modifier = Modifier.padding(scaffoldPadding)
+            )
         }
     } else {
         NavHost(navController = navController, graph = navGraph)

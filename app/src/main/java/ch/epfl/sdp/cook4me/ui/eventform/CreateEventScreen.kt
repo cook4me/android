@@ -52,7 +52,7 @@ fun CreateEventScreen(
     }
 
     // for now I just set the id as the email of the current user for the sake of functionality
-    val userEmail = accountService.getCurrentUserEmail()
+    val userEmail = accountService.getCurrentUserWithEmail()
     userEmail?.let { event.value = event.value.copy(id = userEmail) }
 
     Column(

@@ -39,6 +39,7 @@ fun OverviewScreen(
 ) {
     // Listen to the navigation state and navigate to the correct screen
     val navigationState = overviewViewModel.navigationState
+
     if (navigationState.value == 1) {
         overviewViewModel.navigationState.value = 0
         signOutNavigation()

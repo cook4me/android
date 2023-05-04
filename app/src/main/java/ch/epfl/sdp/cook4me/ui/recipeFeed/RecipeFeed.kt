@@ -52,7 +52,12 @@ fun RecipeFeed(
         mutableStateOf(listOf<RecipeNote>())
     }
 
+    val userVotes = remember {
+        mutableStateOf(mapOf<String, Int>())
+    }
+
     LaunchedEffect(Unit) {
+        userVotes.value = service.getRecipePersonalVotes()
         recipeList.value = service.getRecipesWithNotes()
     }
 
@@ -71,14 +76,15 @@ fun RecipeFeed(
                 recipeList = if (isOrderedByTopRecipes.value) {
                     recipeList.value.sortedByDescending { it.note }
                 } else {
-                    recipeList.value
+                    recipeList.value.sortedByDescending { it.recipe.creationTime }
                 },
                 onNoteUpdate = { recipe, note ->
                     // launch coroutine to update the note
                     coroutineScope.launch {
                         service.updateRecipeNotes(recipe, note)
                     }
-                }
+                },
+                userVotes = userVotes.value
             )
         }
         Box(modifier = Modifier.fillMaxHeight(EMPTY_SPACE_RATIO))
