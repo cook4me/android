@@ -31,7 +31,8 @@ fun BottomNavigationBar(navController: NavHostController = rememberNavController
         BottomNavScreen.Recipes,
         BottomNavScreen.Events,
         BottomNavScreen.Profile,
-        BottomNavScreen.Menu
+        BottomNavScreen.Menu,
+        BottomNavScreen.Chat
     )
 
     BottomNavigation(
