@@ -23,6 +23,7 @@ import com.alexstyl.swipeablecard.Direction
 import com.alexstyl.swipeablecard.rememberSwipeableCardState
 import kotlinx.coroutines.launch
 
+// code heavily inspired by https://github.com/alexstyl/compose-tinder-card/blob/main/app/src/main/java/com/alexstyl/swipeablecard/MainActivity.kt
 @Composable
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
@@ -36,7 +37,7 @@ fun TupperwareSwipeScreen(
             val last = states
                 .reversed()
                 .firstOrNull {
-                    it.second.offset.value == Offset(x = 0f, y = 0f)
+                    it.second.offset.value == Offset(x = 0f, y = 0f) // otherwise the circle buttons don't work
                 }?.second
             last?.swipe(direction)
         }
