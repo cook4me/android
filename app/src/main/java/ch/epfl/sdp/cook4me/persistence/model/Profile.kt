@@ -7,6 +7,4 @@ data class Profile(
     var allergies: String = "",
     var bio: String = "",
     var favoriteDish: String = "",
-    var userImage: String = "",
-    var photos: List<String> = listOf(),
 )

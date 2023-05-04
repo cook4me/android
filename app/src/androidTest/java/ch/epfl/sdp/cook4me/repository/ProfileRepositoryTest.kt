@@ -51,8 +51,6 @@ class ProfileRepositoryTest {
             bio = "super hot",
             allergies = "turkey",
             favoriteDish = "turkey",
-            userImage = "ImageOfMegan",
-            photos = listOf("ImageOfMegan1", "ImageOfMegan2"),
         )
         val newEntry2 = Profile(
             email = "id2",
@@ -60,8 +58,6 @@ class ProfileRepositoryTest {
             bio = "super hot",
             allergies = "turkey",
             favoriteDish = "turkey",
-            userImage = "ImageOfMegan",
-            photos = listOf("ImageOfMegan1", "ImageOfMegan2"),
         )
         runBlocking {
             profileRepository.add(newEntry1)
@@ -81,8 +77,6 @@ class ProfileRepositoryTest {
             bio = "super hot",
             allergies = "turkey",
             favoriteDish = "turkey",
-            userImage = "ImageOfMegan",
-            photos = listOf("ImageOfMegan1", "ImageOfMegan2"),
         )
 
         // get the profile from the database

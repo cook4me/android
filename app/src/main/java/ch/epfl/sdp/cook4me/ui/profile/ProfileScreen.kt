@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
 import coil.compose.rememberAsyncImagePainter
 
@@ -39,6 +38,8 @@ fun ProfileScreen(
     val profile = profileViewModel.profile.value
     val userNameState = rememberSaveable { mutableStateOf("") }
     val isLoading = profileViewModel.isLoading.value
+    val image = profileViewModel.profileImage.value
+
     Box(
         modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
@@ -56,7 +57,7 @@ fun ProfileScreen(
                     .fillMaxHeight()
             ) {
                 ProfileImageAndUsername(
-                    profile.userImage.toUri(),
+                    image,
                     profile.name,
                     modifier
                 )
@@ -78,9 +79,6 @@ fun ProfileScreen(
                     profile.bio,
                     modifier,
                 )
-
-                // Grid with post within
-                PostGrid(modifier) // put images inside
             }
         }
     }
@@ -89,12 +87,11 @@ fun ProfileScreen(
 @Composable
 fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
     // draws the image of the profile
-    val imageURI = rememberSaveable { mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
         if (userImage.toString().isEmpty()) {
             R.drawable.ic_user
         } else {
-            imageURI.value = userImage.toString()
+            userImage
         }
     )
 

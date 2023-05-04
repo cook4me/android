@@ -38,7 +38,6 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
-import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
@@ -59,6 +58,7 @@ private enum class Screen {
     SignUpUserInfos,
     RecipeFeed,
 }
+
 
 /* Testing around the Detailed Event Screen */
 // initializing the testing event
@@ -136,7 +136,15 @@ fun Cook4MeApp(
                 }
             )
         }
-        composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
+        composable(route = Screen.CreateEventScreen.name) {
+            CreateEventScreen(
+                onCancelClick = {
+                    navController.navigate(
+                        Screen.Event.name
+                    )
+                }
+            )
+        }
         // the uid of event is predefined on firestore. this is just for show.
         composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("pSkhty73UrT4f55lIOov") }
         composable(route = Screen.SignUpScreen.name) {
@@ -180,7 +188,7 @@ fun Cook4MeApp(
         }
         composable(route = Screen.ChatScreen.name) {
             ChannelScreen(
-                onBackListener = { navController.navigate(Screen.OverviewScreen.name) },
+                onBackListener = { navController.navigate(Screen.RecipeFeed.name) },
             )
         }
     }
