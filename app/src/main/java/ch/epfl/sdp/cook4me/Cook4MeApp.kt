@@ -1,163 +1,57 @@
 package ch.epfl.sdp.cook4me
 
-import AddProfileInfoScreen
-import SignUpScreen
+import android.Manifest
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.createGraph
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
-import ch.epfl.sdp.cook4me.persistence.model.Post
-import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
-import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.login.LoginScreen
-import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.navigation.BottomNavigationBar
+import ch.epfl.sdp.cook4me.ui.navigation.Cook4MeNavHost
+import ch.epfl.sdp.cook4me.ui.navigation.Screen
 import ch.epfl.sdp.cook4me.ui.navigation.mainDestinations
-import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
-import ch.epfl.sdp.cook4me.ui.profile.PostDetails
-import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
-import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
-import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
-import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Calendar
-
-/**
- * enum values that represent the screens in the app
- */
 
 /* Testing around the Detailed Event Screen */
 // initializing the testing event
 val calendar = Calendar.getInstance()
 
+/*
+* This could probably be refactored more with a ViewModel but State Handling is a little harder
+* so this will have to do
+* */
 @Composable
 fun Cook4MeApp(
     permissionStatusProvider: PermissionStatusProvider = ComposePermissionStatusProvider(
-        listOf(
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.CAMERA
-        )
+        listOf(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION)
     )
 ) {
-    // initialize the view model for the sign up screen
-    val singUpViewModel = remember { SignUpViewModel() }
-    // initialize the auth object for authentication matters
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
-
-    // Navigation controller
     val navController = rememberNavController()
-
-    val startScreen: String = if (isAuthenticated.value) {
-        BottomNavScreen.Recipes.route
-    } else {
-        Screen.Login.name
+    // TODO make it use the real-time firebase Auth data
+    val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
+    val startScreen = remember {
+        mutableStateOf(
+            if (!isAuthenticated.value) Screen.Login.name else Screen.RecipeFeed.name
+        )
     }
+
+    Log.d("Refactor", "isAuthenticated: ${isAuthenticated.value}   startScreen: ${startScreen.value}")
 
     val screensWithBottomBar = mainDestinations.map { it.route }
     val shouldShowBottomBar = navController
         .currentBackStackEntryAsState().value?.destination?.route in screensWithBottomBar
+    val currentRoute = { navController.currentDestination?.route }
 
-    val navGraph = navController.createGraph(startDestination = startScreen) {
-        composable(BottomNavScreen.Tupperwares.route) {
-            TupperwareSwipeScreen(
-                onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) }
-            )
-        }
-        composable(BottomNavScreen.Events.route) {
-            MapPermissionWrapper(
-                permissionStatusProvider = permissionStatusProvider,
-                onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
-            )
-        }
-        composable(BottomNavScreen.Profile.route) { ProfileScreen() }
-        composable(route = Screen.EditProfileScreen.name) {
-            EditProfileScreen(
-                onCancelListener = { navController.navigate(Screen.ProfileScreen.name) },
-                onSuccessListener = { navController.navigate(Screen.ProfileScreen.name) },
-            )
-        }
-        composable(route = Screen.CreateTupperwareScreen.name) {
-            CreateTupperwarePermissionWrapper(
-                permissionStatusProvider = permissionStatusProvider,
-                onCancel = {
-                    navController.navigate(Screen.TupperwareSwipeScreen.name)
-                },
-                onSuccessfulSubmit = {
-                    navController.navigate(Screen.TupperwareSwipeScreen.name)
-                }
-            )
-        }
-        composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
-        // the uid of event is predefined on firestore. this is just for show.
-        composable(route = Screen.DetailedEventScreen.name) { DetailedEventScreen("IcxAvzg7RfckSxw9K5I0") }
-        composable(route = Screen.SignUpScreen.name) {
-            SignUpScreen(
-                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfos.name) },
-                viewModel = singUpViewModel,
-            )
-        }
-        composable(route = Screen.SignUpUserInfos.name) {
-            AddProfileInfoScreen(
-                viewModel = singUpViewModel,
-                onSuccessfulSignUp = {
-                    navController.navigate(
-                        startScreen
-                    )
-                },
-                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
-            )
-        }
-        composable(route = Screen.CreateRecipeScreen.name) {
-            CreateRecipeScreen(
-                onSuccessfulSubmit = { navController.navigateUp() },
-                onCancelClick = { navController.navigateUp() }
-            )
-        }
-        composable(route = Screen.PostDetails.name) {
-            val post = Post(1, "Tiramisu", "This is a delicious triamisu or so")
-            PostDetails(data = post, painter = painterResource(R.drawable.tiramisu))
-        }
-        composable(route = Screen.RecipeFeed.name) {
-            RecipeFeed(
-                onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
-            )
-        }
-        composable(route = Screen.Login.name) {
-            LoginScreen(
-                onSuccessfulLogin = {
-                    isAuthenticated.value = true
-                    navController.navigate(startScreen) {
-                        // This popUp blocks the user being able to go back once logged in
-                        popUpTo(Screen.Login.name) { inclusive = true }
-                    }
-                }
-            )
-        }
-    }
-
-    val navigateTo: (String) -> Unit = { route ->
+    fun navigateToBottomBarRoute(route: String) {
         navController.navigate(route) {
             // Pop up to the start destination of the graph to
             // avoid building up a large stack of destinations
@@ -173,25 +67,27 @@ fun Cook4MeApp(
         }
     }
 
-    if (isAuthenticated.value) {
-        Scaffold(
-            bottomBar = {
-                if (shouldShowBottomBar) {
-                    BottomNavigationBar(
-                        navigateTo,
-                        navController
-                            .currentBackStackEntryAsState().value?.destination?.route.orEmpty()
-                    )
-                }
+    fun onSuccessfulAuth() {
+        isAuthenticated.value = true
+        startScreen.value = Screen.RecipeFeed.name
+    }
+
+    Scaffold(
+        bottomBar = {
+            if (shouldShowBottomBar) {
+                BottomNavigationBar(
+                    navigateTo = { route -> navigateToBottomBarRoute(route) },
+                    currentRoute = currentRoute().orEmpty()
+                )
             }
-        ) { scaffoldPadding ->
-            NavHost(
-                navController = navController,
-                graph = navGraph,
-                modifier = Modifier.padding(scaffoldPadding)
-            )
         }
-    } else {
-        NavHost(navController = navController, graph = navGraph)
+    ) { scaffoldPadding ->
+        Cook4MeNavHost(
+            modifier = Modifier.padding(scaffoldPadding),
+            navController = navController,
+            startDestination = startScreen.value,
+            permissionProvider = permissionStatusProvider,
+            onSuccessfulAuth = { onSuccessfulAuth() }
+        )
     }
 }

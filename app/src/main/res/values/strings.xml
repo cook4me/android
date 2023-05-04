@@ -102,8 +102,6 @@
     <string name="RecipeCreationDifficultyDropDownMenuDesc">Difficulty Drop Down Menu</string>
     <string name="RecipeCreationServingsTextFieldDesc">Servings Text Field</string>
 
-    <string name="Nav_Detailed_Event_Screen">Detailed Event</string>
-
     <!-- recipe feed -->
     <string name="get_top_recipes">Top recipes</string>
     <string name="get_recent_recipes">Most recent recipes</string>

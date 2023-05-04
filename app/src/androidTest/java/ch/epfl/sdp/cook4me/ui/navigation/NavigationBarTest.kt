@@ -7,7 +7,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import ch.epfl.sdp.cook4me.BottomNavScreen
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.hamcrest.Matchers.`is`

@@ -5,27 +5,22 @@ import SignUpScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
-import ch.epfl.sdp.cook4me.persistence.model.Post
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
-import ch.epfl.sdp.cook4me.ui.profile.PostDetails
 import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
-
 
 enum class Screen {
     Login,
@@ -46,11 +41,11 @@ enum class Screen {
 fun Cook4MeNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = "profile",
-    permissionStatusProvider: PermissionStatusProvider,
+    startDestination: String = Screen.RecipeFeed.name,
+    permissionProvider: PermissionStatusProvider,
     onSuccessfulAuth: () -> Unit,
 ) {
-    val signUpViewModel = remember { SignUpViewModel()}
+    val signUpViewModel = remember { SignUpViewModel() }
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -63,7 +58,7 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
             CreateTupperwarePermissionWrapper(
-                permissionStatusProvider = permissionStatusProvider,
+                permissionStatusProvider = permissionProvider,
                 onCancel = {
                     navController.navigate(Screen.TupperwareSwipeScreen.name)
                 },
@@ -74,7 +69,7 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.Event.name) {
             MapPermissionWrapper(
-                permissionStatusProvider = permissionStatusProvider,
+                permissionStatusProvider = permissionProvider,
                 onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
             )
@@ -85,7 +80,7 @@ fun Cook4MeNavHost(
         composable(route = Screen.SignUpScreen.name) {
             SignUpScreen(
                 onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfo.name) },
-                viewModel = signUpViewModel,      // TODO Might need some additional changes
+                viewModel = signUpViewModel, // TODO Might need some additional changes
             )
         }
         composable(route = Screen.CreateRecipeScreen.name) {
@@ -113,7 +108,7 @@ fun Cook4MeNavHost(
         composable(route = Screen.Login.name) {
             LoginScreen(
                 onSuccessfulLogin = {
-                    onSuccessfulAuth()
+                    onSuccessfulAuth() // TODO remember to give the lambda isAuthenticated.value = true
                     navController.navigate(startDestination) {
                         // This popUp blocks the user being able to go back once logged in
                         popUpTo(Screen.Login.name) { inclusive = true }
