@@ -15,16 +15,16 @@ class ProfileRepository(
 
     suspend fun getById(id: String) =
         store.collection(COLLECTION_PATH).whereEqualTo("email", id).get().await()
-            .firstOrNull()?.toObject(Profile::class.java)
+            .first()?.toObject(Profile::class.java)
     suspend fun update(id: String, value: Profile) {
         // update the value of the profile with the given id
         store.collection(COLLECTION_PATH).whereEqualTo("email", id).get().await()
-            .firstOrNull()?.reference?.set(value)?.await()
+            .first()?.reference?.set(value)?.await()
     }
 
     suspend fun delete(id: String) {
         // delete the profile with the given id
         store.collection(COLLECTION_PATH).whereEqualTo("email", id).get().await()
-            .firstOrNull()?.reference?.delete()?.await()
+            .first()?.reference?.delete()?.await()
     }
 }

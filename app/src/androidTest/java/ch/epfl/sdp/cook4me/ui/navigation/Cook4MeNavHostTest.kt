@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.navigation
 
+import RepositoryFiller
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
@@ -27,6 +28,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import testProfile
 
 @RunWith(AndroidJUnit4::class)
 class Cook4MeNavHostTest {
@@ -49,11 +51,6 @@ class Cook4MeNavHostTest {
     )
     private fun getString(id: Int): String {
         return composeTestRule.activity.getString(id)
-    }
-
-    private fun navigateElsewhere(route: String) {
-        val differentRoute = Screen.values().first { it.name != route }.name
-        navController.navigate(differentRoute)
     }
 
     private fun setNavHostWithStartingScreen(
@@ -94,18 +91,12 @@ class Cook4MeNavHostTest {
             .build()
         store.firestoreSettings = settings
         auth = FirebaseAuth.getInstance()
-        runBlocking {
-            auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-        }
+        RepositoryFiller.setUpUser(testProfile, auth, store)
     }
 
     @After
     fun cleanUp() {
-        runBlocking {
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-            auth.currentUser?.delete()
-        }
+        RepositoryFiller.cleanUpUser(testProfile, auth, store)
     }
 
     @Test
