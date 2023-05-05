@@ -2,6 +2,9 @@ package ch.epfl.sdp.cook4me
 
 import AddProfileInfoScreen
 import SignUpScreen
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
@@ -11,10 +14,12 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -100,6 +105,21 @@ fun Cook4MeApp(
     } else {
         Screen.Login.name
     }
+
+    val connectivityManager = LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val networkCallback = remember {
+        NetworkCallback()
+    }
+
+    DisposableEffect(connectivityManager, networkCallback) {
+        connectivityManager.registerDefaultNetworkCallback(networkCallback)
+        onDispose {
+            connectivityManager.unregisterNetworkCallback(networkCallback)
+        }
+    }
+
+    val isOnline = networkCallback.isOnline.value
+
 
     val screensWithBottomBar = mainDestinations.map { it.route }
     val shouldShowBottomBar = navController
@@ -210,7 +230,7 @@ fun Cook4MeApp(
     if (isAuthenticated.value) {
         Scaffold(
             bottomBar = {
-                if (shouldShowBottomBar) {
+                if (isOnline && shouldShowBottomBar) {
                     BottomNavigationBar(
                         navigateTo = navigateTo,
                         currentRoute = navController
@@ -228,5 +248,17 @@ fun Cook4MeApp(
         }
     } else {
         NavHost(navController = navController, graph = navGraph)
+    }
+}
+
+class NetworkCallback : ConnectivityManager.NetworkCallback() {
+    val isOnline = mutableStateOf(false)
+
+    override fun onAvailable(network: Network) {
+        isOnline.value = true
+    }
+
+    override fun onLost(network: Network) {
+        isOnline.value = false
     }
 }
