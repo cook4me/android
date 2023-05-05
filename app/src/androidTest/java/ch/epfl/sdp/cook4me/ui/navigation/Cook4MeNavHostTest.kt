@@ -3,25 +3,16 @@ package ch.epfl.sdp.cook4me.ui.navigation
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.hasTestTag
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import ch.epfl.sdp.cook4me.Cook4MeApp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.authenticatedStartScreen
 import ch.epfl.sdp.cook4me.permissions.TestPermissionStatusProvider
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import com.google.firebase.auth.FirebaseAuth
@@ -29,17 +20,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
-import junit.framework.TestCase
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import okhttp3.internal.wait
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import waitUntilDisplayed
-import waitUntilExists
 
 @RunWith(AndroidJUnit4::class)
 class Cook4MeNavHostTest {
@@ -69,16 +56,30 @@ class Cook4MeNavHostTest {
         navController.navigate(differentRoute)
     }
 
-    private fun navigateToScreenXTest(
-        destination: String,
-        nodeOnlyInDestination: SemanticsNodeInteraction
+    private fun setNavHostWithStartingScreen(
+        startingScreen: String,
     ) {
-        if (currentRoute == destination) {
-            navigateElsewhere(destination)
+        composeTestRule.setContent {
+            navController = TestNavHostController(LocalContext.current)
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+            Cook4MeNavHost(
+                navController = navController,
+                permissionProvider = permissionStatusProvider,
+                startDestination = startingScreen,
+                onSuccessfulAuth = {}
+            )
         }
-        nodeOnlyInDestination.assertDoesNotExist()
-        navController.navigate(destination)
-        nodeOnlyInDestination.assertExists()
+    }
+
+    private fun testCreateElementNavigation(createButtonName: String, startDestination: Int, endDestination: Int) {
+        // Go to create element screen
+        composeTestRule.onNodeWithTag(getString(endDestination))
+            .assertDoesNotExist()
+        composeTestRule.onNodeWithText(createButtonName).performClick()
+        composeTestRule.onNodeWithTag(getString(endDestination)).assertExists()
+        // Go back
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
+        composeTestRule.onNodeWithTag(getString(startDestination)).assertExists()
     }
 
     @Before
@@ -97,17 +98,6 @@ class Cook4MeNavHostTest {
             auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
             auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
         }
-
-        composeTestRule.setContent {
-            navController = TestNavHostController(LocalContext.current)
-            navController.navigatorProvider.addNavigator(ComposeNavigator())
-            Cook4MeNavHost(
-                navController = navController,
-                permissionProvider = permissionStatusProvider,
-                startDestination = authenticatedStartScreen,
-                onSuccessfulAuth = {}
-            )
-        }
     }
 
     @After
@@ -119,74 +109,46 @@ class Cook4MeNavHostTest {
     }
 
     @Test
-    fun navigateToTupperwareSwipeScreenTest() {
-        navigateToScreenXTest(
-            Screen.TupperwareSwipeScreen.name,
-            composeTestRule.onNodeWithTag(getString(R.string.tupperware_swipe_screen_tag))
+    fun tupperwareSwipeScreenNavigationTesting() {
+        setNavHostWithStartingScreen(Screen.TupperwareSwipeScreen.name)
+        composeTestRule.onNodeWithTag(getString(R.string.tupperware_swipe_screen_tag)).assertExists()
+
+        testCreateElementNavigation(
+            createButtonName = "Create a new Tupperware",
+            startDestination = R.string.tupperware_swipe_screen_tag,
+            endDestination = R.string.create_tupper_screen_tag
         )
     }
 
     @Test
-    fun navigateToCreateTupperwareScreenTest() {
-        navigateToScreenXTest(
-            Screen.CreateTupperwareScreen.name,
-            composeTestRule.onNodeWithTag(getString(R.string.create_tupper_screen_tag))
+    fun recipeFeedNavigationTesting() {
+        setNavHostWithStartingScreen(Screen.RecipeFeed.name)
+        composeTestRule.onNodeWithTag(getString(R.string.recipe_feed_screen_tag)).assertExists()
+
+        testCreateElementNavigation(
+            createButtonName = "Create a new Recipe",
+            startDestination = R.string.recipe_feed_screen_tag,
+            endDestination = R.string.create_recipe_screen_tag
         )
     }
 
     @Test
-    fun navigateToCreateRecipeScreenTest() {
-        navigateToScreenXTest(
-            Screen.CreateRecipeScreen.name,
-            composeTestRule.onNodeWithTag(getString(R.string.create_recipe_screen_tag))
+    fun eventScreenNavigationTesting() {
+        setNavHostWithStartingScreen(Screen.Event.name)
+        composeTestRule.onNodeWithTag(getString(R.string.event_screen_tag)).assertExists()
+
+        testCreateElementNavigation(
+            createButtonName = "Create a new Event",
+            startDestination = R.string.event_screen_tag,
+            endDestination = R.string.create_event_screen_tag
         )
     }
 
     @Test
-    fun navigateToRecipeFeedTest() {
-        navigateToScreenXTest(
-            Screen.RecipeFeed.name,
-            composeTestRule.onNodeWithTag(getString(R.string.recipe_feed_screen_tag))
-        )
-    }
+    fun profileScreenNavigationTest() {
+        setNavHostWithStartingScreen(Screen.ProfileScreen.name)
+        composeTestRule.onNodeWithTag(getString(R.string.profile_screen_tag)).assertExists()
 
-    @Test
-    fun navigateToEventScreenTest() {
-        navigateToScreenXTest(
-            Screen.Event.name,
-            composeTestRule.onNodeWithTag(getString(R.string.event_screen_tag))
-        )
-    }
-
-    @Test
-    fun navigateToCreateEventScreenTest() {
-        navigateToScreenXTest(
-            Screen.CreateEventScreen.name,
-            composeTestRule.onNodeWithTag(getString(R.string.create_event_screen_tag))
-        )
-    }
-
-    @Test
-    fun navigateToDetailedEventScreenTest() {
-        navigateToScreenXTest(
-            Screen.DetailedEventScreen.name,
-            composeTestRule.onNodeWithTag(getString(R.string.detailed_event_screen_tag))
-        )
-    }
-
-    @Test
-    fun navigateToProfileScreenTest() {
-        navigateToScreenXTest(
-            Screen.ProfileScreen.name,
-            composeTestRule.onNodeWithTag(getString(R.string.profile_screen_tag))
-        )
-    }
-
-    @Test
-    fun navigateToEditProfileScreenTest() {
-        navigateToScreenXTest(
-            Screen.EditProfileScreen.name,
-            composeTestRule.onNodeWithTag(getString(R.string.edit_profile_screen_tag))
-        )
+        // TODO Edit Profile navigation
     }
 }

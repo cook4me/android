@@ -62,7 +62,11 @@ fun Cook4MeNavHost(
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
             )
         }
-        composable(route = Screen.CreateEventScreen.name) { CreateEventScreen() }
+        composable(route = Screen.CreateEventScreen.name) {
+            CreateEventScreen(
+                onCancelClick = { navController.navigateUp() }
+            )
+        }
         // the uid of event is predefined on firestore. this is just for show.
         composable(
             route = ScreenWithArgs.DetailedEventScreen.name,

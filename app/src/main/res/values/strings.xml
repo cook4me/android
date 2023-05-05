@@ -139,4 +139,5 @@
     <string name="detailed_event_screen_tag">Detailed Event Screen</string>
     <string name="profile_screen_tag">Profile Screen</string>
     <string name="edit_profile_screen_tag">Edit Profile Screen</string>
+    <string name="login_screen_tag">Login Screen</string>
 </resources>

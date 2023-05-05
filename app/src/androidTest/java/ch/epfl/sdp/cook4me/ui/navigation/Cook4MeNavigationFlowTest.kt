@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -13,6 +14,7 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.Cook4MeApp
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.authenticatedStartScreen
 import ch.epfl.sdp.cook4me.permissions.TestPermissionStatusProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -137,6 +139,15 @@ class Cook4MeNavigationFlowTest {
     fun navigateToProfileScreen() {
         navigateToXFromDropDownMenu(BottomNavScreen.Profile)
         assertEquals(currentRoute, BottomNavScreen.Profile.route)
+    }
+
+    @Test
+    fun navigateToSignOutAndDisconnectTest() {
+        composeTestRule.onNodeWithText("More").performClick()
+        composeTestRule.waitUntilExists(hasText("Sign Out"))
+        composeTestRule.onNodeWithText("Sign Out").performScrollTo().performClick()
+        composeTestRule.onNodeWithTag(getString(R.string.login_screen_tag))
+        assertEquals(auth.currentUser, null)
     }
 
     @After
