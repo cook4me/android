@@ -97,7 +97,9 @@ fun EditProfileScreen(
     }
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(stringResource(R.string.edit_profile_screen_tag))
     ) {
         if (isLoading) {
             CircularProgressIndicator(

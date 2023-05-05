@@ -130,4 +130,13 @@
     <!-- BottomBar -->
     <string name="bottom_bar_more_button_text">More</string>
     <string name="bottom_bar_sign_out_text">Sign Out</string>
+    <string name="tupperware_swipe_screen_tag">Tupperware Swipe Screen</string>
+    <string name="create_tupper_screen_tag">Create Tupperware Screen</string>
+    <string name="create_recipe_screen_tag">Create Recipe Screen</string>
+    <string name="recipe_feed_screen_tag">Recipe Feed Screen</string>
+    <string name="create_event_screen_tag">Create Event Screen</string>
+    <string name="event_screen_tag">Event/Map Screen</string>
+    <string name="detailed_event_screen_tag">Detailed Event Screen</string>
+    <string name="profile_screen_tag">Profile Screen</string>
+    <string name="edit_profile_screen_tag">Edit Profile Screen</string>
 </resources>

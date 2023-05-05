@@ -29,7 +29,7 @@ import org.junit.Rule
 import org.junit.Test
 import waitUntilExists
 
-class NavigationScenarioTest {
+class Cook4MeNavigationFlowTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
