@@ -4,7 +4,6 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.test.espresso.matcher.ViewMatchers
 import kotlinx.coroutines.runBlocking
 
-
 fun assertThrowsAsync(f: suspend () -> Unit) {
     try {
         runBlocking {
