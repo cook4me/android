@@ -4,6 +4,7 @@ import RepositoryFiller
 import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -27,6 +28,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import testProfile
+import waitUntilExists
 
 @RunWith(AndroidJUnit4::class)
 class Cook4MeNavHostTest {
@@ -124,7 +126,7 @@ class Cook4MeNavHostTest {
     @Test
     fun eventScreenNavigationTesting() {
         setNavHostWithStartingScreen(Screen.Event.name)
-        composeTestRule.onNodeWithTag(getString(R.string.event_screen_tag)).assertExists()
+        composeTestRule.waitUntilExists(hasTestTag(getString(R.string.event_screen_tag)))
 
         testCreateElementNavigation(
             createButtonName = "Create a new Event",
