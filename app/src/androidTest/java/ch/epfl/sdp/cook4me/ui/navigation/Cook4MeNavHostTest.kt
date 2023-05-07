@@ -76,7 +76,7 @@ class Cook4MeNavHostTest {
         composeTestRule.onNodeWithTag(getString(endDestination)).assertExists()
         // Go back
         composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
-        composeTestRule.onNodeWithTag(getString(startDestination)).assertExists()
+        composeTestRule.waitUntilExists(hasTestTag(getString(startDestination)))
     }
 
     @Before
