@@ -105,7 +105,7 @@ fun Cook4MeNavHost(
         composable(route = Screen.Login.name) {
             LoginScreen(
                 onSuccessfulLogin = {
-                    onSuccessfulAuth() // TODO remember to give the lambda isAuthenticated.value = true
+                    onSuccessfulAuth()
                     navController.navigate(startDestination) {
                         // This popUp blocks the user being able to go back once logged in
                         popUpTo(Screen.Login.name) { inclusive = true }

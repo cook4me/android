@@ -61,7 +61,6 @@
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
     <string name="TAG_EMAIL_FIELD">EmailField</string>
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
-    <string name="Login_Screen_Tag">LoginScreen</string>
 
     <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
@@ -110,6 +109,8 @@
     <string name="Add_profile_infos_top_bar_message">Add your user informations</string>
     <string name="Add_profile_infos_invalid_user">Email invalid</string>
     <string name="TAG_USER_FIELD">UserField</string>
+    <string name="sign_up_screen_tag">sign up screen</string>
+    <string name="add_profile_info_screen_tag">add profile info screen</string>
 
 
     <!-- Post -->

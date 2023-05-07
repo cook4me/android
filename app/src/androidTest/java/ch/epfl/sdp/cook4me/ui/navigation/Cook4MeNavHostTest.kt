@@ -130,6 +130,36 @@ class Cook4MeNavHostTest {
     }
 
     @Test
+    fun createEventScreenNavigationTest() {
+        setNavHostWithStartingScreen(Screen.CreateEventScreen.name)
+        composeTestRule.waitUntilExists(hasTestTag(getString(R.string.create_event_screen_tag)))
+    }
+
+    @Test
+    fun editProfileScreenNavigationTest() {
+        setNavHostWithStartingScreen(Screen.EditProfileScreen.name)
+        composeTestRule.waitUntilExists(hasTestTag(getString(R.string.edit_profile_screen_tag)))
+    }
+
+    @Test
+    fun signUpScreenNavigationTest() {
+        setNavHostWithStartingScreen(Screen.SignUpScreen.name)
+        composeTestRule.waitUntilExists(hasTestTag(getString(R.string.sign_up_screen_tag)))
+    }
+
+    @Test
+    fun loginScreenNavigationTest() {
+        setNavHostWithStartingScreen(Screen.Login.name)
+        composeTestRule.waitUntilExists(hasTestTag(getString(R.string.login_screen_tag)))
+    }
+
+    @Test
+    fun addProfileInfoScreenNavigationTest() {
+        setNavHostWithStartingScreen(Screen.SignUpUserInfo.name)
+        composeTestRule.waitUntilExists(hasTestTag(getString(R.string.add_profile_info_screen_tag)))
+    }
+
+    @Test
     fun profileScreenNavigationTest() {
         setNavHostWithStartingScreen(Screen.ProfileScreen.name)
         composeTestRule.onNodeWithTag(getString(R.string.profile_screen_tag)).assertExists()
