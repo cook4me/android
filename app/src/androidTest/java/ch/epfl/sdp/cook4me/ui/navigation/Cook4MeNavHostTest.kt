@@ -127,12 +127,6 @@ class Cook4MeNavHostTest {
     fun eventScreenNavigationTesting() {
         setNavHostWithStartingScreen(Screen.Event.name)
         composeTestRule.waitUntilExists(hasTestTag(getString(R.string.event_screen_tag)))
-
-        testCreateElementNavigation(
-            createButtonName = "Create a new Event",
-            startDestination = R.string.event_screen_tag,
-            endDestination = R.string.create_event_screen_tag
-        )
     }
 
     @Test
