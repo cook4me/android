@@ -5,8 +5,11 @@ import SignUpScreen
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
@@ -18,8 +21,10 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -230,13 +235,17 @@ fun Cook4MeApp(
     if (isAuthenticated.value) {
         Scaffold(
             bottomBar = {
-                if (isOnline && shouldShowBottomBar) {
+                if (shouldShowBottomBar) {
                     BottomNavigationBar(
                         navigateTo = navigateTo,
                         currentRoute = navController
                             .currentBackStackEntryAsState().value?.destination?.route.orEmpty(),
                         onClickSignOut = { signOut() }
                     )
+                }
+                if (!isOnline){
+                    Text(text = "You are offline", modifier = Modifier.fillMaxWidth().background(
+                        Color.Red).padding(8.dp))
                 }
             }
         ) { scaffoldPadding ->
