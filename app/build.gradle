@@ -6,6 +6,7 @@ plugins {
     id 'io.gitlab.arturbosch.detekt' version '1.20.0'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -33,6 +34,12 @@ android {
         }
 
         manifestPlaceholders = [MAPS_API_KEY: "${project.findProperty('MAPS_API_KEY') ?: System.getProperty('MAPS_API_KEY')}"]
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -128,6 +135,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.room:room-ktx:2.5.1'
+    implementation 'androidx.room:room-common:2.5.1'
+    implementation 'androidx.room:room-runtime:2.5.1'
+    kapt 'androidx.room:room-compiler:2.5.1'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation('org.hamcrest:hamcrest:2.2')

@@ -1,8 +1,14 @@
 package ch.epfl.sdp.cook4me.persistence.model
 
+import androidx.room.Entity
+import androidx.room.TypeConverters
+import ch.epfl.sdp.cook4me.persistence.repository.StringListConverter
+import ch.epfl.sdp.cook4me.persistence.repository.TimestampConverter
 import com.google.firebase.Timestamp
 
 @Suppress("DataClassShouldBeImmutable")
+@Entity(tableName = "recipe", primaryKeys = ["user", "name"])
+@TypeConverters(StringListConverter::class, TimestampConverter::class)
 // need mutable data class to use toObjects and toObject function of firestore
 data class Recipe(
     val user: String = "",

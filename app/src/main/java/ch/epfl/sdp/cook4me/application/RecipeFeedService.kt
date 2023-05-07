@@ -1,9 +1,13 @@
 package ch.epfl.sdp.cook4me.application
 
+import android.content.Context
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
+import ch.epfl.sdp.cook4me.persistence.repository.AppDatabase
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeNoteRepository
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.logging.Logger
 
 /**
@@ -16,6 +20,9 @@ class RecipeFeedService(
     private val recipeRepository: RecipeRepository = RecipeRepository(),
     private val recipeNoteRepository: RecipeNoteRepository = RecipeNoteRepository(),
     private val accountService: AccountService = AccountService(),
+    private val context: Context,
+    private val isOffline: Boolean = false,
+    private val localDatabase: AppDatabase = AppDatabase.getInstance(context = context),
 ) {
 
     /**
@@ -23,9 +30,18 @@ class RecipeFeedService(
      * @return a list of recipes with their id with their notes
      */
     suspend fun getRecipesWithNotes(): List<RecipeNote> {
-        val recipes = recipeRepository.getAll<Recipe>()
-        val notes = recipeNoteRepository.retrieveAllRecipeNotes()
-        return recipes.map { RecipeNote(it.key, notes[it.key] ?: 0, it.value) }
+        if (!isOffline) {
+            val recipes = recipeRepository.getAll<Recipe>()
+            val notes = recipeNoteRepository.retrieveAllRecipeNotes()
+            val recipeNotes = recipes.map { RecipeNote(it.key, notes[it.key] ?: 0, it.value) }
+            // launch a coroutine to insert the recipe notes in the local database
+            withContext(Dispatchers.IO) {
+                localDatabase.recipeNoteDao().insertAll(*recipeNotes.toTypedArray())
+            }
+            return recipeNotes
+        } else {
+            return localDatabase.recipeNoteDao().getAll()
+        }
     }
 
     /**
