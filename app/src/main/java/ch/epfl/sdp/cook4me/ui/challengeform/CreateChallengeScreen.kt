@@ -138,6 +138,7 @@ fun CookingGenreDropdown(
         "Nordic",
         "Southern",
         "Spanish",
+        "Swiss",
         "Thai",
         "Vietnamese"
     )
