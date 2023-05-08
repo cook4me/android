@@ -35,7 +35,7 @@ data class Challenge(
             return errorMsg
         }
 
-    val isValidEvent: Boolean
+    val isValidChallenge: Boolean
         get() = challengeProblem == null
 
     val challengeInformation: String

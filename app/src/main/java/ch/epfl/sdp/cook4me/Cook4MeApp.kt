@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +26,8 @@ import androidx.navigation.createGraph
 import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
+import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
+import ch.epfl.sdp.cook4me.ui.challengeform.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
@@ -40,7 +43,6 @@ import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
 import com.google.firebase.auth.FirebaseAuth
-import java.util.Calendar
 
 /**
  * enum values that represent the screens in the app
@@ -54,11 +56,12 @@ private enum class Screen {
     EditProfileScreen,
     Event,
     CreateEventScreen,
-    DetailedEventScreen,
     SignUpScreen,
     ChatScreen,
     SignUpUserInfos,
-    RecipeFeed
+    RecipeFeed,
+    ChallengeFeedScreen,
+    CreateChallengeScreen,
 }
 
 sealed class ScreenWithArgs(val name: String) {
@@ -66,10 +69,6 @@ sealed class ScreenWithArgs(val name: String) {
         fun createRoute(eventId: String) = "detailed_event_screen/$eventId"
     }
 }
-
-/* Testing around the Detailed Event Screen */
-// initializing the testing event
-val calendar = Calendar.getInstance()
 
 sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val title: String) {
     object Tupperwares :
@@ -82,6 +81,8 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
     object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
     object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
     object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
+    object Challenges :
+        BottomNavScreen(Screen.ChallengeFeedScreen.name, Icons.Filled.Shield, "Challenges")
 }
 
 @Composable
@@ -154,6 +155,15 @@ fun Cook4MeApp(
                 }
             )
         }
+        composable(route = Screen.CreateChallengeScreen.name) {
+            CreateChallengeScreen(
+                onCancelClick = {
+                    navController.navigate(
+                        Screen.ChallengeFeedScreen.name
+                    )
+                }
+            )
+        }
         // the uid of event is predefined on firestore. this is just for show.
         composable(
             route = ScreenWithArgs.DetailedEventScreen.name,
@@ -203,6 +213,11 @@ fun Cook4MeApp(
         composable(route = Screen.ChatScreen.name) {
             ChannelScreen(
                 onBackListener = { navController.navigate(Screen.RecipeFeed.name) },
+            )
+        }
+        composable(route = Screen.ChallengeFeedScreen.name) {
+            ChallengeFeedScreen(
+                onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) }
             )
         }
     }

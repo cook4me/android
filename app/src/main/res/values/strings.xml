@@ -22,6 +22,11 @@
     <string name="event_visibility_everyone">Everyone</string>
     <string name="event_visibility_subscriber_only">Subscriber only</string>
 
+    <!--  CreateChallengeScreen  -->
+    <string name="ask_challenge_name">Name of the challenge?</string>
+    <string name="ask_challenge_description">Description of the challenge?</string>
+    <string name="ask_challenge_type">Cooking genre: </string>
+
     <!-- CreateNewItemButton -->
     <string name="create_new_item_type">Create a new</string>
     <string name="event">Event</string>

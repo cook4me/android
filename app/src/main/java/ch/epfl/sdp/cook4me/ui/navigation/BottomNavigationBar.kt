@@ -27,6 +27,7 @@ val mainDestinations = listOf(
     BottomNavScreen.Tupperwares,
     BottomNavScreen.Recipes,
     BottomNavScreen.Events,
+    BottomNavScreen.Challenges,
     BottomNavScreen.Chat,
 )
 
