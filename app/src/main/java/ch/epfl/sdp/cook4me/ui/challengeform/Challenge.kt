@@ -59,7 +59,17 @@ data class Challenge(
         latLng = (map["latLng"] as? GeoPoint)?.let { Pair(it.latitude, it.longitude) } ?: Pair(0.0, 0.0),
         type = map["type"] as? String ?: "",
     )
+    fun toMap(): Map<String, Any> =
+        mapOf(
+            "name" to name,
+            "description" to description,
+            "dateTime" to dateTime,
+            "participants" to participants,
+            "creator" to creator,
+            "type" to type
+        )
 }
+
 private fun getTwoDigits(number: Int): String = String.format(Locale.ENGLISH, "%02d", number)
 private fun calendarFromTime(date: Date): Calendar {
     val calendar = Calendar.getInstance()
