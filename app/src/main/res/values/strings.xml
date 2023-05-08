@@ -27,6 +27,9 @@
     <string name="ask_challenge_description">Description of the challenge?</string>
     <string name="ask_challenge_type">Cooking genre: </string>
 
+    <!-- Challenge Feed Screen -->
+    <string name="Challenge_Feed_TAG">Challenge Feed TAG</string>
+
     <!-- CreateNewItemButton -->
     <string name="create_new_item_type">Create a new</string>
     <string name="event">Event</string>

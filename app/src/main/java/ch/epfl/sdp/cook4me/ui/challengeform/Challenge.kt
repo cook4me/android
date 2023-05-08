@@ -40,7 +40,7 @@ data class Challenge(
 
     val challengeInformation: String
         get() = "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\n" +
-            "Participants: $participants\n Type: $type\n" +
+            "Participants: $participants\nType: $type\n" +
             "Creator: $creator\n Latitude-Longitude: $latLng"
 
     val challengeDate: String
@@ -66,3 +66,9 @@ private fun calendarFromTime(date: Date): Calendar {
     calendar.time = date
     return calendar
 }
+fun addParticipant(challenge: Challenge, participant: String): Challenge =
+    if (!challenge.participants.contains(participant)) {
+        challenge.copy(participants = challenge.participants + participant)
+    } else {
+        challenge
+    }
