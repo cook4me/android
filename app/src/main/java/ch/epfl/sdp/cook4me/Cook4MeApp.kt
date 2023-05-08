@@ -31,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
@@ -189,6 +190,7 @@ fun Cook4MeApp(
         }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
+                service = RecipeFeedService(context = LocalContext.current, isOffline = !isOnline),
                 onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
             )
         }

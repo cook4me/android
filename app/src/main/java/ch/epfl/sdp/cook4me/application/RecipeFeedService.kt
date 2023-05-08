@@ -40,7 +40,9 @@ class RecipeFeedService(
             }
             return recipeNotes
         } else {
-            return localDatabase.recipeNoteDao().getAll()
+            return withContext(Dispatchers.IO) {
+                localDatabase.recipeNoteDao().getAll()
+            }
         }
     }
 
