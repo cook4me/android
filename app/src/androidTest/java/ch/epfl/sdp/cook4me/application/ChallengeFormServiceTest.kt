@@ -23,7 +23,7 @@ class ChallengeFormServiceTest {
             name = "name",
             description = "description",
             dateTime = dateTime,
-            participants = listOf("participant1", "participant2"),
+            participants = mapOf("participant1" to 0, "participant2" to 0),
             creator = "creator",
             type = "testType",
         )

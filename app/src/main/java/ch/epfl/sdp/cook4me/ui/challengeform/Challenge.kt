@@ -10,7 +10,7 @@ data class Challenge(
     val description: String = "",
     val dateTime: Calendar = Calendar.getInstance(),
     val latLng: Pair<Double, Double> = Pair(0.0, 0.0),
-    val participants: List<String> = listOf(),
+    val participants: Map<String, Int> = mapOf(),
     val creator: String = "",
     val type: String = "",
 ) {
@@ -54,7 +54,7 @@ data class Challenge(
             ?.toDate()
             ?.let { calendarFromTime(it) }
             ?: Calendar.getInstance(),
-        participants = map["participants"] as? List<String> ?: listOf(),
+        participants = map["participants"] as? Map<String, Int> ?: mapOf(),
         creator = map["creator"] as? String ?: "",
         latLng = (map["latLng"] as? GeoPoint)?.let { Pair(it.latitude, it.longitude) } ?: Pair(0.0, 0.0),
         type = map["type"] as? String ?: "",
@@ -66,9 +66,34 @@ private fun calendarFromTime(date: Date): Calendar {
     calendar.time = date
     return calendar
 }
+
+/**
+* Add a participant to the challenge, initialize the score of participant to 0
+* @param challenge the challenge to add the participant to
+* @param participant the participant to add
+*/
 fun addParticipant(challenge: Challenge, participant: String): Challenge =
-    if (!challenge.participants.contains(participant)) {
-        challenge.copy(participants = challenge.participants + participant)
+    if (!challenge.participants.containsKey(participant)) {
+        challenge.copy(participants = challenge.participants + (participant to 0))
     } else {
         challenge
     }
+
+/**
+ * Change the score of a participant in the challenge.
+ * @param challenge the challenge to add the participant to
+ * @param participant the participant to add
+ * @param scoreChange the score to change to the participant
+ * @sample updatedChallenge = changeParticipantScore(challenge, "participantName", 5)
+ */
+fun changeParticipantScore(challenge: Challenge, participant: String, scoreChange: Int): Challenge {
+    if (challenge.participants.containsKey(participant)) {
+        val currentScore = challenge.participants[participant] ?: 0
+        val newScore = currentScore + scoreChange
+        val updatedParticipants = challenge.participants.toMutableMap()
+        updatedParticipants[participant] = newScore
+        return challenge.copy(participants = updatedParticipants)
+    } else {
+        return challenge
+    }
+}

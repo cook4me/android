@@ -18,14 +18,14 @@ class ChallengeTest {
             name = "name",
             description = "description",
             dateTime = dateTime,
-            participants = listOf("participant1", "participant2"),
+            participants = mapOf("participant1" to 0, "participant2" to 0),
             creator = "darth.vader@epfl.ch",
             type = "French"
         )
     }
 
     @Test
-    fun ChallengeWithValidInformationIsValid() {
+    fun challengeWithValidInformationIsValid() {
         assert(challenge.isValidChallenge)
     }
 
@@ -37,7 +37,7 @@ class ChallengeTest {
             Name: name
             Description: description
             Date: 01/01/2000 at 00:00
-            Participants: [participant1, participant2]
+            Participants: {participant1=0,participant2=0}
             Type: French
             Creator: darth.vader@epfl.ch
             Latitude-Longitude:(0.0,0.0)"""
@@ -64,7 +64,7 @@ class ChallengeTest {
     }
 
     @Test
-    fun eventWithDateInThePastIsInvalid() {
+    fun challengeWithDateInThePastIsInvalid() {
         val pastDateTime = Calendar.getInstance()
         pastDateTime.add(Calendar.HOUR_OF_DAY, -1)
         challenge = challenge.copy(dateTime = pastDateTime)
@@ -76,7 +76,7 @@ class ChallengeTest {
     @Test
     fun addNewParticipantInNonFullEventAddsParticipant() {
         val participant = "participant3"
-        val expected = challenge.copy(participants = challenge.participants + participant)
+        val expected = challenge.copy(participants = challenge.participants + (participant to 0))
         val actual = addParticipant(challenge, participant)
         Assert.assertEquals(expected, actual)
     }
@@ -86,6 +86,25 @@ class ChallengeTest {
         val participant = "participant1"
         val expected = challenge
         val actual = addParticipant(challenge, participant)
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun changeScoreOfExistingParticipantUpdatesScore() {
+        val participant = "participant1"
+        val scoreChange = 5
+        val updatedScore = challenge.participants[participant]!! + scoreChange
+        val expected = challenge.copy(participants = challenge.participants.toMutableMap().apply { this[participant] = updatedScore })
+        val actual = changeParticipantScore(challenge, participant, scoreChange)
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun changeScoreOfNonExistingParticipantDoesNotUpdateScore() {
+        val participant = "participant3"
+        val scoreChange = 5
+        val expected = challenge
+        val actual = changeParticipantScore(challenge, participant, scoreChange)
         Assert.assertEquals(expected, actual)
     }
 }
