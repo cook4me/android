@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
@@ -60,6 +62,7 @@ fun CreateEventScreen(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(10.dp)
+            .testTag(stringResource(R.string.create_event_screen_tag))
     ) {
         InputField(
             question = R.string.ask_event_name,

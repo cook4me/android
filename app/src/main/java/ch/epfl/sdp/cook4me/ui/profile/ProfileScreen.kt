@@ -41,7 +41,10 @@ fun ProfileScreen(
     val image = profileViewModel.profileImage.value
 
     Box(
-        modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(stringResource(R.string.profile_screen_tag)),
+        contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
             CircularProgressIndicator(

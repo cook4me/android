@@ -16,6 +16,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
@@ -52,7 +54,8 @@ fun TupperwareSwipeScreen(
             Box(
                 Modifier
                     .padding(16.dp)
-                    .weight(weight = 0.87f),
+                    .weight(weight = 0.87f)
+                    .testTag(stringResource(R.string.tupperware_swipe_screen_tag)),
                 contentAlignment = Alignment.Center
             ) {
                 if (allDone) {

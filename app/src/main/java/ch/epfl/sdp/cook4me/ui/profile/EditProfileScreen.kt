@@ -97,7 +97,9 @@ fun EditProfileScreen(
     }
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(stringResource(R.string.edit_profile_screen_tag))
     ) {
         if (isLoading) {
             CircularProgressIndicator(
@@ -120,7 +122,6 @@ fun EditProfileScreen(
                 content = { padding ->
                     Column(
                         modifier = modifier
-                            .testTag(stringResource(R.string.Login_Screen_Tag))
                             .fillMaxWidth()
                             .fillMaxHeight()
                             .verticalScroll(rememberScrollState())

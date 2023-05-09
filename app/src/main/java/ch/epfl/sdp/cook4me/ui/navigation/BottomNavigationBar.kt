@@ -10,6 +10,12 @@ import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,25 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ch.epfl.sdp.cook4me.BottomNavScreen
 import ch.epfl.sdp.cook4me.R
-
-val mainDestinations = listOf(
-    BottomNavScreen.Tupperwares,
-    BottomNavScreen.Recipes,
-    BottomNavScreen.Events,
-    BottomNavScreen.Chat,
-)
-
-val dropDownMenuDestinations = listOf(
-    BottomNavScreen.MyTupperwares,
-    BottomNavScreen.MyRecipes,
-    BottomNavScreen.MyEvents,
-    BottomNavScreen.Profile,
-)
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
@@ -95,3 +87,36 @@ fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String,
         }
     }
 }
+
+sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val title: String) {
+    object Tupperwares :
+        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+
+    object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
+    object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
+    object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
+    object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
+    object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
+    object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
+    object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
+}
+
+sealed class ScreenWithArgs(val name: String) {
+    object DetailedEventScreen : ScreenWithArgs("detailed_event_screen/{eventId}") {
+        fun createRoute(eventId: String) = "detailed_event_screen/$eventId"
+    }
+}
+
+val mainDestinations = listOf(
+    BottomNavScreen.Tupperwares,
+    BottomNavScreen.Recipes,
+    BottomNavScreen.Events,
+    BottomNavScreen.Chat
+)
+
+val dropDownMenuDestinations = listOf(
+    BottomNavScreen.MyTupperwares,
+    BottomNavScreen.MyRecipes,
+    BottomNavScreen.MyEvents,
+    BottomNavScreen.Profile,
+)

@@ -61,7 +61,7 @@ fun SignUpScreen(
         content = { padding ->
             Column(
                 modifier = modifier
-                    .testTag(stringResource(R.string.Login_Screen_Tag))
+                    .testTag(stringResource(R.string.sign_up_screen_tag))
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
