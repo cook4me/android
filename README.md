@@ -39,6 +39,12 @@ As this project integrates Google Maps, a Google Maps API key is needed and need
 MAPS_API_KEY=KEYVALUE
 ```
 
+The project also uses an external chat service, a chat API key is needed to be added to the local.properties file. It can be downloaded [here](https://dashboard.getstream.io/app/1247010/chat/overview)
+
+```properties
+CHAT_API_KEY=KEYVALUE
+```
+
 If  there is an error : android.experimental.testOptions.emulatorSnapshots.maxSnapshotsForTestFailures=0' is experimental. You can put the following into your gradle properties: 
 
 ```global properties
