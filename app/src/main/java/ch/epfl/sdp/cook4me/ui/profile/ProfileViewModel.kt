@@ -22,6 +22,7 @@ class ProfileViewModel(
     private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
+    private val id: String? = null,
     onFailure: () -> Unit = {},
 ) : ViewModel() {
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
@@ -34,10 +35,16 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            // run blocking  to wait for the profile to be loaded
-            // therefore avoid race condition on the isloaded value
-            var profile =
+            var profile: Profile? = null
+
+            if (id != null) {
+                // if an user id is provided, use it to load the profile
+                _id = id
+                profile = repository.getById(id)
+            } else {
+                // otherwise, use the current user email
                 accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+            }
 
             // load the profile again if it is null
             while (profile == null) {
@@ -66,7 +73,7 @@ class ProfileViewModel(
             }
 
             try {
-                _profileImage.value = profileImageRepository.get()
+                _profileImage.value = profileImageRepository.get(id)
             } catch (e: NoSuchElementException) {
                 if (e.message == "Collection is empty.") {
                     _profileImage.value =
