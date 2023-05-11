@@ -19,6 +19,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -67,7 +68,8 @@ fun RecipeFeed(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(Color.White),
+            .background(Color.White)
+            .testTag(stringResource(R.string.recipe_feed_screen_tag)),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         CreateNewItemButton(itemType = "Recipe", onClick = onCreateNewRecipe)

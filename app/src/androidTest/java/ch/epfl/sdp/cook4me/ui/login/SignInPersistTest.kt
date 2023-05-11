@@ -74,9 +74,9 @@ class SignInPersistTest {
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithTag(context.getString(R.string.Login_Screen_Tag))
+                .onAllNodesWithTag(context.getString(R.string.login_screen_tag))
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithTag(context.getString(R.string.Login_Screen_Tag)).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(context.getString(R.string.login_screen_tag)).assertIsDisplayed()
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,6 +47,7 @@ fun DetailedEventScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp)
                     .background(MaterialTheme.colors.background)
+                    .testTag(stringResource(R.string.detailed_event_screen_tag))
             ) {
                 SectionWithTitle(title = stringResource(R.string.event_name), content = event.name)
                 Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)

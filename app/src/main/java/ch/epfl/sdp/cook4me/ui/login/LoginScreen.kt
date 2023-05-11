@@ -63,11 +63,11 @@ fun LoginScreen(
         content = { padding ->
             Column(
                 modifier = modifier
-                    .testTag(stringResource(R.string.Login_Screen_Tag))
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
-                    .padding(padding),
+                    .padding(padding)
+                    .testTag(stringResource(R.string.login_screen_tag)),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

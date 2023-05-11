@@ -69,7 +69,6 @@
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
     <string name="TAG_EMAIL_FIELD">EmailField</string>
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
-    <string name="Login_Screen_Tag">LoginScreen</string>
 
     <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
@@ -118,6 +117,8 @@
     <string name="Add_profile_infos_top_bar_message">Add your user informations</string>
     <string name="Add_profile_infos_invalid_user">Email invalid</string>
     <string name="TAG_USER_FIELD">UserField</string>
+    <string name="sign_up_screen_tag">sign up screen</string>
+    <string name="add_profile_info_screen_tag">add profile info screen</string>
 
 
     <!-- Post -->
@@ -138,4 +139,14 @@
     <!-- BottomBar -->
     <string name="bottom_bar_more_button_text">More</string>
     <string name="bottom_bar_sign_out_text">Sign Out</string>
+    <string name="tupperware_swipe_screen_tag">Tupperware Swipe Screen</string>
+    <string name="create_tupper_screen_tag">Create Tupperware Screen</string>
+    <string name="create_recipe_screen_tag">Create Recipe Screen</string>
+    <string name="recipe_feed_screen_tag">Recipe Feed Screen</string>
+    <string name="create_event_screen_tag">Create Event Screen</string>
+    <string name="event_screen_tag">Event/Map Screen</string>
+    <string name="detailed_event_screen_tag">Detailed Event Screen</string>
+    <string name="profile_screen_tag">Profile Screen</string>
+    <string name="edit_profile_screen_tag">Edit Profile Screen</string>
+    <string name="login_screen_tag">Login Screen</string>
 </resources>

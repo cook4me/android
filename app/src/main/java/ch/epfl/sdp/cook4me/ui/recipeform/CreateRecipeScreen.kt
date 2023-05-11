@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -167,6 +168,7 @@ private fun RecipeForm(
 
     Column(
         modifier = modifier
+            .testTag(stringResource(R.string.create_recipe_screen_tag))
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
             .padding(10.dp),
