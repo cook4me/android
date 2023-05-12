@@ -17,6 +17,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
+const val DELAY_MILLIS = 2000L
+
 class ProfileViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
     private val service: ProfileService = ProfileServiceWithRepository(),
@@ -42,14 +44,13 @@ class ProfileViewModel(
                 _id = id
                 profile = repository.getById(id)
             } else {
-                // otherwise, use the current user email
+                // otherwise, use the currents user email
                 accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
             }
 
             // load the profile again if it is null
             while (profile == null) {
-                @Suppress("MagicNumber")
-                delay(2000) // Wait for 1 second before retrying
+                delay(DELAY_MILLIS) // Wait for DELAY_MILLIS before retrying
                 profile =
                     accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
             }
@@ -108,7 +109,7 @@ class ProfileViewModel(
     }
 
     fun onSubmit(onSuccessListener: () -> Unit) {
-        if (profile.value.name.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
+        if (profile.value.name.isBlank()) {
             _formError.value = true
         } else {
             viewModelScope.launch {
