@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.chat
+package ch.epfl.sdp.cook4me.ui.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

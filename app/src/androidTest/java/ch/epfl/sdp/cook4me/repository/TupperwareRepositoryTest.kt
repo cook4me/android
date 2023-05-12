@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.repository
 
 import android.net.Uri
-import ch.epfl.sdp.cook4me.persistence.model.Tupperware
+import ch.epfl.sdp.cook4me.persistence.model.FirestoreTupperware
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -82,13 +82,13 @@ class TupperwareRepositoryTest {
             description = "desc3",
             images = urls.drop(1)
         )
-        val allTupperware = tupperwareRepository.getAll<Tupperware>()
+        val allTupperware = tupperwareRepository.getAll<FirestoreTupperware>()
         assertThat(
             allTupperware.values,
             containsInAnyOrder(
-                Tupperware("title1", "desc1", USER_NAME),
-                Tupperware("title2", "desc2", USER_NAME),
-                Tupperware("title3", "desc3", USER_NAME),
+                FirestoreTupperware("title1", "desc1", USER_NAME),
+                FirestoreTupperware("title2", "desc2", USER_NAME),
+                FirestoreTupperware("title3", "desc3", USER_NAME),
             )
         )
         val tupIdsSortedbyTitle = allTupperware.toList().sortedBy { it.second.title }.map { it.first }
@@ -112,12 +112,12 @@ class TupperwareRepositoryTest {
             generateTempFiles(2)
         }
         val urls = file.map { Uri.fromFile(it) }
-        val tup = Tupperware("title1", "desc1", USER_NAME)
+        val tup = FirestoreTupperware("title1", "desc1", USER_NAME)
         tupperwareRepository.add(tup.title, tup.description, urls)
         val tupId = tupperwareRepository
-            .getWithGivenField<Tupperware>("title", "${tup.title}").first().id
+            .getWithGivenField<FirestoreTupperware>("title", "${tup.title}").first().id
         runBlocking { tupperwareRepository.delete(tupId) }
-        val tups = tupperwareRepository.getAll<Tupperware>()
+        val tups = tupperwareRepository.getAll<FirestoreTupperware>()
         assert(tups.isEmpty())
         val images = storage.reference.child("images/$USER_NAME/tupperwares").listAll().await()
         assert(images.prefixes.isEmpty())

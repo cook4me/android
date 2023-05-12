@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.BuildConfig
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.chat.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.chat.createChatWithEmail
 import ch.epfl.sdp.cook4me.ui.chat.provideChatClient
+import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 
 /**
  * A component screen that displays details of an event
