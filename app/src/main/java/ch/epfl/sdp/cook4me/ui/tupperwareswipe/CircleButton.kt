@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 fun CircleButton(
     onClick: () -> Unit,
     icon: ImageVector,
-    enabled: Boolean
+    enabled: Boolean = true
 ) {
     IconButton(
         modifier = Modifier

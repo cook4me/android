@@ -26,6 +26,7 @@ import com.alexstyl.swipeablecard.swipableCard
 fun TupperwareCard(
     state: SwipeableCardState,
     tupperware: DummyTupperware,
+    onRightSwipe: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -34,7 +35,10 @@ fun TupperwareCard(
                 state = state,
                 blockedDirections = listOf(Direction.Up, Direction.Down),
                 onSwiped = {
-                    // already handled by the callbacks of the buttons
+                    if (it == Direction.Right) {
+                        onRightSwipe()
+                    }
+                    // we don't need to handle the animation in here, it's already done by the button callbacks
                 }
             )
     ) {
@@ -51,7 +55,14 @@ fun TupperwareCard(
                     color = MaterialTheme.colors.onPrimary,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                )
+                Text(
+                    text = tupperware.description,
+                    color = MaterialTheme.colors.onPrimary,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                 )
             }
         }
