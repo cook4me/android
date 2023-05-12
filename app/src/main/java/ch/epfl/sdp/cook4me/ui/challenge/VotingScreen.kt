@@ -26,13 +26,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+
+const val MINSTAR = 1
+const val MAXSTAR = 5
 
 @Composable
 fun VotingScreen(challenge: Challenge, onVoteChanged: (Challenge) -> Unit) {
@@ -42,7 +44,7 @@ fun VotingScreen(challenge: Challenge, onVoteChanged: (Challenge) -> Unit) {
         BasicToolbar(stringResource(R.string.voteScreenTitle))
 
         LazyColumn {
-            items(challenge.participants.toList()) { (participant, score) ->
+            items(challenge.participants.toList()) { (participant) ->
                 ParticipantRow(participant, score = 0) { newScore ->
                     voteResults[participant] = newScore
                 }
@@ -52,7 +54,7 @@ fun VotingScreen(challenge: Challenge, onVoteChanged: (Challenge) -> Unit) {
         Button(
             onClick = {
                 val updatedChallenge =
-                    challenge.copy(participants = voteResults.mapValues { it.value.toInt() })
+                    challenge.copy(participants = voteResults.mapValues { it.value })
                 onVoteChanged(updatedChallenge)
             },
             modifier = Modifier
@@ -65,7 +67,6 @@ fun VotingScreen(challenge: Challenge, onVoteChanged: (Challenge) -> Unit) {
     }
 }
 
-
 @Composable
 fun ParticipantRow(participant: String, score: Int, onScoreChange: (Int) -> Unit) {
     Row(
@@ -77,7 +78,7 @@ fun ParticipantRow(participant: String, score: Int, onScoreChange: (Int) -> Unit
     ) {
         Box(
             modifier = Modifier
-                .weight(1f) // This will make the Box take up as much space as it can, pushing the rating bar to the right
+                .weight(1f) // fill the remaining space
                 .wrapContentWidth(Alignment.Start)
         ) {
             Text(
@@ -99,16 +100,15 @@ fun ParticipantRow(participant: String, score: Int, onScoreChange: (Int) -> Unit
     }
 }
 
-
 @Composable
-fun RatingBar(participant: String ,value: Int, onValueChange: (Int) -> Unit) {
+fun RatingBar(participant: String, value: Int, onValueChange: (Int) -> Unit) {
     var selectedValue by remember { mutableStateOf(value) }
     Box {
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(horizontal = 1.dp)
-        ){
-            for (i in 1..5) {
+        ) {
+            for (i in MINSTAR..MAXSTAR) {
                 IconButton(onClick = {
                     if (selectedValue == i) {
                         selectedValue = 0
@@ -119,9 +119,19 @@ fun RatingBar(participant: String ,value: Int, onValueChange: (Int) -> Unit) {
                 }) {
                     Icon(
                         painter = painterResource(
-                            id = if (i <= selectedValue) R.drawable.ic_star_filled else R.drawable.ic_star_empty
+                            id =
+                            if (i <= selectedValue) {
+                                R.drawable.ic_star_filled
+                            } else {
+                                R.drawable.ic_star_empty
+                            }
                         ),
-                        contentDescription = if (i <= selectedValue) "$participant Star $i" else "$participant Empty star $i",
+                        contentDescription =
+                        if (i <= selectedValue) {
+                            "$participant Star $i"
+                        } else {
+                            "$participant Empty star $i"
+                        },
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -152,4 +162,3 @@ private fun BasicToolbar(title: String) {
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
     if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
-

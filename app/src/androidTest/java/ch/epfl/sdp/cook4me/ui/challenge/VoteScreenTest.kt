@@ -152,4 +152,3 @@ class VoteScreenTest {
         assertEquals(5, updatedChallenge?.participants?.get("participant1"))
     }
 }
-
