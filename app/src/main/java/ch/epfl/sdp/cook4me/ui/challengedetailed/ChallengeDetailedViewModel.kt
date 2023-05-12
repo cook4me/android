@@ -18,6 +18,6 @@ class ChallengeDetailedViewModel : ViewModel() {
     }
 
     fun addCurrentUserAsParticipant() {
-
+        // TODO: Add current user as participant
     }
 }

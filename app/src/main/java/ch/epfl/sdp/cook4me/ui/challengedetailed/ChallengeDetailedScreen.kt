@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.challengedetailed
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.People
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,8 +35,8 @@ import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
-import androidx.compose.runtime.getValue
 
+@Suppress("MagicNumber")
 @Composable
 fun ChallengeDetailView(
     challengeViewModel: ChallengeDetailedViewModel = viewModel(),
@@ -48,7 +48,7 @@ fun ChallengeDetailView(
         challengeViewModel.fetchChallenge(challengeId)
     }
 
-    challenge?.let { it ->
+    challenge?.let {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier

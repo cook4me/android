@@ -26,7 +26,6 @@ val calendar = Calendar.getInstance()
 val unauthenticatedStartScreen = Screen.Login.name
 val authenticatedStartScreen = Screen.RecipeFeed.name
 
-
 @Composable
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController(),
