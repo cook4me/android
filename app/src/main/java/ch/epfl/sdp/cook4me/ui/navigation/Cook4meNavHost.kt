@@ -2,6 +2,7 @@ package ch.epfl.sdp.cook4me.ui.navigation
 
 import AddProfileInfoScreen
 import SignUpScreen
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -40,6 +41,9 @@ fun Cook4MeNavHost(
         startDestination = startDestination,
     ) {
         composable(Screen.TupperwareSwipeScreen.name) {
+            BackHandler(true) {
+                // the back button functionality interferes with the swipe screen, therefore we disable it's functionality
+            }
             TupperwareSwipeScreen(
                 onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) }
             )
