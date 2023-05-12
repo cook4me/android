@@ -24,11 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import testProfile
 import waitUntilExists
 
 class Cook4MeNavigationFlowTest {
@@ -49,20 +49,6 @@ class Cook4MeNavigationFlowTest {
             "TestPermission2" to Pair(true, true)
         )
     )
-    private fun getString(id: Int): String {
-        return composeTestRule.activity.getString(id)
-    }
-
-    private fun navigateToMainDestinationTest(destination: BottomNavScreen) {
-        composeTestRule.onNodeWithText(destination.title).performClick()
-        assertEquals(currentRoute, destination.route)
-    }
-
-    private fun navigateToXFromDropDownMenu(destination: BottomNavScreen) {
-        composeTestRule.onNodeWithText("More").performClick()
-        composeTestRule.waitUntilExists(hasText(destination.title))
-        composeTestRule.onNodeWithText(destination.title).performScrollTo().performClick()
-    }
 
     @Before
     fun setUp() {
@@ -77,10 +63,8 @@ class Cook4MeNavigationFlowTest {
         store.firestoreSettings = settings
         auth = FirebaseAuth.getInstance()
         runBlocking {
-            auth.createUserWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
+            RepositoryFiller.setUpUser(testProfile, auth, store)
         }
-
         composeTestRule.setContent {
             navController = TestNavHostController(LocalContext.current)
             navController.navigatorProvider.addNavigator(ComposeNavigator())
@@ -88,6 +72,13 @@ class Cook4MeNavigationFlowTest {
                 navController = navController,
                 permissionStatusProvider = permissionStatusProvider
             )
+        }
+    }
+
+    @After
+    fun cleanUp() {
+        runBlocking {
+            RepositoryFiller.setUpUser(testProfile, auth, store)
         }
     }
 
@@ -150,11 +141,18 @@ class Cook4MeNavigationFlowTest {
         assertEquals(auth.currentUser, null)
     }
 
-    @After
-    fun cleanUp() {
-        runBlocking {
-            auth.signInWithEmailAndPassword("harry.potter@epfl.ch", "123456").await()
-            auth.currentUser?.delete()
-        }
+    private fun getString(id: Int): String {
+        return composeTestRule.activity.getString(id)
+    }
+
+    private fun navigateToMainDestinationTest(destination: BottomNavScreen) {
+        composeTestRule.onNodeWithText(destination.title).performClick()
+        assertEquals(currentRoute, destination.route)
+    }
+
+    private fun navigateToXFromDropDownMenu(destination: BottomNavScreen) {
+        composeTestRule.onNodeWithText("More").performClick()
+        composeTestRule.waitUntilExists(hasText(destination.title))
+        composeTestRule.onNodeWithText(destination.title).performScrollTo().performClick()
     }
 }

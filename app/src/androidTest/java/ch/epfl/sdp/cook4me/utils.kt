@@ -17,30 +17,26 @@ val testProfile = Profile(
     favoriteDish = "Bread"
 )
 object RepositoryFiller {
-    fun setUpUser(
+    suspend fun setUpUser(
         profile: Profile,
         auth: FirebaseAuth = FirebaseAuth.getInstance(),
         store: FirebaseFirestore
     ) {
         val profileRepository = ProfileRepository(store)
-        runBlocking {
-            profileRepository.add(profile)
-            auth.createUserWithEmailAndPassword(profile.email, "123456").await()
-            auth.signInWithEmailAndPassword(profile.email, "123456").await()
-        }
+        profileRepository.add(profile)
+        auth.createUserWithEmailAndPassword(profile.email, "123456").await()
+        auth.signInWithEmailAndPassword(profile.email, "123456").await()
     }
 
-    fun cleanUpUser(
+    suspend fun cleanUpUser(
         profile: Profile,
         auth: FirebaseAuth = FirebaseAuth.getInstance(),
         store: FirebaseFirestore
     ) {
         val profileRepository = ProfileRepository(store)
-        runBlocking {
-            profileRepository.delete(profile.email)
-            auth.signInWithEmailAndPassword(profile.email, "123456")
-            auth.currentUser?.delete()?.await()
-        }
+        profileRepository.delete(profile.email)
+        auth.signInWithEmailAndPassword(profile.email, "123456")
+        auth.currentUser?.delete()?.await()
     }
 }
 

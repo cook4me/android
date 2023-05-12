@@ -22,6 +22,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -49,35 +50,6 @@ class Cook4MeNavHostTest {
             "TestPermission2" to Pair(true, true)
         )
     )
-    private fun getString(id: Int): String {
-        return composeTestRule.activity.getString(id)
-    }
-
-    private fun setNavHostWithStartingScreen(
-        startingScreen: String,
-    ) {
-        composeTestRule.setContent {
-            navController = TestNavHostController(LocalContext.current)
-            navController.navigatorProvider.addNavigator(ComposeNavigator())
-            Cook4MeNavHost(
-                navController = navController,
-                permissionProvider = permissionStatusProvider,
-                startDestination = startingScreen,
-                onSuccessfulAuth = {}
-            )
-        }
-    }
-
-    private fun testCreateElementNavigation(createButtonName: String, startDestination: Int, endDestination: Int) {
-        // Go to create element screen
-        composeTestRule.onNodeWithTag(getString(endDestination))
-            .assertDoesNotExist()
-        composeTestRule.onNodeWithText(createButtonName).performClick()
-        composeTestRule.onNodeWithTag(getString(endDestination)).assertExists()
-        // Go back
-        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
-        composeTestRule.waitUntilExists(hasTestTag(getString(startDestination)))
-    }
 
     @Before
     fun setUp() {
@@ -91,12 +63,16 @@ class Cook4MeNavHostTest {
             .build()
         store.firestoreSettings = settings
         auth = FirebaseAuth.getInstance()
-        RepositoryFiller.setUpUser(testProfile, auth, store)
+        runBlocking {
+            RepositoryFiller.setUpUser(testProfile, auth, store)
+        }
     }
 
     @After
     fun cleanUp() {
-        RepositoryFiller.cleanUpUser(testProfile, auth, store)
+        runBlocking {
+            RepositoryFiller.cleanUpUser(testProfile, auth, store)
+        }
     }
 
     @Test
@@ -165,5 +141,35 @@ class Cook4MeNavHostTest {
         composeTestRule.onNodeWithTag(getString(R.string.profile_screen_tag)).assertExists()
 
         // TODO Edit Profile navigation
+    }
+
+    private fun testCreateElementNavigation(createButtonName: String, startDestination: Int, endDestination: Int) {
+        // Go to create element screen
+        composeTestRule.onNodeWithTag(getString(endDestination))
+            .assertDoesNotExist()
+        composeTestRule.onNodeWithText(createButtonName).performClick()
+        composeTestRule.onNodeWithTag(getString(endDestination)).assertExists()
+        // Go back
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
+        composeTestRule.waitUntilExists(hasTestTag(getString(startDestination)))
+    }
+
+    private fun getString(id: Int): String {
+        return composeTestRule.activity.getString(id)
+    }
+
+    private fun setNavHostWithStartingScreen(
+        startingScreen: String,
+    ) {
+        composeTestRule.setContent {
+            navController = TestNavHostController(LocalContext.current)
+            navController.navigatorProvider.addNavigator(ComposeNavigator())
+            Cook4MeNavHost(
+                navController = navController,
+                permissionProvider = permissionStatusProvider,
+                startDestination = startingScreen,
+                onSuccessfulAuth = {}
+            )
+        }
     }
 }
