@@ -18,7 +18,7 @@ class CountdownTimerTest {
     fun assertTimeIsDisplayedBeforeEvent() {
         val dateTime = Calendar.getInstance().apply { add(Calendar.SECOND, 5) }
 
-        composeTestRule.setContent { 
+        composeTestRule.setContent {
             CountdownTimer(dateTime = dateTime)
         }
 
