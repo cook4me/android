@@ -148,15 +148,3 @@ fun ChallengeDetailView(
 fun DetailedChallengePreview() {
     ChallengeDetailView(challengeId = "EbsDGi6Gp09FPmZISnrF")
 }
-
-/*val dummyChallenge = Challenge(
-    name = "Mountain Climbing",
-    description = "Climb the highest peak of the city!",
-    dateTime = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 2) },
-    latLng = Pair(EPFL.latitude, EPFL.longitude),
-    participants = mapOf("John" to 1, "Jane" to 2),
-    creator = "Admin",
-    type = "Outdoor"
-)
-val challenge = dummyChallenge
-*/
