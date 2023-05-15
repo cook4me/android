@@ -146,5 +146,5 @@ fun ChallengeDetailedScreen(
 @Preview
 @Composable
 fun DetailedChallengePreview() {
-    ChallengeDetailView(challengeId = "EbsDGi6Gp09FPmZISnrF")
+    ChallengeDetailedScreen(challengeId = "EbsDGi6Gp09FPmZISnrF")
 }
