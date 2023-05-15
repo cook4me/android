@@ -143,9 +143,3 @@ fun ChallengeDetailView(challengeId: String) {
         }
     }
 }
-
-@Preview
-@Composable
-fun DetailedChallengePreview() {
-    ChallengeDetailView(challengeId = "abc")
-}
