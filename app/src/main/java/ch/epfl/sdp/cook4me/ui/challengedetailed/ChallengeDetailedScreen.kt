@@ -38,7 +38,7 @@ import com.google.maps.android.compose.MarkerState
 
 @Suppress("MagicNumber")
 @Composable
-fun ChallengeDetailView(
+fun ChallengeDetailedScreen(
     challengeViewModel: ChallengeDetailedViewModel = viewModel(),
     challengeId: String
 ) {
