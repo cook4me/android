@@ -78,7 +78,7 @@ class Cook4MeNavigationFlowTest {
     @After
     fun cleanUp() {
         runBlocking {
-            RepositoryFiller.setUpUser(testProfile, auth, store)
+            RepositoryFiller.cleanUpUser(testProfile, auth, store)
         }
     }
 
