@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.challengedetailed
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.delay
 import java.util.Calendar
 
+@Suppress("MagicNumber")
 @Composable
 fun CountdownTimer(dateTime: Calendar) {
     val currentTime = remember { mutableStateOf(Calendar.getInstance()) }
@@ -24,11 +26,14 @@ fun CountdownTimer(dateTime: Calendar) {
     val timeDiff = dateTime.timeInMillis - currentTime.value.timeInMillis
     if (timeDiff > 0) {
         val hours = timeDiff / (1000 * 60 * 60)
-        val minutes = (timeDiff % (1000 * 60 * 60)) / (1000 * 60)
-        val seconds = (timeDiff % (1000 * 60)) / 1000
 
-        Text(text = "Time remaining: ", style = MaterialTheme.typography.body2)
-        Text(text = "${hours}h ${minutes}m ${seconds}s", style = MaterialTheme.typography.h5)
+        val minutes = timeDiff % (1000 * 60 * 60) / (1000 * 60)
+        val seconds = timeDiff % (1000 * 60) / 1000
+
+        Row {
+            Text(text = "Time remaining: ", style = MaterialTheme.typography.body2)
+            Text(text = "${hours}h ${minutes}m ${seconds}s", style = MaterialTheme.typography.h5)
+        }
     } else {
         Text(text = "This event has already taken place", color = Color.Red, style = MaterialTheme.typography.body2)
     }

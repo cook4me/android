@@ -78,10 +78,17 @@ private fun calendarFromTime(date: Date): Calendar {
 }
 
 /**
+<<<<<<< HEAD
  * Add a participant to the challenge, initialize the score of participant to 0
  * @param challenge the challenge to add the participant to
  * @param participant the participant to add
  */
+=======
+* Add a participant to the challenge, initialize the score of participant to 0
+* @param challenge the challenge to add the participant to
+* @param participant the participant to add
+*/
+>>>>>>> feature/challenge_class
 fun addParticipant(challenge: Challenge, participant: String): Challenge =
     if (!challenge.participants.containsKey(participant)) {
         challenge.copy(participants = challenge.participants + (participant to 0))
