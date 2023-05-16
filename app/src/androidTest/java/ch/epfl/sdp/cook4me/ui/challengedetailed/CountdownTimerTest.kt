@@ -3,6 +3,8 @@ package ch.epfl.sdp.cook4me.ui.challengedetailed
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -33,6 +35,8 @@ class CountdownTimerTest {
             CountdownTimer(dateTime = dateTime)
         }
 
-        composeTestRule.onNodeWithText("This event has already taken place").assertIsDisplayed()
+        composeTestRule.onRoot().printToLog("ALL")
+
+        composeTestRule.onNodeWithText("This challenge has already taken place").assertIsDisplayed()
     }
 }

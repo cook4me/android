@@ -8,6 +8,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import ch.epfl.sdp.cook4me.R
 import kotlinx.coroutines.delay
 import java.util.Calendar
 
@@ -35,6 +37,6 @@ fun CountdownTimer(dateTime: Calendar) {
             Text(text = "${hours}h ${minutes}m ${seconds}s", style = MaterialTheme.typography.h5)
         }
     } else {
-        Text(text = "This event has already taken place", color = Color.Red, style = MaterialTheme.typography.body2)
+        Text(text = stringResource(R.string.challenge_finished), color = Color.Red, style = MaterialTheme.typography.body2)
     }
 }

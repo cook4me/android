@@ -26,9 +26,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import ch.epfl.sdp.cook4me.R
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
@@ -72,7 +74,11 @@ fun ChallengeDetailedScreen(
                 Spacer(Modifier.height(8.dp))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Filled.People, contentDescription = "Participants", Modifier.size(24.dp))
+                    Icon(
+                        Icons.Filled.People,
+                        contentDescription = "Participants",
+                        Modifier.size(24.dp)
+                    )
                     Spacer(Modifier.width(4.dp))
                     Column {
                         it.participants.forEach { (name, score) ->
@@ -81,7 +87,10 @@ fun ChallengeDetailedScreen(
                             ) {
                                 Box(
                                     modifier = Modifier
-                                        .background(Color.LightGray, shape = RoundedCornerShape(8.dp))
+                                        .background(
+                                            Color.LightGray,
+                                            shape = RoundedCornerShape(8.dp)
+                                        )
                                         .padding(8.dp)
                                 ) {
                                     Text(
@@ -137,14 +146,8 @@ fun ChallengeDetailedScreen(
                     .height(90.dp)
                     .padding(16.dp)
             ) {
-                Text(text = "Join", style = MaterialTheme.typography.button)
+                Text(text = stringResource(R.string.join), style = MaterialTheme.typography.button)
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun DetailedChallengePreview() {
-    ChallengeDetailedScreen(challengeId = "EbsDGi6Gp09FPmZISnrF")
 }
