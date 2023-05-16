@@ -150,6 +150,10 @@
     <string name="edit_profile_screen_tag">Edit Profile Screen</string>
     <string name="login_screen_tag">Login Screen</string>
 
+    <!--Challenges-->
+    <string name="join">Join</string>
+    <string name="challenge_finished">This challenge has already taken place</string>
+
     <!-- Voting Screen --> voteScreenTitle
     <string name="voteScreenTitle">Vote for best participants</string>
 </resources>

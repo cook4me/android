@@ -32,6 +32,7 @@ private const val MAPS_LOADING_TIMEOUT = 8000.toLong()
 private const val STARTING_ZOOM = 10f
 private const val ASSERT_ROUNDING_ERROR = 0.01
 private const val HALF_MINUTE_IN_MILLISECONDS = 20000L
+private const val EVENT_PATH = "events"
 
 class GoogleMapViewTests {
     @get:Rule
@@ -66,7 +67,7 @@ class GoogleMapViewTests {
 
     @Before
     fun setUp() {
-        val (auth, firestore, eventId) = setUpEvents()
+        val (auth, firestore, eventId) = setUpEvents(EVENT_PATH)
         this.auth = auth
         this.firestore = firestore
         this.eventId = eventId
@@ -82,7 +83,7 @@ class GoogleMapViewTests {
 
     @After
     fun cleanUp() {
-        cleanUpEvents(auth, firestore, eventId)
+        cleanUpEvents(auth, firestore, eventId, EVENT_PATH)
     }
 
     @Test
