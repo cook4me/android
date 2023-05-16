@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.challengedetailed
 
+import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -68,8 +69,13 @@ class ChallengeDetailedScreenTest {
 
         // Add challenge to Firestore
         runBlocking {
-            val documentReference = firestore.collection(CHALLENGE_PATH).add(challengeMap).await()
-            challengeId = documentReference.id
+            try {
+                val documentReference = firestore.collection(CHALLENGE_PATH).add(challengeMap).await()
+                challengeId = documentReference.id
+            } catch (ex: FirebaseException) {
+                Log.e("Error when adding challenge", ex.toString())
+            }
+
         }
     }
 
