@@ -29,6 +29,7 @@ fun LocationPicker(
         position = CameraPosition.fromLatLngZoom(EPFL, ZOOM_DEFAULT_VALUE)
     }
     var markerState by remember { mutableStateOf<MarkerState?>(null) }
+
     Column {
         if (markerState == null) {
             Text("Click on the map to pick a location")
