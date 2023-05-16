@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Cook4Me</string>
 
+
     <!--  DatePicker  -->
     <string name="selected_date_text">Selected Date: </string>
     <string name="select_date_button">Select Date</string>
@@ -104,8 +105,8 @@
     <!-- tests -->
     <string name="label">label</string>
     <string name="question">question</string>
-    <string name="option2">option2</string>
     <string name="option1">option1</string>
+    <string name="option2">option2</string>
 
     <!-- Signup -->
     <string name="btn_continue">continue</string>
@@ -119,11 +120,17 @@
     <string name="sign_up_screen_tag">sign up screen</string>
     <string name="add_profile_info_screen_tag">add profile info screen</string>
 
+
+    <!-- Post -->
+    <string name="post_tag_image">image</string>
+    <string name="post_title">Post</string>
+
     <!-- Permission -->
     <string name="permission_message_singular">The %1\$s permission is important. Please grant it for the app to function properly.</string>
     <string name="permission_message_plural">The following permissions are important: %1\$s. Please grant all of them for the app to function properly.</string>
     <string name="permission_message_singular_recommendation">The %1\$s permission will grant a better experience in the app</string>
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
+
 
     <!-- Chat -->
     <string name="Loading_Screen_Tag">Loading Screen TAG</string>
@@ -148,4 +155,8 @@
 
     <!-- Ranking Screen -->
     <string name="rankingScreenTitle">Ranking</string>
+
+    <!--Challenges-->
+    <string name="join">Join</string>
+    <string name="challenge_finished">This challenge has already taken place</string>
 </resources>
