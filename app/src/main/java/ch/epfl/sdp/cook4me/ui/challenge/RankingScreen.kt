@@ -34,7 +34,10 @@ const val WIDTH_PARTICIPANT = 3f
 const val WIDTH_PLACE = 1f
 
 @Composable
-fun RankingScreen(challenge: Challenge, onBack: () -> Unit) {
+fun RankingScreen(
+    challenge: Challenge,
+    onBack: () -> Unit,
+) {
     val sortedParticipants = challenge.participants.toList().sortedByDescending { it.second }
 
     Column {

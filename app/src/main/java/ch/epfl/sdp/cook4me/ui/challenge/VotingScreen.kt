@@ -37,7 +37,10 @@ const val MINSTAR = 1
 const val MAXSTAR = 5
 
 @Composable
-fun VotingScreen(challenge: Challenge, onVoteChanged: (Challenge) -> Unit) {
+fun VotingScreen(
+    challenge: Challenge,
+    onVoteChanged: (Challenge) -> Unit
+) {
     val voteResults = remember { mutableStateMapOf<String, Int>() }
 
     Column {
@@ -106,7 +109,9 @@ fun RatingBar(participant: String, value: Int, onValueChange: (Int) -> Unit) {
     Box {
         Row(
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(horizontal = 1.dp)
+            modifier = Modifier.padding(
+                horizontal = 1.dp
+            ),
         ) {
             for (i in MINSTAR..MAXSTAR) {
                 IconButton(onClick = {
