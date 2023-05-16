@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.challengedetailed
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -7,6 +8,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import ch.epfl.sdp.cook4me.ui.map.Locations.EPFL
 import com.google.firebase.FirebaseException
@@ -32,10 +34,10 @@ private const val PWD_TEST = "123456"
 class ChallengeDetailedScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
-
-    lateinit var auth: FirebaseAuth
-    lateinit var firestore: FirebaseFirestore
-
+    private lateinit var context: Context
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var challengeId: String
     private val challengeTest = Challenge(
         name = "Mountain Climbing",
         description = "Climb the highest peak of the city!",
@@ -45,12 +47,11 @@ class ChallengeDetailedScreenTest {
         creator = "Admin",
         type = "Spanish"
     )
-
-    val challengeMap = createChallengeMap(challengeTest)
-    lateinit var challengeId: String
+    private val challengeMap = createChallengeMap(challengeTest)
 
     @Before
     fun setUpChallenges() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
         auth = FirebaseAuth.getInstance()
         auth.useEmulator("10.0.2.2", AUTH_PORT)
 
