@@ -86,5 +86,5 @@ private fun createEventMap(event: Event): Map<String, Any> =
         "creator" to event.creator,
         "id" to event.id,
         "isPrivate" to event.isPrivate,
-        "latLng" to GeoPoint(event.latLng.first, event.latLng.second)
+        "latLng" to event.latLng
     )

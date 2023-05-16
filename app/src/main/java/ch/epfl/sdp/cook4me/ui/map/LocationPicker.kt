@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.map
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import ch.epfl.sdp.cook4me.ui.map.Locations.EPFL
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -23,7 +21,8 @@ private const val ZOOM_DEFAULT_VALUE = 15f
 
 @Composable
 fun LocationPicker(
-    onLocationPicked: (LatLng) -> Unit
+    onLocationPicked: (LatLng) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(EPFL, ZOOM_DEFAULT_VALUE)
@@ -35,7 +34,7 @@ fun LocationPicker(
             Text("Click on the map to pick a location")
         }
         GoogleMap(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier,
             cameraPositionState = cameraPositionState,
             onMapClick = { latLng ->
                 onLocationPicked(latLng)
@@ -50,6 +49,7 @@ fun LocationPicker(
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun LocationPickerPreview() {
@@ -57,3 +57,4 @@ fun LocationPickerPreview() {
         println("Location picked: $latLng")
     }
 }
+*/
