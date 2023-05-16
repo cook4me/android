@@ -117,7 +117,7 @@ fun RatingBar(participant: String, value: Int, onValueChange: (Int) -> Unit) {
                             selectedValue = i
                         }
                         onValueChange(selectedValue)
-                        }
+                    }
                 ) {
                     Icon(
                         painter = painterResource(
