@@ -3,7 +3,6 @@ package ch.epfl.sdp.cook4me.ui.map
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -14,7 +13,6 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
@@ -32,7 +30,7 @@ fun LocationPicker(
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
-        onMapClick = {latLng ->
+        onMapClick = { latLng ->
             markerPosition = null
             onLocationPicked(latLng)
             cameraPositionState.position = CameraPosition.fromLatLngZoom(latLng, ZOOM_DEFAULT_VALUE)
