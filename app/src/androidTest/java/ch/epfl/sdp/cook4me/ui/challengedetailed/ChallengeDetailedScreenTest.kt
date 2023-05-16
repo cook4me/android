@@ -2,7 +2,9 @@ package ch.epfl.sdp.cook4me.ui.challengedetailed
 
 import android.content.Context
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -33,7 +35,7 @@ private const val PWD_TEST = "123456"
 @RunWith(AndroidJUnit4::class)
 class ChallengeDetailedScreenTest {
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
     private lateinit var context: Context
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
