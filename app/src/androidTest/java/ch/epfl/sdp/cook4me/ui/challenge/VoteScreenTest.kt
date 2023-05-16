@@ -10,7 +10,7 @@ import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import junit.framework.TestCase.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 
 class VoteScreenTest {
     @get:Rule
