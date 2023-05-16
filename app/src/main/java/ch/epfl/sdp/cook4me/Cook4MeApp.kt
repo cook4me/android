@@ -26,10 +26,6 @@ val calendar = Calendar.getInstance()
 val unauthenticatedStartScreen = Screen.Login.name
 val authenticatedStartScreen = Screen.RecipeFeed.name
 
-/*
-* This could probably be refactored more with a ViewModel but State Handling is a little harder
-* so this will have to do
-* */
 @Composable
 fun Cook4MeApp(
     navController: NavHostController = rememberNavController(),
@@ -38,7 +34,6 @@ fun Cook4MeApp(
     )
 ) {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    // TODO make it use the real-time firebase Auth data
     val isAuthenticated = remember { mutableStateOf(auth.currentUser != null) }
     val startScreen = remember {
         mutableStateOf(
