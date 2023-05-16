@@ -82,7 +82,7 @@ class ChallengeDetailedScreenTest {
         }
     }
 
-    fun createChallengeMap(challenge: Challenge): Map<String, Any> =
+    private fun createChallengeMap(challenge: Challenge): Map<String, Any> =
         mapOf(
             "name" to challenge.name,
             "description" to challenge.description,
