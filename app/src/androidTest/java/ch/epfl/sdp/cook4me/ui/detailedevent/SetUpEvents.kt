@@ -1,16 +1,15 @@
 package ch.epfl.sdp.cook4me.ui.detailedevent
 
 import android.util.Log
+import ch.epfl.sdp.cook4me.ui.challengedetailed.challengeTest
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import ch.epfl.sdp.cook4me.ui.eventform.Event
-import ch.epfl.sdp.cook4me.ui.map.Locations
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import java.util.Calendar
 
 private const val FIREBASE_PORT = 8080
 private const val AUTH_PORT = 9099
@@ -101,13 +100,3 @@ private fun createChallengeMap(challenge: Challenge): Map<String, Any> =
         "creator" to challenge.creator,
         "type" to challenge.type
     )
-
-private val challengeTest = Challenge(
-    name = "Mountain Climbing",
-    description = "Climb the highest peak of the city!",
-    dateTime = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 2) },
-    latLng = Pair(Locations.EPFL.latitude, Locations.EPFL.longitude),
-    participants = mapOf("John" to 1, "Jane" to 2),
-    creator = "Admin",
-    type = "Spanish"
-)

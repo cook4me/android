@@ -9,12 +9,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import ch.epfl.sdp.cook4me.ui.detailedevent.cleanUpEvents
 import ch.epfl.sdp.cook4me.ui.detailedevent.setUpEvents
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -44,56 +42,6 @@ class ChallengeDetailedScreenTest {
     fun cleanUp() {
         cleanUpEvents(auth, firestore, challengeId, CHALLENGE_PATH)
     }
-
-    /*
-    fun setUpChallenges() {
-        context = InstrumentationRegistry.getInstrumentation().targetContext
-        auth = FirebaseAuth.getInstance()
-        auth.useEmulator("10.0.2.2", AUTH_PORT)
-
-        firestore = FirebaseFirestore.getInstance()
-        firestore.useEmulator("10.0.2.2", FIREBASE_PORT)
-
-        // Sign in
-        runBlocking {
-            try {
-                auth.signInWithEmailAndPassword(MAIL_TEST, PWD_TEST).await()
-            } catch (e: FirebaseException) {
-                auth.createUserWithEmailAndPassword(MAIL_TEST, PWD_TEST).await()
-                auth.signInWithEmailAndPassword(MAIL_TEST, PWD_TEST).await()
-            }
-        }
-
-        // Add challenge to Firestore
-        runBlocking {
-            try {
-                val documentReference = firestore.collection(CHALLENGE_PATH).add(challengeMap).await()
-                challengeId = documentReference.id
-            } catch (ex: FirebaseException) {
-                Log.e("Error when adding challenge", ex.toString())
-            }
-        }
-    }
-
-    @After
-    fun cleanUpChallenges() {
-        runBlocking {
-            firestore.collection(CHALLENGE_PATH).document(challengeId).delete().await()
-            auth.signInWithEmailAndPassword(MAIL_TEST, PWD_TEST).await()
-            auth.currentUser?.delete()?.await()
-        }
-    }
-    */
-    private fun createChallengeMap(challenge: Challenge): Map<String, Any> =
-        mapOf(
-            "name" to challenge.name,
-            "description" to challenge.description,
-            "dateTime" to challenge.dateTime,
-            "latLng" to GeoPoint(challenge.latLng.first, challenge.latLng.second),
-            "participants" to challenge.participants,
-            "creator" to challenge.creator,
-            "type" to challenge.type
-        )
 
     @Test
     fun testChallengeDetailedScreen() {
