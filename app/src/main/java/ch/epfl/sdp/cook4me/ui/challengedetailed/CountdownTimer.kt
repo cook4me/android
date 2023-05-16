@@ -37,6 +37,10 @@ fun CountdownTimer(dateTime: Calendar) {
             Text(text = "${hours}h ${minutes}m ${seconds}s", style = MaterialTheme.typography.h5)
         }
     } else {
-        Text(text = stringResource(R.string.challenge_finished), color = Color.Red, style = MaterialTheme.typography.body2)
+        Text(
+            text = stringResource(R.string.challenge_finished),
+            color = Color.Red,
+            style = MaterialTheme.typography.body2
+        )
     }
 }
