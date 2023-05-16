@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.Test
 import java.util.Calendar
-
+// test for update challenge TODO
 class ChallengeFormServiceTest {
     private val mockObjectRepository = mockk<ObjectRepository>(relaxed = true)
 
@@ -26,6 +26,7 @@ class ChallengeFormServiceTest {
             description = "description",
             dateTime = dateTime,
             participants = mapOf("participant1" to 0, "participant2" to 0),
+            participantIsVoted = mapOf("participant1" to false, "participant2" to false),
             creator = "creator",
             type = "testType",
         )
@@ -38,6 +39,41 @@ class ChallengeFormServiceTest {
             mockObjectRepository.add(match { challenge.isValidChallenge })
         }
         assert(result == null)
+    }
+
+    @Test
+    fun testUpdateChallenge() = runBlocking {
+        val id = "testId"
+        val challenge = Challenge(
+            name = "name",
+            description = "description",
+            dateTime = Calendar.getInstance(),
+            participants = mapOf("participant1" to 0, "participant2" to 0),
+            participantIsVoted = mapOf("participant1" to false, "participant2" to false),
+            creator = "creator",
+            type = "testType",
+        )
+
+        val updatedChallenge = Challenge(
+            name = "updatedName",
+            description = "updatedDescription",
+            dateTime = Calendar.getInstance(),
+            participants = mapOf("participant1" to 1, "participant2" to 2),
+            participantIsVoted = mapOf("participant1" to true, "participant2" to true),
+            creator = "updatedCreator",
+            type = "updatedTestType",
+        )
+
+        // Mocking the update function to simply return Unit
+        coEvery { mockObjectRepository.update(id, updatedChallenge) } returns Unit
+
+        // Call the function to update the challenge
+        challengeFormService.updateChallenge(id, updatedChallenge)
+
+        // Assert that the update function was called with the correct parameters
+        coVerify {
+            mockObjectRepository.update(id, updatedChallenge)
+        }
     }
 
     @Test
