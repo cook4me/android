@@ -68,7 +68,7 @@ class ProfileImageRepositoryTest {
         val urls = file.map { Uri.fromFile(it) }
         val firebaseImageUri = profileImageRepository.add(image = urls.first())
 
-        val profileImage = profileImageRepository.get()
+        val profileImage = profileImageRepository.getProfile()
         MatcherAssert.assertThat(
             profileImage,
             Matchers.`is`(firebaseImageUri)
@@ -84,7 +84,7 @@ class ProfileImageRepositoryTest {
         profileImageRepository.add(url.first())
 
         runBlocking { profileImageRepository.delete() }
-        val userImage = profileImageRepository.get()
+        val userImage = profileImageRepository.getProfile()
 
         // Check if the userImage is the default image
         assert(userImage.toString() == "android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")

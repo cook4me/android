@@ -12,12 +12,9 @@ import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-
-const val DELAY_MILLIS = 2000L
 
 class ProfileViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
@@ -37,7 +34,7 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            var profile: Profile? = null
+            var profile: Profile?
 
             if (id != null) {
                 // if an user id is provided, use it to load the profile
@@ -45,18 +42,11 @@ class ProfileViewModel(
                 profile = repository.getById(id)
             } else {
                 // otherwise, use the currents user email
-                accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
-            }
-
-            // load the profile again if it is null
-            while (profile == null) {
-                delay(DELAY_MILLIS) // Wait for DELAY_MILLIS before retrying
-                profile =
-                    accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+                profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
             }
 
             try {
-                profile.let {
+                profile?.let {
                     withContext(Dispatchers.Main) {
                         _profileState.value.email = it.email
                         _profileState.value.name = it.name
@@ -74,7 +64,7 @@ class ProfileViewModel(
             }
 
             try {
-                _profileImage.value = profileImageRepository.get(id)
+                _profileImage.value = profileImageRepository.getProfile(id)
             } catch (e: NoSuchElementException) {
                 if (e.message == "Collection is empty.") {
                     _profileImage.value =
