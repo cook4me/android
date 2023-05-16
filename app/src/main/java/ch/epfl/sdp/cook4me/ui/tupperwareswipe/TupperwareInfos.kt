@@ -20,7 +20,7 @@ import ch.epfl.sdp.cook4me.persistence.model.Tupperware
 @Composable
 fun TupperwareInfos(
     modifier: Modifier = Modifier,
-    tupperware: Tupperware = Tupperware("Title", "Description", "User"),
+    tupperware: Tupperware,
     onNavigateToProfileWithId: (String) -> Unit
 ) {
     Card(
