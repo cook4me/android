@@ -10,8 +10,8 @@ data class Challenge(
     val description: String = "",
     val dateTime: Calendar = Calendar.getInstance(),
     val latLng: Pair<Double, Double> = Pair(0.0, 0.0),
-    val participants: Map<String, Int> = mapOf(),
-    val participantIsVoted: Map<String, Boolean> = mapOf(),
+    val participants: Map<String, Int> = mapOf(), // keep track of the participant vote score
+    val participantIsVoted: Map<String, Boolean> = mapOf(), // keep track of the if participant has voted
     val creator: String = "",
     val type: String = "",
 ) {
