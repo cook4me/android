@@ -26,13 +26,11 @@ class ProfileImageRepository(
         return ref.downloadUrl.await()
     }
 
-    suspend fun get(id: String? = null): Uri {
-        var email = id
-        if (id == null) {
-            email = auth.currentUser?.email
-        }
+    suspend fun getProfile(user: String? = null): Uri {
+        val email = user ?: auth.currentUser?.email
 
         checkNotNull(email)
+
         val storageRef = storage.reference
         val images = storageRef.child("/images/$email/profileImage").listAll().await()
 
