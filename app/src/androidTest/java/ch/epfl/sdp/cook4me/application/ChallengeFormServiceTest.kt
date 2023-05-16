@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.Test
 import java.util.Calendar
-
+// test for update challenge TODO
 class ChallengeFormServiceTest {
     private val mockObjectRepository = mockk<ObjectRepository>(relaxed = true)
 
@@ -26,6 +26,7 @@ class ChallengeFormServiceTest {
             description = "description",
             dateTime = dateTime,
             participants = mapOf("participant1" to 0, "participant2" to 0),
+            participantIsVoted = mapOf("participant1" to false, "participant2" to false),
             creator = "creator",
             type = "testType",
         )

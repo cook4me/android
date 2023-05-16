@@ -21,6 +21,7 @@ class ChallengeTest {
             description = "description",
             dateTime = dateTime,
             participants = mapOf("participant1" to 0, "participant2" to 0),
+            participantIsVoted = mapOf("participant1" to false, "participant2" to false),
             creator = "darth.vader@epfl.ch",
             type = "French"
         )
@@ -40,6 +41,7 @@ class ChallengeTest {
             Description: description
             Date: 01/01/2000 at 00:00
             Participants: {participant1=0,participant2=0}
+            ParticipantVoted: {participant1=false,participant2=false}
             Type: French
             Creator: darth.vader@epfl.ch
             Latitude-Longitude:(0.0,0.0)"""
@@ -76,15 +78,18 @@ class ChallengeTest {
     }
 
     @Test
-    fun addNewParticipantInNonFullEventAddsParticipant() {
+    fun addNewParticipantInNonFullChallengeAddsParticipant() {
         val participant = "participant3"
-        val expected = challenge.copy(participants = challenge.participants + (participant to 0))
+        val expected = challenge.copy(
+            participants = challenge.participants + (participant to 0),
+            participantIsVoted = challenge.participantIsVoted + (participant to false)
+        )
         val actual = addParticipant(challenge, participant)
         Assert.assertEquals(expected, actual)
     }
 
     @Test
-    fun addExistingParticipantInNonFullEventDoesNotAddParticipant() {
+    fun addExistingParticipantInNonFullChallengeDoesNotAddParticipant() {
         val participant = "participant1"
         val expected = challenge
         val actual = addParticipant(challenge, participant)
@@ -111,6 +116,24 @@ class ChallengeTest {
     }
 
     @Test
+    fun changeIsVotedOfExistingParticipantUpdatesIsVoted() {
+        val participant = "participant1"
+        val isVoted = true
+        val expected = challenge.copy(participantIsVoted = challenge.participantIsVoted.toMutableMap().apply { this[participant] = isVoted })
+        val actual = changeParticipantIsVoted(challenge, participant, isVoted)
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun changeIsVotedOfNonExistingParticipantDoesNotUpdateIsVoted() {
+        val participant = "participant3"
+        val isVoted = true
+        val expected = challenge
+        val actual = changeParticipantIsVoted(challenge, participant, isVoted)
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
     fun challengeDateReturnsFormattedDate() {
         val dateTime = Calendar.getInstance()
         dateTime.set(2923, Calendar.MAY, 10, 15, 30)
@@ -133,6 +156,7 @@ class ChallengeTest {
             "description" to "description",
             "dateTime" to dateTime,
             "participants" to mapOf("participant1" to 0, "participant2" to 0),
+            "participantIsVoted" to mapOf("participant1" to false, "participant2" to false),
             "creator" to "darth.vader@epfl.ch",
             "type" to "French"
         )
@@ -152,6 +176,7 @@ class ChallengeTest {
             "description" to "description",
             "dateTime" to mapOf("time" to com.google.firebase.Timestamp(dateTime.time)),
             "participants" to mapOf("participant1" to 0, "participant2" to 0),
+            "participantIsVoted" to mapOf("participant1" to false, "participant2" to false),
             "creator" to "darth.vader@epfl.ch",
             "latLng" to geoPoint,
             "type" to "French"
@@ -160,6 +185,14 @@ class ChallengeTest {
         val expected = challenge.copy(latLng = Pair(geoPoint.latitude, geoPoint.longitude))
         val actual = Challenge(dataMap)
 
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testParseEmail() {
+        val email = "darth.vader@epfl.ch"
+        val expected = "darth vader"
+        val actual = parseParticipantEmailToName(email)
         assertEquals(expected, actual)
     }
 }
