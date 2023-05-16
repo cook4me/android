@@ -47,7 +47,7 @@ class ChallengeDetailedScreenTest {
     )
 
     val challengeMap = createChallengeMap(challengeTest)
-    var challengeId = ""
+    lateinit var challengeId: String
 
     @Before
     fun setUpChallenges() {
