@@ -1,57 +1,51 @@
 package ch.epfl.sdp.cook4me.ui.challengedetailed
 
 import android.content.Context
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
-import ch.epfl.sdp.cook4me.ui.map.Locations.EPFL
-import com.google.firebase.FirebaseException
+import ch.epfl.sdp.cook4me.ui.detailedevent.cleanUpEvents
+import ch.epfl.sdp.cook4me.ui.detailedevent.setUpEvents
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.Calendar
 
 private const val CHALLENGE_PATH = "challenges"
-private const val FIREBASE_PORT = 8080
-private const val AUTH_PORT = 9099
-
-private const val MAIL_TEST = "peter.pan@epfl.ch"
-private const val PWD_TEST = "123456"
 @RunWith(AndroidJUnit4::class)
 class ChallengeDetailedScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
     private lateinit var context: Context
-    private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
     private lateinit var challengeId: String
-    private val challengeTest = Challenge(
-        name = "Mountain Climbing",
-        description = "Climb the highest peak of the city!",
-        dateTime = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 2) },
-        latLng = Pair(EPFL.latitude, EPFL.longitude),
-        participants = mapOf("John" to 1, "Jane" to 2),
-        creator = "Admin",
-        type = "Spanish"
-    )
-    private val challengeMap = createChallengeMap(challengeTest)
 
     @Before
+    fun setUp() {
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+        val (auth, firestore, challengeId) = setUpEvents(CHALLENGE_PATH)
+        this.auth = auth
+        this.firestore = firestore
+        this.challengeId = challengeId
+    }
+
+    @After
+    fun cleanUp() {
+        cleanUpEvents(auth, firestore, challengeId, CHALLENGE_PATH)
+    }
+
+    /*
     fun setUpChallenges() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         auth = FirebaseAuth.getInstance()
@@ -89,7 +83,7 @@ class ChallengeDetailedScreenTest {
             auth.currentUser?.delete()?.await()
         }
     }
-
+    */
     private fun createChallengeMap(challenge: Challenge): Map<String, Any> =
         mapOf(
             "name" to challenge.name,
