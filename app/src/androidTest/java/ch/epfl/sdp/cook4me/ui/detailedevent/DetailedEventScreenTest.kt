@@ -34,14 +34,14 @@ class DetailedEventScreenTest {
     @Before
     fun setUp() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
-        val (auth, firestore, eventId) = setUpEvents()
+        val (auth, firestore, eventId) = setUpEvents(EVENT_PATH)
         this.auth = auth
         this.firestore = firestore
         this.eventId = eventId
     }
     @After
     fun cleanUp() {
-        cleanUpEvents(auth, firestore, eventId)
+        cleanUpEvents(auth, firestore, eventId, EVENT_PATH)
     }
 
     @Test
