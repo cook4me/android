@@ -73,8 +73,8 @@ data class Event(
         creator = map["creator"] as? String ?: "",
         id = map["id"] as? String ?: "",
         isPrivate = map["isPrivate"] as? Boolean ?: false,
-        //latLng = (map["latLng"] as? GeoPoint)?.let { Pair(it.latitude, it.longitude) } ?: Pair(0.0, 0.0),
-        latLng = map["latLng"] as? GeoPoint ?: GeoPoint(0.0,0.0)
+        // latLng = (map["latLng"] as? GeoPoint)?.let { Pair(it.latitude, it.longitude) } ?: Pair(0.0, 0.0),
+        latLng = map["latLng"] as? GeoPoint ?: GeoPoint(0.0, 0.0)
     )
 }
 

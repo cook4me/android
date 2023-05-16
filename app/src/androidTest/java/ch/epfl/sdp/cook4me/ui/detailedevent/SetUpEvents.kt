@@ -5,7 +5,6 @@ import ch.epfl.sdp.cook4me.ui.eventform.Event
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
