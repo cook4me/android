@@ -75,7 +75,6 @@ class ChallengeDetailedScreenTest {
             } catch (ex: FirebaseException) {
                 Log.e("Error when adding challenge", ex.toString())
             }
-
         }
     }
 
