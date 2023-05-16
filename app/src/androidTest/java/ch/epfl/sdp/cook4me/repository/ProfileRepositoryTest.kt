@@ -46,6 +46,7 @@ class ProfileRepositoryTest {
             favoriteDish = "turkey",
         )
         runBlocking {
+            // get the profile from the database
             profileRepository.add(newEntry1)
             profileRepository.add(newEntry2)
             val profile1 = profileRepository.getById(newEntry1.email)
