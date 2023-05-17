@@ -156,4 +156,6 @@
 
     <!-- Voting Screen --> voteScreenTitle
     <string name="voteScreenTitle">Vote for best participants</string>
+    <string name="voteButton">Vote</string>
+
 </resources>

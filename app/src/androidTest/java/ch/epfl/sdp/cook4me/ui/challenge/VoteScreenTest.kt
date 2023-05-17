@@ -27,7 +27,11 @@ class VoteScreenTest {
                 creator = "darth.vader@epfl.ch",
                 type = "French"
             )
-            VotingScreen(challenge, {})
+            VotingScreen(
+                challenge,
+                {},
+                {},
+            )
         }
 
         // Assert that 5 stars are displayed
@@ -125,6 +129,7 @@ class VoteScreenTest {
     @Test
     fun votingUpdatesChallengeCorrectly() {
         var updatedChallenge: Challenge? = null
+        var isBackCancelClicked = false
 
         composeTestRule.setContent {
             MaterialTheme {
@@ -136,9 +141,13 @@ class VoteScreenTest {
                     creator = "darth.vader@epfl.ch",
                     type = "French"
                 )
-                VotingScreen(challenge) { challenge ->
-                    updatedChallenge = challenge
-                }
+                VotingScreen(
+                    challenge,
+                    { challenge ->
+                        updatedChallenge = challenge
+                    },
+                    { isBackCancelClicked = true }
+                )
             }
         }
 
@@ -150,5 +159,9 @@ class VoteScreenTest {
 
         // Assert that the returned Challenge has the correct star update
         assertEquals(5, updatedChallenge?.participants?.get("participant1"))
+
+        // Click on cancel button
+        composeTestRule.onNodeWithText("Cancel").performClick()
+        assert(isBackCancelClicked)
     }
 }

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -32,12 +31,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 
 const val MINSTAR = 1
 const val MAXSTAR = 5
 
 @Composable
-fun VotingScreen(challenge: Challenge, onVoteChanged: (Challenge) -> Unit) {
+fun VotingScreen(
+    challenge: Challenge,
+    onVoteChanged: (Challenge) -> Unit,
+    onCancelClick: () -> Unit)
+{
     val voteResults = remember { mutableStateMapOf<String, Int>() }
 
     Column {
@@ -51,19 +55,18 @@ fun VotingScreen(challenge: Challenge, onVoteChanged: (Challenge) -> Unit) {
             }
         }
 
-        Button(
-            onClick = {
+        FormButtons(
+            onCancelText = R.string.ButtonRowCancel,
+            onSaveText = R.string.voteButton,
+            onCancelClick = onCancelClick,
+            onSaveClick = {
                 val updatedChallenge =
-                    challenge.copy(participants = voteResults.mapValues { it.value })
+                    challenge.copy(
+                        participants = voteResults.mapValues { it.value }
+                    )
                 onVoteChanged(updatedChallenge)
             },
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .padding(16.dp, 8.dp)
-        ) {
-            Text("Vote")
-        }
+        )
     }
 }
 
