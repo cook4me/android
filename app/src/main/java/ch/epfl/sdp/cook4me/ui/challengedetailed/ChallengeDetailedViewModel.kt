@@ -1,10 +1,12 @@
 package ch.epfl.sdp.cook4me.ui.challengedetailed
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import ch.epfl.sdp.cook4me.application.ChallengeFormService
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 
 class ChallengeDetailedViewModel : ViewModel() {
@@ -27,10 +29,9 @@ class ChallengeDetailedViewModel : ViewModel() {
 
     suspend fun fetchChallenge(challengeId: String) {
         val challenge = challengeFormService.getChallengeWithId(challengeId)
-        if (challenge != null) {
-            if (challenge.participants[currentUserMail] != null) {
-                _successMessage.value = "You have joined the challenge!"
-            }
+
+        if (challenge?.participants?.get(currentUserMail) != null) {
+            _successMessage.value = "You have joined the challenge!"
         }
         _challenge.value = challenge
     }
@@ -54,8 +55,9 @@ class ChallengeDetailedViewModel : ViewModel() {
                 try {
                     challengeFormService.updateChallenge(challengeId, updatedChallenge)
                     _successMessage.value = "You have joined the challenge!"
-                } catch (e: Exception) {
+                } catch (e: FirebaseException) {
                     _errorMessage.value = "Something went wrong when trying to join the challenge"
+                    Log.e("Error when adding current user to challenge", e.message.toString())
                 } finally {
                     _loading.value = false
                 }
