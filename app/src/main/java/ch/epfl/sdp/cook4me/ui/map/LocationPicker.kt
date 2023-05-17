@@ -48,13 +48,3 @@ fun LocationPicker(
         }
     }
 }
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun LocationPickerPreview() {
-    LocationPicker { latLng ->
-        println("Location picked: $latLng")
-    }
-}
-*/
