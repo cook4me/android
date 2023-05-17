@@ -63,7 +63,6 @@ fun ChallengeDetailedScreen(
 
     LaunchedEffect(joinClicked) {
         if (joinClicked) {
-            println("DISPATCHEDDD!!!")
             challengeViewModel.addCurrentUserAsParticipant(challengeId)
             joinClicked = false
         }
