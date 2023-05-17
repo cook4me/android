@@ -67,4 +67,6 @@ class ChallengeDetailedScreenTest {
         composeTestRule.onNodeWithText("Type: Spanish").assertIsDisplayed()
         composeTestRule.onNodeWithText("Join").assertIsDisplayed()
     }
+
+
 }
