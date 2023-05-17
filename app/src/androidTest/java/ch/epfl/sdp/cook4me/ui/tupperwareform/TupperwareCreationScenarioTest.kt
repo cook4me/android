@@ -70,7 +70,7 @@ class TupperwareCreationScenarioTest {
                 mockTupperwareRepository.add(
                     expectedTitle,
                     expectedDescription,
-                    matchListWithoutOrder(testUri)
+                    testUri
                 )
             }
         }
