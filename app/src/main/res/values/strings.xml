@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Cook4Me</string>
 
-
     <!--  DatePicker  -->
     <string name="selected_date_text">Selected Date: </string>
     <string name="select_date_button">Select Date</string>
@@ -119,11 +118,6 @@
     <string name="TAG_USER_FIELD">UserField</string>
     <string name="sign_up_screen_tag">sign up screen</string>
     <string name="add_profile_info_screen_tag">add profile info screen</string>
-
-
-    <!-- Post -->
-    <string name="post_tag_image">image</string>
-    <string name="post_title">Post</string>
 
     <!-- Permission -->
     <string name="permission_message_singular">The %1\$s permission is important. Please grant it for the app to function properly.</string>
