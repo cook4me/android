@@ -28,8 +28,15 @@ import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 import com.alexstyl.swipeablecard.Direction
+import com.alexstyl.swipeablecard.SwipeableCardState
 import com.alexstyl.swipeablecard.rememberSwipeableCardState
 import kotlinx.coroutines.launch
+
+private data class TupperwareState(
+    val id: String,
+    val data: TupperwareWithImage,
+    val cardState: SwipeableCardState
+)
 
 // code inspired by https://github.com/alexstyl/compose-tinder-card/blob/main/app/src/main/java/com/alexstyl/swipeablecard/MainActivity.kt
 @Composable
@@ -37,19 +44,19 @@ fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
     swipeService: SwipeService = SwipeService()
 ) {
-
-    val tupperwareList = remember {
-        mutableStateOf(listOf<Pair<String, TupperwareWithImage?>>())
+    val data = remember {
+        mutableStateOf(mapOf<String, TupperwareWithImage>())
     }
     val states =
-        tupperwareList.value.map { it.first to (it.second to rememberSwipeableCardState()) }
+        data.value.map { TupperwareState(it.key, it.value, rememberSwipeableCardState()) }
     val scope = rememberCoroutineScope()
-    val allDone = states.isEmpty() || states.all { it.second.second.swipedDirection != null }
+    val allDone =
+        states.isEmpty() || states.all { it.cardState.swipedDirection != null }
     val openMatchDialog = remember { mutableStateOf(false) }
     val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        tupperwareList.value = swipeService.getAllUnswipedTupperware().toList()
+        data.value = swipeService.getAllUnswipedTupperware()
         isLoading.value = false
     }
 
@@ -74,14 +81,14 @@ fun TupperwareSwipeScreen(
     fun findElementToBeSwipedOrNull() =
         states
             .reversed()
-            .firstOrNull { notSwipedYet(it.second.second.offset.value) }
+            .firstOrNull { notSwipedYet(it.cardState.offset.value) }
 
     fun onSwipeButtonClicked(direction: Direction) {
         scope.launch {
             val element = findElementToBeSwipedOrNull()
             element?.let {
-                it.second.second.swipe(direction) // for the buttons we need to manually set the offset, because no dragging was done
-                onSwipe(it.first, direction)
+                it.cardState.swipe(direction) // for the buttons we need to manually set the offset, because no dragging was done
+                onSwipe(it.id, direction)
             }
         }
     }
@@ -105,16 +112,15 @@ fun TupperwareSwipeScreen(
                     if (allDone) {
                         Text("all done") // TODO: https://github.com/cook4me/android/issues/185
                     } else {
-                        states.forEach { (id, somePair) ->
-                            somePair.first?.let { data ->
-                                if (somePair.second.swipedDirection == null) {
-                                    TupperwareCard(
-                                        somePair.second,
-                                        tupperware = data,
-                                    ) { direction ->
-                                        scope.launch {
-                                            onSwipe(id, direction)
-                                        }
+                        states.forEach {
+                            if (it.cardState.swipedDirection == null) {
+                                TupperwareCard(
+                                    it.cardState,
+                                    it.data
+                                ) { direction ->
+                                    scope.launch {
+                                        onSwipe(it.id, direction)
+                                    }
                                 }
                             }
                         }
@@ -146,5 +152,4 @@ fun TupperwareSwipeScreen(
             }
         }
     }
-}
 }
