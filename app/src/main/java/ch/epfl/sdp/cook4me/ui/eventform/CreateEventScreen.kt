@@ -23,6 +23,8 @@ import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
+import ch.epfl.sdp.cook4me.ui.map.LocationPicker
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
@@ -94,6 +96,12 @@ fun CreateEventScreen(
         )
         TimePicker(
             onTimeChanged = { updateTime(it) }
+        )
+
+        LocationPicker(
+            onLocationPicked = {
+                event.value = event.value.copy(latLng = GeoPoint(it.latitude, it.longitude))
+            }
         )
 
         FormButtons(
