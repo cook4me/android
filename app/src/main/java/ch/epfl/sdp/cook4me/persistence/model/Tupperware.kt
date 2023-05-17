@@ -7,7 +7,6 @@ data class FirestoreTupperware(
     var user: String = ""
 )
 
-
 data class TupperwareWithImage(
     val title: String,
     val description: String,

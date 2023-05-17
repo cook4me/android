@@ -6,20 +6,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
-private const val MAX_RETRIEVED_DOCS = 20.toLong()
-
 open class ObjectRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val objectPath: String = ""
 ) {
 
-    suspend fun <A : Any> addAndGetId(value: A): String {
+    suspend fun <A : Any> add(value: A): String {
         val documentRef = store.collection(objectPath).add(value).await()
         return documentRef.id
-    }
-
-    suspend fun <A : Any> add(value: A) {
-        store.collection(objectPath).add(value).await()
     }
 
     open suspend fun delete(id: String) {
@@ -105,6 +99,8 @@ open class ObjectRepository(
             null
         }
 }
+
+private const val MAX_RETRIEVED_DOCS = 20.toLong()
 
 open class ObjectCollectionRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),

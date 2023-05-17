@@ -7,7 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Chat
 import androidx.compose.runtime.Composable
 
-//TODO: https://github.com/cook4me/android/issues/181
+// TODO: https://github.com/cook4me/android/issues/181
 @Composable
 fun MatchDialog(onDismissRequest: () -> Unit) {
     AlertDialog(
@@ -24,4 +24,3 @@ fun MatchDialog(onDismissRequest: () -> Unit) {
         buttons = {}
     )
 }
-

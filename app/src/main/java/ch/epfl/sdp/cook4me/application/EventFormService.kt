@@ -29,26 +29,6 @@ class EventFormService(
     }
 
     /*
-    * Retrieves event with query name at the given field
-    * e.g. getWithGivenField("name", "darth.vadar") will return a map of events with name (event attr.) "darth.vadar"
-    * map id: the id of the event, map value: the event object
-    * When nothing is found, an empty map is returned
-    * */
-    suspend fun getWithGivenField(field: String, query: Any): Map<String, Event> {
-        val result = objectRepository.getWithGivenField<Event>(field, query)
-        return result.map { it.id to documentSnapshotToEvent(it) }.toMap()
-    }
-
-    /*
-    * To get the first event of queried map of events.
-    * If nothing is found, null is returned
-    * */
-    suspend fun getFirstEventWithGivenField(field: String, query: Any): Event? {
-        val resultMap: Map<String, Event> = getWithGivenField(field, query)
-        return resultMap.values.firstOrNull()
-    }
-
-    /*
     * To get the event of given id.
     * If nothing is found, null is returned
     * */

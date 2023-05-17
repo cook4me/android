@@ -42,7 +42,8 @@ fun Cook4MeNavHost(
     ) {
         composable(Screen.TupperwareSwipeScreen.name) {
             BackHandler(true) {
-                // the back button functionality interferes with the swipe screen, therefore we disable it's functionality
+                // the back button functionality interferes with the swipe screen,
+                // therefore we disable it's functionality
             }
             TupperwareSwipeScreen(
                 onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) }

@@ -34,15 +34,14 @@ class SwipeService(
             val allSwipes = swipeRepository.getAllIdsByUser(email)
             val allTupperwareIdsFromOtherUsers = tupperwareRepository.getAllIdsNotByUser(email)
             val toBeSwiped = allTupperwareIdsFromOtherUsers.minus(allSwipes)
-            toBeSwiped.mapNotNull {id ->
-               val tupperware = tupperwareRepository.getWithImageById(id)
+            toBeSwiped.mapNotNull { id ->
+                val tupperware = tupperwareRepository.getWithImageById(id)
                 tupperware?.let {
                     id to it
                 }
             }.toMap()
-        } catch (e: Exception) {
+        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
             Log.e("SwipeService", "exception was thrown", e)
             mapOf()
         }
-
 }

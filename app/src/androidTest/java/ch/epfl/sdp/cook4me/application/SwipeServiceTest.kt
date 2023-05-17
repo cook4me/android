@@ -18,8 +18,8 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.containsInAnyOrder
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -81,12 +81,11 @@ class SwipeServiceTest {
         signInWithUserB()
         tupperwareRepository.addMultipleTestTupperware(filesB)
         signInWithUserA()
-        swipeService.getAllUnswipedTupperware().forEach{
+        swipeService.getAllUnswipedTupperware().forEach {
             swipeService.storeSwipeResult(it.key, true)
             assertThat(swipeService.isMatch(it.key), `is`(false))
         }
     }
-
 
     @Test
     fun matchOnOverlap() = runTest {
@@ -100,11 +99,11 @@ class SwipeServiceTest {
         tupperwareRepository.addMultipleTestTupperware(filesA)
         signInWithUserB()
         tupperwareRepository.addMultipleTestTupperware(filesB)
-        swipeService.getAllUnswipedTupperware().forEach{
+        swipeService.getAllUnswipedTupperware().forEach {
             swipeService.storeSwipeResult(it.key, true)
         }
         signInWithUserA()
-        swipeService.getAllUnswipedTupperware().forEach{
+        swipeService.getAllUnswipedTupperware().forEach {
             swipeService.storeSwipeResult(it.key, true)
             assertThat(swipeService.isMatch(it.key), `is`(true))
         }
@@ -135,5 +134,4 @@ class SwipeServiceTest {
 
     private suspend fun signInWithUserB() =
         auth.signInWithEmailAndPassword(USER_B, PASSWORD_B).await()
-
 }

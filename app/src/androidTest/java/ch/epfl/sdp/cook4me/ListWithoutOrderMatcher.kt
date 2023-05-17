@@ -9,14 +9,14 @@ data class ListWithoutOrderMatcher<T>(
     val expectedList: List<T>,
     val refEq: Boolean
 ) : Matcher<List<T>> {
-    val map = buildCountsMap(expectedList, refEq)
+    val map = buildCountsMap(expectedList)
 
     override fun match(arg: List<T>?): Boolean {
         if (arg == null) return false
-        return buildCountsMap(arg, refEq) == map
+        return buildCountsMap(arg) == map
     }
 
-    private fun buildCountsMap(list: List<T>, ref: Boolean): Map<Any?, Int> {
+    private fun buildCountsMap(list: List<T>): Map<Any?, Int> {
         val map = mutableMapOf<Any?, Int>()
 
         for (item in list) {

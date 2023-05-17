@@ -87,7 +87,8 @@ fun TupperwareSwipeScreen(
         scope.launch {
             val element = findElementToBeSwipedOrNull()
             element?.let {
-                it.cardState.swipe(direction) // for the buttons we need to manually set the offset, because no dragging was done
+                // for the buttons we need to manually set the offset, because no dragging was done
+                it.cardState.swipe(direction)
                 onSwipe(it.id, direction)
             }
         }
@@ -141,7 +142,7 @@ fun TupperwareSwipeScreen(
                     enabled = !allDone,
                     icon = Icons.Rounded.Close,
 
-                    )
+                )
                 CircleButton(
                     onClick = {
                         onSwipeButtonClicked(Direction.Right)

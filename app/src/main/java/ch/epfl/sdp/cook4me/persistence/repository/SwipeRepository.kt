@@ -10,7 +10,7 @@ private const val COLLECTION_PATH = "swipes"
 class SwipeRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-): ObjectRepository(store, COLLECTION_PATH) {
+) : ObjectRepository(store, COLLECTION_PATH) {
 
     suspend fun add(tupperwareId: String, liked: Boolean) {
         val email = auth.currentUser?.email

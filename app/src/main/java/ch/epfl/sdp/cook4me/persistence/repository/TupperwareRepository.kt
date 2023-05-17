@@ -1,12 +1,12 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
+import android.net.Uri
 import ch.epfl.sdp.cook4me.persistence.model.FirestoreTupperware
 import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
-import android.net.Uri
 
 private const val COLLECTION_PATH = "tupperwares"
 private const val STORAGE_BASE_PATH = "/images/tupperwares"
@@ -22,7 +22,7 @@ class TupperwareRepository(
     suspend fun add(title: String, description: String, image: Uri): String {
         val email = auth.currentUser?.email
         checkNotNull(email)
-        val tupperwareId = super.addAndGetId(FirestoreTupperware(title, description, email))
+        val tupperwareId = super.add(FirestoreTupperware(title, description, email))
         val storageRef = storage.reference
         val imageRef =
             storageRef.child("$STORAGE_BASE_PATH/$tupperwareId")
@@ -62,4 +62,3 @@ class TupperwareRepository(
         imageRef.delete().await()
     }
 }
-

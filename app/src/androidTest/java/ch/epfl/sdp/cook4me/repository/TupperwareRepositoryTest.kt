@@ -1,8 +1,6 @@
 package ch.epfl.sdp.cook4me.repository
 
 import addMultipleTestTupperware
-import android.net.Uri
-import ch.epfl.sdp.cook4me.persistence.model.FirestoreTupperware
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import ch.epfl.sdp.cook4me.setupFirebaseAuth
 import ch.epfl.sdp.cook4me.setupFirebaseStorage
@@ -11,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import generateTempFiles
-import io.mockk.InternalPlatformDsl.toArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -25,7 +22,6 @@ import org.hamcrest.Matchers.notNullValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.io.File
 
 private const val USER_A = "user.a@epfl.ch"
 private const val PASSWORD_A = "password_a"
@@ -97,5 +93,4 @@ class TupperwareRepositoryTest {
         val actualIds = tupperwareRepository.getAllIdsNotByUser("other.user@epfl.ch")
         assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
     }
-
 }

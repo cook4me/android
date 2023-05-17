@@ -28,5 +28,3 @@ fun setupFirebaseStorage(): FirebaseStorage {
     storage.useEmulator("10.0.2.2", 9199)
     return storage
 }
-
-
