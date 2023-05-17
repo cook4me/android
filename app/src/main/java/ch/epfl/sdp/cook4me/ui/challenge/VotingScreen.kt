@@ -117,14 +117,16 @@ fun RatingBar(participant: String, value: Int, onValueChange: (Int) -> Unit) {
             modifier = Modifier.padding(horizontal = 1.dp)
         ) {
             for (i in MINSTAR..MAXSTAR) {
-                IconButton(onClick = {
-                    if (selectedValue == i) {
-                        selectedValue = 0
-                    } else {
-                        selectedValue = i
+                IconButton(
+                    onClick = {
+                        if (selectedValue == i) {
+                            selectedValue = 0
+                        } else {
+                            selectedValue = i
+                        }
+                        onValueChange(selectedValue)
                     }
-                    onValueChange(selectedValue)
-                }) {
+                ) {
                     Icon(
                         painter = painterResource(
                             id =
