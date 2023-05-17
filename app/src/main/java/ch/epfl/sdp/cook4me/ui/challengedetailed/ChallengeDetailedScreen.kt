@@ -125,7 +125,7 @@ fun ChallengeDetailedScreen(
 
                 Spacer(Modifier.height(8.dp))
 
-                val position = LatLng(it.latLng.first, it.latLng.second)
+                val position = LatLng(it.latLng.latitude, it.latLng.longitude)
                 GoogleMap(
                     modifier = Modifier.fillMaxWidth().height(300.dp),
                     cameraPositionState = CameraPositionState(

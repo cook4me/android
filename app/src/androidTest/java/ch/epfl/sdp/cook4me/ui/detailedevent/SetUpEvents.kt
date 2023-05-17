@@ -95,7 +95,7 @@ private fun createChallengeMap(challenge: Challenge): Map<String, Any> =
         "name" to challenge.name,
         "description" to challenge.description,
         "dateTime" to challenge.dateTime,
-        "latLng" to GeoPoint(challenge.latLng.first, challenge.latLng.second),
+        "latLng" to challenge.latLng,
         "participants" to challenge.participants,
         "creator" to challenge.creator,
         "type" to challenge.type

@@ -157,7 +157,7 @@ class ChallengeTest {
             "type" to "French"
         )
 
-        val expected = challenge.copy(latLng = Pair(geoPoint.latitude, geoPoint.longitude))
+        val expected = challenge.copy(latLng = geoPoint)
         val actual = Challenge(dataMap)
 
         assertEquals(expected, actual)

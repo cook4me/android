@@ -9,7 +9,7 @@ data class Challenge(
     val name: String = "",
     val description: String = "",
     val dateTime: Calendar = Calendar.getInstance(),
-    val latLng: Pair<Double, Double> = Pair(0.0, 0.0),
+    val latLng: GeoPoint = GeoPoint(0.0, 0.0),
     val participants: Map<String, Int> = mapOf(),
     val creator: String = "",
     val type: String = "",
@@ -56,7 +56,7 @@ data class Challenge(
             ?: Calendar.getInstance(),
         participants = map["participants"] as? Map<String, Int> ?: mapOf(),
         creator = map["creator"] as? String ?: "",
-        latLng = (map["latLng"] as? GeoPoint)?.let { Pair(it.latitude, it.longitude) } ?: Pair(0.0, 0.0),
+        latLng = map["latLng"] as? GeoPoint ?: GeoPoint(0.0, 0.0),
         type = map["type"] as? String ?: "",
     )
     fun toMap(): Map<String, Any> =
