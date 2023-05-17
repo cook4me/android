@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -40,10 +41,14 @@ fun RankingScreen(
 ) {
     val sortedParticipants = challenge.participants.toList().sortedByDescending { it.second }
 
-    Column {
+    Column(modifier = Modifier.fillMaxSize()) {
         BasicToolbar(stringResource(R.string.rankingScreenTitle))
 
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f) // This ensures the list takes up all available space between the title and button
+                .fillMaxWidth()
+        ) {
             item {
                 Row(
                     modifier = Modifier
