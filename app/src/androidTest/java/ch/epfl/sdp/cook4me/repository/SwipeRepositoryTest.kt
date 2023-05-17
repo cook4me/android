@@ -57,6 +57,7 @@ class SwipeRepositoryTest {
         swipeRepository.add("id1", false)
         swipeRepository.add("id2", true)
         swipeRepository.add("id3", true)
+        swipeRepository.add("id4", false)
         val ids = swipeRepository.getAllPositiveIdsByUser(auth.currentUser?.email ?: error("shouldn't happen"))
         assertThat(ids, containsInAnyOrder("id2", "id3"))
     }

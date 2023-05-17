@@ -7,11 +7,9 @@ import ch.epfl.sdp.cook4me.setupFirebaseAuth
 import ch.epfl.sdp.cook4me.setupFirebaseStorage
 import ch.epfl.sdp.cook4me.setupFirestore
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import io.mockk.InternalPlatformDsl.toArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -21,13 +19,17 @@ import kotlinx.coroutines.withContext
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.containsInAnyOrder
+import org.hamcrest.Matchers.notNullValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.File
 
-private const val USER_NAME = "harry.potter@epfl.ch"
-private const val PASSWORD = "WingardiumLeviosa"
+private const val USER_A = "user.a@epfl.ch"
+private const val PASSWORD_A = "password_a"
+
+private const val USER_B = "user.b@epfl.ch"
+private const val PASSWORD_B = "password_b"
 
 @ExperimentalCoroutinesApi
 class TupperwareRepositoryTest {
@@ -43,8 +45,9 @@ class TupperwareRepositoryTest {
         auth = setupFirebaseAuth()
         tupperwareRepository = TupperwareRepository(store, storage, auth)
         runBlocking {
-            auth.createUserWithEmailAndPassword(USER_NAME, PASSWORD).await()
-            auth.signInWithEmailAndPassword(USER_NAME, PASSWORD).await()
+            auth.createUserWithEmailAndPassword(USER_A, PASSWORD_A).await()
+            auth.createUserWithEmailAndPassword(USER_B, PASSWORD_B).await()
+            auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
         }
     }
 
@@ -52,75 +55,68 @@ class TupperwareRepositoryTest {
     fun cleanUp() {
         runBlocking {
             tupperwareRepository.deleteAll()
-            auth.signInWithEmailAndPassword(USER_NAME, PASSWORD).await()
+            auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
+            auth.currentUser?.delete()
+            auth.signInWithEmailAndPassword(USER_B, PASSWORD_B).await()
             auth.currentUser?.delete()
         }
     }
 
     @Test
-    fun storeNewTupperware() = runTest {
+    fun storeAndGetNewTupperware() = runTest {
         val files = withContext(Dispatchers.IO) {
             generateTempFiles(2)
         }
-        val urls = files.map { Uri.fromFile(it) }
-        tupperwareRepository.add(title = "title1", description = "desc1", image = null)
-        tupperwareRepository.add(
-            title = "title2",
-            description = "desc2",
-            image = urls[0]
-        )
-        tupperwareRepository.add(
-            title = "title3",
-            description = "desc3",
-            image = urls[1]
-        )
-        val allTupperware = tupperwareRepository.getAll<FirestoreTupperware>()
-        assertThat(
-            allTupperware.values,
-            containsInAnyOrder(
-                FirestoreTupperware("title1", "desc1", USER_NAME),
-                FirestoreTupperware("title2", "desc2", USER_NAME),
-                FirestoreTupperware("title3", "desc3", USER_NAME),
-            )
-        )
-        val tupIdsSortedbyTitle = allTupperware.toList().sortedBy { it.second.title }.map { it.first }
-        val userTupperwareFolder = storage.reference.child("images/$USER_NAME/tupperwares")
-        val tupperwareFolders = userTupperwareFolder.listAll().await()
-        assertThat(
-            tupperwareFolders.prefixes.map { it.name },
-            containsInAnyOrder(tupIdsSortedbyTitle[1], tupIdsSortedbyTitle[2])
-        )
-        val title2Folder = storage.reference
-            .child("images/$USER_NAME/tupperwares/${tupIdsSortedbyTitle[1]}").listAll().await()
-        val title3Folder = storage.reference
-            .child("images/$USER_NAME/tupperwares/${tupIdsSortedbyTitle[2]}").listAll().await()
-        assertThat(title2Folder.items.count(), `is`(1))
-        assertThat(title3Folder.items.count(), `is`(2))
-    }
-
-    //TODO: ????
-    @Test
-    fun deleteRecipe() = runTest {
-        val file = withContext(Dispatchers.IO) {
-            generateTempFiles(1)
+        val ids = addMultipleTupperware(files)
+        ids.zip(files).forEachIndexed { i, data ->
+            val actual = tupperwareRepository.getWithImageById(data.first)
+            assertThat(actual, `is`(notNullValue()))
+            actual?.let {
+                assertThat(it.title, `is`("title$i"))
+                assertThat(it.description, `is`("desc$i"))
+                assertThat(it.user, `is`(auth.currentUser?.email))
+                assertThat(it.image, `is`(data.second.readBytes()))
+            }
         }
-        val urls = file.map { Uri.fromFile(it) }
-        val tup = FirestoreTupperware("title1", "desc1", USER_NAME)
-        tupperwareRepository.add(tup.title, tup.description, urls.first())
-        val tupId = tupperwareRepository
-            .getWithGivenField<FirestoreTupperware>("title", tup.title).first().id
-        runBlocking { tupperwareRepository.delete(tupId) }
-        val tups = tupperwareRepository.getAll<FirestoreTupperware>()
-        assert(tups.isEmpty())
-        val images = storage.reference.child("images/$USER_NAME/tupperwares").listAll().await()
-        assert(images.prefixes.isEmpty())
     }
 
-    private fun generateTempFiles(count: Int): List<File> =
-        (0 until count).map {
-            val file = File.createTempFile("temp_", "$it")
-            file.writeText("temp$it")
-            file.deleteOnExit()
-            file
+    @Test
+    fun getAllOwnIds() = runTest {
+        val files = withContext(Dispatchers.IO) {
+            generateTempFiles(3)
+        }
+        val expectedIds = addMultipleTupperware(files)
+        val actualIds = tupperwareRepository.getAllIdsByUser(USER_A)
+        assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
+    }
+
+    @Test
+    fun getAllOtherIds() = runTest {
+        val files = withContext(Dispatchers.IO) {
+            generateTempFiles(3)
+        }
+        val expectedIds = addMultipleTupperware(files)
+        val actualIds = tupperwareRepository.getAllIdsNotByUser(USER_B)
+        assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
+    }
+
+    private suspend fun addMultipleTupperware(files: List<File>) =
+        files.mapIndexed { i, file ->
+            tupperwareRepository.add(
+                "title$i",
+                "desc$i",
+                Uri.fromFile(file)
+            )
         }
 }
+
+private fun generateTempFiles(count: Int): List<File> =
+    (0 until count).map {
+        val file = File.createTempFile("temp_", "$it")
+        file.writeText("temp$it")
+        file.deleteOnExit()
+        file
+    }
+
+
+

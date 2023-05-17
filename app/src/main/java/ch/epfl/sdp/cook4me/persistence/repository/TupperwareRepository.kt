@@ -19,16 +19,15 @@ class TupperwareRepository(
 ) :
     ObjectRepository(store, COLLECTION_PATH) {
 
-    suspend fun add(title: String, description: String, image: Uri?) {
+    suspend fun add(title: String, description: String, image: Uri): String {
         val email = auth.currentUser?.email
         checkNotNull(email)
         val tupperwareId = super.addAndGetId(FirestoreTupperware(title, description, email))
         val storageRef = storage.reference
-        image?.let {
-            val ref =
-                storageRef.child("$BASE_PATH/$tupperwareId")
-            ref.putFile(it).await()
-        }
+        val imageRef =
+            storageRef.child("$BASE_PATH/$tupperwareId")
+        imageRef.putFile(image).await()
+        return tupperwareId
     }
 
     suspend fun getWithImageById(id: String): TupperwareWithImage? {
@@ -58,14 +57,9 @@ class TupperwareRepository(
 
     override suspend fun delete(id: String) {
         super.delete(id)
-        auth.currentUser?.email?.let { email ->
-            val images = storage.reference
-                .child("/images/$email/tupperwares/$id")
-                .listAll()
-                .await()
-            images.items.forEach {
-                it.delete().await()
-            }
-        }
+        val imageRef = storage.reference
+            .child("$BASE_PATH/$id")
+        imageRef.delete().await()
     }
 }
+
