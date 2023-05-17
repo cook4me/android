@@ -27,9 +27,7 @@ fun LocationPicker(
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(EPFL, ZOOM_DEFAULT_VALUE)
     }
-    var markerState by remember {
-        mutableStateOf<MarkerState?>(null)
-    }
+    var markerState by remember { mutableStateOf<MarkerState?>(null) }
 
     Column {
         if (markerState == null) {
