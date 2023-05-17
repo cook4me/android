@@ -202,6 +202,8 @@ fun ChallengeDetailedScreen(
     }
 }
 
+/*
+This preview is useful to test this screen when developing.
 @Preview
 @Composable
 fun DetailedChallengeScreenPreview() {
@@ -211,3 +213,4 @@ fun DetailedChallengeScreenPreview() {
     }
     ChallengeDetailedScreen(challengeId = "YCgAw2Poo165zActQGii")
 }
+*/
