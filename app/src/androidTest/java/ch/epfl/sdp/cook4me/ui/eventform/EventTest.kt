@@ -46,7 +46,7 @@ class EventTest {
             Creator: creator
             Id: id
             Is private: true
-            Latitude-Longitude:(0.0,0.0)"""
+            Latitude-Longitude:[GeoPoint{latitude=0.0,longitude=0.0}]"""
         // remove all the spaces
         expected = expected.replace("\\s".toRegex(), "")
         val actual = event.eventInformation.replace("\\s".toRegex(), "")
