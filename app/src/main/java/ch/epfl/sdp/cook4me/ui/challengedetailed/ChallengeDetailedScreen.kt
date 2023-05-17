@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -23,19 +24,25 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.epfl.sdp.cook4me.R
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseAuth
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
+import kotlinx.coroutines.tasks.await
 
 @Suppress("MagicNumber")
 @Composable
@@ -44,9 +51,22 @@ fun ChallengeDetailedScreen(
     challengeId: String
 ) {
     val challenge by challengeViewModel.challenge
+    val isLoading by challengeViewModel.loading
+    val successMessage by challengeViewModel.successMessage
+    val errorMessage by challengeViewModel.errorMessage
+
+    var joinClicked by remember { mutableStateOf(false) }
 
     LaunchedEffect(challengeId) {
         challengeViewModel.fetchChallenge(challengeId)
+    }
+
+    LaunchedEffect(joinClicked) {
+        if (joinClicked) {
+            println("DISPATCHEDDD!!!")
+            challengeViewModel.addCurrentUserAsParticipant(challengeId)
+            joinClicked = false
+        }
     }
 
     challenge?.let {
@@ -127,7 +147,9 @@ fun ChallengeDetailedScreen(
 
                 val position = LatLng(it.latLng.first, it.latLng.second)
                 GoogleMap(
-                    modifier = Modifier.fillMaxWidth().height(300.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
                     cameraPositionState = CameraPositionState(
                         CameraPosition.fromLatLngZoom(position, 15f)
                     )
@@ -136,17 +158,57 @@ fun ChallengeDetailedScreen(
                     MarkerInfoWindow(state = markerState, title = it.name)
                 }
             }
-
-            Button(
-                onClick = { },
+            Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .fillMaxWidth(0.9.toFloat())
                     .height(90.dp)
                     .padding(16.dp)
             ) {
-                Text(text = stringResource(R.string.join), style = MaterialTheme.typography.button)
+                if (isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                } else {
+                    errorMessage?.let {
+                        Text(
+                            text = it,
+                            color = Color.Red,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    successMessage?.let {
+                        Column(
+                            modifier = Modifier.align(Alignment.Center)
+                        ) {
+                            Text(
+                                text = it,
+                                color = Color.Blue,
+                            )
+                            Button(
+                                onClick = { /*TODO: Navigate to voting screen */ }
+                            ) {
+                                Text(stringResource(id = R.string.vote))
+                            }
+                        }
+                    }
+                    if (successMessage == null) {
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = { joinClicked = true }
+                        ) {
+                            Text(text = stringResource(R.string.join), style = MaterialTheme.typography.button)
+                        }
+                    }
+                }
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun DetailedChallengeScreenPreview() {
+    var authenticated = false
+    LaunchedEffect(authenticated) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword("pau.romeu@epfl.ch", "123456").await()
+    }
+    ChallengeDetailedScreen(challengeId = "YCgAw2Poo165zActQGii")
 }

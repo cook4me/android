@@ -153,4 +153,7 @@
     <!--Challenges-->
     <string name="join">Join</string>
     <string name="challenge_finished">This challenge has already taken place</string>
+    <string name="vote">Vote for other participants</string>
+    <string name="join_challenge_error">Something went wrong when trying to join the challenge</string>
+    <string name="join_challenge_success">You have joined the challenge!</string>
 </resources>
