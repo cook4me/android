@@ -3,6 +3,9 @@ package ch.epfl.sdp.cook4me.repository
 import android.net.Uri
 import ch.epfl.sdp.cook4me.persistence.model.FirestoreTupperware
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
+import ch.epfl.sdp.cook4me.setupFirebaseAuth
+import ch.epfl.sdp.cook4me.setupFirebaseStorage
+import ch.epfl.sdp.cook4me.setupFirestore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,8 +26,8 @@ import org.junit.Before
 import org.junit.Test
 import java.io.File
 
-private const val COLLECTION_PATH = "tupperwares"
 private const val USER_NAME = "harry.potter@epfl.ch"
+private const val PASSWORD = "WingardiumLeviosa"
 
 @ExperimentalCoroutinesApi
 class TupperwareRepositoryTest {
@@ -35,32 +38,21 @@ class TupperwareRepositoryTest {
 
     @Before
     fun setUp() {
-        store = FirebaseFirestore.getInstance()
-        val settings = FirebaseFirestoreSettings.Builder()
-            .setHost("10.0.2.2:8080") // connect to local firestore emulator
-            .setSslEnabled(false)
-            .setPersistenceEnabled(false)
-            .build()
-        store.firestoreSettings = settings
-        Firebase.auth.useEmulator("10.0.2.2", 9099)
-        storage = FirebaseStorage.getInstance()
-        storage.useEmulator("10.0.2.2", 9199)
-        auth = FirebaseAuth.getInstance()
+        store = setupFirestore()
+        storage = setupFirebaseStorage()
+        auth = setupFirebaseAuth()
         tupperwareRepository = TupperwareRepository(store, storage, auth)
         runBlocking {
-            auth.createUserWithEmailAndPassword(USER_NAME, "123456").await()
-            auth.signInWithEmailAndPassword(USER_NAME, "123456").await()
+            auth.createUserWithEmailAndPassword(USER_NAME, PASSWORD).await()
+            auth.signInWithEmailAndPassword(USER_NAME, PASSWORD).await()
         }
     }
 
     @After
     fun cleanUp() {
         runBlocking {
-            val querySnapshot = store.collection(COLLECTION_PATH).get().await()
-            for (documentSnapshot in querySnapshot.documents) {
-                tupperwareRepository.delete(documentSnapshot.id)
-            }
-            auth.signInWithEmailAndPassword(USER_NAME, "123456").await()
+            tupperwareRepository.deleteAll()
+            auth.signInWithEmailAndPassword(USER_NAME, PASSWORD).await()
             auth.currentUser?.delete()
         }
     }
@@ -68,19 +60,19 @@ class TupperwareRepositoryTest {
     @Test
     fun storeNewTupperware() = runTest {
         val files = withContext(Dispatchers.IO) {
-            generateTempFiles(3)
+            generateTempFiles(2)
         }
         val urls = files.map { Uri.fromFile(it) }
-        val id1 = tupperwareRepository.add(title = "title1", description = "desc1", images = listOf())
+        tupperwareRepository.add(title = "title1", description = "desc1", image = null)
         tupperwareRepository.add(
             title = "title2",
             description = "desc2",
-            images = listOf(urls.first())
+            image = urls[0]
         )
         tupperwareRepository.add(
             title = "title3",
             description = "desc3",
-            images = urls.drop(1)
+            image = urls[1]
         )
         val allTupperware = tupperwareRepository.getAll<FirestoreTupperware>()
         assertThat(
@@ -106,16 +98,17 @@ class TupperwareRepositoryTest {
         assertThat(title3Folder.items.count(), `is`(2))
     }
 
+    //TODO: ????
     @Test
     fun deleteRecipe() = runTest {
         val file = withContext(Dispatchers.IO) {
-            generateTempFiles(2)
+            generateTempFiles(1)
         }
         val urls = file.map { Uri.fromFile(it) }
         val tup = FirestoreTupperware("title1", "desc1", USER_NAME)
-        tupperwareRepository.add(tup.title, tup.description, urls)
+        tupperwareRepository.add(tup.title, tup.description, urls.first())
         val tupId = tupperwareRepository
-            .getWithGivenField<FirestoreTupperware>("title", "${tup.title}").first().id
+            .getWithGivenField<FirestoreTupperware>("title", tup.title).first().id
         runBlocking { tupperwareRepository.delete(tupId) }
         val tups = tupperwareRepository.getAll<FirestoreTupperware>()
         assert(tups.isEmpty())
@@ -130,41 +123,4 @@ class TupperwareRepositoryTest {
             file.deleteOnExit()
             file
         }
-
-    // TODO: replace with tests for new functionality as part of #32: https://github.com/cook4me/android/issues/32
-//    @Test
-//    fun updateExistingTupperwareKeepOnlyRecentTupperware() = runTest {
-//        val entryToBeUpdated = Tupperware(
-//            title = "title", description = "desc", tags = listOf("Pizza", "Italian"), images = listOf("Uri")
-//        )
-//        tupperwareRepository.add(entryToBeUpdated)
-//        val allTupperwareBeforeUpdate = tupperwareRepository.getAll<Tupperware>()
-//        val updatedEntry = entryToBeUpdated.copy(title = "updated")
-//        tupperwareRepository.update(allTupperwareBeforeUpdate.keys.first(), updatedEntry)
-//        val allTupperwareAfterUpdate = tupperwareRepository.getAll<Tupperware>()
-//        MatcherAssert.assertThat(allTupperwareAfterUpdate.values, Matchers.contains(updatedEntry))
-//        MatcherAssert.assertThat(allTupperwareAfterUpdate.values, Matchers.not(Matchers.contains(entryToBeUpdated)))
-//    }
-
-//    @Test
-//    fun getTupperwareById() = runTest {
-//        tupperwareRepository.add(
-//            Tupperware(
-//                title = "title0", description = "desc0", tags = listOf("Pizza", "Hungarian"), images = listOf("Uri0")
-//            )
-//        )
-//        tupperwareRepository.add(
-//            Tupperware(
-//                title = "title1", description = "desc1", tags = listOf("Langosh", "Italian"), images = listOf("Uri1")
-//            )
-//        )
-//        tupperwareRepository.add(
-//            Tupperware(
-//                title = "title2", description = "desc2", tags = listOf("Langosh", "Hungarian"), images = listOf("Uri2")
-//            )
-//        )
-//        val allTupperware = tupperwareRepository.getAll<Tupperware>()
-//        val actual = tupperwareRepository.getById<Tupperware>(allTupperware.keys.first())
-//        MatcherAssert.assertThat(actual, Matchers.`is`(allTupperware.values.first()))
-//    }
 }

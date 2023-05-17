@@ -26,6 +26,13 @@ open class ObjectRepository(
         store.collection(objectPath).document(id).delete().await()
     }
 
+    suspend fun deleteAll() {
+        val querySnapshot = store.collection(objectPath).get().await()
+        for (documentSnapshot in querySnapshot.documents) {
+            delete(documentSnapshot.id)
+        }
+    }
+
     suspend fun <A : Any> getAll(ofClass: Class<A>): Map<String, A> {
         val result = store.collection(objectPath).get().await()
         return result.map { it.id }.zip(result.toObjects(ofClass)).toMap()

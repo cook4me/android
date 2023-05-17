@@ -5,30 +5,32 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-private const val SWIPE_COLLECTION_PATH = "swipes"
+private const val COLLECTION_PATH = "swipes"
 
 class SwipeRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-) {
+): ObjectRepository(store, COLLECTION_PATH) {
 
     suspend fun add(tupperwareId: String, liked: Boolean) {
         val email = auth.currentUser?.email
         checkNotNull(email)
-        store.collection(SWIPE_COLLECTION_PATH).document(email).collection(
-            SWIPE_COLLECTION_PATH
+        store.collection(COLLECTION_PATH).document(email).collection(
+            COLLECTION_PATH
         ).document(tupperwareId).set(Swipe(liked)).await()
     }
 
     suspend fun getAllPositiveIdsByUser(email: String): Set<String> {
-        val result = store.collection(SWIPE_COLLECTION_PATH).document(email).collection(
-            SWIPE_COLLECTION_PATH).whereEqualTo("liked", true).get().await()
+        val result = store.collection(COLLECTION_PATH).document(email).collection(
+            COLLECTION_PATH
+        ).whereEqualTo("liked", true).get().await()
         return result.map { it.id }.toSet()
     }
 
     suspend fun getAllIdsByUser(email: String): Set<String> {
-        val result = store.collection(SWIPE_COLLECTION_PATH).document(email).collection(
-            SWIPE_COLLECTION_PATH).get().await()
+        val result = store.collection(COLLECTION_PATH).document(email).collection(
+            COLLECTION_PATH
+        ).get().await()
         return result.map { it.id }.toSet()
     }
 }
