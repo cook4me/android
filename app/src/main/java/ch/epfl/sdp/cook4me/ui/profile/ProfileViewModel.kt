@@ -12,7 +12,6 @@ import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -22,6 +21,7 @@ class ProfileViewModel(
     private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
+    private val id: String? = null,
     onFailure: () -> Unit = {},
 ) : ViewModel() {
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
@@ -34,21 +34,19 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            // run blocking  to wait for the profile to be loaded
-            // therefore avoid race condition on the isloaded value
-            var profile =
-                accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+            var profile: Profile?
 
-            // load the profile again if it is null
-            while (profile == null) {
-                @Suppress("MagicNumber")
-                delay(2000) // Wait for 1 second before retrying
-                profile =
-                    accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
+            if (id != null) {
+                // if an user id is provided, use it to load the profile
+                _id = id
+                profile = repository.getById(id)
+            } else {
+                // otherwise, use the currents user email
+                profile = accountService.getCurrentUserWithEmail()?.let { repository.getById(it) }
             }
 
             try {
-                profile.let {
+                profile?.let {
                     withContext(Dispatchers.Main) {
                         _profileState.value.email = it.email
                         _profileState.value.name = it.name
@@ -66,7 +64,7 @@ class ProfileViewModel(
             }
 
             try {
-                _profileImage.value = profileImageRepository.get()
+                _profileImage.value = profileImageRepository.getProfile(id)
             } catch (e: NoSuchElementException) {
                 if (e.message == "Collection is empty.") {
                     _profileImage.value =
@@ -101,7 +99,7 @@ class ProfileViewModel(
     }
 
     fun onSubmit(onSuccessListener: () -> Unit) {
-        if (profile.value.name.isBlank()) { // TODO ADD SNEAK BAR FOR errors and add errors
+        if (profile.value.name.isBlank()) {
             _formError.value = true
         } else {
             viewModelScope.launch {

@@ -33,7 +33,7 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = remember {
         ProfileViewModel()
-    }
+    },
 ) {
     val profile = profileViewModel.profile.value
     val userNameState = rememberSaveable { mutableStateOf("") }

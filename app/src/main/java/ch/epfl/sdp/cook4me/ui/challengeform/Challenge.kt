@@ -10,7 +10,8 @@ data class Challenge(
     val description: String = "",
     val dateTime: Calendar = Calendar.getInstance(),
     val latLng: GeoPoint = GeoPoint(0.0, 0.0),
-    val participants: Map<String, Int> = mapOf(),
+    val participants: Map<String, Int> = mapOf(), // keep track of the participant vote score
+    val participantIsVoted: Map<String, Boolean> = mapOf(), // keep track of the if participant has voted
     val creator: String = "",
     val type: String = "",
 ) {
@@ -40,7 +41,7 @@ data class Challenge(
 
     val challengeInformation: String
         get() = "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\n" +
-            "Participants: $participants\nType: $type\n" +
+            "Participants: $participants\nParticipantVoted: $participantIsVoted\nType: $type\n" +
             "Creator: $creator\n Latitude-Longitude: $latLng"
 
     val challengeDate: String
@@ -54,7 +55,14 @@ data class Challenge(
             ?.toDate()
             ?.let { calendarFromTime(it) }
             ?: Calendar.getInstance(),
-        participants = map["participants"] as? Map<String, Int> ?: mapOf(),
+        participants = (map["participants"] as? Map<String, Any>)?.mapValues {
+            when (val value = it.value) {
+                is Int -> value
+                is Long -> value.toInt()
+                else -> 0
+            }
+        } ?: mapOf(),
+        participantIsVoted = map["participantIsVoted"] as? Map<String, Boolean> ?: mapOf(),
         creator = map["creator"] as? String ?: "",
         latLng = map["latLng"] as? GeoPoint ?: GeoPoint(0.0, 0.0),
         type = map["type"] as? String ?: "",
@@ -65,6 +73,7 @@ data class Challenge(
             "description" to description,
             "dateTime" to dateTime,
             "participants" to participants,
+            "participantIsVoted" to participantIsVoted,
             "creator" to creator,
             "type" to type
         )
@@ -79,12 +88,18 @@ private fun calendarFromTime(date: Date): Calendar {
 
 /**
 * Add a participant to the challenge, initialize the score of participant to 0
+ * and the isVoted status to false
 * @param challenge the challenge to add the participant to
 * @param participant the participant to add
+ * @return the updated challenge
+ * @sample updatedChallenge = addParticipant(challenge, "newParticipantName")
 */
 fun addParticipant(challenge: Challenge, participant: String): Challenge =
     if (!challenge.participants.containsKey(participant)) {
-        challenge.copy(participants = challenge.participants + (participant to 0))
+        challenge.copy(
+            participants = challenge.participants + (participant to 0),
+            participantIsVoted = challenge.participantIsVoted + (participant to false)
+        )
     } else {
         challenge
     }
@@ -106,4 +121,32 @@ fun changeParticipantScore(challenge: Challenge, participant: String, scoreChang
     } else {
         return challenge
     }
+}
+
+/**
+ * Change the is voted of a participant in the challenge.
+ * @param challenge the challenge to add the participant to
+ * @param participant the participant to add
+ * @param isvoted the updated isVoted status
+ * @sample updatedChallenge = changeParticipantScore(challenge, "participantName", true)
+ */
+fun changeParticipantIsVoted(challenge: Challenge, participant: String, isVoted: Boolean): Challenge {
+    if (challenge.participantIsVoted.containsKey(participant)) {
+        val updatedParticipantIsVoted = challenge.participantIsVoted.toMutableMap()
+        updatedParticipantIsVoted[participant] = isVoted
+        return challenge.copy(participantIsVoted = updatedParticipantIsVoted)
+    } else {
+        return challenge
+    }
+}
+
+/**
+ * Parse the email of a participant to a name
+ * @param email the email of the participant, e.g. could be retrieved from account service
+ * @return the name of the participant
+ * @sample parseParticipantEmailToName("darth.vader@epfl.ch") = "darth vader"
+ */
+fun parseParticipantEmailToName(email: String): String {
+    val name = email.split("@")[0]
+    return name.replace(".", " ")
 }
