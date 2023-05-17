@@ -42,14 +42,20 @@ fun VotingScreen(
     onVoteChanged: (Challenge) -> Unit,
     onCancelClick: () -> Unit
 ) {
-    val voteResults = remember { mutableStateMapOf<String, Int>() }
+    val voteResults = remember {
+        mutableStateMapOf<String, Int>().also { map ->
+            challenge.participants.keys.forEach { participant ->
+                map[participant] = map[participant] ?: 0
+            }
+        }
+    }
 
     Column {
         BasicToolbar(stringResource(R.string.voteScreenTitle))
 
-        LazyColumn {
+        LazyColumn(modifier = Modifier.weight(1f)) {
             items(challenge.participants.toList()) { (participant) ->
-                ParticipantRow(participant, score = 0) { newScore ->
+                ParticipantRow(participant, voteResults[participant]!!) { newScore ->
                     voteResults[participant] = newScore
                 }
             }
@@ -60,10 +66,9 @@ fun VotingScreen(
             onSaveText = R.string.voteButton,
             onCancelClick = onCancelClick,
             onSaveClick = {
-                val updatedChallenge =
-                    challenge.copy(
-                        participants = voteResults.mapValues { it.value }
-                    )
+                val updatedChallenge = challenge.copy(
+                    participants = voteResults.mapValues { it.value }
+                )
                 onVoteChanged(updatedChallenge)
             },
         )
