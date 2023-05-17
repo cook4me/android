@@ -21,7 +21,6 @@ import org.junit.Before
 import org.junit.Test
 import java.io.File
 
-private const val COLLECTION_PATH = "profiles"
 private const val USER_NAME = "donald.duck@epfl.ch"
 
 @ExperimentalCoroutinesApi
@@ -55,10 +54,7 @@ class ProfileImageRepositoryTest {
     @After
     fun cleanUp() {
         runBlocking {
-            val querySnapshot = store.collection(COLLECTION_PATH).get().await()
-            for (documentSnapshot in querySnapshot.documents) {
-                profileImageRepository.delete()
-            }
+            profileImageRepository.delete()
             auth.signInWithEmailAndPassword(USER_NAME, "123456").await()
             auth.currentUser?.delete()
         }
@@ -72,7 +68,7 @@ class ProfileImageRepositoryTest {
         val urls = file.map { Uri.fromFile(it) }
         val firebaseImageUri = profileImageRepository.add(image = urls.first())
 
-        val profileImage = profileImageRepository.get()
+        val profileImage = profileImageRepository.getProfile()
         MatcherAssert.assertThat(
             profileImage,
             Matchers.`is`(firebaseImageUri)
@@ -88,7 +84,7 @@ class ProfileImageRepositoryTest {
         profileImageRepository.add(url.first())
 
         runBlocking { profileImageRepository.delete() }
-        val userImage = profileImageRepository.get()
+        val userImage = profileImageRepository.getProfile()
 
         // Check if the userImage is the default image
         assert(userImage.toString() == "android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
