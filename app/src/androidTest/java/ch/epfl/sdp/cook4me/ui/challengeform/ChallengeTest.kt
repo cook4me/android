@@ -42,7 +42,7 @@ class ChallengeTest {
             Participants: {participant1=0,participant2=0}
             Type: French
             Creator: darth.vader@epfl.ch
-            Latitude-Longitude:[GeoPoint{latitude=0.0,longitude=0.0}]"""
+            Latitude-Longitude: GeoPoint{latitude=0.0,longitude=0.0}"""
         // remove all the spaces
         expected = expected.replace("\\s".toRegex(), "")
         val actual = challenge.challengeInformation.replace("\\s".toRegex(), "")
