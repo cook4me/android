@@ -33,8 +33,8 @@ import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 
-const val MINSTAR = 1
-const val MAXSTAR = 5
+private const val MINSTAR = 1
+private const val MAXSTAR = 5
 
 @Composable
 fun VotingScreen(

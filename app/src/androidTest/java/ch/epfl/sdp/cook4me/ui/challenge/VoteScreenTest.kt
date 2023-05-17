@@ -126,6 +126,7 @@ class VoteScreenTest {
         composeTestRule.onNodeWithContentDescription("participant1 Empty star 5")
             .assertIsDisplayed()
 
+        // Assert that vote is displayed
         composeTestRule.onNodeWithText("Vote").assertIsDisplayed()
     }
 
