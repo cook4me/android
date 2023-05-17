@@ -12,6 +12,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.profile.ProfileViewModel
 import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -26,8 +27,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-
-private val COLLECTION_PATH_PROFILES = "profiles"
 
 class AddProfileInfoScreenTest {
     @get:Rule
@@ -68,11 +67,8 @@ class AddProfileInfoScreenTest {
         runBlocking {
             auth.signInWithEmailAndPassword(emailInput, passwordInput).await()
             // delete collection from firebase
-            store.collection(COLLECTION_PATH_PROFILES).whereEqualTo("email", emailInput).get()
-                .await().documents.forEach {
-                    store.collection(COLLECTION_PATH_PROFILES).document(it.id).delete().await()
-                }
-
+            val profileRepository = ProfileRepository()
+            profileRepository.delete(emailInput)
             profileImageRepository.delete()
             // delete user from firebase
             auth.currentUser?.delete()

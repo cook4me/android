@@ -29,6 +29,7 @@ class TupperwareInfosTest {
             )
         }
 
+        // Check if tupperware data is displayed
         composeTestRule.onNodeWithText(tupperware.title).assertIsDisplayed()
         composeTestRule.onNodeWithText(tupperware.description).assertIsDisplayed()
         composeTestRule.onNodeWithText("View Profile").assertIsDisplayed()
