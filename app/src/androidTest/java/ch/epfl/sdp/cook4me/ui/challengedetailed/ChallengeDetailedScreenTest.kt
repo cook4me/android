@@ -7,6 +7,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.ui.detailedevent.cleanUpEvents
@@ -68,5 +71,26 @@ class ChallengeDetailedScreenTest {
         composeTestRule.onNodeWithText("Join").assertIsDisplayed()
     }
 
+    @Test
+    fun currentUserSuccessWhenJoiningEvent() {
+        composeTestRule.setContent {
+            ChallengeDetailedScreen(challengeId = challengeId)
+        }
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithText("Join")
+                .fetchSemanticsNodes().size == 1
+        }
+        composeTestRule.onNodeWithText("Join").performClick()
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+            composeTestRule
+                .onAllNodesWithText("You have joined the challenge!")
+                .fetchSemanticsNodes().size == 1
+        }
 
+        // Assert user has been added and UI is updated
+        composeTestRule.onNodeWithText("harry.potter@epfl.ch").assertIsDisplayed()
+        composeTestRule.onNodeWithText("0").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Vote for other participants").assertIsDisplayed()
+    }
 }
