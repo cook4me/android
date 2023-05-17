@@ -43,6 +43,9 @@ import java.util.Calendar
  * @param accountService the service that will be used to get the current user
  * @param onCancelClick the function that will be called when the user clicks on the cancel button
  */
+
+
+
 @Composable
 fun CreateChallengeScreen(
     challengeFormService: ChallengeFormService = ChallengeFormService(),

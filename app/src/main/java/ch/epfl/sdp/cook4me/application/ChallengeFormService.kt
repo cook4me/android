@@ -85,4 +85,6 @@ class ChallengeFormService(
     * */
     private fun documentSnapshotToChallenge(documentSnapshot: DocumentSnapshot) =
         Challenge(documentSnapshot.data ?: emptyMap())
+
+
 }

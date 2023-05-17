@@ -153,4 +153,5 @@
     <!--Challenges-->
     <string name="join">Join</string>
     <string name="challenge_finished">This challenge has already taken place</string>
+    <string name="filter_button_text">Filter by</string>
 </resources>
