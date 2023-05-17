@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.tupperwareswipe
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +31,7 @@ import com.alexstyl.swipeablecard.Direction
 import com.alexstyl.swipeablecard.rememberSwipeableCardState
 import kotlinx.coroutines.launch
 
-// code heavily inspired by https://github.com/alexstyl/compose-tinder-card/blob/main/app/src/main/java/com/alexstyl/swipeablecard/MainActivity.kt
+// code inspired by https://github.com/alexstyl/compose-tinder-card/blob/main/app/src/main/java/com/alexstyl/swipeablecard/MainActivity.kt
 @Composable
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
@@ -42,7 +41,8 @@ fun TupperwareSwipeScreen(
     val tupperwareList = remember {
         mutableStateOf(listOf<Pair<String, TupperwareWithImage?>>())
     }
-    val states = tupperwareList.value.map { it.first to (it.second to rememberSwipeableCardState()) }
+    val states =
+        tupperwareList.value.map { it.first to (it.second to rememberSwipeableCardState()) }
     val scope = rememberCoroutineScope()
     val allDone = states.isEmpty() || states.all { it.second.second.swipedDirection != null }
     val openMatchDialog = remember { mutableStateOf(false) }
@@ -50,8 +50,6 @@ fun TupperwareSwipeScreen(
 
     LaunchedEffect(Unit) {
         tupperwareList.value = swipeService.getAllUnswipedTupperware().toList()
-        Log.e("SwipeScreen", "done heeere")
-        //TODO: show loading screen
         isLoading.value = false
     }
 
@@ -61,21 +59,30 @@ fun TupperwareSwipeScreen(
         }
     }
 
-    fun swipe(direction: Direction) {
+    suspend fun onSwipe(tupperwareId: String, direction: Direction) {
+        swipeService.storeSwipeResult(tupperwareId, direction == Direction.Right)
+        if (direction == Direction.Right && swipeService.isMatch(tupperwareId)) {
+            openMatchDialog.value = true
+        }
+    }
+
+    fun notSwipedYet(offset: Offset) = offset == Offset(
+        x = 0f,
+        y = 0f
+    )
+
+    fun findElementToBeSwipedOrNull() =
+        states
+            .reversed()
+            .firstOrNull { notSwipedYet(it.second.second.offset.value) }
+
+    fun onSwipeButtonClicked(direction: Direction) {
         scope.launch {
-            val last = states
-                .reversed()
-                .firstOrNull {
-                    it.second.second.offset.value == Offset(
-                        x = 0f,
-                        y = 0f
-                    ) // otherwise the circle buttons don't work
-                }?.second
-            last?.second?.swipe(direction)
-//            swipeRepository.add()
-//            if(swipeService.isMatch()) {
-//                openMatchDialog.value = true
-//            }
+            val element = findElementToBeSwipedOrNull()
+            element?.let {
+                it.second.second.swipe(direction) // for the buttons we need to manually set the offset, because no dragging was done
+                onSwipe(it.first, direction)
+            }
         }
     }
 
@@ -98,53 +105,46 @@ fun TupperwareSwipeScreen(
                     if (allDone) {
                         Text("all done") // TODO: https://github.com/cook4me/android/issues/185
                     } else {
-                        states.forEach { (tupperware, somePair) ->
+                        states.forEach { (id, somePair) ->
                             somePair.first?.let { data ->
                                 if (somePair.second.swipedDirection == null) {
                                     TupperwareCard(
                                         somePair.second,
                                         tupperware = data,
-                                    ) {
+                                    ) { direction ->
                                         scope.launch {
-                                            openMatchDialog.value = true
+                                            onSwipe(id, direction)
                                         }
-                                    }
                                 }
                             }
                         }
                     }
                 }
-                Row(
-                    Modifier
-                        .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
-                        .weight(weight = 0.13f)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    CircleButton(
-                        onClick = {
-                            swipe(Direction.Left)
-                        },
-                        enabled = !allDone,
-                        icon = Icons.Rounded.Close,
+            }
+            Row(
+                Modifier
+                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                    .weight(weight = 0.13f)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                CircleButton(
+                    onClick = {
+                        onSwipeButtonClicked(Direction.Left)
+                    },
+                    enabled = !allDone,
+                    icon = Icons.Rounded.Close,
 
-                        )
-                    // TODO: https://github.com/cook4me/android/issues/189
-//                CircleButton(
-//                    onClick = {
-//                    },
-//                    enabled = !allDone,
-//                    icon = Icons.Rounded.Info
-//                )
-                    CircleButton(
-                        onClick = {
-                            swipe(Direction.Right)
-                        },
-                        enabled = !allDone,
-                        icon = Icons.Rounded.Favorite
                     )
-                }
+                CircleButton(
+                    onClick = {
+                        onSwipeButtonClicked(Direction.Right)
+                    },
+                    enabled = !allDone,
+                    icon = Icons.Rounded.Favorite
+                )
             }
         }
     }
+}
 }

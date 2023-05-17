@@ -13,26 +13,33 @@ class SwipeService(
     private val tupperwareRepository: TupperwareRepository = TupperwareRepository()
 ) {
 
+    suspend fun storeSwipeResult(id: String, right: Boolean) {
+        swipeRepository.add(id, right)
+    }
+
     suspend fun isMatch(tupperwareId: String): Boolean {
         val email = auth.currentUser?.email
         checkNotNull(email)
-        val other = tupperwareRepository.getById<FirestoreTupperware>(tupperwareId)?.user
-        checkNotNull(other)
-        val swipesFromOther = swipeRepository.getAllPositiveIdsByUser(other)
+        val otherUser = tupperwareRepository.getById<FirestoreTupperware>(tupperwareId)?.user
+        checkNotNull(otherUser)
+        val swipesFromOther = swipeRepository.getAllPositiveIdsByUser(otherUser)
         val ownTupperwareIds = tupperwareRepository.getAllIdsByUser(email)
         return swipesFromOther.intersect(ownTupperwareIds).isNotEmpty()
     }
 
-    suspend fun getAllUnswipedTupperware(): Map<String, TupperwareWithImage?> =
+    suspend fun getAllUnswipedTupperware(): Map<String, TupperwareWithImage> =
         try {
             val email = auth.currentUser?.email
             checkNotNull(email)
             val allSwipes = swipeRepository.getAllIdsByUser(email)
             val allTupperwareIdsFromOtherUsers = tupperwareRepository.getAllIdsNotByUser(email)
             val toBeSwiped = allTupperwareIdsFromOtherUsers.minus(allSwipes)
-            toBeSwiped.associateWith {
-                tupperwareRepository.getWithImageById(it)
-            }
+            toBeSwiped.mapNotNull {id ->
+               val tupperware = tupperwareRepository.getWithImageById(id)
+                tupperware?.let {
+                    id to it
+                }
+            }.toMap()
         } catch (e: Exception) {
             Log.e("SwipeService", "exception was thrown", e)
             mapOf()

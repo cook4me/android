@@ -30,7 +30,7 @@ import com.alexstyl.swipeablecard.swipableCard
 fun TupperwareCard(
     state: SwipeableCardState,
     tupperware: TupperwareWithImage,
-    onRightSwipe: () -> Unit
+    onSwiped: (direction: Direction) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -38,12 +38,7 @@ fun TupperwareCard(
             .swipableCard(
                 state = state,
                 blockedDirections = listOf(Direction.Up, Direction.Down),
-                onSwiped = {
-                    if (it == Direction.Right) {
-                        onRightSwipe()
-                    }
-                    // we don't need to handle the animation in here, it's already done by the button callbacks
-                }
+                onSwiped = onSwiped
             )
     ) {
         Box {
