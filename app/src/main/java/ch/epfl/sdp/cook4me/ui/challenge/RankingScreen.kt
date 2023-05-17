@@ -28,11 +28,11 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 
-const val INCREMENT = 1
-const val MAX = 3
-const val WIDTH_SCORE = 0.7f
-const val WIDTH_PARTICIPANT = 3f
-const val WIDTH_PLACE = 1f
+private const val INCREMENT = 1
+private const val MAX = 3
+private const val WIDTH_SCORE = 0.7f
+private const val WIDTH_PARTICIPANT = 3f
+private const val WIDTH_PLACE = 1f
 
 @Composable
 fun RankingScreen(
@@ -59,17 +59,17 @@ fun RankingScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Place",
+                        text = stringResource(R.string.place),
                         style = MaterialTheme.typography.h6,
                         modifier = Modifier.weight(WIDTH_PLACE)
                     )
                     Text(
-                        text = "Participant",
+                        text = stringResource(R.string.participant),
                         style = MaterialTheme.typography.h6,
                         modifier = Modifier.weight(WIDTH_PARTICIPANT)
                     )
                     Text(
-                        text = "Score",
+                        text = stringResource(R.string.score),
                         style = MaterialTheme.typography.h6,
                         modifier = Modifier.weight(WIDTH_SCORE)
                     )
@@ -93,7 +93,7 @@ fun RankingScreen(
                 .fillMaxWidth()
                 .padding(16.dp, 8.dp)
         ) {
-            Text("Back")
+            Text(stringResource(R.string.back))
         }
     }
 }
@@ -128,7 +128,7 @@ fun ParticipantScoreRow(index: Int, participant: String, score: Int, isWinner: B
             if (isWinner) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_trophy),
-                    contentDescription = "Winner",
+                    contentDescription = stringResource(R.string.winner),
                     modifier = Modifier
                         .size(20.dp)
                         .padding(end = 1.dp)

@@ -160,5 +160,10 @@
 
     <!-- Ranking Screen -->
     <string name="rankingScreenTitle">Ranking</string>
+    <string name="score">Score</string>
+    <string name="participant">Participant</string>
+    <string name="place">Place</string>
+    <string name="back">Back</string>
+    <string name="winner">Winner</string>
 
 </resources>
