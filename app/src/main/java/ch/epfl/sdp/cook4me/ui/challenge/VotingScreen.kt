@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -32,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 
 const val MINSTAR = 1
 const val MAXSTAR = 5
@@ -39,34 +39,39 @@ const val MAXSTAR = 5
 @Composable
 fun VotingScreen(
     challenge: Challenge,
-    onVoteChanged: (Challenge) -> Unit
+    onVoteChanged: (Challenge) -> Unit,
+    onCancelClick: () -> Unit
 ) {
-    val voteResults = remember { mutableStateMapOf<String, Int>() }
+    val voteResults = remember {
+        mutableStateMapOf<String, Int>().also { map ->
+            challenge.participants.keys.forEach { participant ->
+                map[participant] = map[participant] ?: 0
+            }
+        }
+    }
 
     Column {
         BasicToolbar(stringResource(R.string.voteScreenTitle))
 
-        LazyColumn {
+        LazyColumn(modifier = Modifier.weight(1f)) {
             items(challenge.participants.toList()) { (participant) ->
-                ParticipantRow(participant, score = 0) { newScore ->
+                ParticipantRow(participant, voteResults[participant]!!) { newScore ->
                     voteResults[participant] = newScore
                 }
             }
         }
 
-        Button(
-            onClick = {
-                val updatedChallenge =
-                    challenge.copy(participants = voteResults.mapValues { it.value })
+        FormButtons(
+            onCancelText = R.string.ButtonRowCancel,
+            onSaveText = R.string.voteButton,
+            onCancelClick = onCancelClick,
+            onSaveClick = {
+                val updatedChallenge = challenge.copy(
+                    participants = voteResults.mapValues { it.value }
+                )
                 onVoteChanged(updatedChallenge)
             },
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .padding(16.dp, 8.dp)
-        ) {
-            Text("Vote")
-        }
+        )
     }
 }
 
@@ -109,21 +114,17 @@ fun RatingBar(participant: String, value: Int, onValueChange: (Int) -> Unit) {
     Box {
         Row(
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(
-                horizontal = 1.dp
-            ),
+            modifier = Modifier.padding(horizontal = 1.dp)
         ) {
             for (i in MINSTAR..MAXSTAR) {
-                IconButton(
-                    onClick = {
-                        if (selectedValue == i) {
-                            selectedValue = 0
-                        } else {
-                            selectedValue = i
-                        }
-                        onValueChange(selectedValue)
+                IconButton(onClick = {
+                    if (selectedValue == i) {
+                        selectedValue = 0
+                    } else {
+                        selectedValue = i
                     }
-                ) {
+                    onValueChange(selectedValue)
+                }) {
                     Icon(
                         painter = painterResource(
                             id =
