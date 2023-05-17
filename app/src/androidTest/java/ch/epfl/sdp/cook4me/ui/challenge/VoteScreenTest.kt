@@ -113,6 +113,9 @@ class VoteScreenTest {
         // Click on the 4th star
         composeTestRule.onNodeWithContentDescription("participant1 Empty star 4").performClick()
 
+        // wait until idle
+        composeTestRule.waitForIdle()
+
         // Assert that first 3 stars are filled
         composeTestRule.onNodeWithContentDescription("participant1 Star 1").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("participant1 Star 2").assertIsDisplayed()
