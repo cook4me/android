@@ -21,7 +21,6 @@ import org.junit.Before
 import org.junit.Test
 import java.io.File
 
-private const val COLLECTION_PATH = "profiles"
 private const val USER_NAME = "donald.duck@epfl.ch"
 
 @ExperimentalCoroutinesApi
@@ -55,10 +54,7 @@ class ProfileImageRepositoryTest {
     @After
     fun cleanUp() {
         runBlocking {
-            val querySnapshot = store.collection(COLLECTION_PATH).get().await()
-            for (documentSnapshot in querySnapshot.documents) {
-                profileImageRepository.delete()
-            }
+            profileImageRepository.delete()
             auth.signInWithEmailAndPassword(USER_NAME, "123456").await()
             auth.currentUser?.delete()
         }
