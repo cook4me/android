@@ -9,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 import android.net.Uri
 
 private const val COLLECTION_PATH = "tupperwares"
-private const val BASE_PATH = "/images/tupperwares"
+private const val STORAGE_BASE_PATH = "/images/tupperwares"
 private const val ONE_MEGABYTE: Long = 1024 * 1024
 
 class TupperwareRepository(
@@ -25,7 +25,7 @@ class TupperwareRepository(
         val tupperwareId = super.addAndGetId(FirestoreTupperware(title, description, email))
         val storageRef = storage.reference
         val imageRef =
-            storageRef.child("$BASE_PATH/$tupperwareId")
+            storageRef.child("$STORAGE_BASE_PATH/$tupperwareId")
         imageRef.putFile(image).await()
         return tupperwareId
     }
@@ -34,7 +34,7 @@ class TupperwareRepository(
         val tupperwareInfo = super.getById<FirestoreTupperware>(id)
         return tupperwareInfo?.let {
             val storageRef = storage.reference
-            val ref = storageRef.child("$BASE_PATH/$id")
+            val ref = storageRef.child("$STORAGE_BASE_PATH/$id")
             val bytes = ref.getBytes(ONE_MEGABYTE).await()
             TupperwareWithImage(
                 title = it.title,
@@ -58,7 +58,7 @@ class TupperwareRepository(
     override suspend fun delete(id: String) {
         super.delete(id)
         val imageRef = storage.reference
-            .child("$BASE_PATH/$id")
+            .child("$STORAGE_BASE_PATH/$id")
         imageRef.delete().await()
     }
 }
