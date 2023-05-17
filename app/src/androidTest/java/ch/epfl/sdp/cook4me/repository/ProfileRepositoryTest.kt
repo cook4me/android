@@ -59,14 +59,12 @@ class ProfileRepositoryTest {
             allergies = "turkey",
             favoriteDish = "turkey",
         )
-        runBlocking {
-            profileRepository.add(newEntry1)
-            profileRepository.add(newEntry2)
-            val profile1 = profileRepository.getById(newEntry1.email)
-            val profile2 = profileRepository.getById(newEntry2.email)
-            MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
-            MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
-        }
+        profileRepository.add(newEntry1)
+        profileRepository.add(newEntry2)
+        val profile1 = profileRepository.getById(newEntry1.email)
+        val profile2 = profileRepository.getById(newEntry2.email)
+        MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
+        MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
     }
 
     @Test
@@ -80,13 +78,11 @@ class ProfileRepositoryTest {
         )
 
         // get the profile from the database
-        runBlocking {
-            profileRepository.add(newEntry1)
-            val profile1 = profileRepository.getById(newEntry1.email)
-            profile1!!.name = "megan2.0"
-            profileRepository.update(profile1.email, profile1)
-            val profile2 = profileRepository.getById(profile1.email)
-            MatcherAssert.assertThat(profile2, Matchers.equalTo(profile1))
-        }
+        profileRepository.add(newEntry1)
+        val profile1 = profileRepository.getById(newEntry1.email)
+        profile1!!.name = "megan2.0"
+        profileRepository.update(profile1.email, profile1)
+        val profile2 = profileRepository.getById(profile1.email)
+        MatcherAssert.assertThat(profile2, Matchers.equalTo(profile1))
     }
 }
