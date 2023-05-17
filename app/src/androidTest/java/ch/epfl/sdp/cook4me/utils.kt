@@ -1,13 +1,16 @@
+import android.net.Uri
 import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.test.espresso.matcher.ViewMatchers
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
+import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
 val testProfile = Profile(
     email = "jean.valejean@epfl.ch",
@@ -43,6 +46,23 @@ object RepositoryFiller {
         }
     }
 }
+
+suspend fun TupperwareRepository.addMultipleTestTupperware(files: List<File>) =
+    files.mapIndexed { i, file ->
+        add(
+            "title$i",
+            "desc$i",
+            Uri.fromFile(file)
+        )
+    }
+
+fun generateTempFiles(count: Int): List<File> =
+    (0 until count).map {
+        val file = File.createTempFile("temp_", "$it")
+        file.writeText("temp$it")
+        file.deleteOnExit()
+        file
+    }
 
 fun assertThrowsAsync(f: suspend () -> Unit) {
     try {

@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.repository
 
+import addMultipleTestTupperware
 import android.net.Uri
 import ch.epfl.sdp.cook4me.persistence.model.FirestoreTupperware
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
@@ -9,6 +10,7 @@ import ch.epfl.sdp.cook4me.setupFirestore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import generateTempFiles
 import io.mockk.InternalPlatformDsl.toArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,15 +30,12 @@ import java.io.File
 private const val USER_A = "user.a@epfl.ch"
 private const val PASSWORD_A = "password_a"
 
-private const val USER_B = "user.b@epfl.ch"
-private const val PASSWORD_B = "password_b"
-
 @ExperimentalCoroutinesApi
 class TupperwareRepositoryTest {
-    private lateinit var tupperwareRepository: TupperwareRepository
     private lateinit var store: FirebaseFirestore
     private lateinit var storage: FirebaseStorage
     private lateinit var auth: FirebaseAuth
+    private lateinit var tupperwareRepository: TupperwareRepository
 
     @Before
     fun setUp() {
@@ -46,7 +45,6 @@ class TupperwareRepositoryTest {
         tupperwareRepository = TupperwareRepository(store, storage, auth)
         runBlocking {
             auth.createUserWithEmailAndPassword(USER_A, PASSWORD_A).await()
-            auth.createUserWithEmailAndPassword(USER_B, PASSWORD_B).await()
             auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
         }
     }
@@ -57,17 +55,15 @@ class TupperwareRepositoryTest {
             tupperwareRepository.deleteAll()
             auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
             auth.currentUser?.delete()
-            auth.signInWithEmailAndPassword(USER_B, PASSWORD_B).await()
-            auth.currentUser?.delete()
         }
     }
 
     @Test
-    fun storeAndGetNewTupperware() = runTest {
+    fun storeAndGetNewTupperwareTest() = runTest {
         val files = withContext(Dispatchers.IO) {
             generateTempFiles(2)
         }
-        val ids = addMultipleTupperware(files)
+        val ids = tupperwareRepository.addMultipleTestTupperware(files)
         ids.zip(files).forEachIndexed { i, data ->
             val actual = tupperwareRepository.getWithImageById(data.first)
             assertThat(actual, `is`(notNullValue()))
@@ -81,42 +77,25 @@ class TupperwareRepositoryTest {
     }
 
     @Test
-    fun getAllOwnIds() = runTest {
+    fun getAllOwnIdsTest() = runTest {
         val files = withContext(Dispatchers.IO) {
             generateTempFiles(3)
         }
-        val expectedIds = addMultipleTupperware(files)
-        val actualIds = tupperwareRepository.getAllIdsByUser(USER_A)
+        val expectedIds = tupperwareRepository.addMultipleTestTupperware(files)
+        val actualIds = tupperwareRepository.getAllIdsByUser(
+            auth.currentUser?.email ?: error("shouldn't happen")
+        )
         assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
     }
 
     @Test
-    fun getAllOtherIds() = runTest {
+    fun getAllOtherIdsTest() = runTest {
         val files = withContext(Dispatchers.IO) {
             generateTempFiles(3)
         }
-        val expectedIds = addMultipleTupperware(files)
-        val actualIds = tupperwareRepository.getAllIdsNotByUser(USER_B)
+        val expectedIds = tupperwareRepository.addMultipleTestTupperware(files)
+        val actualIds = tupperwareRepository.getAllIdsNotByUser("other.user@epfl.ch")
         assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
     }
 
-    private suspend fun addMultipleTupperware(files: List<File>) =
-        files.mapIndexed { i, file ->
-            tupperwareRepository.add(
-                "title$i",
-                "desc$i",
-                Uri.fromFile(file)
-            )
-        }
 }
-
-private fun generateTempFiles(count: Int): List<File> =
-    (0 until count).map {
-        val file = File.createTempFile("temp_", "$it")
-        file.writeText("temp$it")
-        file.deleteOnExit()
-        file
-    }
-
-
-
