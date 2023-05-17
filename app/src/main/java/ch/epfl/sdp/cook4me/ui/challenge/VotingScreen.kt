@@ -40,8 +40,8 @@ const val MAXSTAR = 5
 fun VotingScreen(
     challenge: Challenge,
     onVoteChanged: (Challenge) -> Unit,
-    onCancelClick: () -> Unit)
-{
+    onCancelClick: () -> Unit
+) {
     val voteResults = remember { mutableStateMapOf<String, Int>() }
 
     Column {
