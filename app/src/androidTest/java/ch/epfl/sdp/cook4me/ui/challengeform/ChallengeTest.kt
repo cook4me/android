@@ -44,7 +44,7 @@ class ChallengeTest {
             ParticipantVoted: {participant1=false,participant2=false}
             Type: French
             Creator: darth.vader@epfl.ch
-            Latitude-Longitude:(0.0,0.0)"""
+            Latitude-Longitude: GeoPoint{latitude=0.0,longitude=0.0}"""
         // remove all the spaces
         expected = expected.replace("\\s".toRegex(), "")
         val actual = challenge.challengeInformation.replace("\\s".toRegex(), "")
@@ -182,7 +182,7 @@ class ChallengeTest {
             "type" to "French"
         )
 
-        val expected = challenge.copy(latLng = Pair(geoPoint.latitude, geoPoint.longitude))
+        val expected = challenge.copy(latLng = geoPoint)
         val actual = Challenge(dataMap)
 
         assertEquals(expected, actual)
