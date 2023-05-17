@@ -153,4 +153,9 @@
     <!--Challenges-->
     <string name="join">Join</string>
     <string name="challenge_finished">This challenge has already taken place</string>
+
+    <!-- Voting Screen --> voteScreenTitle
+    <string name="voteScreenTitle">Vote for best participants</string>
+    <string name="voteButton">Vote</string>
+
 </resources>
