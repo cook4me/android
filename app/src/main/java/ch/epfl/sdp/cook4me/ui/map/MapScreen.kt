@@ -76,6 +76,7 @@ fun GoogleMapView(
     userLocationDisplayed: Boolean = false,
     onCreateNewEventClick: () -> Unit = {},
     onDetailedEventClick: () -> Unit = {},
+    isOnline: Boolean = true,
 ) {
     val uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
@@ -99,7 +100,8 @@ fun GoogleMapView(
     ) {
         CreateNewItemButton(
             itemType = stringResource(R.string.event),
-            onClick = onCreateNewEventClick
+            onClick = onCreateNewEventClick,
+            canClick = isOnline
         )
         MapTypeControls(
             onMapTypeClick = {

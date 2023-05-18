@@ -128,7 +128,8 @@ fun Cook4MeApp(
     val navGraph = navController.createGraph(startDestination = startScreen) {
         composable(BottomNavScreen.Tupperwares.route) {
             TupperwareSwipeScreen(
-                onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) }
+                onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) },
+                isOnline = isOnline
             )
         }
         composable(BottomNavScreen.Events.route) {
@@ -136,6 +137,7 @@ fun Cook4MeApp(
                 permissionStatusProvider = permissionStatusProvider,
                 onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
+                isOnline = isOnline
             )
         }
         composable(BottomNavScreen.Profile.route) { ProfileScreen() }
