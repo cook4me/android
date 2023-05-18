@@ -47,7 +47,6 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
     suspend fun updateRecipeNote(id: String, note: Int, userId: String, userVote: Int) {
         store.collection(RECIPE_NOTE_PATH).whereEqualTo("id", id).get().await()
             .first()?.reference?.update("note", note)?.await()
-
         val userVoteDoc = store.collection(USER_VOTE_PATH).whereEqualTo("id", id)
             .whereEqualTo("userId", userId).get().await().firstOrNull()
 

@@ -34,6 +34,7 @@ fun Cook4MeNavHost(
     startDestination: String = Screen.RecipeFeed.name,
     permissionProvider: PermissionStatusProvider,
     onSuccessfulAuth: () -> Unit,
+    isOnline: Boolean
 ) {
     val signUpViewModel = remember { SignUpViewModel() }
     NavHost(
@@ -43,7 +44,8 @@ fun Cook4MeNavHost(
     ) {
         composable(Screen.TupperwareSwipeScreen.name) {
             TupperwareSwipeScreen(
-                onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) }
+                onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) },
+                isOnline = isOnline
             )
         }
         composable(route = Screen.CreateTupperwareScreen.name) {
@@ -54,7 +56,7 @@ fun Cook4MeNavHost(
                 },
                 onSuccessfulSubmit = {
                     navController.navigate(Screen.TupperwareSwipeScreen.name)
-                }
+                },
             )
         }
         composable(route = Screen.Event.name) {
@@ -62,6 +64,7 @@ fun Cook4MeNavHost(
                 permissionStatusProvider = permissionProvider,
                 onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
                 onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
+                isOnline = isOnline
             )
         }
         composable(route = Screen.CreateEventScreen.name) {
@@ -90,7 +93,8 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
-                onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
+                onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) },
+                isOnline = isOnline
             )
         }
         composable(route = Screen.SignUpUserInfo.name) {

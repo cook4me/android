@@ -45,6 +45,7 @@ const val MIDDLE_SPACE_RATIO = 0.5F
 fun RecipeFeed(
     service: RecipeFeedService = RecipeFeedService(),
     onCreateNewRecipe: () -> Unit = {},
+    isOnline: Boolean = true
 ) {
     val isOrderedByTopRecipes = remember {
         mutableStateOf(true)
@@ -72,7 +73,7 @@ fun RecipeFeed(
             .testTag(stringResource(R.string.recipe_feed_screen_tag)),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        CreateNewItemButton(itemType = "Recipe", onClick = onCreateNewRecipe)
+        CreateNewItemButton(itemType = "Recipe", onClick = onCreateNewRecipe, canClick = isOnline)
         Box(modifier = Modifier.fillMaxHeight(RECIPE_LIST_RATIO)) {
             RecipeListScreen(
                 recipeList = if (isOrderedByTopRecipes.value) {
@@ -86,7 +87,8 @@ fun RecipeFeed(
                         service.updateRecipeNotes(recipe, note)
                     }
                 },
-                userVotes = userVotes.value
+                userVotes = userVotes.value,
+                isOnline = isOnline
             )
         }
         Box(modifier = Modifier.fillMaxHeight(EMPTY_SPACE_RATIO))

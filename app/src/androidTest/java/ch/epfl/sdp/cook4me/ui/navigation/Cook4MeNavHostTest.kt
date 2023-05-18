@@ -63,7 +63,8 @@ class Cook4MeNavHostTest {
                 navController = navController,
                 permissionProvider = permissionStatusProvider,
                 startDestination = startingScreen,
-                onSuccessfulAuth = {}
+                onSuccessfulAuth = {},
+                isOnline = true
             )
         }
     }
