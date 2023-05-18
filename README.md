@@ -7,14 +7,14 @@ An app for epfl students to enhance their food experience
 
 ## Team
 
- Name                 | Github | Email |
-|----------------------|-------|-------|
+|  Name           | Github | Email |
+|-----------------|-------|-------|
 | John Taylor     | [JohnTomasTaylor](https://github.com/JohnTomasTaylor) | john.taylor@epfl.ch |
-| Dayan Massonnet     | [dayan9265](https://github.com/dayan9265) | dayan.massonnet@epfl.ch |
+| Dayan Massonnet | [dayan9265](https://github.com/dayan9265) | dayan.massonnet@epfl.ch |
 | Daniel Bucher   | [bu-da](https://github.com/bu-da) | daniel.bucher@epfl.ch |
-| Haolong Li        | [Tachi-67](https://github.com/Tachi-67) | haolong.li@epfl.ch |
-| Pau Romeu        | [pauromeu](https://github.com/pauromeu) | pau.romeu@epfl.ch |
-| Nino Gerber   | [nino-gerb](https://github.com/nino-gerb) | nino.gerber@epfl.ch |
+| Haolong Li      | [Tachi-67](https://github.com/Tachi-67) | haolong.li@epfl.ch |
+| Pau Romeu       | [pauromeu](https://github.com/pauromeu) | pau.romeu@epfl.ch |
+| Nino Gerber     | [nino-gerb](https://github.com/nino-gerb) | nino.gerber@epfl.ch |
 
 ## Setup
 
@@ -37,6 +37,12 @@ As this project integrates Google Maps, a Google Maps API key is needed and need
 
 ```properties
 MAPS_API_KEY=KEYVALUE
+```
+
+The project also uses an external chat service, a chat API key is needed to be added to the local.properties file. It can be downloaded [here](https://dashboard.getstream.io/app/1247010/chat/overview)
+
+```properties
+CHAT_API_KEY=KEYVALUE
 ```
 
 If  there is an error : android.experimental.testOptions.emulatorSnapshots.maxSnapshotsForTestFailures=0' is experimental. You can put the following into your gradle properties: 

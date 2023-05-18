@@ -87,7 +87,8 @@ fun CreateTupperwareScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .testTag(stringResource(R.string.create_tupper_screen_tag)),
 
     ) {
         Box(

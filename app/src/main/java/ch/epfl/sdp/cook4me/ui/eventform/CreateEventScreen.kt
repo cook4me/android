@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
@@ -21,17 +23,22 @@ import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
+import ch.epfl.sdp.cook4me.ui.map.LocationPicker
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 /**
  * Component that shows the form to create an event
  * @param eventService the service that will be used to create the event
+ * @param accountService the service that will be used to get the current user
+ * @param onCancelClick the function that will be called when the user clicks on the cancel button
  */
 @Composable
 fun CreateEventScreen(
     eventService: EventFormService = EventFormService(),
-    accountService: AccountService = AccountService()
+    accountService: AccountService = AccountService(),
+    onCancelClick: () -> Unit = {},
 ) {
     val event = remember {
         mutableStateOf(Event())
@@ -57,6 +64,7 @@ fun CreateEventScreen(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .padding(10.dp)
+            .testTag(stringResource(R.string.create_event_screen_tag))
     ) {
         InputField(
             question = R.string.ask_event_name,
@@ -90,10 +98,16 @@ fun CreateEventScreen(
             onTimeChanged = { updateTime(it) }
         )
 
+        LocationPicker(
+            onLocationPicked = {
+                event.value = event.value.copy(latLng = GeoPoint(it.latitude, it.longitude))
+            }
+        )
+
         FormButtons(
             onCancelText = R.string.ButtonRowCancel,
             onSaveText = R.string.ButtonRowDone,
-            onCancelClick = { /*TODO*/ },
+            onCancelClick = onCancelClick,
             onSaveClick = {
                 // call suspend function
                 runBlocking {

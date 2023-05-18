@@ -19,6 +19,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,7 @@ const val MIDDLE_SPACE_RATIO = 0.5F
 /**
  * Displays the recipe feed screen
  * @param service the service to use to get the recipes/notes and update the notes
+ * @param onCreateNewRecipe the callback to call when the user wants to create a new recipe
  */
 @Preview(showBackground = true)
 @Composable
@@ -67,7 +69,8 @@ fun RecipeFeed(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(Color.White),
+            .background(Color.White)
+            .testTag(stringResource(R.string.recipe_feed_screen_tag)),
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         CreateNewItemButton(itemType = "Recipe", onClick = onCreateNewRecipe, canClick = isOnline)

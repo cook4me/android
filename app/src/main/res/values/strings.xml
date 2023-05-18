@@ -22,6 +22,14 @@
     <string name="event_visibility_everyone">Everyone</string>
     <string name="event_visibility_subscriber_only">Subscriber only</string>
 
+    <!--  CreateChallengeScreen  -->
+    <string name="ask_challenge_name">Name of the challenge?</string>
+    <string name="ask_challenge_description">Description of the challenge?</string>
+    <string name="ask_challenge_type">Cooking genre: </string>
+
+    <!-- Challenge Feed Screen -->
+    <string name="Challenge_Feed_TAG">Challenge Feed TAG</string>
+
     <!-- CreateNewItemButton -->
     <string name="create_new_item_type">Create a new</string>
     <string name="event">Event</string>
@@ -61,13 +69,12 @@
     <string name="sign_in_screen_wrong_password">Wrong password!</string>
     <string name="TAG_EMAIL_FIELD">EmailField</string>
     <string name="TAG_PASSWORD_FIELD">PasswordField</string>
-    <string name="Login_Screen_Tag">LoginScreen</string>
 
     <!--  Profile -->
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
     <string name="tag_bio">Bio</string>
-    <string name="tag_defaultProfileImage">defaultProfilImage</string>
+    <string name="tag_defaultProfileImage">defaultProfileImage</string>
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
     <string name="tag_password">Password</string>
@@ -110,18 +117,14 @@
     <string name="Add_profile_infos_top_bar_message">Add your user informations</string>
     <string name="Add_profile_infos_invalid_user">Email invalid</string>
     <string name="TAG_USER_FIELD">UserField</string>
-
-
-    <!-- Post -->
-    <string name="post_tag_image">image</string>
-    <string name="post_title">Post</string>
+    <string name="sign_up_screen_tag">sign up screen</string>
+    <string name="add_profile_info_screen_tag">add profile info screen</string>
 
     <!-- Permission -->
     <string name="permission_message_singular">The %1\$s permission is important. Please grant it for the app to function properly.</string>
     <string name="permission_message_plural">The following permissions are important: %1\$s. Please grant all of them for the app to function properly.</string>
     <string name="permission_message_singular_recommendation">The %1\$s permission will grant a better experience in the app</string>
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
-
 
     <!-- Chat -->
     <string name="Loading_Screen_Tag">Loading Screen TAG</string>
@@ -130,4 +133,32 @@
     <!-- BottomBar -->
     <string name="bottom_bar_more_button_text">More</string>
     <string name="bottom_bar_sign_out_text">Sign Out</string>
+    <string name="tupperware_swipe_screen_tag">Tupperware Swipe Screen</string>
+    <string name="create_tupper_screen_tag">Create Tupperware Screen</string>
+    <string name="create_recipe_screen_tag">Create Recipe Screen</string>
+    <string name="recipe_feed_screen_tag">Recipe Feed Screen</string>
+    <string name="create_event_screen_tag">Create Event Screen</string>
+    <string name="event_screen_tag">Event/Map Screen</string>
+    <string name="detailed_event_screen_tag">Detailed Event Screen</string>
+    <string name="profile_screen_tag">Profile Screen</string>
+    <string name="edit_profile_screen_tag">Edit Profile Screen</string>
+    <string name="login_screen_tag">Login Screen</string>
+
+    <!--Challenges-->
+    <string name="join">Join</string>
+    <string name="challenge_finished">This challenge has already taken place</string>
+    <string name="vote">Vote for other participants</string>
+
+    <!-- Voting Screen --> voteScreenTitle
+    <string name="voteScreenTitle">Vote for best participants</string>
+    <string name="voteButton">Vote</string>
+
+    <!-- Ranking Screen -->
+    <string name="rankingScreenTitle">Ranking</string>
+    <string name="score">Score</string>
+    <string name="participant">Participant</string>
+    <string name="place">Place</string>
+    <string name="back">Back</string>
+    <string name="winner">Winner</string>
+
 </resources>

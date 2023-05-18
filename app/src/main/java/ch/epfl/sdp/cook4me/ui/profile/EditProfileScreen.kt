@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
@@ -42,44 +44,50 @@ import ch.epfl.sdp.cook4me.ui.common.form.UserField
 import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun EditProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = remember { ProfileViewModel() },
+    profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
     onCancelListener: () -> Unit = {},
     onSuccessListener: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
-    val usernameState =
-        remember {
-            UserNameState(
-                context.getString(R.string.invalid_username_message),
-                viewModel.profile.value.name
-            )
-        }
-    val allergiesState = remember {
-        NonRequiredTextFieldState("", viewModel.profile.value.allergies)
-    }
-    val bioState = remember {
-        NonRequiredTextFieldState("", viewModel.profile.value.bio)
-    }
-    val favoriteDishState = remember {
-        NonRequiredTextFieldState("", viewModel.profile.value.favoriteDish)
-    }
+    var username = viewModel.profile.value.name
+    var bio = viewModel.profile.value.bio
+    var favoriteDish = viewModel.profile.value.favoriteDish
+    var allergies = viewModel.profile.value.allergies
 
-    val profile = viewModel.profile.value
+    val usernameState =
+        UserNameState(
+            context.getString(R.string.invalid_username_message),
+            username,
+        )
+
+    val allergiesState = NonRequiredTextFieldState(allergies)
+    val bioState = NonRequiredTextFieldState(bio)
+    val favoriteDishState = NonRequiredTextFieldState(favoriteDish)
     val isLoading = viewModel.isLoading.value
+    val image = remember { mutableStateOf<Uri>(Uri.EMPTY) }
+    var firstExecution = true
 
     val imagePicker =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
                 if (uri != null) {
-                    viewModel.addUserImage(
-                        uri
-                    )
+                    image.value = uri
+                    viewModel.addProfileImage(uri)
+                    // Save the image in the database
+                    CoroutineScope(Dispatchers.Main).launch {
+                        profileImageRepository.delete() // Delete the previous image
+                        profileImageRepository.add(uri) // Add the new image
+                    }
                 }
             }
         )
@@ -89,7 +97,9 @@ fun EditProfileScreen(
     }
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .testTag(stringResource(R.string.edit_profile_screen_tag))
     ) {
         if (isLoading) {
             CircularProgressIndicator(
@@ -98,12 +108,20 @@ fun EditProfileScreen(
                     .testTag("CircularProgressIndicator")
             )
         } else {
+            // Way to force the values to be updated after loading the profile
+            if (firstExecution) {
+                allergiesState.text = allergies
+                favoriteDishState.text = favoriteDish
+                bioState.text = bio
+                image.value = viewModel.profileImage.value
+                firstExecution = false
+            }
+
             Scaffold(
                 scaffoldState = scaffoldState,
                 content = { padding ->
                     Column(
                         modifier = modifier
-                            .testTag(stringResource(R.string.Login_Screen_Tag))
                             .fillMaxWidth()
                             .fillMaxHeight()
                             .verticalScroll(rememberScrollState())
@@ -115,10 +133,9 @@ fun EditProfileScreen(
                             { viewModel.onSubmit(onSuccessListener) },
                             onCancelListener,
                         )
-
                         ImageHolderProfileUpdateScreen(
                             onClickAddImage = { onClickAddImage() },
-                            image = profile.userImage.toUri(),
+                            image = image.value,
                         )
                         // Textfield for the Username
                         UserField(
@@ -187,6 +204,7 @@ fun ImageHolderProfileUpdateScreen(
             modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
+                .testTag(stringResource(R.string.tag_defaultProfileImage))
         ) {
             ImageProfileUpdateScreen(
                 onClickAddImage = onClickAddImage,
@@ -202,15 +220,22 @@ fun ImageProfileUpdateScreen(
     onClickAddImage: () -> Unit,
     image: Uri,
 ) {
+    val context = LocalContext.current
+    var userimage = image
+    if (image == "".toUri()) {
+        userimage = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+    }
+
     AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current).data(image).build(),
+        model = ImageRequest.Builder(context).data(userimage).build(),
         contentDescription = "",
         modifier = Modifier
             .fillMaxHeight()
             .testTag("ProfileImage")
             .wrapContentSize()
             .clickable { onClickAddImage() },
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
+        // Add key parameter to force recompose when image changes
     )
 }
 
