@@ -120,17 +120,11 @@
     <string name="sign_up_screen_tag">sign up screen</string>
     <string name="add_profile_info_screen_tag">add profile info screen</string>
 
-
-    <!-- Post -->
-    <string name="post_tag_image">image</string>
-    <string name="post_title">Post</string>
-
     <!-- Permission -->
     <string name="permission_message_singular">The %1\$s permission is important. Please grant it for the app to function properly.</string>
     <string name="permission_message_plural">The following permissions are important: %1\$s. Please grant all of them for the app to function properly.</string>
     <string name="permission_message_singular_recommendation">The %1\$s permission will grant a better experience in the app</string>
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
-
 
     <!-- Chat -->
     <string name="Loading_Screen_Tag">Loading Screen TAG</string>
@@ -158,4 +152,13 @@
     <!-- Voting Screen --> voteScreenTitle
     <string name="voteScreenTitle">Vote for best participants</string>
     <string name="voteButton">Vote</string>
+
+    <!-- Ranking Screen -->
+    <string name="rankingScreenTitle">Ranking</string>
+    <string name="score">Score</string>
+    <string name="participant">Participant</string>
+    <string name="place">Place</string>
+    <string name="back">Back</string>
+    <string name="winner">Winner</string>
+
 </resources>

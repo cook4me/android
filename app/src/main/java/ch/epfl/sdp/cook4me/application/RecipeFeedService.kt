@@ -17,7 +17,6 @@ class RecipeFeedService(
     private val recipeNoteRepository: RecipeNoteRepository = RecipeNoteRepository(),
     private val accountService: AccountService = AccountService(),
 ) {
-
     /**
      * Retrieves all the recipes and assigns them their notes (0 if they have none)
      * @return a list of recipes with their id with their notes

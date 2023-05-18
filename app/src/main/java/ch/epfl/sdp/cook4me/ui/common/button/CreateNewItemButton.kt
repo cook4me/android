@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,7 +28,8 @@ const val BUTTON_VERTICAL_PROPORTION = 0.07f
 fun CreateNewItemButton(
     itemType: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    canClick: Boolean = true
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     Button(
@@ -34,7 +37,16 @@ fun CreateNewItemButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(5.dp)
-            .height(screenHeight * BUTTON_VERTICAL_PROPORTION)
+            .height(screenHeight * BUTTON_VERTICAL_PROPORTION),
+        enabled = canClick,
+        colors = if (canClick) {
+            ButtonDefaults.buttonColors()
+        } else {
+            ButtonDefaults.buttonColors(
+                backgroundColor = Color.Gray,
+                contentColor = Color.White
+            )
+        }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically

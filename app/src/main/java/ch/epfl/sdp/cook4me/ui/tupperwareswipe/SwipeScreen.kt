@@ -42,7 +42,8 @@ private data class TupperwareState(
 @Composable
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
-    swipeService: SwipeService = SwipeService()
+    swipeService: SwipeService = SwipeService(),
+    isOnline: Boolean = true,
 ) {
     val data = remember {
         mutableStateOf(mapOf<String, TupperwareWithImage>())
@@ -97,8 +98,9 @@ fun TupperwareSwipeScreen(
     Column {
         CreateNewItemButton(
             itemType = "Tupperware",
+            modifier = Modifier.testTag(stringResource(R.string.tupperware_swipe_screen_tag)),
             onClick = onCreateNewTupperware,
-            modifier = Modifier.testTag(stringResource(R.string.tupperware_swipe_screen_tag))
+            canClick = isOnline
         )
         Column(
             Modifier.fillMaxSize(),

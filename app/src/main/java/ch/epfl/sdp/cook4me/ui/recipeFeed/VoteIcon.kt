@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
  */
 @Preview(showBackground = true)
 @Composable
-fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int = 0) {
+fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int = 0, canClick: Boolean = true) {
     val upvote = remember { mutableStateOf(userVote == 1) }
     val downvote = remember { mutableStateOf(userVote == -1) }
     val notPressedColor = Color.Black
@@ -59,7 +59,7 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int 
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        IconButton(onClick = { onVote(true) }) {
+        IconButton(onClick = { onVote(true) }, enabled = canClick) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowUp,
                 contentDescription = "Upvote",
@@ -67,7 +67,7 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int 
             )
         }
         Text(text = localCounterValue.value.toString())
-        IconButton(onClick = { onVote(false) }) {
+        IconButton(onClick = { onVote(false) }, enabled = canClick) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowDown,
                 contentDescription = "Downvote",
