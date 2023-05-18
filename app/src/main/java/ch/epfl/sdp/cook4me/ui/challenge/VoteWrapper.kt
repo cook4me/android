@@ -15,6 +15,7 @@ import ch.epfl.sdp.cook4me.ui.chat.LoadingScreen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+@Suppress("ComplexMethod")
 @Composable
 fun VoteWrapper(
     service: ChallengeFormService = ChallengeFormService(),
@@ -60,19 +61,32 @@ fun VoteWrapper(
                 // update challenge with new score
                 challengeVote?.let { challengeVote ->
                     for (participant in challengeVote.participants) {
-                        challengeAfterVote = changeParticipantScore(challengeAfterVote!!, participant.key, participant.value)
+                        challengeAfterVote = changeParticipantScore(
+                            challengeAfterVote!!,
+                            participant.key,
+                            participant.value
+                        )
                     }
-                    challengeAfterVote = addParticipant(challengeAfterVote!!, currentUser)
-                    challengeAfterVote = changeParticipantScore(challengeAfterVote!!, currentUser, scoreOfCurrentUser)
+                    challengeAfterVote = addParticipant(
+                        challengeAfterVote!!,
+                        currentUser
+                    )
+                    challengeAfterVote = changeParticipantScore(
+                        challengeAfterVote!!,
+                        currentUser,
+                        scoreOfCurrentUser
+                    )
                 }
 
                 // update that current user has voted
                 challengeAfterVote = challengeAfterVote?.let {
-                    it.copy(participantIsVoted = it.participantIsVoted + (currentUser to true))
+                    it.copy(
+                        participantIsVoted = it.participantIsVoted + (currentUser to true)
+                    )
                 }
 
                 withContext(context = coroutineScope.coroutineContext) {
-                    challengeAfterVote?.let { it ->
+                    challengeAfterVote?.let {
                         service.updateChallenge(
                             challengeId,
                             it
@@ -94,8 +108,13 @@ fun VoteWrapper(
                 onCancelClick = onBack
             )
         }
-        hasVoted -> LoadingScreen() // This screen will be shown for a short time before it switches to the RankingScreen
-        alreadyVoted -> challenge?.let { // If the user has already voted, render the RankingScreen with the original challenge
+        // This screen
+        // will be shown for a short
+        // before it switches to the RankingScreen
+        hasVoted -> LoadingScreen()
+        // If the user has already voted,
+        // render the RankingScreen with the original challenge
+        alreadyVoted -> challenge?.let {
             RankingScreen(
                 challenge = it,
                 onBack = onBack,
@@ -110,9 +129,8 @@ fun VoteWrapper(
     }
 }
 
-fun removeUserScoreFromChallenge(challenge: Challenge, currentUser: String): Challenge {
-    return challenge.copy(
+fun removeUserScoreFromChallenge(challenge: Challenge, currentUser: String) =
+    challenge.copy(
         participants = challenge.participants - currentUser,
         participantIsVoted = challenge.participantIsVoted - currentUser
     )
-}
