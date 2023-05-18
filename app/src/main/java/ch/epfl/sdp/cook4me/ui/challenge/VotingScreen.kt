@@ -55,7 +55,7 @@ fun VotingScreen(
 
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(challenge.participants.toList()) { (participant) ->
-                ParticipantRow(participant, voteResults[participant]!!) { newScore ->
+                ParticipantRow(participant, voteResults[participant] ?: 0) { newScore ->
                     voteResults[participant] = newScore
                 }
             }

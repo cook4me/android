@@ -1,7 +1,9 @@
 package ch.epfl.sdp.cook4me.ui.navigation
 
 import AddProfileInfoScreen
+import RankingScreenWrapper
 import SignUpScreen
+import VoteWrapper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -12,8 +14,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
-import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
-import ch.epfl.sdp.cook4me.ui.challengeform.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
@@ -128,17 +128,13 @@ fun Cook4MeNavHost(
             )
         }
         composable(route = Screen.CreateChallengeScreen.name) {
-            CreateChallengeScreen(
-                onCancelClick = {
-                    navController.navigate(
-                        Screen.ChallengeFeedScreen.name
-                    )
-                }
-            )
+            RankingScreenWrapper(onBack = { /*TODO*/ }, id = "EbsDGi6Gp09FPmZISnrF")
         }
         composable(route = Screen.ChallengeFeedScreen.name) {
-            ChallengeFeedScreen(
-                onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) }
+            VoteWrapper(
+                onBack = { /*TODO*/ },
+                challengeId = "EbsDGi6Gp09FPmZISnrF",
+                currentUser = "Nino",
             )
         }
     }
