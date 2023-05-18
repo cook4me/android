@@ -11,7 +11,12 @@ import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
  * @param userVotes the map of the user votes (recipeId, note) if no votes -> empty key
  */
 @Composable
-fun RecipeListScreen(recipeList: List<RecipeNote>, onNoteUpdate: (String, Int) -> Unit, userVotes: Map<String, Int>, isOnline: Boolean) {
+fun RecipeListScreen(
+    recipeList: List<RecipeNote>,
+    onNoteUpdate: (String, Int) -> Unit,
+    userVotes: Map<String, Int>,
+    isOnline: Boolean
+) {
     LazyColumn {
         items(recipeList.size) { index ->
             RecipeDisplay(

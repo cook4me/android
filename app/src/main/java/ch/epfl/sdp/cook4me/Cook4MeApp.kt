@@ -189,7 +189,7 @@ fun Cook4MeApp(
         }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
-                service = RecipeFeedService(context = LocalContext.current, isOffline = false),
+                service = RecipeFeedService(),
                 onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) },
                 isOnline = isOnline
             )
@@ -245,7 +245,7 @@ fun Cook4MeApp(
                         onClickSignOut = { signOut() }
                     )
                 }
-                if (!isOnline){
+                if (!isOnline) {
                     Text(text = "You are offline", modifier = Modifier.fillMaxWidth().background(
                         Color.Red).padding(8.dp))
                 }

@@ -33,7 +33,13 @@ const val RECIPE_TITLE_RATIO = 0.8F
  * @param userVote the vote of the user
  */
 @Composable
-fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}, userVote: Int = 0, canClick: Boolean = true) {
+fun RecipeDisplay(
+    recipe: Recipe,
+    note: Int,
+    onNoteUpdate: (Int) -> Unit = {},
+    userVote: Int = 0,
+    canClick: Boolean = true
+) {
     val clicked = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
