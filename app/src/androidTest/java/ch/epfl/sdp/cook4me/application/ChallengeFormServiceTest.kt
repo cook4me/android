@@ -7,21 +7,18 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.Test
 import java.util.Calendar
-
 // test for update challenge TODO
-@ExperimentalCoroutinesApi
 class ChallengeFormServiceTest {
     private val mockObjectRepository = mockk<ObjectRepository>(relaxed = true)
 
     private val challengeFormService = ChallengeFormService(mockObjectRepository)
 
     @Test
-    fun submitValidChallengeStoresChallenge() = runTest {
+    fun submitValidChallengeStoresChallenge() = runBlocking {
         val dateTime = Calendar.getInstance()
         dateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR) + 1)
         val challenge = Challenge(
@@ -45,7 +42,7 @@ class ChallengeFormServiceTest {
     }
 
     @Test
-    fun testUpdateChallenge() = runTest {
+    fun testUpdateChallenge() = runBlocking {
         val id = "testId"
         val challenge = Challenge(
             name = "name",
@@ -80,7 +77,7 @@ class ChallengeFormServiceTest {
     }
 
     @Test
-    fun submitIncompleteChallengeReturnsErrorMessage() = runTest {
+    fun submitIncompleteChallengeReturnsErrorMessage() = runBlocking {
         val challenge = Challenge()
         val result = withTimeout(500L) {
             challengeFormService.submitForm(challenge)
@@ -93,7 +90,7 @@ class ChallengeFormServiceTest {
     }
 
     @Test
-    fun getWithGivenFieldReturnsCorrectChallenges() = runTest {
+    fun getWithGivenFieldReturnsCorrectChallenges() = runBlocking {
         val field = "name"
         val query = "testName"
         val challenge1 = Challenge(mapOf("name" to "testName", "description" to "testDescription1"))
@@ -123,7 +120,7 @@ class ChallengeFormServiceTest {
         assert(result["2"]?.description == challenge2.description)
     }
     @Test
-    fun getChallengeWithIdReturnsCorrectChallenge() = runTest {
+    fun getChallengeWithIdReturnsCorrectChallenge() = runBlocking {
         val id = "1"
         val challenge = Challenge(mapOf("name" to "testName", "description" to "testDescription"))
 

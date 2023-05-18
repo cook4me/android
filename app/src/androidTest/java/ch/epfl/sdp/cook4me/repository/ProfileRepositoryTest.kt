@@ -53,6 +53,8 @@ class ProfileRepositoryTest {
             val profile2 = profileRepository.getById(newEntry2.email)
             MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
             MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
+            profileRepository.delete(newEntry1.email)
+            profileRepository.delete(newEntry2.email)
         }
     }
 
