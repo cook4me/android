@@ -108,7 +108,7 @@ fun ChallengeFeedScreen(
     onChallengeClick: (String) -> Unit = {},
     searchViewModel: SearchViewModel = remember { SearchViewModel()},
 ) {
-    /*val query = searchViewModel.query
+    val query = searchViewModel.query
     val challenges = searchViewModel.challenges
     val isLoading = searchViewModel.isLoading
 
@@ -132,11 +132,7 @@ fun ChallengeFeedScreen(
                 FilterButton(modifier = Modifier.fillMaxWidth(), onClick = {})
             }
         }
-        if (isLoading.value) {
-            CircularProgressIndicator(
-                modifier = Modifier
-            )
-        } else {
+        if (!isLoading.value) {
             LazyColumn() {
                 items(challenges) {
                     ChallengeItem(
@@ -148,8 +144,7 @@ fun ChallengeFeedScreen(
                 }
             }
         }
-    }*/
-    FilterScreen()
+    }
 }
 
 
