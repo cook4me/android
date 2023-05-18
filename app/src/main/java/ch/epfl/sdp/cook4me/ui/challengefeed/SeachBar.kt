@@ -35,7 +35,6 @@ import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
 private val CORNER_SIZE = 15.dp
 
-
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
@@ -48,25 +47,11 @@ fun SearchBar(
         mutableStateOf(false)
     }
     val focusManager = LocalFocusManager.current
+    val color = if (isFocused.value) MaterialTheme.colors.primary else Color.LightGray
 
-    val boxModifier = if (isFocused.value) {
-        modifier
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colors.primary,
-                shape = RoundedCornerShape(CORNER_SIZE)
-            )
-            .background(Color.White, shape = RoundedCornerShape(CORNER_SIZE))
-    } else {
-        modifier
-            .border(
-                width = 1.dp,
-                color = Color.LightGray,
-                shape = RoundedCornerShape(CORNER_SIZE)
-            )
-    }
     Box(
-        modifier = boxModifier
+        modifier = modifier
+            .border(width = 1.dp, color = color, shape = RoundedCornerShape(CORNER_SIZE))
             .background(Color.White, shape = RoundedCornerShape(CORNER_SIZE))
             .padding(horizontal = 8.dp, vertical = 8.dp)
     ) {
@@ -84,7 +69,9 @@ fun SearchBar(
             }
             BasicTextField(
                 value = text,
-                onValueChange = onTextChange,
+                onValueChange = {
+                    onTextChange(it.filter { c -> c != '\n' })  // singleLine = true doesn't seem to work
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)

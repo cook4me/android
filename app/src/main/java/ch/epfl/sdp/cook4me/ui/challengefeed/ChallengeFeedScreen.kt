@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.challenge
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.primarySurface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -119,7 +121,7 @@ fun ChallengeFeedScreen(
         Surface(
             modifier = Modifier
                 .fillMaxWidth(),
-            elevation = 20.dp
+            elevation = 20.dp,
         ) {
             Column (Modifier.padding(10.dp)) {
                 SearchBar(
@@ -134,6 +136,7 @@ fun ChallengeFeedScreen(
             }
         }
         if (!isLoading.value) {
+            Spacer(modifier = Modifier.size(5.dp))
             LazyColumn() {
                 items(challenges) {
                     ChallengeItem(

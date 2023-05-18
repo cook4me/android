@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -30,42 +32,48 @@ fun ChallengeItem(
     participantCount: Int,
     onClick: () -> Unit = {},
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable {onClick()}
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column {
-            Text(
-                text = challengeName,
-                style = MaterialTheme.typography.h6,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "by $creatorName",
-                style = MaterialTheme.typography.body2,
-                color = Color.Gray
-            )
-        }
-        Box(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(start = 8.dp)
+    Card(
+        modifier = Modifier.padding(5.dp),
+        shape = RoundedCornerShape(10.dp),
+        elevation = 5.dp
+    ){
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .clickable { onClick() }
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Participant Icon",
+            Column {
+                Text(
+                    text = challengeName,
+                    style = MaterialTheme.typography.h6,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "by $creatorName",
+                    style = MaterialTheme.typography.body2,
+                    color = Color.Gray
+                )
+            }
+            Box(
                 modifier = Modifier
-                    .size(24.dp)
-            )
-            Text(
-                text = "x $participantCount",
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier.padding(start = 25.dp)
-            )
+                    .wrapContentSize()
+                    .padding(start = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Participant Icon",
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+                Text(
+                    text = "x $participantCount",
+                    style = MaterialTheme.typography.body2,
+                    modifier = Modifier.padding(start = 25.dp)
+                )
+            }
         }
     }
 }
