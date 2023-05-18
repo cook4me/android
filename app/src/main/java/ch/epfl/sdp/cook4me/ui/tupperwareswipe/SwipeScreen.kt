@@ -95,7 +95,11 @@ fun TupperwareSwipeScreen(
     }
 
     Column {
-        CreateNewItemButton(itemType = "Tupperware", onClick = onCreateNewTupperware)
+        CreateNewItemButton(
+            itemType = "Tupperware",
+            onClick = onCreateNewTupperware,
+            modifier = Modifier.testTag(stringResource(R.string.tupperware_swipe_screen_tag))
+        )
         Column(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
@@ -106,8 +110,7 @@ fun TupperwareSwipeScreen(
                 Box(
                     Modifier
                         .padding(16.dp)
-                        .weight(weight = 0.87f)
-                        .testTag(stringResource(R.string.tupperware_swipe_screen_tag)),
+                        .weight(weight = 0.87f),
                     contentAlignment = Alignment.Center
                 ) {
                     if (allDone) {
@@ -142,7 +145,7 @@ fun TupperwareSwipeScreen(
                     enabled = !allDone,
                     icon = Icons.Rounded.Close,
 
-                )
+                    )
                 CircleButton(
                     onClick = {
                         onSwipeButtonClicked(Direction.Right)
