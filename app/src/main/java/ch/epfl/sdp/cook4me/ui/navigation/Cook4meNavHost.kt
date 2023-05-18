@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
+import ch.epfl.sdp.cook4me.ui.challengedetailed.ChallengeDetailedScreen
 import ch.epfl.sdp.cook4me.ui.challengeform.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
@@ -138,8 +139,18 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.ChallengeFeedScreen.name) {
             ChallengeFeedScreen(
+                onChallengeClick = { challengeId ->
+                    navController.navigate(
+                        ScreenWithArgs.DetailedChallengeScreen.createRoute(challengeId)
+                    ) },
                 onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) }
             )
+        }
+        composable(
+            route = ScreenWithArgs.DetailedChallengeScreen.name,
+            arguments = listOf(navArgument("challengeId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            ChallengeDetailedScreen(challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty())
         }
     }
 }

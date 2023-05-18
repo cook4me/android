@@ -7,18 +7,17 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
 import org.junit.Test
 import java.util.Calendar
-// test for update challenge TODO
 class ChallengeFormServiceTest {
     private val mockObjectRepository = mockk<ObjectRepository>(relaxed = true)
 
     private val challengeFormService = ChallengeFormService(mockObjectRepository)
 
     @Test
-    fun submitValidChallengeStoresChallenge() = runBlocking {
+    fun submitValidChallengeStoresChallenge() = runTest {
         val dateTime = Calendar.getInstance()
         dateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR) + 1)
         val challenge = Challenge(
@@ -42,7 +41,7 @@ class ChallengeFormServiceTest {
     }
 
     @Test
-    fun testUpdateChallenge() = runBlocking {
+    fun testUpdateChallenge() = runTest {
         val id = "testId"
         val challenge = Challenge(
             name = "name",
@@ -77,7 +76,7 @@ class ChallengeFormServiceTest {
     }
 
     @Test
-    fun submitIncompleteChallengeReturnsErrorMessage() = runBlocking {
+    fun submitIncompleteChallengeReturnsErrorMessage() = runTest {
         val challenge = Challenge()
         val result = withTimeout(500L) {
             challengeFormService.submitForm(challenge)
@@ -90,7 +89,7 @@ class ChallengeFormServiceTest {
     }
 
     @Test
-    fun getWithGivenFieldReturnsCorrectChallenges() = runBlocking {
+    fun getWithGivenFieldReturnsCorrectChallenges() = runTest {
         val field = "name"
         val query = "testName"
         val challenge1 = Challenge(mapOf("name" to "testName", "description" to "testDescription1"))
@@ -120,7 +119,7 @@ class ChallengeFormServiceTest {
         assert(result["2"]?.description == challenge2.description)
     }
     @Test
-    fun getChallengeWithIdReturnsCorrectChallenge() = runBlocking {
+    fun getChallengeWithIdReturnsCorrectChallenge() = runTest {
         val id = "1"
         val challenge = Challenge(mapOf("name" to "testName", "description" to "testDescription"))
 

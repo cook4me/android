@@ -30,7 +30,7 @@ class MapViewModel(
     private fun eventsToMarkers(events: Map<String, Event>): List<MarkerData> =
         events.map { (id, event) ->
             MarkerData(
-                position = LatLng(event.latLng.first, event.latLng.second),
+                position = LatLng(event.latLng.latitude, event.latLng.longitude),
                 title = event.name,
                 id = id,
                 description = event.description

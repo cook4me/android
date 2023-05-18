@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.detailedevent
 
 import ch.epfl.sdp.cook4me.ui.eventform.Event
+import com.google.firebase.firestore.GeoPoint
 import java.util.Calendar
 
 val testEventDate = Calendar.getInstance().apply {
@@ -21,5 +22,5 @@ val testEvent = Event(
     creator = "peter griffin",
     id = "harry.potter@epfl.ch",
     isPrivate = false,
-    latLng = Pair(46.52298091481133, 6.5657859621449335)
+    latLng = GeoPoint(46.52298091481133, 6.5657859621449335)
 )

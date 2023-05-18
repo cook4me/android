@@ -15,8 +15,8 @@ class SearchViewModel(
     repository: ChallengeFormService = ChallengeFormService()
 ): ViewModel() {
     private var _isLoading = mutableStateOf(true)
-    private val _challenges = mutableStateListOf<Challenge>()
-    private val _viewedChallenges = mutableStateListOf<Challenge>()
+    private val _challenges = mutableStateListOf<Pair<String, Challenge>>()
+    private val _viewedChallenges = mutableStateListOf<Pair<String, Challenge>>()
     private val _filter = Filter<Challenge>()
 
     val isLoading: State<Boolean> = _isLoading
@@ -26,7 +26,7 @@ class SearchViewModel(
     init {
         viewModelScope.launch {
             _isLoading.value = true
-            _challenges.addAll(repository.retrieveAllChallenges().map{ it.value })
+            _challenges.addAll(repository.retrieveAllChallenges().toList())
             _viewedChallenges.addAll(_challenges)
             Log.d("SearchViewModel", "Retrieved")
             _isLoading.value = false
@@ -36,8 +36,8 @@ class SearchViewModel(
     fun search() {
         Log.d("SearchViewModel", "Searching")
         val filteredChallenges = _challenges.filter {
-            it.name.contains(query.value, ignoreCase = true) or
-            it.description.contains(query.value, ignoreCase = true)
+            it.second.name.contains(query.value, ignoreCase = true) or
+            it.second.description.contains(query.value, ignoreCase = true)
         }
         _viewedChallenges.clear()
         _viewedChallenges.addAll(

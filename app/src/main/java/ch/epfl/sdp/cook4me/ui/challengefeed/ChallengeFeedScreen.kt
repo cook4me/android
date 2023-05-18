@@ -43,6 +43,7 @@ import ch.epfl.sdp.cook4me.application.ChallengeFormService
 import ch.epfl.sdp.cook4me.ui.challengefeed.FilterButton
 import ch.epfl.sdp.cook4me.ui.challengefeed.FilterScreen
 import ch.epfl.sdp.cook4me.ui.challengefeed.SearchViewModel
+import com.google.firebase.firestore.GeoPoint
 
 
 val cookingChallengeList = listOf(
@@ -50,7 +51,7 @@ val cookingChallengeList = listOf(
         name = "Baking Challenge",
         description = "Bake a delicious cake",
         dateTime = Calendar.getInstance().apply { set(2023, Calendar.MAY, 20, 9, 0) },
-        latLng = Pair(37.7749, -122.4194),
+        latLng = GeoPoint(0.0, 0.0),
         participants = mapOf(
             "User1" to 5,
             "User2" to 7,
@@ -68,7 +69,7 @@ val cookingChallengeList = listOf(
         name = "Grilling Challenge",
         description = "Prepare a mouthwatering barbecue",
         dateTime = Calendar.getInstance().apply { set(2023, Calendar.JUNE, 1, 12, 0) },
-        latLng = Pair(34.0522, -118.2437),
+        latLng = GeoPoint(0.0, 0.0),
         participants = mapOf(
             "User4" to 10,
             "User5" to 8,
@@ -86,7 +87,7 @@ val cookingChallengeList = listOf(
         name = "Dessert Challenge",
         description = "Create a delectable dessert",
         dateTime = Calendar.getInstance().apply { set(2023, Calendar.MAY, 25, 18, 30) },
-        latLng = Pair(51.5074, -0.1278),
+        latLng = GeoPoint(0.0, 0.0),
         participants = mapOf(
             "User7" to 2,
             "User8" to 4,
@@ -136,10 +137,10 @@ fun ChallengeFeedScreen(
             LazyColumn() {
                 items(challenges) {
                     ChallengeItem(
-                        challengeName = it.name,
-                        creatorName = it.creator,
-                        participantCount = it.participants.size,
-                        onClick = { onChallengeClick(it.creator) }
+                        challengeName = it.second.name,
+                        creatorName = it.second.creator,
+                        participantCount = it.second.participants.size,
+                        onClick = { onChallengeClick(it.first) }
                     )
                 }
             }

@@ -34,6 +34,8 @@ import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
+import ch.epfl.sdp.cook4me.ui.map.LocationPicker
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
@@ -96,6 +98,11 @@ fun CreateChallengeScreen(
         )
         TimePicker(
             onTimeChanged = { updateTime(it) }
+        )
+        LocationPicker(
+            onLocationPicked = {
+                challenge.value = challenge.value.copy(latLng = GeoPoint(it.latitude, it.longitude))
+            }
         )
         FormButtons(
             onCancelText = R.string.ButtonRowCancel,
