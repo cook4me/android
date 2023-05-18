@@ -45,10 +45,8 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
      * @param userVote the relative change of the vote of the user
      */
     suspend fun updateRecipeNote(id: String, note: Int, userId: String, userVote: Int) {
-        println("Updating note for recipe $id to $note")
         store.collection(RECIPE_NOTE_PATH).whereEqualTo("id", id).get().await()
             .first()?.reference?.update("note", note)?.await()
-        println("Updated note for recipe $id to $note")
         val userVoteDoc = store.collection(USER_VOTE_PATH).whereEqualTo("id", id)
             .whereEqualTo("userId", userId).get().await().firstOrNull()
 
@@ -56,10 +54,8 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
         if (userVoteDoc != null) {
             val oldVote = userVoteDoc.getLong("note")?.toInt() ?: 0
             userVoteDoc.reference.update("note", oldVote + userVote).await()
-            println("Updated vote for recipe $id by user $userId")
         } else {
             store.collection(USER_VOTE_PATH).add(mapOf("id" to id, "userId" to userId, "note" to userVote)).await()
-            println("Added vote for recipe $id by user $userId")
         }
     }
 

@@ -24,8 +24,7 @@ class RecipeFeedService(
     suspend fun getRecipesWithNotes(): List<RecipeNote> {
         val recipes = recipeRepository.getAll<Recipe>()
         val notes = recipeNoteRepository.retrieveAllRecipeNotes()
-        val recipeNotes = recipes.map { RecipeNote(it.key, notes[it.key] ?: 0, it.value) }
-        return recipeNotes
+        return recipes.map { RecipeNote(it.key, notes[it.key] ?: 0, it.value) }
     }
 
     /**
@@ -36,7 +35,6 @@ class RecipeFeedService(
      */
     suspend fun updateRecipeNotes(recipeId: String, note: Int): Int {
         val userId = accountService.getCurrentUserWithEmail()
-        println("User id: $userId")
         val currentNote = recipeNoteRepository.getRecipeNote(recipeId)
 
         if (userId === null) {
