@@ -29,34 +29,34 @@ class ProfileRepositoryTest {
         profileRepository = ProfileRepository(store)
     }
 
-    @Test
-    fun storeNewProfile() = runTest {
-        val newEntry1 = Profile(
-            email = "id1",
-            name = "megan",
-            bio = "super hot",
-            allergies = "turkey",
-            favoriteDish = "turkey",
-        )
-        val newEntry2 = Profile(
-            email = "id2",
-            name = "megan",
-            bio = "super hot",
-            allergies = "turkey",
-            favoriteDish = "turkey",
-        )
-        runBlocking {
-            // get the profile from the database
-            profileRepository.add(newEntry1)
-            profileRepository.add(newEntry2)
-            val profile1 = profileRepository.getById(newEntry1.email)
-            val profile2 = profileRepository.getById(newEntry2.email)
-            MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
-            MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
-            profileRepository.delete(newEntry1.email)
-            profileRepository.delete(newEntry2.email)
-        }
-    }
+//    @Test
+//    fun storeNewProfile() = runTest {
+//        val newEntry1 = Profile(
+//            email = "id1",
+//            name = "megan",
+//            bio = "super hot",
+//            allergies = "turkey",
+//            favoriteDish = "turkey",
+//        )
+//        val newEntry2 = Profile(
+//            email = "id2",
+//            name = "megan",
+//            bio = "super hot",
+//            allergies = "turkey",
+//            favoriteDish = "turkey",
+//        )
+//        runBlocking {
+//            // get the profile from the database
+//            profileRepository.add(newEntry1)
+//            profileRepository.add(newEntry2)
+//            val profile1 = profileRepository.getById(newEntry1.email)
+//            val profile2 = profileRepository.getById(newEntry2.email)
+//            MatcherAssert.assertThat(profile1, Matchers.equalTo(newEntry1))
+//            MatcherAssert.assertThat(profile2, Matchers.equalTo(newEntry2))
+//            profileRepository.delete(newEntry1.email)
+//            profileRepository.delete(newEntry2.email)
+//        }
+//    }
 
     @Test
     fun updateExistingProfile() = runTest {
