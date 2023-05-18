@@ -45,11 +45,11 @@ class SwipeRepositoryTest {
 
     @Test
     fun addIdsAndGetThemTest() = runTest {
-        swipeRepository.add("id1", false)
-        swipeRepository.add("id2", true)
-        swipeRepository.add("id3", true)
+        swipeRepository.add("tup1", false)
+        swipeRepository.add("tup2", true)
+        swipeRepository.add("tup3", true)
         val ids = swipeRepository.getAllIdsByUser(auth.currentUser?.email ?: error("shouldn't happen"))
-        assertThat(ids, containsInAnyOrder("id1", "id2", "id3"))
+        assertThat(ids, containsInAnyOrder("tup1", "tup2", "tup3"))
     }
 
     @Test

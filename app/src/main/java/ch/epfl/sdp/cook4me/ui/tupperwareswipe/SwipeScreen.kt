@@ -143,9 +143,8 @@ fun TupperwareSwipeScreen(
                         onSwipeButtonClicked(Direction.Left)
                     },
                     enabled = !allDone,
-                    icon = Icons.Rounded.Close,
-
-                    )
+                    icon = Icons.Rounded.Close
+                )
                 CircleButton(
                     onClick = {
                         onSwipeButtonClicked(Direction.Right)
