@@ -101,7 +101,8 @@ fun VoteWrapper(
     when {
         isLoading -> LoadingScreen()
         isVoting -> challenge?.let {
-            VotingScreen(challenge = it,
+            VotingScreen(
+                challenge = it,
                 onVoteChanged = { challengeRet ->
                     challengeVote = challengeRet
                 },
