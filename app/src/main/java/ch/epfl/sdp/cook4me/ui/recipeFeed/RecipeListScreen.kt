@@ -15,7 +15,7 @@ fun RecipeListScreen(
     recipeList: List<RecipeNote>,
     onNoteUpdate: (String, Int) -> Unit,
     userVotes: Map<String, Int>,
-    isOnline: Boolean
+    isOnline: Boolean = true
 ) {
     LazyColumn {
         items(recipeList.size) { index ->
