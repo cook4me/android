@@ -33,7 +33,7 @@ const val RECIPE_TITLE_RATIO = 0.8F
  * @param userVote the vote of the user
  */
 @Composable
-fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}, userVote: Int = 0) {
+fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}, userVote: Int = 0, canClick: Boolean = true) {
     val clicked = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -73,7 +73,7 @@ fun RecipeDisplay(recipe: Recipe, note: Int, onNoteUpdate: (Int) -> Unit = {}, u
                 }
             }
             // put on the right side a voteIcon
-            VoteIcon(counterValue = note, onChange = onNoteUpdate, userVote = userVote)
+            VoteIcon(counterValue = note, onChange = onNoteUpdate, userVote = userVote, canClick = canClick)
         }
     }
 }

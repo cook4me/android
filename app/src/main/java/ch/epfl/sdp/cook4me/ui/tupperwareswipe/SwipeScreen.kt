@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
+    isOnline: Boolean = true,
 ) {
     val states = tupperwareList.map { it to rememberSwipeableCardState() }
     val scope = rememberCoroutineScope()
@@ -44,7 +45,7 @@ fun TupperwareSwipeScreen(
     }
 
     Column {
-        CreateNewItemButton(itemType = "Tupperware", onClick = onCreateNewTupperware)
+        CreateNewItemButton(itemType = "Tupperware", onClick = onCreateNewTupperware, canClick = isOnline)
         Column(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly

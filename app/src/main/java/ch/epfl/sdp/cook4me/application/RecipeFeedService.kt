@@ -6,8 +6,6 @@ import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
 import ch.epfl.sdp.cook4me.persistence.repository.AppDatabase
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeNoteRepository
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.util.logging.Logger
 
 /**
@@ -35,14 +33,16 @@ class RecipeFeedService(
             val notes = recipeNoteRepository.retrieveAllRecipeNotes()
             val recipeNotes = recipes.map { RecipeNote(it.key, notes[it.key] ?: 0, it.value) }
             // launch a coroutine to insert the recipe notes in the local database
-            withContext(Dispatchers.IO) {
-                localDatabase.recipeNoteDao().insertAll(*recipeNotes.toTypedArray())
-            }
+//            withContext(Dispatchers.IO) {
+//                localDatabase.recipeNoteDao().insertAll(*recipeNotes.toTypedArray())
+//            }
             return recipeNotes
         } else {
-            return withContext(Dispatchers.IO) {
-                localDatabase.recipeNoteDao().getAll()
-            }
+            println("Fetching from local database")
+            return listOf()
+//            return withContext(Dispatchers.IO) {
+//                localDatabase.recipeNoteDao().getAll()
+//            }
         }
     }
 
@@ -54,6 +54,7 @@ class RecipeFeedService(
      */
     suspend fun updateRecipeNotes(recipeId: String, note: Int): Int {
         val userId = accountService.getCurrentUserWithEmail()
+        println("User id: $userId")
         val currentNote = recipeNoteRepository.getRecipeNote(recipeId)
 
         if (userId === null) {

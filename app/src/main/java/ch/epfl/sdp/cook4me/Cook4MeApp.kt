@@ -126,7 +126,6 @@ fun Cook4MeApp(
 
     val isOnline = networkCallback.isOnline.value
 
-
     val screensWithBottomBar = mainDestinations.map { it.route }
     val shouldShowBottomBar = navController
         .currentBackStackEntryAsState().value?.destination?.route in screensWithBottomBar
@@ -190,8 +189,9 @@ fun Cook4MeApp(
         }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
-                service = RecipeFeedService(context = LocalContext.current, isOffline = !isOnline),
-                onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) }
+                service = RecipeFeedService(context = LocalContext.current, isOffline = false),
+                onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) },
+                isOnline = isOnline
             )
         }
         composable(route = Screen.Login.name) {

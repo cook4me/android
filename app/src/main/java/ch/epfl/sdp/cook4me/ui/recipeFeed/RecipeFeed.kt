@@ -86,7 +86,8 @@ fun RecipeFeed(
                         service.updateRecipeNotes(recipe, note)
                     }
                 },
-                userVotes = userVotes.value
+                userVotes = userVotes.value,
+                isOnline = isOnline
             )
         }
         Box(modifier = Modifier.fillMaxHeight(EMPTY_SPACE_RATIO))
