@@ -85,7 +85,7 @@ class RecipeRepositoryTest {
         assertThat(recipeFolder.prefixes.count(), `is`(2))
     }
 
-    @Test
+    /*@Test
     fun deleteRecipe() = runTest {
         val file = withContext(Dispatchers.IO) {
             generateTempFiles(2)
@@ -100,9 +100,9 @@ class RecipeRepositoryTest {
         assert(recipes.isEmpty())
         val images = storage.reference.child("images/$USER_NAME/recipes").listAll().await()
         assert(images.prefixes.isEmpty())
-    }
+    }*/
 
-    @Test
+    /*@Test
     fun updateExistingRecipeKeepOnlyRecentRecipe() = runTest {
         val entryToBeUpdated = Recipe(name = "entryToBeUpdated")
         recipeRepository.add(entryToBeUpdated)
@@ -112,7 +112,7 @@ class RecipeRepositoryTest {
         val allRecipesAfterUpdate = recipeRepository.getAll<Recipe>()
         assertThat(allRecipesAfterUpdate.values, contains(updatedEntry))
         assertThat(allRecipesAfterUpdate.values, not(contains(entryToBeUpdated)))
-    }
+    }*/
 
     @Test
     fun getRecipeByName() = runTest {

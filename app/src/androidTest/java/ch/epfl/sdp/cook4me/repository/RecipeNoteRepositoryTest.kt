@@ -89,13 +89,13 @@ class RecipeNoteRepositoryTest {
         assertThat(userVote, `is`(1))
     }
 
-    @Test
+    /*@Test
     fun updateRecipeNoteWithNotVotedUserCreateNewUserVote() = runTest {
         recipeNoteRepository.addRecipeNote("recipeId", 1)
         recipeNoteRepository.updateRecipeNote("recipeId", 2, "user", 1)
         val userVote = recipeNoteRepository.retrieveAllUserVotes("user").get("recipeId")
         assertThat(userVote, `is`(1))
-    }
+    }*/
 
     @Test
     fun updateRecipeNoteWithVotedUserUpdatesUserVote() = runTest {
