@@ -179,7 +179,7 @@ fun ChallengeDetailedScreen(
                                 color = Color.Blue,
                             )
                             Button(
-                                onClick = { /*TODO: Navigate to voting screen */ }
+                                onClick = { /*TODO*/ }
                             ) {
                                 Text(stringResource(id = R.string.vote))
                             }
