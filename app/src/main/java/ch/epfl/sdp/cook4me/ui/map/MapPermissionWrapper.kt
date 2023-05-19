@@ -13,6 +13,7 @@ fun MapPermissionWrapper(
     modifier: Modifier = Modifier,
     onCreateNewEventClick: () -> Unit = {},
     onDetailedEventClick: (String) -> Unit = {},
+    isOnline: Boolean = true,
 ) {
     val permissionManager = PermissionManager(permissionStatusProvider)
     permissionManager.WithPermission {
@@ -21,6 +22,7 @@ fun MapPermissionWrapper(
             onCreateNewEventClick = onCreateNewEventClick,
             userLocationDisplayed = permissionStatusProvider is ComposePermissionStatusProvider,
             onDetailedEventClick = onDetailedEventClick,
+            isOnline = isOnline,
         )
     }
 }

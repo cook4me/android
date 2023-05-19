@@ -94,4 +94,17 @@ class VoteIconTest {
         composeTestRule.onNodeWithContentDescription("Upvote").performClick()
         composeTestRule.onNodeWithText("-1").assertIsDisplayed()
     }
+
+    @Test
+    fun canClickAtFalseBlocksUserFromClicking() {
+        var counter = 0
+        composeTestRule.setContent {
+            VoteIcon(counterValue = 0, onChange = { counter += it }, canClick = false)
+        }
+
+        composeTestRule.onNodeWithContentDescription("Upvote").performClick()
+        composeTestRule.onNodeWithText("0").assertIsDisplayed()
+
+        assertThat(counter, `is`(0))
+    }
 }
