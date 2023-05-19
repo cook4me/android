@@ -98,7 +98,8 @@ fun Cook4MeApp(
                 BottomNavigationBar(
                     navigateTo = { route -> navigateToBottomBarRoute(route) },
                     currentRoute = currentRoute().orEmpty(),
-                    onClickSignOut = { signOut() }
+                    onClickSignOut = { signOut() },
+                    isOnline = isOnline
                 )
             }
         }

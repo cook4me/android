@@ -11,7 +11,7 @@ import ch.epfl.sdp.cook4me.ui.challenge.VotingScreen
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import ch.epfl.sdp.cook4me.ui.challengeform.addParticipant
 import ch.epfl.sdp.cook4me.ui.challengeform.changeParticipantScore
-import ch.epfl.sdp.cook4me.ui.chat.LoadingScreen
+import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
