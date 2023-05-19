@@ -23,7 +23,7 @@ class SwipeService(
         val otherUser = tupperwareRepository.getById<FirestoreTupperware>(tupperwareId)?.user
         checkNotNull(otherUser)
         val swipesFromOther = swipeRepository.getAllPositiveIdsByUser(otherUser)
-        val ownTupperwareIds = tupperwareRepository.getAllIdsByUser(email)
+        val ownTupperwareIds = tupperwareRepository.getAllTupperwareIdsAddedByUser(email)
         return swipesFromOther.intersect(ownTupperwareIds).isNotEmpty()
     }
 
@@ -32,7 +32,7 @@ class SwipeService(
             val email = auth.currentUser?.email
             checkNotNull(email)
             val allSwipes = swipeRepository.getAllIdsByUser(email)
-            val allTupperwareIdsFromOtherUsers = tupperwareRepository.getAllIdsNotByUser(email)
+            val allTupperwareIdsFromOtherUsers = tupperwareRepository.getAllTupperwareIdsNotAddedByUser(email)
             val toBeSwiped = allTupperwareIdsFromOtherUsers.minus(allSwipes)
             toBeSwiped.mapNotNull { id ->
                 val tupperware = tupperwareRepository.getWithImageById(id)

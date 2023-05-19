@@ -45,12 +45,12 @@ class TupperwareRepository(
         }
     }
 
-    suspend fun getAllIdsByUser(email: String): Set<String> {
+    suspend fun getAllTupperwareIdsAddedByUser(email: String): Set<String> {
         val result = store.collection(COLLECTION_PATH).whereEqualTo("user", email).get().await()
         return result.map { it.id }.toSet()
     }
 
-    suspend fun getAllIdsNotByUser(email: String): Set<String> {
+    suspend fun getAllTupperwareIdsNotAddedByUser(email: String): Set<String> {
         val result = store.collection(COLLECTION_PATH).whereNotEqualTo("user", email).get().await()
         return result.map { it.id }.toSet()
     }

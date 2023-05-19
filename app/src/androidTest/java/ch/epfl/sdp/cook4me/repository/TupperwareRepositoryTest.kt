@@ -78,7 +78,7 @@ class TupperwareRepositoryTest {
             generateTempFiles(3)
         }
         val expectedIds = tupperwareRepository.addMultipleTestTupperware(files)
-        val actualIds = tupperwareRepository.getAllIdsByUser(
+        val actualIds = tupperwareRepository.getAllTupperwareIdsAddedByUser(
             auth.currentUser?.email ?: error("shouldn't happen")
         )
         assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
@@ -90,7 +90,7 @@ class TupperwareRepositoryTest {
             generateTempFiles(3)
         }
         val expectedIds = tupperwareRepository.addMultipleTestTupperware(files)
-        val actualIds = tupperwareRepository.getAllIdsNotByUser("other.user@epfl.ch")
+        val actualIds = tupperwareRepository.getAllTupperwareIdsNotAddedByUser("other.user@epfl.ch")
         assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
     }
 }
