@@ -28,12 +28,13 @@ const val BUTTON_VERTICAL_PROPORTION = 0.07f
 fun CreateNewItemButton(
     itemType: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     canClick: Boolean = true
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(5.dp)
             .height(screenHeight * BUTTON_VERTICAL_PROPORTION),

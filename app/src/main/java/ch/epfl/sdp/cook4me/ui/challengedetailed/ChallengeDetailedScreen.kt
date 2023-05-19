@@ -41,11 +41,12 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "This Expression is unused")
 @Composable
 fun ChallengeDetailedScreen(
     challengeViewModel: ChallengeDetailedViewModel = viewModel(),
-    challengeId: String
+    challengeId: String,
+    onVote: (String) -> Unit,
 ) {
     val challenge by challengeViewModel.challenge
     val isLoading by challengeViewModel.loading
@@ -179,7 +180,7 @@ fun ChallengeDetailedScreen(
                                 color = Color.Blue,
                             )
                             Button(
-                                onClick = { /*TODO*/ }
+                                onClick = { onVote(challengeId) }
                             ) {
                                 Text(stringResource(id = R.string.vote))
                             }

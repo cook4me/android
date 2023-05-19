@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import io.getstream.chat.android.client.ChatClient
 import io.mockk.mockk
 import junit.framework.TestCase.assertTrue

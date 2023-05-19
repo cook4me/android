@@ -31,7 +31,7 @@ class ChallengeFormServiceTest {
             creator = "creator",
             type = "testType",
         )
-        coEvery { mockObjectRepository.add(match { challenge.isValidChallenge }) } returns Unit
+        coEvery { mockObjectRepository.add(match { challenge.isValidChallenge }) } returns "someId"
         val result = withTimeout(500L) {
             challengeFormService.submitForm(challenge)
         }

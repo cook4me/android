@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.tupperwareswipe
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,10 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.alexstyl.swipeablecard.Direction
 import com.alexstyl.swipeablecard.ExperimentalSwipeableCardApi
 import com.alexstyl.swipeablecard.SwipeableCardState
@@ -25,7 +27,8 @@ import com.alexstyl.swipeablecard.swipableCard
 @Composable
 fun TupperwareCard(
     state: SwipeableCardState,
-    tupperware: DummyTupperware,
+    tupperware: TupperwareWithImage,
+    onSwiped: (direction: Direction) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -33,17 +36,17 @@ fun TupperwareCard(
             .swipableCard(
                 state = state,
                 blockedDirections = listOf(Direction.Up, Direction.Down),
-                onSwiped = {
-                    // already handled by the callbacks of the buttons
-                }
+                onSwiped = onSwiped
             )
     ) {
         Box {
-            Image(
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(tupperware.image)
+                    .build(),
+                contentDescription = "image",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(tupperware.imageId),
-                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
             )
             Column(Modifier.align(Alignment.BottomStart)) {
                 Text(
@@ -51,7 +54,14 @@ fun TupperwareCard(
                     color = MaterialTheme.colors.onPrimary,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                )
+                Text(
+                    text = tupperware.description,
+                    color = MaterialTheme.colors.onPrimary,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
                 )
             }
         }

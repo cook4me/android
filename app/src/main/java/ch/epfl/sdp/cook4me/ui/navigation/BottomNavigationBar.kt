@@ -111,6 +111,9 @@ sealed class ScreenWithArgs(val name: String) {
     object DetailedChallengeScreen : ScreenWithArgs("detailed_challenge_screen/{challengeId}") {
         fun createRoute(challengeId: String) = "detailed_challenge_screen/$challengeId"
     }
+    object ChallengeVotingScreen : ScreenWithArgs("challenge_voting_screen/{challengeId}") {
+        fun createRoute(challengeId: String) = "challenge_voting_screen/$challengeId"
+    }
 }
 
 val mainDestinations = listOf(

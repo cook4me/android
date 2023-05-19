@@ -47,7 +47,10 @@ class ChallengeDetailedScreenTest {
     @Test
     fun testChallengeDetailedScreen() {
         composeTestRule.setContent {
-            ChallengeDetailedScreen(challengeId = challengeId)
+            ChallengeDetailedScreen(
+                challengeId = challengeId,
+                onVote = {},
+            )
         }
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
@@ -72,7 +75,10 @@ class ChallengeDetailedScreenTest {
     @Test
     fun currentUserSuccessWhenJoiningEvent() {
         composeTestRule.setContent {
-            ChallengeDetailedScreen(challengeId = challengeId)
+            ChallengeDetailedScreen(
+                challengeId = challengeId,
+                onVote = {},
+            )
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule

@@ -32,7 +32,7 @@ class EventFormServiceTest {
             isPrivate = true,
             creator = "creator"
         )
-        coEvery { mockObjectRepository.add(match { event.isValidEvent }) } returns Unit
+        coEvery { mockObjectRepository.add(match { event.isValidEvent }) } returns "someId"
         val result = withTimeout(500L) {
             eventFormService.submitForm(event)
         }

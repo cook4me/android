@@ -21,7 +21,6 @@ import androidx.compose.ui.test.performTextInput
 import androidx.core.app.ActivityOptionsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.matchListWithoutOrder
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
 import io.mockk.confirmVerified
 import io.mockk.mockk
@@ -70,7 +69,7 @@ class TupperwareCreationScenarioTest {
                 mockTupperwareRepository.add(
                     expectedTitle,
                     expectedDescription,
-                    matchListWithoutOrder(testUri)
+                    testUri
                 )
             }
         }

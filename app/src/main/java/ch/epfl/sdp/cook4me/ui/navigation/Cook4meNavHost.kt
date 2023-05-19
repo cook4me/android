@@ -2,6 +2,8 @@ package ch.epfl.sdp.cook4me.ui.navigation
 
 import AddProfileInfoScreen
 import SignUpScreen
+import VoteWrapper
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -12,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
+import ch.epfl.sdp.cook4me.ui.challenge.VotingScreen
 import ch.epfl.sdp.cook4me.ui.challengedetailed.ChallengeDetailedScreen
 import ch.epfl.sdp.cook4me.ui.challengefeed.ChallengeFeedScreen
 import ch.epfl.sdp.cook4me.ui.challengefeed.FilterScreen
@@ -47,6 +50,10 @@ fun Cook4MeNavHost(
         startDestination = startDestination,
     ) {
         composable(Screen.TupperwareSwipeScreen.name) {
+            BackHandler(true) {
+                // the back button functionality interferes with the swipe screen,
+                // therefore we disable it's functionality
+            }
             TupperwareSwipeScreen(
                 onCreateNewTupperware = { navController.navigate(Screen.CreateTupperwareScreen.name) },
                 isOnline = isOnline
@@ -164,7 +171,24 @@ fun Cook4MeNavHost(
             route = ScreenWithArgs.DetailedChallengeScreen.name,
             arguments = listOf(navArgument("challengeId") { type = NavType.StringType })
         ) { backStackEntry ->
-            ChallengeDetailedScreen(challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty())
+            ChallengeDetailedScreen(
+                challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty(),
+                onVote = { challengeId ->
+                    navController.navigate(
+                        ScreenWithArgs.ChallengeVotingScreen.createRoute(challengeId)
+                    )
+                },
+            )
+        }
+        composable(
+            route = ScreenWithArgs.ChallengeVotingScreen.name,
+            arguments = listOf(navArgument("challengeId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            VoteWrapper(
+                challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty(),
+                onBack = { navController.navigateUp() },
+                currentUser = "daniel.bucher@epfl.ch"
+            )
         }
     }
 }

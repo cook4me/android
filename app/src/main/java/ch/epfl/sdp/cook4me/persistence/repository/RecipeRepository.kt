@@ -19,7 +19,7 @@ class RecipeRepository(
     ObjectRepository(store, COLLECTION_PATH) {
     suspend fun add(recipe: Recipe, images: List<Uri>) {
         auth.currentUser?.email?.let { email ->
-            val recipeId = super.addAndGetId(recipe.copy(user = email, creationTime = Timestamp.now()))
+            val recipeId = super.add(recipe.copy(user = email, creationTime = Timestamp.now()))
             val storageRef = storage.reference
             images.forEach { path ->
                 val ref =
