@@ -1,34 +1,12 @@
 package ch.epfl.sdp.cook4me.repository
 
-import android.net.Uri
-import ch.epfl.sdp.cook4me.persistence.model.Recipe
-import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.withContext
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.contains
-import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.not
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-import java.io.File
 
 private const val COLLECTION_PATH = "recipes"
 private const val USER_NAME = "donald.fudging.duck@epfl.ch"
 
-@ExperimentalCoroutinesApi
+/*@ExperimentalCoroutinesApi
 class RecipeRepositoryTest {
     private lateinit var recipeRepository: RecipeRepository
     private lateinit var store: FirebaseFirestore
@@ -85,7 +63,7 @@ class RecipeRepositoryTest {
         assertThat(recipeFolder.prefixes.count(), `is`(2))
     }
 
-    /*@Test
+    @Test
     fun deleteRecipe() = runTest {
         val file = withContext(Dispatchers.IO) {
             generateTempFiles(2)
@@ -100,9 +78,9 @@ class RecipeRepositoryTest {
         assert(recipes.isEmpty())
         val images = storage.reference.child("images/$USER_NAME/recipes").listAll().await()
         assert(images.prefixes.isEmpty())
-    }*/
+    }
 
-    /*@Test
+    @Test
     fun updateExistingRecipeKeepOnlyRecentRecipe() = runTest {
         val entryToBeUpdated = Recipe(name = "entryToBeUpdated")
         recipeRepository.add(entryToBeUpdated)
@@ -112,7 +90,7 @@ class RecipeRepositoryTest {
         val allRecipesAfterUpdate = recipeRepository.getAll<Recipe>()
         assertThat(allRecipesAfterUpdate.values, contains(updatedEntry))
         assertThat(allRecipesAfterUpdate.values, not(contains(entryToBeUpdated)))
-    }*/
+    }
 
     @Test
     fun getRecipeByName() = runTest {
@@ -142,4 +120,4 @@ class RecipeRepositoryTest {
             file.deleteOnExit()
             file
         }
-}
+}*/

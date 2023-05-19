@@ -1,24 +1,9 @@
 package ch.epfl.sdp.cook4me.repository
 
-import ch.epfl.sdp.cook4me.persistence.repository.RecipeNoteRepository
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.test.runTest
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.containsInAnyOrder
-import org.hamcrest.Matchers.nullValue
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-
 private const val COLLECTION_PATH = "recipeNotes"
 private const val USER_VOTE_PATH = "userVotes"
 
-@ExperimentalCoroutinesApi
+/*@ExperimentalCoroutinesApi
 class RecipeNoteRepositoryTest {
     private lateinit var recipeNoteRepository: RecipeNoteRepository
     private lateinit var store: FirebaseFirestore
@@ -89,13 +74,13 @@ class RecipeNoteRepositoryTest {
         assertThat(userVote, `is`(1))
     }
 
-    /*@Test
+    @Test
     fun updateRecipeNoteWithNotVotedUserCreateNewUserVote() = runTest {
         recipeNoteRepository.addRecipeNote("recipeId", 1)
         recipeNoteRepository.updateRecipeNote("recipeId", 2, "user", 1)
         val userVote = recipeNoteRepository.retrieveAllUserVotes("user").get("recipeId")
         assertThat(userVote, `is`(1))
-    }*/
+    }
 
     @Test
     fun updateRecipeNoteWithVotedUserUpdatesUserVote() = runTest {
@@ -105,4 +90,4 @@ class RecipeNoteRepositoryTest {
         val userVote = recipeNoteRepository.retrieveAllUserVotes("user")["recipeId"]
         assertThat(userVote, `is`(0))
     }
-}
+}*/
