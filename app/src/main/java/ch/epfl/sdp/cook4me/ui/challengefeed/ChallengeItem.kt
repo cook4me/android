@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 
 @Composable
 fun ChallengeItem(
@@ -36,7 +35,7 @@ fun ChallengeItem(
         modifier = Modifier.padding(5.dp),
         shape = RoundedCornerShape(10.dp),
         elevation = 5.dp
-    ){
+    ) {
         Row(
             modifier = modifier
                 .fillMaxWidth()

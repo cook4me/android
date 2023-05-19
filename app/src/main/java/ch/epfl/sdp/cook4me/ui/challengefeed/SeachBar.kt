@@ -70,7 +70,7 @@ fun SearchBar(
             BasicTextField(
                 value = text,
                 onValueChange = {
-                    onTextChange(it.filter { c -> c != '\n' })  // singleLine = true doesn't seem to work
+                    onTextChange(it.filter { c -> c != '\n' }) // singleLine = true doesn't seem to work
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -80,24 +80,26 @@ fun SearchBar(
                 textStyle = textStyle,
                 cursorBrush = SolidColor(Color.Black),
                 decorationBox = { innerTextField ->
-                        if (text.isBlank() && !isFocused.value) {
-                            Text(
-                                text = "Search...",
-                                color = TextFieldDefaults.outlinedTextFieldColors().placeholderColor(
-                                    enabled = true
-                                ).value,
-                                modifier = Modifier.padding(start = 8.dp),
-                                style = textStyle
-                            )
-                        }
-                        innerTextField()
+                    if (text.isBlank() && !isFocused.value) {
+                        Text(
+                            text = "Search...",
+                            color = TextFieldDefaults.outlinedTextFieldColors().placeholderColor(
+                                enabled = true
+                            ).value,
+                            modifier = Modifier.padding(start = 8.dp),
+                            style = textStyle
+                        )
+                    }
+                    innerTextField()
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = {
-                    onSearch()
-                    isFocused.value = false
-                    focusManager.clearFocus()
-                })
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        onSearch()
+                        isFocused.value = false
+                        focusManager.clearFocus()
+                    }
+                )
             )
         }
     }

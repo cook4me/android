@@ -10,7 +10,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.ui.challengefeed.SearchBar
-import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,6 +47,4 @@ class SearchBarTest {
         composeTestRule.onNodeWithText("Search...").assertDoesNotExist()
         composeTestRule.onNodeWithContentDescription("Search Icon").assertExists()
     }
-
-
 }

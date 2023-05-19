@@ -12,8 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
-import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
 import ch.epfl.sdp.cook4me.ui.challengedetailed.ChallengeDetailedScreen
+import ch.epfl.sdp.cook4me.ui.challengefeed.ChallengeFeedScreen
+import ch.epfl.sdp.cook4me.ui.challengefeed.FilterScreen
+import ch.epfl.sdp.cook4me.ui.challengefeed.SearchViewModel
 import ch.epfl.sdp.cook4me.ui.challengeform.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
@@ -37,6 +39,7 @@ fun Cook4MeNavHost(
     onSuccessfulAuth: () -> Unit,
 ) {
     val signUpViewModel = remember { SignUpViewModel() }
+    val searchViewModel = remember { SearchViewModel() }
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -130,11 +133,8 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.CreateChallengeScreen.name) {
             CreateChallengeScreen(
-                onCancelClick = {
-                    navController.navigate(
-                        Screen.ChallengeFeedScreen.name
-                    )
-                }
+                onCancelClick = { navController.navigateUp() },
+                onDoneClick = { navController.navigateUp() }
             )
         }
         composable(route = Screen.ChallengeFeedScreen.name) {
@@ -142,8 +142,18 @@ fun Cook4MeNavHost(
                 onChallengeClick = { challengeId ->
                     navController.navigate(
                         ScreenWithArgs.DetailedChallengeScreen.createRoute(challengeId)
-                    ) },
-                onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) }
+                    )
+                },
+                onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) },
+                onFilterClick = { navController.navigate(route = Screen.FilterScreen.name) },
+                searchViewModel = searchViewModel
+            )
+        }
+        composable(route = Screen.FilterScreen.name) {
+            FilterScreen(
+                onCancelClick = { navController.navigateUp() },
+                onDoneClick = { navController.navigateUp() },
+                viewModel = searchViewModel
             )
         }
         composable(
@@ -171,4 +181,5 @@ enum class Screen {
     ChatScreen,
     ChallengeFeedScreen,
     CreateChallengeScreen,
+    FilterScreen,
 }
