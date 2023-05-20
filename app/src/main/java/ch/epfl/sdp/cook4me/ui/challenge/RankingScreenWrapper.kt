@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import ch.epfl.sdp.cook4me.application.ChallengeFormService
 import ch.epfl.sdp.cook4me.ui.challenge.RankingScreen
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
-import ch.epfl.sdp.cook4me.ui.chat.LoadingScreen
+import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
