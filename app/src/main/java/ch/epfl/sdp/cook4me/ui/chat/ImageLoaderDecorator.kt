@@ -25,14 +25,12 @@ internal class ImageLoaderDecorator(
     override val memoryCache: MemoryCache?
         get() = loader.memoryCache
 
-    override fun enqueue(request: ImageRequest): Disposable {
-        return loader.enqueue(request)
-    }
+    override fun enqueue(request: ImageRequest): Disposable = loader.enqueue(request)
 
     // Unfortunately, there doesn't exist a way to store an image for each chat user
     // This is a workaround to load images related to the chat either from the profile data or from getstream
-    override suspend fun execute(request: ImageRequest): ImageResult {
-        return if (request.data is String && (request.data as String).startsWith(
+    override suspend fun execute(request: ImageRequest): ImageResult =
+        if (request.data is String && (request.data as String).startsWith(
                 PROFILE_IMAGE_PREFIX
             )
         ) {
@@ -49,13 +47,8 @@ internal class ImageLoaderDecorator(
         } else {
             loader.execute(request)
         }
-    }
 
-    override fun newBuilder(): ImageLoader.Builder {
-        return loader.newBuilder()
-    }
+    override fun newBuilder(): ImageLoader.Builder = loader.newBuilder()
 
-    override fun shutdown() {
-        loader.shutdown()
-    }
+    override fun shutdown() = loader.shutdown()
 }
