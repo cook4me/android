@@ -19,6 +19,7 @@ class MessagesActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val channelId = intent.getStringExtra(KEY_CHANNEL_ID)
+        val userEmail = intent.getStringExtra(KEY_USER_EMAIL)
 
         if (channelId == null) {
             finish()
@@ -33,22 +34,33 @@ class MessagesActivity : ComponentActivity() {
                     myMessageBubble = RoundedCornerShape(16.dp),
                     otherMessageBubble = RoundedCornerShape(16.dp),
                     inputField = RectangleShape
-                )
+                ),
+                imageLoaderFactory = CoilImageLoaderFactory
             ) {
                 MessagesScreen(
                     channelId = channelId,
                     messageLimit = 30,
-                    onBackPressed = { finish() }
+                    onBackPressed = { finish() },
+                    onHeaderActionClick = { channel ->
+                        val targetMember = channel.members.find { it.user.extraData["email"] != userEmail }
+                        val targetEmail = targetMember?.user?.extraData?.get("email")
+                        if (targetEmail != null) {
+                            val intent = ChatProfileActivity.getIntent(this, targetEmail as String)
+                            startActivity(intent)
+                        }
+                    }
                 )
             }
         }
     }
     companion object {
         private const val KEY_CHANNEL_ID = "channelId"
+        private const val KEY_USER_EMAIL = "userEmail"
 
-        fun getIntent(context: Context, channelId: String): Intent =
+        fun getIntent(context: Context, channelId: String, userEmail: String?): Intent =
             Intent(context, MessagesActivity::class.java).apply {
                 putExtra(KEY_CHANNEL_ID, channelId)
+                putExtra(KEY_USER_EMAIL, userEmail)
             }
     }
 }
