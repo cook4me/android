@@ -1,0 +1,73 @@
+package ch.epfl.sdp.cook4me.persistence.repository
+
+// private const val USER_A = "user.a@epfl.ch"
+// private const val PASSWORD_A = "password_a"
+//
+// @ExperimentalCoroutinesApi
+// class TupperwareRepositoryTest {
+//    private lateinit var store: FirebaseFirestore
+//    private lateinit var storage: FirebaseStorage
+//    private lateinit var auth: FirebaseAuth
+//    private lateinit var tupperwareRepository: TupperwareRepository
+//
+//    @Before
+//    fun setUp() {
+//        store = setupFirestore()
+//        storage = setupFirebaseStorage()
+//        auth = setupFirebaseAuth()
+//        tupperwareRepository = TupperwareRepository(store, storage, auth)
+//        runBlocking {
+//            auth.createUserWithEmailAndPassword(USER_A, PASSWORD_A).await()
+//            auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
+//        }
+//    }
+
+//    @After
+//    fun cleanUp() {
+//        runBlocking {
+//            tupperwareRepository.deleteAll()
+//            auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
+//            auth.currentUser?.delete()
+//        }
+//    }
+
+//    @Test
+//    fun storeAndGetNewTupperwareTest() = runTest {
+//        val files = withContext(Dispatchers.IO) {
+//            generateTempFiles(2)
+//        }
+//        val ids = tupperwareRepository.addMultipleTestTupperware(files)
+//        ids.zip(files).forEachIndexed { i, data ->
+//            val actual = tupperwareRepository.getWithImageById(data.first)
+//            assertThat(actual, `is`(notNullValue()))
+//            actual?.let {
+//                assertThat(it.title, `is`("title$i"))
+//                assertThat(it.description, `is`("desc$i"))
+//                assertThat(it.user, `is`(auth.currentUser?.email))
+//                assertThat(it.image, `is`(data.second.readBytes()))
+//            }
+//        }
+//    }
+
+//    @Test
+//    fun getAllOwnIdsTest() = runTest {
+//        val files = withContext(Dispatchers.IO) {
+//            generateTempFiles(3)
+//        }
+//        val expectedIds = tupperwareRepository.addMultipleTestTupperware(files)
+//        val actualIds = tupperwareRepository.getAllTupperwareIdsAddedByUser(
+//            auth.currentUser?.email ?: error("shouldn't happen")
+//        )
+//        assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
+//    }
+
+//    @Test
+//    fun getAllOtherIdsTest() = runTest {
+//        val files = withContext(Dispatchers.IO) {
+//            generateTempFiles(3)
+//        }
+//        val expectedIds = tupperwareRepository.addMultipleTestTupperware(files)
+//        val actualIds = tupperwareRepository.getAllTupperwareIdsNotAddedByUser("other.user@epfl.ch")
+//        assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
+//    }
+// }

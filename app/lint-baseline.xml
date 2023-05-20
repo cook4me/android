@@ -8,36 +8,52 @@
         errorLine2="                           ^">
         <location
             file="src/main/res/values/strings.xml"
-            line="123"
+            line="108"
             column="28"/>
     </issue>
 
     <issue
-        id="IconLocation"
-        message="Found bitmap drawable `res/drawable/placeholder_carbonara.jpg` in densityless folder">
+        id="UnusedResources"
+        message="The resource `R.string.label` appears to be unused"
+        errorLine1="    &lt;string name=&quot;label&quot;>label&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
         <location
-            file="src/main/res/drawable/placeholder_carbonara.jpg"/>
+            file="src/main/res/values/strings.xml"
+            line="106"
+            column="13"/>
     </issue>
 
     <issue
-        id="IconLocation"
-        message="Found bitmap drawable `res/drawable/placeholder_guacamole.jpg` in densityless folder">
+        id="UnusedResources"
+        message="The resource `R.string.question` appears to be unused"
+        errorLine1="    &lt;string name=&quot;question&quot;>question&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/drawable/placeholder_guacamole.jpg"/>
+            file="src/main/res/values/strings.xml"
+            line="107"
+            column="13"/>
     </issue>
 
     <issue
-        id="IconLocation"
-        message="Found bitmap drawable `res/drawable/placeholder_tupperware.png` in densityless folder">
+        id="UnusedResources"
+        message="The resource `R.string.option1` appears to be unused"
+        errorLine1="    &lt;string name=&quot;option1&quot;>option1&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/drawable/placeholder_tupperware.png"/>
+            file="src/main/res/values/strings.xml"
+            line="108"
+            column="13"/>
     </issue>
 
     <issue
-        id="IconLocation"
-        message="Found bitmap drawable `res/drawable/tiramisu.jpg` in densityless folder">
+        id="UnusedResources"
+        message="The resource `R.string.option2` appears to be unused"
+        errorLine1="    &lt;string name=&quot;option2&quot;>option2&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
         <location
-            file="src/main/res/drawable/tiramisu.jpg"/>
+            file="src/main/res/values/strings.xml"
+            line="109"
+            column="13"/>
     </issue>
 
 </issues>
