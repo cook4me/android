@@ -60,7 +60,7 @@ fun Cook4MeApp(
 
     val isOnline = networkCallback.isOnline.value
 
-    val screensWithBottomBar = mainDestinations.map { it.route }
+    val screensWithBottomBar = mainDestinations.map { it.route } + Screen.ProfileScreen.name
     val shouldShowBottomBar = navController
         .currentBackStackEntryAsState().value?.destination?.route in screensWithBottomBar
     val currentRoute = { navController.currentDestination?.route }
