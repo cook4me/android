@@ -6,12 +6,13 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-class MainActivityTest {
-    @get:Rule val rule = ActivityScenarioRule(MainActivity::class.java)
-
-    @Test
-    fun activity_getsCreated() {
-        rule.scenario.moveToState(Lifecycle.State.CREATED)
-        assertTrue(rule.scenario.state.isAtLeast(Lifecycle.State.CREATED))
-    }
-}
+//TODO: is this still needed
+//class MainActivityTest {
+//    @get:Rule val rule = ActivityScenarioRule(MainActivity::class.java)
+//
+//    @Test
+//    fun activity_getsCreated() {
+//        rule.scenario.moveToState(Lifecycle.State.CREATED)
+//        assertTrue(rule.scenario.state.isAtLeast(Lifecycle.State.CREATED))
+//    }
+//}

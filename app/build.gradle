@@ -68,6 +68,11 @@ android {
     }
 
     testOptions {
+        unitTests {
+            all {
+                systemProperty "android.test.logging", "verbose"
+            }
+        }
         packagingOptions {
             jniLibs {
                 useLegacyPackaging true
