@@ -1,29 +1,23 @@
-package ch.epfl.sdp.cook4me.repository
+package ch.epfl.sdp.cook4me.persistence.repository
 
-import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Before
+// @ExperimentalCoroutinesApi
+// class ProfileRepositoryTest {
+//    private lateinit var profileRepository: ProfileRepository
+//    private lateinit var store: FirebaseFirestore
+//
+//    @Before
+//    fun setUp() {
+//        store = FirebaseFirestore.getInstance()
+//        val settings = FirebaseFirestoreSettings.Builder()
+//            .setHost("10.0.2.2:8080") // connect to local firestore emulator
+//            .setSslEnabled(false)
+//            .setPersistenceEnabled(false)
+//            .build()
+//        store.firestoreSettings = settings
+//        profileRepository = ProfileRepository(store)
+//    }
 
-@ExperimentalCoroutinesApi
-class ProfileRepositoryTest {
-    private lateinit var profileRepository: ProfileRepository
-    private lateinit var store: FirebaseFirestore
-
-    @Before
-    fun setUp() {
-        store = FirebaseFirestore.getInstance()
-        val settings = FirebaseFirestoreSettings.Builder()
-            .setHost("10.0.2.2:8080") // connect to local firestore emulator
-            .setSslEnabled(false)
-            .setPersistenceEnabled(false)
-            .build()
-        store.firestoreSettings = settings
-        profileRepository = ProfileRepository(store)
-    }
-
-    // TODO: check flaky test
+// TODO: check flaky test
 //    @Test
 //    fun storeNewProfile() = runTest {
 //        val newEntry1 = Profile(
@@ -53,7 +47,7 @@ class ProfileRepositoryTest {
 //        }
 //    }
 
-    // TODO: check flaky test
+// TODO: check flaky test
 //    @Test
 //    fun updateExistingProfile() = runTest {
 //        val newEntry1 = Profile(
@@ -75,4 +69,4 @@ class ProfileRepositoryTest {
 //            profileRepository.delete(newEntry1.email)
 //        }
 //    }
-}
+// }

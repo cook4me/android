@@ -6,8 +6,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
+// TODO: is this still needed?
 class MainActivityTest {
-    @get:Rule val rule = ActivityScenarioRule(MainActivity::class.java)
+    @get:Rule
+    val rule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
     fun activity_getsCreated() {
