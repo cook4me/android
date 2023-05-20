@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
- private const val USER_NAME = "john.snow@epfl.ch"
- private const val PASSWORD = "ygritte"
+private const val USER_NAME = "john.snow@epfl.ch"
+private const val PASSWORD = "ygritte"
 
 // @ExperimentalCoroutinesApi
 // class SwipeRepositoryTest {

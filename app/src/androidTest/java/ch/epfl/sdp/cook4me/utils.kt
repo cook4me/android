@@ -1,25 +1,13 @@
-import android.net.Uri
-import androidx.compose.ui.platform.ViewRootForTest
-import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.test.espresso.matcher.ViewMatchers
-import ch.epfl.sdp.cook4me.persistence.model.Profile
-import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
-import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
-import java.io.File
 
-//val testProfile = Profile(
+
+// val testProfile = Profile(
 //    email = "jean.valejean@epfl.ch",
 //    name = "Jean Valejean",
 //    allergies = "reading and writing",
 //    bio = "I am miserable!",
 //    favoriteDish = "Bread"
-//)
-//object RepositoryFiller {
+// )
+// object RepositoryFiller {
 //    fun setUpUser(
 //        profile: Profile,
 //        auth: FirebaseAuth = FirebaseAuth.getInstance(),
@@ -45,9 +33,9 @@ import java.io.File
 //            auth.currentUser?.delete()?.await()
 //        }
 //    }
-//}
+// }
 //
-//suspend fun TupperwareRepository.addMultipleTestTupperware(files: List<File>) =
+// suspend fun TupperwareRepository.addMultipleTestTupperware(files: List<File>) =
 //    files.mapIndexed { i, file ->
 //        add(
 //            "title$i",
@@ -56,7 +44,7 @@ import java.io.File
 //        )
 //    }
 //
-//fun generateTempFiles(count: Int): List<File> =
+// fun generateTempFiles(count: Int): List<File> =
 //    (0 until count).map {
 //        val file = File.createTempFile("temp_", "$it")
 //        file.writeText("temp$it")
@@ -64,7 +52,7 @@ import java.io.File
 //        file
 //    }
 //
-//fun assertThrowsAsync(f: suspend () -> Unit) {
+// fun assertThrowsAsync(f: suspend () -> Unit) {
 //    try {
 //        runBlocking {
 //            f()
@@ -75,23 +63,23 @@ import java.io.File
 //        return
 //    }
 //    throw AssertionError("no exception was thrown")
-//}
+// }
 //
-//fun ComposeContentTestRule.waitUntilExists(
+// fun ComposeContentTestRule.waitUntilExists(
 //    matcher: SemanticsMatcher,
 //    timeoutMillis: Long = 10_000L
-//) {
+// ) {
 //    this.waitUntil(timeoutMillis) {
 //        this.onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
 //    }
-//}
+// }
 //
-//// super hacky way to wait for AsyncImage to be displayed but seems to work
-//// should be called with assertIsDisplayed as it doesn't do the exhaustive checks
-//fun ComposeContentTestRule.waitUntilDisplayed(
+// // super hacky way to wait for AsyncImage to be displayed but seems to work
+// // should be called with assertIsDisplayed as it doesn't do the exhaustive checks
+// fun ComposeContentTestRule.waitUntilDisplayed(
 //    matcher: SemanticsMatcher,
 //    timeoutMillis: Long = 2_000L
-//) {
+// ) {
 //    this.waitUntil(timeoutMillis) {
 //        // code taken from assertIsDisplayed()
 //
@@ -107,4 +95,4 @@ import java.io.File
 //        // checks if node has zero area, I think
 //        returnValue && (globalRect.width > 0f && globalRect.height > 0f)
 //    }
-//}
+// }
