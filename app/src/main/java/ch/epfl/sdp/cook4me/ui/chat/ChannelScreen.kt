@@ -9,10 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.NavController
 import ch.epfl.sdp.cook4me.BuildConfig
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
+import ch.epfl.sdp.cook4me.ui.navigation.Screen
+import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.Filters
 import io.getstream.chat.android.client.models.User
@@ -29,6 +32,7 @@ fun ChannelScreen(
     ),
     accountService: AccountService = AccountService(),
     onBackListener: () -> Unit = {},
+    navController: NavController,
 ) {
     // disconnecting the client before connecting again, otherwise will
     // cause error: too many connections
@@ -47,7 +51,12 @@ fun ChannelScreen(
         // parsing email to get the name (user id)
         val nameParts = email.split("@")[0].replace(".", "")
         fullName.value = nameParts.trim()
-        user.value = User(id = fullName.value)
+        user.value = User(
+            id = fullName.value,
+            extraData = mutableMapOf(
+                "email" to userEmail,
+            )
+        )
         // generating user token and connecting the user
         val token = client.devToken(user.value.id)
         client.connectUser(user.value, token).enqueue { result ->
@@ -82,8 +91,11 @@ fun ChannelScreen(
                     onBackPressed = { onBackListener() },
                     isShowingHeader = false,
                     onViewChannelInfoAction = { channel ->
-                        val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
-                        startActivity(context, intent, null)
+                        val targetMember = channel.members.find { it.user.extraData["email"] != userEmail }
+                        val targetEmail = targetMember?.user?.extraData?.get("email")
+                        if (targetEmail != null) {
+                            navController.navigate("${Screen.ProfileScreen.name}/$targetEmail")
+                        }
                     }
                 )
             }
