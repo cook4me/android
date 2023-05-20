@@ -80,9 +80,11 @@ fun ChannelScreen(
                         startActivity(context, intent, null)
                     },
                     onBackPressed = { onBackListener() },
-                    onHeaderAvatarClick = {
-                        client.disconnect(true).enqueue()
-                    },
+                    isShowingHeader = false,
+                    onViewChannelInfoAction = { channel ->
+                        val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
+                        startActivity(context, intent, null)
+                    }
                 )
             }
         } else {
