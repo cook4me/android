@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.repository
+package ch.epfl.sdp.cook4me.persistence.repository
 
 // private const val USER_A = "user.a@epfl.ch"
 // private const val PASSWORD_A = "password_a"

@@ -1,7 +1,4 @@
-package ch.epfl.sdp.cook4me.repository
-
-import org.hamcrest.Matchers.contains
-import org.hamcrest.Matchers.not
+package ch.epfl.sdp.cook4me.persistence.repository
 
 // private const val COLLECTION_PATH = "recipes"
 // private const val USER_NAME = "donald.fudging.duck@epfl.ch"

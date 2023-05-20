@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.repository
+package ch.epfl.sdp.cook4me.persistence.repository
 
 // @ExperimentalCoroutinesApi
 // class ProfileRepositoryTest {

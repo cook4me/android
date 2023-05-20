@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.repository
+package ch.epfl.sdp.cook4me.persistence.repository
 
 // private const val COLLECTION_PATH = "recipeNotes"
 // private const val USER_VOTE_PATH = "userVotes"
