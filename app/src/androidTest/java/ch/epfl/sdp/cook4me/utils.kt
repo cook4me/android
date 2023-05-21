@@ -1,5 +1,7 @@
 package ch.epfl.sdp.cook4me
 
+import kotlinx.coroutines.runBlocking
+
 // val testProfile = Profile(
 //    email = "jean.valejean@epfl.ch",
 //    name = "Jean Valejean",
@@ -36,18 +38,18 @@ package ch.epfl.sdp.cook4me
 // }
 //
 //
-// fun assertThrowsAsync(f: suspend () -> Unit) {
-//    try {
-//        runBlocking {
-//            f()
-//        }
-//    } catch (
-//        e: Exception
-//    ) {
-//        return
-//    }
-//    throw AssertionError("no exception was thrown")
-// }
+fun assertThrowsAsync(f: suspend () -> Unit) {
+    try {
+        runBlocking {
+            f()
+        }
+    } catch (
+        e: Exception
+    ) {
+        return
+    }
+    throw AssertionError("no exception was thrown")
+}
 //
 // fun ComposeContentTestRule.waitUntilExists(
 //    matcher: SemanticsMatcher,
