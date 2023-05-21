@@ -40,7 +40,7 @@ class RecipeRepository(
 
     suspend fun getById(id: String) = store.getObjectByIdFromCollection<Recipe>(id, COLLECTION_PATH)
 
-    suspend fun getRecipeByName(name: String): Recipe =
+    suspend fun getRecipeByName(name: String): Recipe? =
         store.getFirstObjectByFieldValueFromCollection("name", name, COLLECTION_PATH)
 
     suspend fun update(id: String, recipe: Recipe) = store.updateObjectInCollection(id, recipe, COLLECTION_PATH)

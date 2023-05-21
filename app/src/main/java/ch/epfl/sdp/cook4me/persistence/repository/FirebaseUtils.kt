@@ -22,9 +22,9 @@ suspend inline fun <reified A : Any> FirebaseFirestore.getFirstObjectByFieldValu
     field: String,
     value: String,
     collectionPath: String
-): A {
+): A? {
     val result = collection(collectionPath).whereEqualTo(field, value).get().await()
-    return result.map { it.toObject(A::class.java) }.first()
+    return result.map { it.toObject(A::class.java) }.firstOrNull()
 }
 
 suspend inline fun <reified A : Any> FirebaseFirestore.getObjectByIdFromCollection(id: String, collectionPath: String) =
