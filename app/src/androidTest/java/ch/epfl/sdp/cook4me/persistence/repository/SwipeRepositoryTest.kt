@@ -1,27 +1,27 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
- import androidx.test.ext.junit.runners.AndroidJUnit4
- import ch.epfl.sdp.cook4me.setupFirebaseAuth
- import ch.epfl.sdp.cook4me.setupFirestore
- import com.google.firebase.auth.FirebaseAuth
- import com.google.firebase.firestore.FirebaseFirestore
- import kotlinx.coroutines.ExperimentalCoroutinesApi
- import kotlinx.coroutines.runBlocking
- import kotlinx.coroutines.tasks.await
- import kotlinx.coroutines.test.runTest
- import org.hamcrest.MatcherAssert.assertThat
- import org.hamcrest.Matchers.containsInAnyOrder
- import org.junit.After
- import org.junit.Before
- import org.junit.Test
- import org.junit.runner.RunWith
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.setupFirebaseAuth
+import ch.epfl.sdp.cook4me.setupFirestore
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.test.runTest
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.containsInAnyOrder
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
 
- private const val USER_NAME = "john.snow@epfl.ch"
- private const val PASSWORD = "ygritte"
+private const val USER_NAME = "john.snow@epfl.ch"
+private const val PASSWORD = "ygritte"
 
- @ExperimentalCoroutinesApi
- @RunWith(AndroidJUnit4::class)
- class SwipeRepositoryTest {
+@ExperimentalCoroutinesApi
+@RunWith(AndroidJUnit4::class)
+class SwipeRepositoryTest {
     private val store: FirebaseFirestore = setupFirestore()
     private val auth: FirebaseAuth = setupFirebaseAuth()
     private val swipeRepository: SwipeRepository = SwipeRepository(store, auth)
@@ -61,4 +61,4 @@ package ch.epfl.sdp.cook4me.persistence.repository
         val ids = swipeRepository.getAllPositiveIdsByUser(auth.currentUser?.email ?: error("shouldn't happen"))
         assertThat(ids, containsInAnyOrder("id2", "id3"))
     }
- }
+}
