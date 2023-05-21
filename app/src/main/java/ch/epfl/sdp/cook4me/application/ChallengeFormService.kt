@@ -1,17 +1,17 @@
 package ch.epfl.sdp.cook4me.application
 
+import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ObjectCollectionRepository
-import ch.epfl.sdp.cook4me.persistence.repository.ObjectRepository
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestoreException
 
-private const val CHALLENGE_PATH = "challenges"
+private const val COLLECTION_PATH = "challenges"
 
 class ChallengeFormService(
-    private val objectRepository: ObjectRepository = ObjectRepository(objectPath = CHALLENGE_PATH),
+    private val challengeRepository: ChallengeRepository = ChallengeRepository(),
     private val objectCollectionRepository: ObjectCollectionRepository =
-        ObjectCollectionRepository(objectPath = CHALLENGE_PATH)
+        ObjectCollectionRepository(objectPath = COLLECTION_PATH)
 ) {
 
     /**
@@ -20,7 +20,7 @@ class ChallengeFormService(
      * @return null if the challenge is valid, the error message otherwise
      */
     suspend fun submitForm(challenge: Challenge): String? = if (challenge.isValidChallenge) {
-        objectRepository.add(challenge)
+        challengeRepository.add(challenge)
         null
     } else {
         challenge.challengeProblem
@@ -42,7 +42,7 @@ class ChallengeFormService(
      */
     suspend fun updateChallenge(id: String, challenge: Challenge) {
         try {
-            objectRepository.update(id, challenge)
+            challengeRepository.update(id, challenge)
         } catch (e: FirebaseFirestoreException) {
             println("Error updating challenge: ${e.message}")
         }
@@ -56,7 +56,7 @@ class ChallengeFormService(
     * When nothing is found, an empty map is returned
     * */
     suspend fun getWithGivenField(field: String, query: Any): Map<String, Challenge> {
-        val result = objectRepository.getWithGivenField<Challenge>(field, query)
+        val result = challengeRepository.getWithGivenField<Challenge>(field, query)
         return result.map { it.id to documentSnapshotToChallenge(it) }.toMap()
     }
 
@@ -65,7 +65,7 @@ class ChallengeFormService(
     * If nothing is found, null is returned
     * */
     suspend fun getChallengeWithId(id: String): Challenge? {
-        val result = objectRepository.getWithId<Challenge>(id)
+        val result = challengeRepository.getWithId<Challenge>(id)
         return result?.let { documentSnapshotToChallenge(it) }
     }
 

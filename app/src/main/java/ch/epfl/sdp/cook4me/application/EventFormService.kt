@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.application
 
+import ch.epfl.sdp.cook4me.persistence.repository.EventRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ObjectCollectionRepository
-import ch.epfl.sdp.cook4me.persistence.repository.ObjectRepository
 import ch.epfl.sdp.cook4me.ui.eventform.Event
 import com.google.firebase.firestore.DocumentSnapshot
 
@@ -11,7 +11,7 @@ private const val EVENT_PATH = "events"
  * Service that handles the submission of the event form
  */
 class EventFormService(
-    private val objectRepository: ObjectRepository = ObjectRepository(objectPath = EVENT_PATH),
+    private val eventRepository: EventRepository = EventRepository(),
     private val objectCollectionRepository: ObjectCollectionRepository =
         ObjectCollectionRepository(objectPath = EVENT_PATH)
 ) {
@@ -22,7 +22,7 @@ class EventFormService(
      * @return null if the event is valid, the error message otherwise
      */
     suspend fun submitForm(event: Event): String? = if (event.isValidEvent) {
-        objectRepository.add(event)
+        eventRepository.add(event)
         null
     } else {
         event.eventProblem
@@ -33,7 +33,7 @@ class EventFormService(
     * If nothing is found, null is returned
     * */
     suspend fun getEventWithId(id: String): Event? {
-        val result = objectRepository.getWithId<Event>(id)
+        val result = eventRepository.getWithId<Event>(id)
         return result?.let { documentSnapshotToEvent(it) }
     }
 

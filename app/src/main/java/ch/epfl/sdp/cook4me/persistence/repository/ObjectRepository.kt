@@ -10,10 +10,6 @@ open class ObjectRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val objectPath: String = ""
 ) {
-    suspend fun <A : Any> add(value: A): String {
-        val documentRef = store.collection(objectPath).add(value).await()
-        return documentRef.id
-    }
 
     open suspend fun delete(id: String) {
         store.collection(objectPath).document(id).delete().await()

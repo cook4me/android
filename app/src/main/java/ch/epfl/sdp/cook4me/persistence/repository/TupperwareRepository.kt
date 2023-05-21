@@ -22,20 +22,15 @@ class TupperwareRepository(
     suspend fun add(title: String, description: String, image: Uri): String {
         val email = auth.currentUser?.email
         checkNotNull(email)
-        val tupperwareId = super.add(FirestoreTupperware(title, description, email))
-        val storageRef = storage.reference
-        val imageRef =
-            storageRef.child("$STORAGE_BASE_PATH/$tupperwareId")
-        imageRef.putFile(image).await()
-        return tupperwareId
+        val id = store.addObjectToCollection(FirestoreTupperware(title, description, email), COLLECTION_PATH)
+        getImageReference(id).putFile(image).await()
+        return id
     }
 
     suspend fun getWithImageById(id: String): TupperwareWithImage? {
         val tupperwareInfo = super.getById<FirestoreTupperware>(id)
         return tupperwareInfo?.let {
-            val storageRef = storage.reference
-            val ref = storageRef.child("$STORAGE_BASE_PATH/$id")
-            val bytes = ref.getBytes(ONE_MEGABYTE).await()
+            val bytes = getImageReference(id).getBytes(ONE_MEGABYTE).await()
             TupperwareWithImage(
                 title = it.title,
                 description = it.description,
@@ -57,8 +52,9 @@ class TupperwareRepository(
 
     override suspend fun delete(id: String) {
         super.delete(id)
-        val imageRef = storage.reference
-            .child("$STORAGE_BASE_PATH/$id")
-        imageRef.delete().await()
+        getImageReference(id).delete().await()
     }
+
+    private fun getImageReference(id: String) = storage.reference
+        .child("$STORAGE_BASE_PATH/$id")
 }

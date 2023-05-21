@@ -95,12 +95,11 @@ class RecipeRepositoryTest {
 
     @Test
     fun getRecipeByName() = runTest {
-        val expectedRecipe = Recipe(name = "newEntry1", difficulty = "Hard")
+        val expectedRecipe = Recipe(name = "newEntry1", difficulty = "Hard", user = USER_NAME)
         recipeRepository.add(expectedRecipe)
         recipeRepository.add(Recipe(name = "newEntry2"))
         recipeRepository.add(Recipe(name = "newEntry3"))
-        val actual = recipeRepository.getWithGivenField<Recipe>("name", "newEntry1")
-            .map { it.toObject(Recipe::class.java) }.first()
+        val actual = recipeRepository.getRecipeByName("newEntry1")
         assertThat(actual, `is`(expectedRecipe))
     }
 
