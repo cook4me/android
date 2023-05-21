@@ -8,7 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
- class MessagesActivityTest {
+class MessagesActivityTest {
     @Test
     fun testMessagesActivityFinishesWhenNullChannelIdIsPassed() {
         val context = androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().targetContext
@@ -18,4 +18,4 @@ import org.junit.runner.RunWith
             assert(scenario.result.resultCode == Activity.RESULT_CANCELED)
         }
     }
- }
+}

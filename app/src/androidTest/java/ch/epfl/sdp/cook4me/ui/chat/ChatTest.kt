@@ -11,15 +11,14 @@ import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import io.getstream.chat.android.client.ChatClient
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-//just for the coverage!! (╯°Д°)╯ ┻━┻
- @RunWith(AndroidJUnit4::class)
- class ChatTest {
+// just for the coverage!! (╯°Д°)╯ ┻━┻
+@RunWith(AndroidJUnit4::class)
+class ChatTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -102,4 +101,4 @@ import org.junit.runner.RunWith
         assert(createFunc != null)
         assert(createPairFunc != null)
     }
- }
+}
