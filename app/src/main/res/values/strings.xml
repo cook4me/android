@@ -160,5 +160,6 @@
     <string name="place">Place</string>
     <string name="back">Back</string>
     <string name="winner">Winner</string>
+    <string name="inform_offline_status">You are offline</string>
 
 </resources>
