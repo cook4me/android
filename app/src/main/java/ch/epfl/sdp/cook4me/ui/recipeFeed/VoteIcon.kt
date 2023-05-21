@@ -24,7 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
  */
 @Preview(showBackground = true)
 @Composable
-fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int = 0, canClick: Boolean = true, uid: Int = 0) {
+fun VoteIcon(
+    counterValue: Int = 0,
+    onChange: (Int) -> Unit = {},
+    userVote: Int = 0,
+    canClick: Boolean = true,
+    uid: Int = 0
+) {
     val uidRem = remember { mutableStateOf(uid) }
     val upvote = remember { mutableStateOf(userVote == 1) }
     val downvote = remember { mutableStateOf(userVote == -1) }
