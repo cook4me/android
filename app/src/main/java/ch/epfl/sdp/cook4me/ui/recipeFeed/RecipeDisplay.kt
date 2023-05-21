@@ -93,14 +93,24 @@ fun RecipeDisplay(
                 )
 
                 // Recipe title at the bottom of the image
-                Text(
-                    text = recipe.name,
-                    color = Color.White,
-                    style = MaterialTheme.typography.h6,
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(8.dp)
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth().align(Alignment.BottomStart).padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ){
+                    Text(
+                        text = recipe.name,
+                        color = Color.White,
+                        style = MaterialTheme.typography.h6,
+                        modifier = Modifier
+                    )
+                    VoteIcon(
+                        modifier = Modifier,
+                        counterValue = note,
+                        onChange = onNoteUpdate,
+                        userVote = userVote
+                    )
+                }
             }
             // Display cooking time, difficulty and servings count at the bottom
             BottomUnexpanded(
@@ -161,9 +171,5 @@ fun BottomUnexpanded(
                 modifier = Modifier.padding(start = 4.dp)
             )
         }
-        VoteIcon(
-            counterValue = likes,
-            onChange = onNoteUpdate
-        )
     }
 }
