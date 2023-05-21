@@ -38,7 +38,7 @@ class ProfileImageRepository(
         }
     }
 
-    suspend fun delete() {
+    suspend fun deleteImageForCurrentUser() {
         auth.currentUser?.email?.let { email ->
             val images = storage.reference
                 .child("/images/$email/profileImage")
