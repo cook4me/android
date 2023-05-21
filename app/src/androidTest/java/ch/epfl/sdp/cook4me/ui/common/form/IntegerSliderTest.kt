@@ -8,14 +8,14 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import ch.epfl.sdp.cook4me.R
-import org.junit.Assert.assertEquals
 
 @RunWith(AndroidJUnit4::class)
- class IntegerSliderTest {
+class IntegerSliderTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -56,4 +56,4 @@ import org.junit.Assert.assertEquals
     }
 
     private fun getStringFromId(id: Int) = composeTestRule.activity.getString(id)
- }
+}
