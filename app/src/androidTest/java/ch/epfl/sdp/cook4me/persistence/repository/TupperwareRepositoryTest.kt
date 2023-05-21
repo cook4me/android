@@ -23,8 +23,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
 
-private const val USER_A = "user.a@epfl.ch"
-private const val PASSWORD_A = "password_a"
+private const val USER = "user.a@epfl.ch"
+private const val PASSWORD = "password_a"
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -38,8 +38,8 @@ class TupperwareRepositoryTest {
     @Before
     fun setup() {
         runBlocking {
-            auth.createUserWithEmailAndPassword(USER_A, PASSWORD_A).await()
-            auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
+            auth.createUserWithEmailAndPassword(USER, PASSWORD).await()
+            auth.signInWithEmailAndPassword(USER, PASSWORD).await()
         }
     }
 
@@ -47,8 +47,8 @@ class TupperwareRepositoryTest {
     fun cleanup() {
         runBlocking {
             tupperwareRepository.deleteAll()
-            auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
-            auth.currentUser?.delete()
+            auth.signInWithEmailAndPassword(USER, PASSWORD).await()
+            auth.currentUser?.delete()?.await()
         }
     }
 
