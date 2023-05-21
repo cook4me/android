@@ -79,7 +79,13 @@ fun RecipeDisplay(
                 }
             }
             // put on the right side a voteIcon
-            VoteIcon(counterValue = note, onChange = onNoteUpdate, userVote = userVote, canClick = canClick)
+            VoteIcon(
+                counterValue = note,
+                onChange = onNoteUpdate,
+                userVote = userVote,
+                canClick = canClick,
+                uid = recipe.hashCode()
+            )
         }
     }
 }

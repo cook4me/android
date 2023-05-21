@@ -19,16 +19,25 @@ import androidx.compose.ui.tooling.preview.Preview
  * @param counterValue the current value of the counter
  * @param onChange the function that will be called when the counter changes, the int parameter is the relative change
  * @param userVote the current vote of the user (0 if none, 1 if upvote, -1 if downvote)
+ * @param canClick true if the user can click on the buttons, false otherwise
+ * @param uid a unique id for the component (trick to force re-rendering)
  */
 @Preview(showBackground = true)
 @Composable
-fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int = 0, canClick: Boolean = true) {
+fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int = 0, canClick: Boolean = true, uid: Int = 0) {
+    val uidRem = remember { mutableStateOf(uid) }
     val upvote = remember { mutableStateOf(userVote == 1) }
     val downvote = remember { mutableStateOf(userVote == -1) }
     val notPressedColor = Color.Black
     val pressedColor = Color.Red
     val localCounterValue = remember { mutableStateOf(counterValue) }
-
+    // new uid -> reset the state
+    if (uidRem.value != uid) {
+        uidRem.value = uid
+        upvote.value = userVote == 1
+        downvote.value = userVote == -1
+        localCounterValue.value = counterValue
+    }
     /**
      * Function that is called when the user presses the upvote/downvote button
      * it will update the counter and the buttons color accordingly
