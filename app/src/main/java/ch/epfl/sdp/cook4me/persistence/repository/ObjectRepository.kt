@@ -19,7 +19,7 @@ open class ObjectRepository(
         store.collection(objectPath).document(id).delete().await()
     }
 
-    suspend fun deleteAll() {
+    open suspend fun deleteAll() {
         val querySnapshot = store.collection(objectPath).get().await()
         for (documentSnapshot in querySnapshot.documents) {
             delete(documentSnapshot.id)

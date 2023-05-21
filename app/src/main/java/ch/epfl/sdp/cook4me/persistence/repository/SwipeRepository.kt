@@ -33,4 +33,16 @@ class SwipeRepository(
         ).get().await()
         return result.map { it.id }.toSet()
     }
+
+    suspend fun deleteAllByUser(email: String) {
+        val allDocumentsOfUser = store.collection(COLLECTION_PATH).document(email).collection(
+            COLLECTION_PATH
+        ).get().await()
+        for (documentSnapshot in allDocumentsOfUser.documents) {
+            store.collection(COLLECTION_PATH).document(email).collection(
+                COLLECTION_PATH
+            ).document(documentSnapshot.id).delete().await()
+        }
+        store.collection(COLLECTION_PATH).document(email).delete()
+    }
 }
