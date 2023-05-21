@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
-import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.generateTempFiles
 import ch.epfl.sdp.cook4me.setupFirebaseAuth
@@ -21,7 +20,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
 
 private const val USER = "user.a@epfl.ch"
 private const val PASSWORD = "password_a"
@@ -86,12 +84,3 @@ class TupperwareRepositoryTest {
         assertThat(actualIds, containsInAnyOrder(*expectedIds.toTypedArray()))
     }
 }
-
-suspend fun TupperwareRepository.addMultipleTestTupperware(files: List<File>) =
-    files.mapIndexed { i, file ->
-        add(
-            "title$i",
-            "desc$i",
-            Uri.fromFile(file)
-        )
-    }
