@@ -107,7 +107,9 @@ fun RecipeDisplay(
                 modifier = Modifier.weight(0.16f),
                 cookingTime = recipe.cookingTime,
                 difficulty = recipe.difficulty,
-                servingsCount = recipe.servings
+                servingsCount = recipe.servings,
+                likes = note,
+                onNoteUpdate = onNoteUpdate
             )
         }
     }
@@ -119,9 +121,11 @@ fun BottomUnexpanded(
     modifier: Modifier = Modifier,
     cookingTime: String,
     difficulty: String,
-    servingsCount: Int
+    servingsCount: Int,
+    likes: Int,
+    onNoteUpdate: (Int) -> Unit,
 ) {
-    val resizeFactor = 1.04f
+    val resizeFactor = 1f
     val textStyle = MaterialTheme.typography.body1.copy(
         fontWeight = FontWeight.Bold,
         fontSize = MaterialTheme.typography.body1.fontSize * resizeFactor
@@ -152,10 +156,14 @@ fun BottomUnexpanded(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(Icons.Filled.Group, contentDescription = "Servings", modifier = Modifier.size(24.dp * resizeFactor))
             Text(
-                text = ": $servingsCount",
+                text = "$servingsCount",
                 style = textStyle,
                 modifier = Modifier.padding(start = 4.dp)
             )
         }
+        VoteIcon(
+            counterValue = likes,
+            onChange = onNoteUpdate
+        )
     }
 }

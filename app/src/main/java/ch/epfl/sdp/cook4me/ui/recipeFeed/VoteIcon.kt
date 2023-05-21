@@ -1,12 +1,18 @@
 package ch.epfl.sdp.cook4me.ui.recipeFeed
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.outlined.ThumbDown
+import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,11 +63,12 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int 
             buttonPressed.value = true
         }
     }
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    val thumbsUp = if (upvote.value) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp
+    val thumbsDown = if (upvote.value) Icons.Filled.ThumbDown else Icons.Outlined.ThumbDown
+    Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = { onVote(true) }, enabled = canClick) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowUp,
+                imageVector = thumbsUp,
                 contentDescription = "Upvote",
                 tint = if (upvote.value) pressedColor else notPressedColor
             )
@@ -69,7 +76,7 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int 
         Text(text = localCounterValue.value.toString())
         IconButton(onClick = { onVote(false) }, enabled = canClick) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowDown,
+                imageVector = thumbsDown,
                 contentDescription = "Downvote",
                 tint = if (downvote.value) pressedColor else notPressedColor
             )

@@ -1,6 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.challengefeed
 
-import ch.epfl.sdp.cook4me.application.ChallengeFormService
+import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -11,16 +11,16 @@ import org.junit.Test
 
 class SearchViewModelTest {
     private lateinit var viewModel: SearchViewModel
-    private val challengeService = mockk<ChallengeFormService>()
+    private val repository = mockk<ChallengeRepository>()
 
     @Before
     fun setup() {
-        coEvery { challengeService.retrieveAllChallenges() } returns mapOf(
+        coEvery { repository.getAll() } returns mapOf(
             Pair("1", Challenge(name = "Challenge 1", type = "Type 1")),
             Pair("2", Challenge(name = "Challenge 2", type = "Type 2")),
             Pair("3", Challenge(name = "Challenge 3", type = "Type 1")),
         )
-        viewModel = SearchViewModel(challengeService)
+        viewModel = SearchViewModel(repository)
     }
 
     @Test
