@@ -22,9 +22,7 @@ class ProfileRepository(
             .first()?.reference?.set(value)?.await()
     }
 
-    suspend fun delete(id: String) {
-        // delete the profile with the given id
-        store.collection(COLLECTION_PATH).whereEqualTo("email", id).get().await()
-            .first()?.reference?.delete()?.await()
+    suspend fun deleteAll() {
+        store.deleteAllDocumentsFromCollection(COLLECTION_PATH)
     }
 }
