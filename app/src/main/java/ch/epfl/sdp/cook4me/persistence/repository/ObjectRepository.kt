@@ -22,13 +22,6 @@ open class ObjectRepository(
         }
     }
 
-    suspend fun <A : Any> getAll(ofClass: Class<A>): Map<String, A> {
-        val result = store.collection(objectPath).get().await()
-        return result.map { it.id }.zip(result.toObjects(ofClass)).toMap()
-    }
-
-    suspend inline fun <reified A : Any> getAll(): Map<String, A> = getAll(A::class.java)
-
     suspend inline fun <reified A : Any> getById(id: String) =
         getById(id, A::class.java)
 

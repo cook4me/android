@@ -37,6 +37,8 @@ class RecipeRepository(
         }
     }
 
+    suspend fun getAll() = store.getAllObjectsFromCollection<Recipe>(COLLECTION_PATH)
+
     suspend fun getRecipeByName(name: String): Recipe =
         store.getFirstObjectByFieldValue("name", name, COLLECTION_PATH)
 

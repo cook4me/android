@@ -1,12 +1,21 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.tasks.await
 
-suspend fun <A : Any> FirebaseFirestore.addObjectToCollection(value: A, collectionPath: String): String {
+suspend fun <A : Any> FirebaseFirestore.addObjectToCollection(
+    value: A,
+    collectionPath: String
+): String {
     val documentRef = collection(collectionPath).add(value).await()
     return documentRef.id
+}
+
+suspend inline fun <reified A : Any> FirebaseFirestore.getAllObjectsFromCollection(
+    collectionPath: String
+): Map<String, A> {
+    val result = collection(collectionPath).get().await()
+    return result.map { it.id }.zip(result.toObjects(A::class.java)).toMap()
 }
 
 suspend inline fun <reified A : Any> FirebaseFirestore.getFirstObjectByFieldValue(

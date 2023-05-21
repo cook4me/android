@@ -60,7 +60,7 @@ class RecipeRepositoryTest {
         val newEntry2 = Recipe(name = "newEntry2", user = USER_NAME)
         recipeRepository.add(newEntry1, urls)
         recipeRepository.add(newEntry2, urls.drop(1))
-        val allRecipes = recipeRepository.getAll<Recipe>()
+        val allRecipes = recipeRepository.getAll()
         assertThat(allRecipes.values, containsInAnyOrder(newEntry1, newEntry2))
         val folderContent = getUserFolder().listAll().await()
         assertThat(folderContent.prefixes.count(), `is`(2))
@@ -75,7 +75,7 @@ class RecipeRepositoryTest {
         val recipeId = recipeRepository
             .getWithGivenField<Recipe>("name", newEntry1.name).first().id
         recipeRepository.delete(recipeId)
-        val recipes = recipeRepository.getAll<Recipe>()
+        val recipes = recipeRepository.getAll()
         assertThat(recipes.isEmpty(), `is`(true))
         val images = getUserFolder().listAll().await()
         assertThat(images.prefixes.isEmpty(), `is`(true))
@@ -85,10 +85,10 @@ class RecipeRepositoryTest {
     fun updateExistingRecipeKeepOnlyRecentRecipe() = runTest {
         val entryToBeUpdated = Recipe(name = "entryToBeUpdated")
         recipeRepository.add(entryToBeUpdated)
-        val allRecipesBeforeUpdate = recipeRepository.getAll<Recipe>()
+        val allRecipesBeforeUpdate = recipeRepository.getAll()
         val updatedEntry = entryToBeUpdated.copy(name = "updated")
         recipeRepository.update(allRecipesBeforeUpdate.keys.first(), updatedEntry)
-        val allRecipesAfterUpdate = recipeRepository.getAll<Recipe>()
+        val allRecipesAfterUpdate = recipeRepository.getAll()
         assertThat(allRecipesAfterUpdate.values, contains(updatedEntry))
         assertThat(allRecipesAfterUpdate.values, not(contains(entryToBeUpdated)))
     }
@@ -108,7 +108,7 @@ class RecipeRepositoryTest {
         recipeRepository.add(Recipe(name = "newEntry1"))
         recipeRepository.add(Recipe(name = "newEntry2"))
         recipeRepository.add(Recipe(name = "newEntry3"))
-        val allRecipes = recipeRepository.getAll<Recipe>()
+        val allRecipes = recipeRepository.getAll()
         val actual = recipeRepository.getById<Recipe>(allRecipes.keys.first())
         assertThat(actual, `is`(allRecipes.values.first()))
     }
