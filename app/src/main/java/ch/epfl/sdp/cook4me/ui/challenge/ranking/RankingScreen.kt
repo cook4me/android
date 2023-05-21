@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.challenge
+package ch.epfl.sdp.cook4me.ui.challenge.ranking
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -26,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+import ch.epfl.sdp.cook4me.ui.challenge.Challenge
 
 private const val INCREMENT = 1
 private const val MAX = 3

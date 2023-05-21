@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.challenge
+package ch.epfl.sdp.cook4me.ui.challenge.ranking
 
 // @RunWith(AndroidJUnit4::class)
 // class RankingScreenTest {

@@ -14,7 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
-import ch.epfl.sdp.cook4me.ui.challengeform.CreateChallengeScreen
+import ch.epfl.sdp.cook4me.ui.challenge.form.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen

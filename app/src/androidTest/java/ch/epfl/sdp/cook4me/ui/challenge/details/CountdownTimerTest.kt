@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.challengedetailed
+package ch.epfl.sdp.cook4me.ui.challenge.details
 
 // @RunWith(AndroidJUnit4::class)
 // class CountdownTimerTest {

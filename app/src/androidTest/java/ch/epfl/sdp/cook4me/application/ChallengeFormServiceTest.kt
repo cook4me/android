@@ -2,7 +2,7 @@ package ch.epfl.sdp.cook4me.application
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
-import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+import ch.epfl.sdp.cook4me.ui.challenge.Challenge
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

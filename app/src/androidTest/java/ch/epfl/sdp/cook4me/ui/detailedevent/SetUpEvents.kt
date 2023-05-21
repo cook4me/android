@@ -45,25 +45,6 @@ private const val AUTH_PORT = 9099
 //    }
 // }
 //
-// private fun setupFirebaseAuth(): FirebaseAuth {
-//    val auth = FirebaseAuth.getInstance()
-//    try {
-//        auth.useEmulator("10.0.2.2", AUTH_PORT)
-//    } catch (e: IllegalStateException) {
-//        Log.e("Emulator exception", e.message.toString())
-//    }
-//    return auth
-// }
-//
-// private fun setupFirebaseFirestore(): FirebaseFirestore {
-//    val firestore = FirebaseFirestore.getInstance()
-//    try {
-//        firestore.useEmulator("10.0.2.2", FIREBASE_PORT)
-//    } catch (e: IllegalStateException) {
-//        Log.e("Emulator exception", e.message.toString())
-//    }
-//    return firestore
-// }
 //
 // private fun createEventMap(event: Event): Map<String, Any> =
 //    mapOf(
@@ -77,15 +58,4 @@ private const val AUTH_PORT = 9099
 //        "id" to event.id,
 //        "isPrivate" to event.isPrivate,
 //        "latLng" to event.latLng
-//    )
-//
-// private fun createChallengeMap(challenge: Challenge): Map<String, Any> =
-//    mapOf(
-//        "name" to challenge.name,
-//        "description" to challenge.description,
-//        "dateTime" to challenge.dateTime,
-//        "latLng" to challenge.latLng,
-//        "participants" to challenge.participants,
-//        "creator" to challenge.creator,
-//        "type" to challenge.type
 //    )
