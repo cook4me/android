@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.challengeform
+package ch.epfl.sdp.cook4me.ui.challenge
 
 import com.google.firebase.firestore.GeoPoint
 import java.util.Calendar

@@ -1,11 +1,11 @@
-package ch.epfl.sdp.cook4me.ui.challengedetailed
+package ch.epfl.sdp.cook4me.ui.challenge.details
 
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import ch.epfl.sdp.cook4me.application.ChallengeFormService
-import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+import ch.epfl.sdp.cook4me.ui.challenge.Challenge
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 

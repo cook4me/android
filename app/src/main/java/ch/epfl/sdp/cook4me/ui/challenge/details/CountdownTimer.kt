@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.challengedetailed
+package ch.epfl.sdp.cook4me.ui.challenge.details
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.MaterialTheme

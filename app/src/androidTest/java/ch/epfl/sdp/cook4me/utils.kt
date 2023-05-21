@@ -1,5 +1,7 @@
 package ch.epfl.sdp.cook4me
 
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import kotlinx.coroutines.runBlocking
 
 // val testProfile = Profile(
@@ -50,15 +52,15 @@ fun assertThrowsAsync(f: suspend () -> Unit) {
     }
     throw AssertionError("no exception was thrown")
 }
-//
-// fun ComposeContentTestRule.waitUntilExists(
-//    matcher: SemanticsMatcher,
-//    timeoutMillis: Long = 10_000L
-// ) {
-//    this.waitUntil(timeoutMillis) {
-//        this.onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
-//    }
-// }
+
+fun ComposeContentTestRule.waitUntilExists(
+    matcher: SemanticsMatcher,
+    timeoutMillis: Long = 10_000L
+) {
+    this.waitUntil(timeoutMillis) {
+        this.onAllNodes(matcher).fetchSemanticsNodes().isNotEmpty()
+    }
+}
 //
 // // super hacky way to wait for AsyncImage to be displayed but seems to work
 // // should be called with assertIsDisplayed as it doesn't do the exhaustive checks

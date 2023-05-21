@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.challengeform
+package ch.epfl.sdp.cook4me.ui.challenge.form
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.ChallengeFormService
+import ch.epfl.sdp.cook4me.ui.challenge.Challenge
 import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField

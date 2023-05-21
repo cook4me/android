@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.challenge
+package ch.epfl.sdp.cook4me.ui.challenge.vote
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+import ch.epfl.sdp.cook4me.ui.challenge.Challenge
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 
 private const val MINSTAR = 1

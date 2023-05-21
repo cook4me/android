@@ -6,11 +6,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import ch.epfl.sdp.cook4me.application.ChallengeFormService
-import ch.epfl.sdp.cook4me.ui.challenge.RankingScreen
-import ch.epfl.sdp.cook4me.ui.challenge.VotingScreen
-import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
-import ch.epfl.sdp.cook4me.ui.challengeform.addParticipant
-import ch.epfl.sdp.cook4me.ui.challengeform.changeParticipantScore
+import ch.epfl.sdp.cook4me.ui.challenge.Challenge
+import ch.epfl.sdp.cook4me.ui.challenge.addParticipant
+import ch.epfl.sdp.cook4me.ui.challenge.changeParticipantScore
+import ch.epfl.sdp.cook4me.ui.challenge.ranking.RankingScreen
+import ch.epfl.sdp.cook4me.ui.challenge.vote.VotingScreen
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
