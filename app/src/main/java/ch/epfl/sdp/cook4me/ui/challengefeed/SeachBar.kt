@@ -27,6 +27,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,6 +74,7 @@ fun SearchBar(
                     onTextChange(it.filter { c -> c != '\n' }) // singleLine = true doesn't seem to work
                 },
                 modifier = Modifier
+                    .testTag("Search Field")
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
                     .onFocusChanged { isFocused.value = it.isFocused },
@@ -83,9 +85,8 @@ fun SearchBar(
                     if (text.isBlank() && !isFocused.value) {
                         Text(
                             text = "Search...",
-                            color = TextFieldDefaults.outlinedTextFieldColors().placeholderColor(
-                                enabled = true
-                            ).value,
+                            color = TextFieldDefaults.outlinedTextFieldColors()
+                                .placeholderColor(enabled = true).value,
                             modifier = Modifier.padding(start = 8.dp),
                             style = textStyle
                         )

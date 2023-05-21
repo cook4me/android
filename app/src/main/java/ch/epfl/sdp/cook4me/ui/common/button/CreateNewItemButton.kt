@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -59,5 +60,15 @@ fun CreateNewItemButton(
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = stringResource(R.string.create_new_item_type) + " " + itemType)
         }
+    }
+}
+
+@Composable
+fun AddButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    FloatingActionButton(modifier = modifier, onClick = onClick) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "Add Button"
+        )
     }
 }
