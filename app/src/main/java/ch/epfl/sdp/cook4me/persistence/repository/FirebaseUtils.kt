@@ -13,7 +13,8 @@ suspend fun <A : Any> FirebaseFirestore.addObjectToCollection(
 }
 
 suspend inline fun <reified A : Any> FirebaseFirestore.getAllObjectsFromCollection(
-    collectionPath: String, useOnlyCache: Boolean = false
+    collectionPath: String,
+    useOnlyCache: Boolean = false
 ): Map<String, A> {
     val source = if (useOnlyCache) {
         Source.CACHE

@@ -105,7 +105,7 @@ fun Cook4MeApp(
             }
         },
         topBar = {
-            if(!isOnline){
+            if (!isOnline) {
                 OfflineStatusIndicator()
             }
         }
@@ -120,4 +120,3 @@ fun Cook4MeApp(
         )
     }
 }
-

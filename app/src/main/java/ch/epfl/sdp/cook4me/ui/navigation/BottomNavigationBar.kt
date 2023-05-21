@@ -44,7 +44,7 @@ fun BottomNavigationBar(
         backgroundColor = MaterialTheme.colors.background,
         elevation = 8.dp
     ) {
-        mainDestinations.filterNot{screen -> !isOnline && screen.title==="Chat"}.forEach { screen ->
+        mainDestinations.filterNot { screen -> !isOnline && screen.title === "Chat" }.forEach { screen ->
             BottomNavigationItem(
                 modifier = Modifier.weight(1f),
                 icon = { screen.icon?.let { Icon(it, contentDescription = null) } },

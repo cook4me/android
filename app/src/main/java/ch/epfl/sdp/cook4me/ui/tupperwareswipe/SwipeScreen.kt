@@ -39,6 +39,7 @@ private data class TupperwareState(
 )
 
 // code inspired by https://github.com/alexstyl/compose-tinder-card/blob/main/app/src/main/java/com/alexstyl/swipeablecard/MainActivity.kt
+@Suppress("ComplexMethod")
 @Composable
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
