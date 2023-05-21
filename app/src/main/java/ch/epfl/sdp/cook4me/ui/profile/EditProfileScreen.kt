@@ -85,7 +85,7 @@ fun EditProfileScreen(
                     viewModel.addProfileImage(uri)
                     // Save the image in the database
                     CoroutineScope(Dispatchers.Main).launch {
-                        profileImageRepository.delete() // Delete the previous image
+                        profileImageRepository.deleteImageForCurrentUser() // Delete the previous image
                         profileImageRepository.add(uri) // Add the new image
                     }
                 }

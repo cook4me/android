@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import android.net.Uri
-import ch.epfl.sdp.cook4me.persistence.model.FirestoreTupperware
+import ch.epfl.sdp.cook4me.persistence.model.Tupperware
 import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,26 +16,23 @@ class TupperwareRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val storage: FirebaseStorage = FirebaseStorage.getInstance(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-) :
-    ObjectRepository(store, COLLECTION_PATH) {
+) {
 
     suspend fun add(title: String, description: String, image: Uri): String {
         val email = auth.currentUser?.email
         checkNotNull(email)
-        val tupperwareId = super.add(FirestoreTupperware(title, description, email))
-        val storageRef = storage.reference
-        val imageRef =
-            storageRef.child("$STORAGE_BASE_PATH/$tupperwareId")
-        imageRef.putFile(image).await()
-        return tupperwareId
+        val id = store.addObjectToCollection(Tupperware(title, description, email), COLLECTION_PATH)
+        getImageReference(id).putFile(image).await()
+        return id
     }
 
+    suspend fun getById(id: String): Tupperware? =
+        store.getObjectByIdFromCollection(id, COLLECTION_PATH)
+
     suspend fun getWithImageById(id: String): TupperwareWithImage? {
-        val tupperwareInfo = super.getById<FirestoreTupperware>(id)
+        val tupperwareInfo = getById(id)
         return tupperwareInfo?.let {
-            val storageRef = storage.reference
-            val ref = storageRef.child("$STORAGE_BASE_PATH/$id")
-            val bytes = ref.getBytes(ONE_MEGABYTE).await()
+            val bytes = getImageReference(id).getBytes(ONE_MEGABYTE).await()
             TupperwareWithImage(
                 title = it.title,
                 description = it.description,
@@ -55,10 +52,18 @@ class TupperwareRepository(
         return result.map { it.id }.toSet()
     }
 
-    override suspend fun delete(id: String) {
-        super.delete(id)
-        val imageRef = storage.reference
-            .child("$STORAGE_BASE_PATH/$id")
-        imageRef.delete().await()
+    suspend fun delete(id: String) {
+        store.deleteByIdFromCollection(id, COLLECTION_PATH)
+        getImageReference(id).delete().await()
     }
+
+    suspend fun deleteAll() {
+        val ids = store.getAllObjectsFromCollection<Tupperware>(COLLECTION_PATH).keys
+        ids.forEach {
+            delete(it)
+        }
+    }
+
+    private fun getImageReference(id: String) = storage.reference
+        .child("$STORAGE_BASE_PATH/$id")
 }

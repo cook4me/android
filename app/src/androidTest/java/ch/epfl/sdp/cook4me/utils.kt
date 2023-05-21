@@ -1,4 +1,4 @@
-
+package ch.epfl.sdp.cook4me
 
 // val testProfile = Profile(
 //    email = "jean.valejean@epfl.ch",
@@ -35,22 +35,6 @@
 //    }
 // }
 //
-// suspend fun TupperwareRepository.addMultipleTestTupperware(files: List<File>) =
-//    files.mapIndexed { i, file ->
-//        add(
-//            "title$i",
-//            "desc$i",
-//            Uri.fromFile(file)
-//        )
-//    }
-//
-// fun generateTempFiles(count: Int): List<File> =
-//    (0 until count).map {
-//        val file = File.createTempFile("temp_", "$it")
-//        file.writeText("temp$it")
-//        file.deleteOnExit()
-//        file
-//    }
 //
 // fun assertThrowsAsync(f: suspend () -> Unit) {
 //    try {
