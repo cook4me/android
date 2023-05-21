@@ -43,6 +43,8 @@ class RecipeRepository(
     suspend fun getRecipeByName(name: String): Recipe =
         store.getFirstObjectByFieldValueFromCollection("name", name, COLLECTION_PATH)
 
+    suspend fun update(id: String, recipe: Recipe) = store.updateObjectInCollection(id, recipe, COLLECTION_PATH)
+
     suspend fun delete(id: String) {
         store.deleteByIdFromCollection(id, COLLECTION_PATH)
         auth.currentUser?.email?.let { email ->
@@ -53,6 +55,13 @@ class RecipeRepository(
             images.items.forEach {
                 it.delete().await()
             }
+        }
+    }
+
+    suspend fun deleteAll() {
+        val ids = getAll().keys
+        ids.forEach {
+            delete(it)
         }
     }
 }

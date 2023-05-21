@@ -9,5 +9,9 @@ class ChallengeRepository(private val store: FirebaseFirestore = FirebaseFiresto
     suspend fun add(challenge: Challenge) =
         store.addObjectToCollection(challenge, COLLECTION_PATH)
 
-    suspend fun getById(id: String) = store.getObjectByIdFromCollection<Challenge>(id, COLLECTION_PATH)
+    suspend fun getById(id: String) =
+        store.getObjectByIdFromCollection<Challenge>(id, COLLECTION_PATH)
+
+    suspend fun update(id: String, challenge: Challenge) =
+        store.updateObjectInCollection(id, challenge, COLLECTION_PATH)
 }

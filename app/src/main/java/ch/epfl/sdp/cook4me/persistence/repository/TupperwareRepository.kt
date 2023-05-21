@@ -26,7 +26,8 @@ class TupperwareRepository(
         return id
     }
 
-    suspend fun getById(id: String): Tupperware? = store.getObjectByIdFromCollection(id, COLLECTION_PATH)
+    suspend fun getById(id: String): Tupperware? =
+        store.getObjectByIdFromCollection(id, COLLECTION_PATH)
 
     suspend fun getWithImageById(id: String): TupperwareWithImage? {
         val tupperwareInfo = getById(id)
@@ -54,6 +55,13 @@ class TupperwareRepository(
     suspend fun delete(id: String) {
         store.deleteByIdFromCollection(id, COLLECTION_PATH)
         getImageReference(id).delete().await()
+    }
+
+    suspend fun deleteAll() {
+        val ids = store.getAllObjectsFromCollection<Tupperware>(COLLECTION_PATH).keys
+        ids.forEach {
+            delete(it)
+        }
     }
 
     private fun getImageReference(id: String) = storage.reference
