@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
- class ChallengeFeedScreenTest {
+class ChallengeFeedScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -21,4 +21,4 @@ import org.junit.runner.RunWith
         }
         composeTestRule.onNodeWithTag("Challenge Feed TAG").assertIsDisplayed()
     }
- }
+}
