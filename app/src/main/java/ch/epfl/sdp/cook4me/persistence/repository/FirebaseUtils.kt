@@ -35,7 +35,7 @@ suspend fun FirebaseFirestore.deleteByIdFromCollection(id: String, collectionPat
     collection(collectionPath).document(id).delete().await()
 }
 
-suspend fun FirebaseFirestore.deleteDocumentsFromCollection(collectionPath: String) {
+suspend fun FirebaseFirestore.deleteAllDocumentsFromCollection(collectionPath: String) {
     val querySnapshot = collection(collectionPath).get().await()
     for (documentSnapshot in querySnapshot.documents) {
         deleteByIdFromCollection(documentSnapshot.id, collectionPath)
