@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import ch.epfl.sdp.cook4me.persistence.model.Profile
-import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
