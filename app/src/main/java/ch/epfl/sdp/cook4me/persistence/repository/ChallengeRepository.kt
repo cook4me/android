@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
+import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -14,4 +15,7 @@ class ChallengeRepository(private val store: FirebaseFirestore = FirebaseFiresto
 
     suspend fun update(id: String, challenge: Challenge) =
         store.updateObjectInCollection(id, challenge, COLLECTION_PATH)
+
+    suspend fun getAll() =
+        store.getAllObjectsFromCollection<Challenge>(COLLECTION_PATH)
 }

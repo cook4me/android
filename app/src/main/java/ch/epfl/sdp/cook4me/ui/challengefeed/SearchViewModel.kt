@@ -4,7 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import ch.epfl.sdp.cook4me.application.ChallengeFormService
+import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 
 val foodTypeOptions = listOf(
@@ -36,7 +36,7 @@ val foodTypeOptions = listOf(
 )
 
 class SearchViewModel(
-    private val repository: ChallengeFormService = ChallengeFormService()
+    private val repository: ChallengeRepository = ChallengeRepository()
 ) : ViewModel() {
     private var _isLoading = mutableStateOf(true)
     private val _challenges = mutableStateListOf<Pair<String, Challenge>>()
@@ -87,7 +87,7 @@ class SearchViewModel(
     suspend fun loadNewData() {
         _isLoading.value = true
         _challenges.clear()
-        _challenges.addAll(repository.retrieveAllChallenges().toList())
+        _challenges.addAll(repository.getAll().toList())
         _viewedChallenges.clear()
         filterAndSort()
         _isLoading.value = false
