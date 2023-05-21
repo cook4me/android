@@ -15,8 +15,7 @@ class RecipeRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val storage: FirebaseStorage = FirebaseStorage.getInstance(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-) :
-    ObjectRepository(store, COLLECTION_PATH) {
+) {
     suspend fun add(recipe: Recipe, images: List<Uri> = listOf()): String? =
         auth.currentUser?.email?.let { email ->
             val recipeId = store.addObjectToCollection(
@@ -44,8 +43,8 @@ class RecipeRepository(
     suspend fun getRecipeByName(name: String): Recipe =
         store.getFirstObjectByFieldValueFromCollection("name", name, COLLECTION_PATH)
 
-    override suspend fun delete(id: String) {
-        super.delete(id)
+    suspend fun delete(id: String) {
+        store.deleteByIdFromCollection(id, COLLECTION_PATH)
         auth.currentUser?.email?.let { email ->
             val images = storage.reference
                 .child("/images/$email/recipes/$id")

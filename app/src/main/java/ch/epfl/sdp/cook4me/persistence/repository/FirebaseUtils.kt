@@ -30,3 +30,18 @@ suspend inline fun <reified A : Any> FirebaseFirestore.getFirstObjectByFieldValu
 suspend inline fun <reified A : Any> FirebaseFirestore.getObjectByIdFromCollection(id: String, collectionPath: String) =
     collection(collectionPath).document(id).get().await()
         .toObject(A::class.java)
+
+suspend fun FirebaseFirestore.deleteByIdFromCollection(id: String, collectionPath: String) {
+    collection(collectionPath).document(id).delete().await()
+}
+
+suspend fun FirebaseFirestore.deleteDocumentsFromCollection(collectionPath: String) {
+    val querySnapshot = collection(collectionPath).get().await()
+    for (documentSnapshot in querySnapshot.documents) {
+        deleteByIdFromCollection(documentSnapshot.id, collectionPath)
+    }
+}
+
+suspend fun <A : Any> FirebaseFirestore.updateObjectInCollection(id: String, value: A, collectionPath: String) {
+    collection(collectionPath).document(id).set(value).await()
+}

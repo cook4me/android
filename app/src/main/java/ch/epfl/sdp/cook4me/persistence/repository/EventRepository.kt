@@ -5,7 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 private const val COLLECTION_PATH = "events"
 
-class EventRepository(private val store: FirebaseFirestore = FirebaseFirestore.getInstance()) : ObjectRepository() {
+class EventRepository(private val store: FirebaseFirestore = FirebaseFirestore.getInstance()) {
 
     suspend fun add(event: Event) =
         store.addObjectToCollection(event, COLLECTION_PATH)

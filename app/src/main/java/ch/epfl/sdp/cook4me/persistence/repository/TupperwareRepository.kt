@@ -16,8 +16,7 @@ class TupperwareRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val storage: FirebaseStorage = FirebaseStorage.getInstance(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-) :
-    ObjectRepository(store, COLLECTION_PATH) {
+) {
 
     suspend fun add(title: String, description: String, image: Uri): String {
         val email = auth.currentUser?.email
@@ -52,8 +51,8 @@ class TupperwareRepository(
         return result.map { it.id }.toSet()
     }
 
-    override suspend fun delete(id: String) {
-        super.delete(id)
+    suspend fun delete(id: String) {
+        store.deleteByIdFromCollection(id, COLLECTION_PATH)
         getImageReference(id).delete().await()
     }
 
