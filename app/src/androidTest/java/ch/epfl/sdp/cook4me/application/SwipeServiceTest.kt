@@ -54,6 +54,7 @@ class SwipeServiceTest {
             tupperwareRepository.deleteAll()
             swipeRepository.deleteAllByUser(USER_A)
             swipeRepository.deleteAllByUser(USER_B)
+            auth.signOut()
             signInWithUserA()
             auth.currentUser?.delete()?.await()
             signInWithUserB()
@@ -67,8 +68,10 @@ class SwipeServiceTest {
         val filesB = generateTempFiles(5)
         signInWithUserA()
         tupperwareRepository.addMultipleTestTupperware(filesA)
+        auth.signOut()
         signInWithUserB()
         tupperwareRepository.addMultipleTestTupperware(filesB)
+        auth.signOut()
         signInWithUserA()
         swipeService.getAllUnswipedTupperware().forEach {
             swipeService.storeSwipeResult(it.key, true)
@@ -82,11 +85,13 @@ class SwipeServiceTest {
         val filesB = generateTempFiles(5)
         signInWithUserA()
         tupperwareRepository.addMultipleTestTupperware(filesA)
+        auth.signOut()
         signInWithUserB()
         tupperwareRepository.addMultipleTestTupperware(filesB)
         swipeService.getAllUnswipedTupperware().forEach {
             swipeService.storeSwipeResult(it.key, true)
         }
+        auth.signOut()
         signInWithUserA()
         swipeService.getAllUnswipedTupperware().forEach {
             swipeService.storeSwipeResult(it.key, true)
@@ -99,6 +104,7 @@ class SwipeServiceTest {
         val filesA = generateTempFiles(5)
         signInWithUserA()
         tupperwareRepository.addMultipleTestTupperware(filesA)
+        auth.signOut()
         signInWithUserB()
         val tupperwareBefore = swipeService.getAllUnswipedTupperware()
         assertThat(tupperwareBefore.keys.count(), `is`(5))
