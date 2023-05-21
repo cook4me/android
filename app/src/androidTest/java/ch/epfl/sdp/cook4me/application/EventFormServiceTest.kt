@@ -1,48 +1,58 @@
 package ch.epfl.sdp.cook4me.application
 
-// class EventFormServiceTest {
-//
-//    private val mockObjectRepository = mockk<ObjectRepository>(relaxed = true)
-//
-//    private val eventFormService = EventFormService(mockObjectRepository)
-//
-//    @Test
-//    fun submitValidEventStoresEvent() = runBlocking {
-//        val dateTime = Calendar.getInstance()
-//        // to ensure event is in the future
-//        dateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR) + 1)
-//        val event = Event(
-//            name = "name",
-//            description = "description",
-//            dateTime = dateTime,
-//            location = "location",
-//            maxParticipants = 10,
-//            participants = listOf("participant1", "participant2"),
-//            id = "id",
-//            isPrivate = true,
-//            creator = "creator"
-//        )
-//        coEvery { mockObjectRepository.add(match { event.isValidEvent }) } returns "someId"
-//        val result = withTimeout(500L) {
-//            eventFormService.submitForm(event)
-//        }
-//        // assert mockObjectRepository.add was called
-//        coVerify {
-//            mockObjectRepository.add(match { event.isValidEvent })
-//        }
-//        assert(result == null)
-//    }
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.persistence.repository.EventRepository
+import ch.epfl.sdp.cook4me.ui.eventform.Event
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Test
+import org.junit.runner.RunWith
+import java.util.Calendar
 
-//    @Test
-//    fun submitIncompleteEventReturnsErrorMessage() = runBlocking {
-//        val event = Event()
-//        val result = withTimeout(500L) {
-//            eventFormService.submitForm(event)
-//        }
-//        // assert mockObjectRepository.add was not called
-//        coVerify(exactly = 0) {
-//            mockObjectRepository.add(match { event.isValidEvent })
-//        }
-//        assert(result != null)
-//    }
-// }
+@ExperimentalCoroutinesApi
+@RunWith(AndroidJUnit4::class)
+class EventFormServiceTest {
+
+    private val mockEventRepository = mockk<EventRepository>(relaxed = true)
+    private val eventFormService = EventFormService(mockEventRepository)
+
+    @Test
+    fun submitValidEventStoresEvent() = runTest {
+        val dateTime = Calendar.getInstance()
+        // to ensure event is in the future
+        dateTime.set(Calendar.YEAR, dateTime.get(Calendar.YEAR) + 1)
+        val event = Event(
+            name = "name",
+            description = "description",
+            dateTime = dateTime,
+            location = "location",
+            maxParticipants = 10,
+            participants = listOf("participant1", "participant2"),
+            id = "id",
+            isPrivate = true,
+            creator = "creator"
+        )
+        coEvery { mockEventRepository.add(match { event.isValidEvent }) } returns "someId"
+        val result = eventFormService.submitForm(event)
+        // assert mockObjectRepository.add was called
+        coVerify {
+            mockEventRepository.add(match { event.isValidEvent })
+        }
+        assert(result == null)
+    }
+
+    @Test
+    fun submitIncompleteEventReturnsErrorMessage() = runTest {
+        val event = Event()
+        val result = eventFormService.submitForm(event)
+
+        // assert mockObjectRepository.add was not called
+        coVerify(exactly = 0) {
+            mockEventRepository.add(match { event.isValidEvent })
+        }
+        assert(result != null)
+    }
+}
