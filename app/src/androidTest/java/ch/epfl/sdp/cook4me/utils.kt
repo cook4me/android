@@ -38,7 +38,7 @@ import kotlinx.coroutines.runBlocking
 // }
 //
 //
- fun assertThrowsAsync(f: suspend () -> Unit) {
+fun assertThrowsAsync(f: suspend () -> Unit) {
     try {
         runBlocking {
             f()
@@ -49,7 +49,7 @@ import kotlinx.coroutines.runBlocking
         return
     }
     throw AssertionError("no exception was thrown")
- }
+}
 //
 // fun ComposeContentTestRule.waitUntilExists(
 //    matcher: SemanticsMatcher,

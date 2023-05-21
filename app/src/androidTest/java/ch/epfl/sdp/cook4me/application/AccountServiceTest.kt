@@ -23,12 +23,11 @@ private const val USERNAME = "harry.potter@epfl.ch"
 private const val PASSWORD = "123456"
 
 private const val VALID_EMAIL = "bababa@epfl.ch"
-private const val INVALID_EMAIL = "bababa@epfl.ch"
-
+private const val INVALID_EMAIL = "invalidemail"
 
 @ExperimentalCoroutinesApi
- @RunWith(AndroidJUnit4::class)
- class AccountServiceTest {
+@RunWith(AndroidJUnit4::class)
+class AccountServiceTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
     private val auth: FirebaseAuth = setupFirebaseAuth()
@@ -65,7 +64,8 @@ private const val INVALID_EMAIL = "bababa@epfl.ch"
     }
 
     @Test
-    fun accountServiceRefusesToRegisterInvalidEmail() = //Don't use runTest, because we already use runBlocking
+    fun accountServiceRefusesToRegisterInvalidEmail() =
+        // Don't use runTest, because we already use runBlocking
         assertThrowsAsync {
             accountService.register("mrinvalid", PASSWORD)
         }
@@ -109,5 +109,4 @@ private const val INVALID_EMAIL = "bababa@epfl.ch"
         assertThrowsAsync {
             accountService.authenticate("mrinvalid@epfl.ch", "hahaha")
         }
-
- }
+}
