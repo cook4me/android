@@ -45,11 +45,13 @@ import java.util.Calendar
  * @param accountService the service that will be used to get the current user
  * @param onCancelClick the function that will be called when the user clicks on the cancel button
  */
+
 @Composable
 fun CreateChallengeScreen(
     challengeFormService: ChallengeFormService = ChallengeFormService(),
     accountService: AccountService = AccountService(),
     onCancelClick: () -> Unit = {},
+    onDoneClick: () -> Unit = {},
 ) {
     val challenge = remember {
         mutableStateOf(Challenge())
@@ -110,6 +112,7 @@ fun CreateChallengeScreen(
                 runBlocking {
                     endMsg.value = challengeFormService.submitForm(challenge.value) ?: "Challenge created!"
                 }
+                onDoneClick()
             }
         )
         Text(text = endMsg.value)

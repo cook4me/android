@@ -27,9 +27,6 @@
     <string name="ask_challenge_description">Description of the challenge?</string>
     <string name="ask_challenge_type">Cooking genre: </string>
 
-    <!-- Challenge Feed Screen -->
-    <string name="Challenge_Feed_TAG">Challenge Feed TAG</string>
-
     <!-- CreateNewItemButton -->
     <string name="create_new_item_type">Create a new</string>
     <string name="event">Event</string>
@@ -147,6 +144,7 @@
     <!--Challenges-->
     <string name="join">Join</string>
     <string name="challenge_finished">This challenge has already taken place</string>
+    <string name="filter_button_text">Filter by</string>
     <string name="vote">Vote for other participants</string>
 
     <!-- Voting Screen --> voteScreenTitle
@@ -160,5 +158,4 @@
     <string name="place">Place</string>
     <string name="back">Back</string>
     <string name="winner">Winner</string>
-
 </resources>
