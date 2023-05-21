@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.application
 
 import android.util.Log
-import ch.epfl.sdp.cook4me.persistence.model.FirestoreTupperware
 import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import ch.epfl.sdp.cook4me.persistence.repository.SwipeRepository
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
@@ -20,7 +19,7 @@ class SwipeService(
     suspend fun isMatch(tupperwareId: String): Boolean {
         val email = auth.currentUser?.email
         checkNotNull(email)
-        val otherUser = tupperwareRepository.getById<FirestoreTupperware>(tupperwareId)?.user
+        val otherUser = tupperwareRepository.getById(tupperwareId)?.user
         checkNotNull(otherUser)
         val swipesFromOther = swipeRepository.getAllPositiveIdsByUser(otherUser)
         val ownTupperwareIds = tupperwareRepository.getAllTupperwareIdsAddedByUser(email)

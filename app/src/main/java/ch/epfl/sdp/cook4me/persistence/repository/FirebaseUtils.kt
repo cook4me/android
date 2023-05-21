@@ -18,7 +18,7 @@ suspend inline fun <reified A : Any> FirebaseFirestore.getAllObjectsFromCollecti
     return result.map { it.id }.zip(result.toObjects(A::class.java)).toMap()
 }
 
-suspend inline fun <reified A : Any> FirebaseFirestore.getFirstObjectByFieldValue(
+suspend inline fun <reified A : Any> FirebaseFirestore.getFirstObjectByFieldValueFromCollection(
     field: String,
     value: String,
     collectionPath: String
@@ -26,3 +26,7 @@ suspend inline fun <reified A : Any> FirebaseFirestore.getFirstObjectByFieldValu
     val result = collection(collectionPath).whereEqualTo(field, value).get().await()
     return result.map { it.toObject(A::class.java) }.first()
 }
+
+suspend inline fun <reified A : Any> FirebaseFirestore.getObjectByIdFromCollection(id: String, collectionPath: String) =
+    collection(collectionPath).document(id).get().await()
+        .toObject(A::class.java)

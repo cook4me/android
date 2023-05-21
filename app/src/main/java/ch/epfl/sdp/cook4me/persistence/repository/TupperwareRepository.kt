@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import android.net.Uri
-import ch.epfl.sdp.cook4me.persistence.model.FirestoreTupperware
+import ch.epfl.sdp.cook4me.persistence.model.Tupperware
 import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,13 +22,15 @@ class TupperwareRepository(
     suspend fun add(title: String, description: String, image: Uri): String {
         val email = auth.currentUser?.email
         checkNotNull(email)
-        val id = store.addObjectToCollection(FirestoreTupperware(title, description, email), COLLECTION_PATH)
+        val id = store.addObjectToCollection(Tupperware(title, description, email), COLLECTION_PATH)
         getImageReference(id).putFile(image).await()
         return id
     }
 
+    suspend fun getById(id: String): Tupperware? = store.getObjectByIdFromCollection(id, COLLECTION_PATH)
+
     suspend fun getWithImageById(id: String): TupperwareWithImage? {
-        val tupperwareInfo = super.getById<FirestoreTupperware>(id)
+        val tupperwareInfo = getById(id)
         return tupperwareInfo?.let {
             val bytes = getImageReference(id).getBytes(ONE_MEGABYTE).await()
             TupperwareWithImage(

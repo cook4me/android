@@ -71,10 +71,8 @@ class RecipeRepositoryTest {
         val file = generateTempFiles(2)
         val urls = file.map { Uri.fromFile(it) }
         val newEntry1 = Recipe(name = "newEntry1", user = USER_NAME)
-        recipeRepository.add(newEntry1, urls)
-        val recipeId = recipeRepository
-            .getWithGivenField<Recipe>("name", newEntry1.name).first().id
-        recipeRepository.delete(recipeId)
+        val id = recipeRepository.add(newEntry1, urls)
+        recipeRepository.delete(id ?: error("should never happen"))
         val recipes = recipeRepository.getAll()
         assertThat(recipes.isEmpty(), `is`(true))
         val images = getUserFolder().listAll().await()
@@ -109,7 +107,7 @@ class RecipeRepositoryTest {
         recipeRepository.add(Recipe(name = "newEntry2"))
         recipeRepository.add(Recipe(name = "newEntry3"))
         val allRecipes = recipeRepository.getAll()
-        val actual = recipeRepository.getById<Recipe>(allRecipes.keys.first())
+        val actual = recipeRepository.getById(allRecipes.keys.first())
         assertThat(actual, `is`(allRecipes.values.first()))
     }
 
