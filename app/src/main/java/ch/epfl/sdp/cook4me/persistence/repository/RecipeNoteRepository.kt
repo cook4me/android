@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import kotlinx.coroutines.tasks.await
 
 const val RECIPE_NOTE_PATH = "recipeNotes"
@@ -61,11 +62,18 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
 
     /**
      * This method is used to retrieve all the notes of all the recipes.
+     * @param useOnlyCache if true, only the cache will be used (useful to make app faster offline)
      * @return a map with the id of the recipe as key and the note as value
      * if there was an error while reading, the id will be -1
      */
-    suspend fun retrieveAllRecipeNotes(): Map<String, Int> {
-        val result = store.collection(RECIPE_NOTE_PATH).get().await()
+    suspend fun retrieveAllRecipeNotes(useOnlyCache: Boolean = false): Map<String, Int> {
+        val source = if (useOnlyCache) {
+            println("Using cache only")
+            Source.CACHE
+        } else {
+            Source.DEFAULT
+        }
+        val result = store.collection(RECIPE_NOTE_PATH).get(source).await()
         return result.map { it.get("id").toString() }.zip(result.map { it.getLong("note")?.toInt() ?: 0 }).toMap()
     }
 
@@ -74,8 +82,13 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
      * @param userId the id of the user
      * @return a map with the id of the recipe as key and the vote as value
      */
-    suspend fun retrieveAllUserVotes(userId: String): Map<String, Int> {
-        val result = store.collection(USER_VOTE_PATH).whereEqualTo("userId", userId).get().await()
+    suspend fun retrieveAllUserVotes(userId: String, useOnlyCache: Boolean = false): Map<String, Int> {
+        val source = if (useOnlyCache) {
+            Source.CACHE
+        } else {
+            Source.DEFAULT
+        }
+        val result = store.collection(USER_VOTE_PATH).whereEqualTo("userId", userId).get(source).await()
         return result.map { it.get("id").toString() }.zip(result.map { it.getLong("note")?.toInt() ?: 0 }).toMap()
     }
 

@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
 import ch.epfl.sdp.cook4me.ui.challengeform.CreateChallengeScreen
@@ -98,6 +99,7 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
+                service = RecipeFeedService(isOnline = isOnline),
                 onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) },
                 isOnline = isOnline
             )

@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import kotlinx.coroutines.tasks.await
 
 suspend fun <A : Any> FirebaseFirestore.addObjectToCollection(
@@ -12,9 +13,14 @@ suspend fun <A : Any> FirebaseFirestore.addObjectToCollection(
 }
 
 suspend inline fun <reified A : Any> FirebaseFirestore.getAllObjectsFromCollection(
-    collectionPath: String
+    collectionPath: String, useOnlyCache: Boolean = false
 ): Map<String, A> {
-    val result = collection(collectionPath).get().await()
+    val source = if (useOnlyCache) {
+        Source.CACHE
+    } else {
+        Source.DEFAULT
+    }
+    val result = collection(collectionPath).get(source).await()
     return result.map { it.id }.zip(result.toObjects(A::class.java)).toMap()
 }
 

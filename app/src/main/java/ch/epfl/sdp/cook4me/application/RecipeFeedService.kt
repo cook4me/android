@@ -15,14 +15,15 @@ class RecipeFeedService(
     private val recipeRepository: RecipeRepository = RecipeRepository(),
     private val recipeNoteRepository: RecipeNoteRepository = RecipeNoteRepository(),
     private val accountService: AccountService = AccountService(),
+    private val isOnline: Boolean = true
 ) {
     /**
      * Retrieves all the recipes and assigns them their notes (0 if they have none)
      * @return a list of recipes with their id with their notes
      */
     suspend fun getRecipesWithNotes(): List<RecipeNote> {
-        val recipes = recipeRepository.getAll()
-        val notes = recipeNoteRepository.retrieveAllRecipeNotes()
+        val recipes = recipeRepository.getAll(useOnlyCache = !isOnline)
+        val notes = recipeNoteRepository.retrieveAllRecipeNotes(useOnlyCache = !isOnline)
         return recipes.map { RecipeNote(it.key, notes[it.key] ?: 0, it.value) }
     }
 
@@ -59,6 +60,6 @@ class RecipeFeedService(
         if (userId === null) {
             return mapOf()
         }
-        return recipeNoteRepository.retrieveAllUserVotes(userId)
+        return recipeNoteRepository.retrieveAllUserVotes(userId, useOnlyCache = !isOnline)
     }
 }
