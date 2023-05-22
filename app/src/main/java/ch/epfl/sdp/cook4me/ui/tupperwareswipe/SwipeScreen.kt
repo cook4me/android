@@ -68,7 +68,7 @@ fun TupperwareSwipeScreen(
     }
 
     if (!isOnline) {
-        displayedText.value = "You are offline, to keep swiping you need to go online"
+        displayedText.value = stringResource(R.string.to_swipe_go_online)
     } else if (allDone) {
         displayedText.value = "All done"
     }
