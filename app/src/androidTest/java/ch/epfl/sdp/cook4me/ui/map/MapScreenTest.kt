@@ -1,13 +1,22 @@
 package ch.epfl.sdp.cook4me.ui.map
 
-// private const val MAPS_LOADING_TIMEOUT = 8000.toLong()
-// private const val STARTING_ZOOM = 10f
-// private const val ASSERT_ROUNDING_ERROR = 0.01
-// private const val HALF_MINUTE_IN_MILLISECONDS = 20000L
-//
-// class GoogleMapViewTests {
-//    @get:Rule
-//    val composeTestRule = createComposeRule()
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.type.LatLng
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
+private const val MAPS_LOADING_TIMEOUT = 8000.toLong()
+private const val STARTING_ZOOM = 10f
+private const val ASSERT_ROUNDING_ERROR = 0.01
+private const val HALF_MINUTE_IN_MILLISECONDS = 20000L
+
+
+@RunWith(AndroidJUnit4::class)
+class GoogleMapViewTests {
+    @get:Rule
+    val composeTestRule = createComposeRule()
 //
 //    private val startingPosition = Locations.LAUSANNE
 //    private lateinit var cameraPositionState: CameraPositionState
@@ -103,13 +112,13 @@ package ch.epfl.sdp.cook4me.ui.map
 //        }
 //    }
 
-//    @Test
-//    fun testOnAddNewEventClick() {
-//        initMap()
-//        assertFalse(navigatedToCreateEvent)
-//        composeTestRule.onNodeWithText("Create a new Event").performClick()
-//        assertTrue(navigatedToCreateEvent)
-//    }
+    @Test
+    fun testOnAddNewEventClick() {
+        initMap()
+        assertFalse(navigatedToCreateEvent)
+        composeTestRule.onNodeWithText("Create a new Event").performClick()
+        assertTrue(navigatedToCreateEvent)
+    }
 
 //    fun checkCameraPosition(nodeText: String, location: LatLng) {
 //        composeTestRule.onNodeWithText(nodeText).performClick()
@@ -123,12 +132,13 @@ package ch.epfl.sdp.cook4me.ui.map
 //        cameraPositionState setProperty "isMoving" value true
 //        cameraPositionState setProperty "isMoving" value false
 //    }
-// }
+}
+
 //
 // private fun hasValidApiKey(): Boolean =
 //    MAPS_API_KEY.isNotBlank()
 //
-// private fun LatLng.assertEquals(other: LatLng) {
-//    assertEquals(latitude, other.latitude, ASSERT_ROUNDING_ERROR)
-//    assertEquals(longitude, other.longitude, ASSERT_ROUNDING_ERROR)
-// }
+private fun LatLng.assertEquals(other: LatLng) {
+    assertEquals(latitude, other.latitude, ASSERT_ROUNDING_ERROR)
+    assertEquals(longitude, other.longitude, ASSERT_ROUNDING_ERROR)
+}
