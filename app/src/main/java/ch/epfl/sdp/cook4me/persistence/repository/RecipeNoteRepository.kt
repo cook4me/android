@@ -78,4 +78,9 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
         val result = store.collection(USER_VOTE_PATH).whereEqualTo("userId", userId).get().await()
         return result.map { it.get("id").toString() }.zip(result.map { it.getLong("note")?.toInt() ?: 0 }).toMap()
     }
+
+    suspend fun deleteAll() {
+        store.deleteAllDocumentsFromCollection(RECIPE_NOTE_PATH)
+        store.deleteAllDocumentsFromCollection(USER_VOTE_PATH)
+    }
 }

@@ -2,19 +2,14 @@ package ch.epfl.sdp.cook4me.persistence.repository
 
 import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
-private const val COLLECTION_PATH = "profileImage"
-
 class ProfileImageRepository(
-    store: FirebaseFirestore = FirebaseFirestore.getInstance(),
     private val storage: FirebaseStorage = FirebaseStorage.getInstance(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-) :
-    ObjectRepository(store, COLLECTION_PATH) {
+) {
     suspend fun add(image: Uri): Uri {
         val email = auth.currentUser?.email
         checkNotNull(email)
@@ -43,7 +38,7 @@ class ProfileImageRepository(
         }
     }
 
-    suspend fun delete() {
+    suspend fun deleteImageForCurrentUser() {
         auth.currentUser?.email?.let { email ->
             val images = storage.reference
                 .child("/images/$email/profileImage")
