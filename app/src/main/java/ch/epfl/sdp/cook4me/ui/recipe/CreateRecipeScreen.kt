@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.recipeform
+package ch.epfl.sdp.cook4me.ui.recipe
 
 import android.net.Uri
 import android.util.Log
