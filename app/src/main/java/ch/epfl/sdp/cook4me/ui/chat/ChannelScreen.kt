@@ -15,14 +15,12 @@ import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.navigation.Screen
-import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.models.Filters
 import io.getstream.chat.android.client.models.User
 import io.getstream.chat.android.compose.ui.channels.ChannelsScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
 
-// TODO: Refactor needed: https://github.com/cook4me/android/issues/155
 @Composable
 fun ChannelScreen(
     client: ChatClient = provideChatClient(

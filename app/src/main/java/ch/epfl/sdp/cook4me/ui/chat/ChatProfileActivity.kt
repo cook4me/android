@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.profile.ProfileViewModel
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
+import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.ProfileViewModel
 
 // I had to add this activity solely to show profile from
 // the message screen, because I could not pass the
