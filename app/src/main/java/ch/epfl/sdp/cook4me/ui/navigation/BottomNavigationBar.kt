@@ -115,12 +115,12 @@ val mainDestinations = listOf(
     BottomNavScreen.Recipes,
     BottomNavScreen.Events,
     BottomNavScreen.Challenges,
-    BottomNavScreen.Chat,
+    BottomNavScreen.Chat
 )
 
 val dropDownMenuDestinations = listOf(
     BottomNavScreen.MyTupperwares,
     BottomNavScreen.MyRecipes,
     BottomNavScreen.MyEvents,
-    BottomNavScreen.Profile,
+    BottomNavScreen.Profile
 )
