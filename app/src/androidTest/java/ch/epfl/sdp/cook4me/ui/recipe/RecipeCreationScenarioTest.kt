@@ -1,13 +1,8 @@
 package ch.epfl.sdp.cook4me.ui.recipe
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivityResultRegistryOwner
-import androidx.activity.result.ActivityResultRegistry
-import androidx.activity.result.ActivityResultRegistryOwner
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasTestTag
@@ -19,12 +14,12 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
-import androidx.core.app.ActivityOptionsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.matchListWithoutOrder
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
+import ch.epfl.sdp.cook4me.registryOwnerFactory
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import ch.epfl.sdp.cook4me.waitUntilDisplayed
 import ch.epfl.sdp.cook4me.waitUntilExists
@@ -60,20 +55,14 @@ class RecipeCreationScenarioTest {
         photos = listOf()
     )
 
-    private val submitForm = { recipe: Recipe ->
-        assert(recipe == expectedRecipe)
-    }
-
     @Test
     fun validRecipeFormIsCorrectlySubmitted() {
-
         composeTestRule.setContent {
-            CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwner) {
+            CompositionLocalProvider(LocalActivityResultRegistryOwner provides registryOwnerFactory(testUri)) {
                 // any composable inside this block will now use our mock ActivityResultRegistry
                 CreateRecipeScreen(repository = mockRecipeRepository)
             }
         }
-
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc))
             .performTextInput(expectedRecipe.name)
         composeTestRule.onNodeWithTag("AddImage").performClick()
@@ -163,21 +152,5 @@ class RecipeCreationScenarioTest {
 
         composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc))
-    }
-
-    private val registryOwner = object : ActivityResultRegistryOwner {
-        override val activityResultRegistry: ActivityResultRegistry =
-            object : ActivityResultRegistry() {
-                override fun <I : Any?, O : Any?> onLaunch(
-                    requestCode: Int,
-                    contract: ActivityResultContract<I, O>,
-                    input: I,
-                    options: ActivityOptionsCompat?
-                ) {
-                    // don't launch an activity, just respond with the test Uri
-                    val intent = Intent().setData(testUri)
-                    this.dispatchResult(requestCode, Activity.RESULT_OK, intent)
-                }
-            }
     }
 }

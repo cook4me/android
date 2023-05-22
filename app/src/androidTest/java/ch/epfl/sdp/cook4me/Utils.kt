@@ -1,10 +1,32 @@
 package ch.epfl.sdp.cook4me
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.result.ActivityResultRegistry
+import androidx.activity.result.ActivityResultRegistryOwner
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.ui.platform.ViewRootForTest
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.core.app.ActivityOptionsCompat
 import androidx.test.espresso.matcher.ViewMatchers
 import kotlinx.coroutines.runBlocking
+fun registryOwnerFactory(testUri: Uri) = object : ActivityResultRegistryOwner {
+    override val activityResultRegistry: ActivityResultRegistry =
+        object : ActivityResultRegistry() {
+            override fun <I : Any?, O : Any?> onLaunch(
+                requestCode: Int,
+                contract: ActivityResultContract<I, O>,
+                input: I,
+                options: ActivityOptionsCompat?
+            ) {
+                // don't launch an activity, just respond with the test Uri
+                val intent = Intent().setData(testUri)
+                this.dispatchResult(requestCode, Activity.RESULT_OK, intent)
+            }
+        }
+}
 
 fun assertThrowsAsync(f: suspend () -> Unit) {
     try {
