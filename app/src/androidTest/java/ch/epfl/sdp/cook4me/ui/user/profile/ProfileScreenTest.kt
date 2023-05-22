@@ -23,6 +23,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+private const val USERNAME = "donald.duck@epfl.ch"
 private const val PASSWORD = "123456"
 
 @RunWith(AndroidJUnit4::class)
@@ -37,7 +38,7 @@ class ProfileScreenTest {
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(storage, auth)
     private val profileImage = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
     private val user = Profile(
-        email = "donald.duck@epfl.ch",
+        email = USERNAME,
         name = "Donald",
         allergies = "Hazelnut",
         bio = "I am a duck",
@@ -47,8 +48,8 @@ class ProfileScreenTest {
     @Before
     fun setUp() {
         runBlocking {
-            auth.createUserWithEmailAndPassword(user.email, PASSWORD).await()
-            auth.signInWithEmailAndPassword(user.email, PASSWORD).await()
+            auth.createUserWithEmailAndPassword(USERNAME, PASSWORD).await()
+            auth.signInWithEmailAndPassword(USERNAME, PASSWORD).await()
             repository.add(user)
             profileImageRepository.add(profileImage)
         }
@@ -60,7 +61,7 @@ class ProfileScreenTest {
             // delete the user from the database
             repository.deleteAll()
             profileImageRepository.deleteImageForCurrentUser()
-            auth.signInWithEmailAndPassword(user.email, PASSWORD).await()
+            auth.signInWithEmailAndPassword(USERNAME, PASSWORD).await()
             auth.currentUser?.delete()?.await()
         }
     }
