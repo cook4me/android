@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
@@ -24,6 +26,7 @@ fun RecipeListScreen(
     userVotes: Map<String, Int>,
     isOnline: Boolean = true
 ) {
+    val expandedRecipe = remember { mutableStateOf<Int?>(null)}
     LazyColumn(
         modifier = Modifier,
         contentPadding = PaddingValues(10.dp),
@@ -36,7 +39,9 @@ fun RecipeListScreen(
                 image = Uri.parse("android.resource://ch.epfl.sdp.cook4me/" + R.drawable.tacos_placefolder),
                 onNoteUpdate = { note -> onNoteUpdate(recipeList[index].recipeId, note) },
                 userVote = userVotes[recipeList[index].recipeId] ?: 0,
-                canClick = isOnline
+                canClick = isOnline,
+                onClick = { expandedRecipe.value = if (expandedRecipe.value == index) null else index },
+                isExpanded = expandedRecipe.value == index
             )
         }
     }

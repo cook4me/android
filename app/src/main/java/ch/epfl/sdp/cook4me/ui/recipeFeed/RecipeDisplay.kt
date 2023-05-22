@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -31,7 +33,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
@@ -56,71 +61,130 @@ fun RecipeDisplay(
     onNoteUpdate: (Int) -> Unit = {},
     userVote: Int = 0,
     canClick: Boolean = true,
-    isExpanded: Boolean = false,
+    isExpanded: Boolean = true,
     onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier
-            .aspectRatio(1.1f),
+        modifier = Modifier,
         elevation = 5.dp,
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(
             Modifier.clickable(enabled = canClick, onClick = onClick)
         ) {
-            Box(
-                modifier = Modifier
-                    .weight(0.84f)
-            ) {
-                // Use AsyncImage to load the image
-                AsyncImage(
-                    model = image.toString(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize(),
-                )
-
-                // Adding a gradient overlay to the bottom of the image for text visibility
+            Column (modifier = Modifier.aspectRatio(1.1f)) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color.Black),
-                                startY = 0.6f
-                            )
-                        )
-                )
+                        .weight(0.84f)
+                ) {
+                    // Use AsyncImage to load the image
+                    AsyncImage(
+                        model = image.toString(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
 
-                // Recipe title at the bottom of the image
-                Row(
-                    modifier = Modifier.fillMaxWidth().align(Alignment.BottomStart).padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ){
-                    Text(
-                        text = recipe.name,
-                        color = Color.White,
-                        style = MaterialTheme.typography.h6,
+                    // Adding a gradient overlay to the bottom of the image for text visibility
+                    Box(
                         modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(Color.Transparent, Color.Black),
+                                    startY = 0.6f
+                                )
+                            )
                     )
-                    VoteIcon(
-                        modifier = Modifier,
-                        counterValue = note,
-                        onChange = onNoteUpdate,
-                        userVote = userVote
+
+                    // Recipe title at the bottom of the image
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.BottomStart)
+                            .padding(start = 16.dp, end = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = recipe.name,
+                            color = Color.White,
+                            style = MaterialTheme.typography.h6,
+                            modifier = Modifier
+                        )
+                        VoteIcon(
+                            modifier = Modifier,
+                            counterValue = note,
+                            onChange = onNoteUpdate,
+                            userVote = userVote
+                        )
+                    }
+                }
+                // Display cooking time, difficulty and servings count at the bottom
+                BottomUnexpanded(
+                    modifier = Modifier.weight(0.16f),
+                    cookingTime = recipe.cookingTime,
+                    difficulty = recipe.difficulty,
+                    servingsCount = recipe.servings,
+                    likes = note,
+                    onNoteUpdate = onNoteUpdate
+                )
+            }
+            if (isExpanded) {
+                Divider(thickness = 0.45.dp)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp, horizontal = 15.dp),
+                    horizontalAlignment = Alignment.Start,
+
+                ) {
+                    Text(
+                        text = "Ingredients",
+                        style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
                     )
+                    Spacer(modifier = Modifier.size(10.dp))
+                    recipe.ingredients.forEach { ingredient ->
+                        Text(
+                            text = "• $ingredient",
+                            style = MaterialTheme.typography.body1,
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(15.dp))
+                    Text(
+                        text = "Instructions",
+                        style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+                    )
+                    Spacer(modifier = Modifier.size(10.dp))
+                    recipe.recipeSteps.forEachIndexed { index, step ->
+                        val stepText = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp
+                                )
+                            ) {
+                                append("${index + 1}.")
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp
+                                )
+                            ) {
+                                append(" $step")
+                            }
+                        }
+                        Text(
+                            text = stepText,
+                            style = MaterialTheme.typography.body1,
+                            modifier = Modifier.padding(start = 8.dp, top = 3.dp, bottom = 3.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(10.dp))
                 }
             }
-            // Display cooking time, difficulty and servings count at the bottom
-            BottomUnexpanded(
-                modifier = Modifier.weight(0.16f),
-                cookingTime = recipe.cookingTime,
-                difficulty = recipe.difficulty,
-                servingsCount = recipe.servings,
-                likes = note,
-                onNoteUpdate = onNoteUpdate
-            )
         }
     }
 
