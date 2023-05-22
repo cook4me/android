@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.tupperwareswipe
+package ch.epfl.sdp.cook4me.ui.tupperware.swipe
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.AlertDialog
