@@ -6,42 +6,6 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.test.espresso.matcher.ViewMatchers
 import kotlinx.coroutines.runBlocking
 
-// val testProfile = Profile(
-//    email = "jean.valejean@epfl.ch",
-//    name = "Jean Valejean",
-//    allergies = "reading and writing",
-//    bio = "I am miserable!",
-//    favoriteDish = "Bread"
-// )
-// object RepositoryFiller {
-//    fun setUpUser(
-//        profile: Profile,
-//        auth: FirebaseAuth = FirebaseAuth.getInstance(),
-//        store: FirebaseFirestore
-//    ) {
-//        val profileRepository = ProfileRepository(store)
-//        runBlocking {
-//            profileRepository.add(profile)
-//            auth.createUserWithEmailAndPassword(profile.email, "123456").await()
-//            auth.signInWithEmailAndPassword(profile.email, "123456").await()
-//        }
-//    }
-//
-//    fun cleanUpUser(
-//        profile: Profile,
-//        auth: FirebaseAuth = FirebaseAuth.getInstance(),
-//        store: FirebaseFirestore
-//    ) {
-//        val profileRepository = ProfileRepository(store)
-//        runBlocking {
-//            profileRepository.delete(profile.email)
-//            auth.signInWithEmailAndPassword(profile.email, "123456")
-//            auth.currentUser?.delete()?.await()
-//        }
-//    }
-// }
-//
-//
 fun assertThrowsAsync(f: suspend () -> Unit) {
     try {
         runBlocking {
