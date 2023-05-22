@@ -8,6 +8,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.challenge.feed.ChallengeFeedScreen
+import ch.epfl.sdp.cook4me.ui.challenge.feed.SearchViewModel
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import io.mockk.Runs
 import io.mockk.coEvery

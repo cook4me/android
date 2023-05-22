@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.challengefeed
 
 import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
+import ch.epfl.sdp.cook4me.ui.challenge.feed.SearchViewModel
 import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
 import io.mockk.coEvery
 import io.mockk.mockk

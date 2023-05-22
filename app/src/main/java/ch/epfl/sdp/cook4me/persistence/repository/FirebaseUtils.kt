@@ -1,6 +1,8 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
 suspend fun <A : Any> FirebaseFirestore.addObjectToCollection(
@@ -12,24 +14,33 @@ suspend fun <A : Any> FirebaseFirestore.addObjectToCollection(
 }
 
 suspend inline fun <reified A : Any> FirebaseFirestore.getAllObjectsFromCollection(
-    collectionPath: String
+    collectionPath: String,
+    transform: (QuerySnapshot) -> List<A> = { defaultTransform(it) }
 ): Map<String, A> {
     val result = collection(collectionPath).get().await()
-    return result.map { it.id }.zip(result.toObjects(A::class.java)).toMap()
+    return result.map { it.id }.zip(transform(result)).toMap()
 }
 
 suspend inline fun <reified A : Any> FirebaseFirestore.getFirstObjectByFieldValueFromCollection(
     field: String,
     value: String,
-    collectionPath: String
+    collectionPath: String,
+    transform: (QuerySnapshot) -> List<A> = { defaultTransform(it) }
 ): A? {
     val result = collection(collectionPath).whereEqualTo(field, value).get().await()
-    return result.map { it.toObject(A::class.java) }.firstOrNull()
+    return transform(result).firstOrNull()
 }
 
-suspend inline fun <reified A : Any> FirebaseFirestore.getObjectByIdFromCollection(id: String, collectionPath: String) =
-    collection(collectionPath).document(id).get().await()
-        .toObject(A::class.java)
+suspend inline fun <reified A : Any> FirebaseFirestore.getObjectByIdFromCollection(
+    id: String,
+    collectionPath: String,
+    transform: (DocumentSnapshot) -> A? = {
+        defaultTransform(
+            it
+        )
+    }
+) =
+    transform(collection(collectionPath).document(id).get().await())
 
 suspend fun FirebaseFirestore.deleteByIdFromCollection(id: String, collectionPath: String) {
     collection(collectionPath).document(id).delete().await()
@@ -42,6 +53,16 @@ suspend fun FirebaseFirestore.deleteAllDocumentsFromCollection(collectionPath: S
     }
 }
 
-suspend fun <A : Any> FirebaseFirestore.updateObjectInCollection(id: String, value: A, collectionPath: String) {
+suspend fun <A : Any> FirebaseFirestore.updateObjectInCollection(
+    id: String,
+    value: A,
+    collectionPath: String
+) {
     collection(collectionPath).document(id).set(value).await()
 }
+
+inline fun <reified A : Any> defaultTransform(querySnapshot: QuerySnapshot): List<A> =
+    querySnapshot.toObjects(A::class.java)
+
+inline fun <reified A : Any> defaultTransform(documentSnapshot: DocumentSnapshot): A? =
+    documentSnapshot.toObject(A::class.java)

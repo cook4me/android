@@ -13,6 +13,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.text.input.ImeAction
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.ui.challenge.feed.SearchBar
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.`is`
