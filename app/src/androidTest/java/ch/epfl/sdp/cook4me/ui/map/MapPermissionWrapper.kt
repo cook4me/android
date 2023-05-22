@@ -1,15 +1,15 @@
 package ch.epfl.sdp.cook4me.ui.map
 
-import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Rule
-import org.junit.runner.RunWith
+// import androidx.activity.ComponentActivity
+// import androidx.compose.ui.test.junit4.createAndroidComposeRule
+// import androidx.test.ext.junit.runners.AndroidJUnit4
+// import org.junit.Rule
+// import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class TestMapPermissionWrapper {
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+// @RunWith(AndroidJUnit4::class)
+// class TestMapPermissionWrapper {
+//    @get:Rule
+//    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
 // TODO: Fix the tests (potentially related to the network permission), https://github.com/cook4me/android/issues/250
 //
@@ -40,4 +40,4 @@ class TestMapPermissionWrapper {
 //
 //        composeTestRule.onNodeWithText("The location permission will grant a better experience in the app").assertIsDisplayed()
 //    }
-}
+// }
