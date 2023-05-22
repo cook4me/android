@@ -16,6 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -124,11 +126,11 @@ class SignUpViewModelTest {
         }
 
         // check that the user is created correctly
-        assert(profileViewModel.profile.value.name == USERNAME)
-        assert(profileViewModel.profile.value.favoriteDish == FAVORITE_DISH)
-        assert(profileViewModel.profile.value.allergies == ALLERGIES)
-        assert(profileViewModel.profile.value.bio == BIO)
-        assert(profileViewModel.profile.value.email == EMAIL)
+        assertThat(profileViewModel.profile.value.name, `is`(USERNAME))
+        assertThat(profileViewModel.profile.value.favoriteDish, `is`(FAVORITE_DISH))
+        assertThat(profileViewModel.profile.value.allergies, `is`(ALLERGIES))
+        assertThat(profileViewModel.profile.value.bio, `is`(BIO))
+        assertThat(profileViewModel.profile.value.email, `is`(EMAIL))
     }
 
     @Test
