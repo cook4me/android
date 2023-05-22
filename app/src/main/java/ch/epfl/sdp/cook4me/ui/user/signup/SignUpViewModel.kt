@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.signUp
+package ch.epfl.sdp.cook4me.ui.user.signup
 
 import android.net.Uri
 import androidx.compose.runtime.State

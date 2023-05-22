@@ -1,8 +1,12 @@
-package ch.epfl.sdp.cook4me.ui.profile
+package ch.epfl.sdp.cook4me.ui.user.profile
 
-// class EditProfileScreenTest {
-//    @get:Rule
-//    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import org.junit.Rule
+
+class EditProfileScreenTest {
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 //
 //    private lateinit var profileImageRepository: ProfileImageRepository
 //    private lateinit var store: FirebaseFirestore
@@ -198,4 +202,4 @@ package ch.epfl.sdp.cook4me.ui.profile
 //        // Check that the cancel button is clicked
 //        assert(isSaveClicked)
 //    }
-// }
+}

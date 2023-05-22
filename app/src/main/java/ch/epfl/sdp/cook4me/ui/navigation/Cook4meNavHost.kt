@@ -18,15 +18,15 @@ import ch.epfl.sdp.cook4me.ui.challenge.form.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.event.details.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.event.form.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.login.LoginScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
-import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
-import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
 import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
-import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
 import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
+import ch.epfl.sdp.cook4me.ui.user.LoginScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.EditProfileScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 
 @Composable
 fun Cook4MeNavHost(

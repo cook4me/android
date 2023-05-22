@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.profile
+package ch.epfl.sdp.cook4me.ui.user.profile
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult

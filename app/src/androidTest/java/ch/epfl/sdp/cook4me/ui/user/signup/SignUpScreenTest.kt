@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.signup
+package ch.epfl.sdp.cook4me.ui.user.signup
 
 // class SignUpScreenTest {
 //    @get:Rule

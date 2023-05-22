@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.profile
+package ch.epfl.sdp.cook4me.ui.user.profile
 
 // class ProfileViewModelTest {
 //    @get:Rule
