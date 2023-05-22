@@ -24,17 +24,3 @@ val testEvent = Event(
     isPrivate = false,
     latLng = GeoPoint(46.52298091481133, 6.5657859621449335)
 )
-
-// fun createEventMap(event: Event): Map<String, Any> =
-//    mapOf(
-//        "name" to event.name,
-//        "description" to event.description,
-//        "dateTime" to event.dateTime,
-//        "location" to event.location,
-//        "maxParticipants" to event.maxParticipants,
-//        "participants" to event.participants,
-//        "creator" to event.creator,
-//        "id" to event.id,
-//        "isPrivate" to event.isPrivate,
-//        "latLng" to event.latLng
-//    )
