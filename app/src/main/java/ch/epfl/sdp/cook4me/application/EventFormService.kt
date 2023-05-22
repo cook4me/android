@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.application
 
 import ch.epfl.sdp.cook4me.persistence.repository.EventRepository
-import ch.epfl.sdp.cook4me.ui.eventform.Event
+import ch.epfl.sdp.cook4me.ui.event.form.Event
 
 /**
  * Service that handles the submission of the event form

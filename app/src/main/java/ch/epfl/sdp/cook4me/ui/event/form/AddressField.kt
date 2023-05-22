@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.eventform
+package ch.epfl.sdp.cook4me.ui.event.form
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.eventform
+package ch.epfl.sdp.cook4me.ui.event.form
 
 import com.google.firebase.firestore.GeoPoint
 import java.util.Calendar
