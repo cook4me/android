@@ -2,7 +2,6 @@ package ch.epfl.sdp.cook4me.ui.recipe.feed
 
 import android.net.Uri
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,17 +18,13 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -40,7 +35,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
-import ch.epfl.sdp.cook4me.ui.recipe.RecipeScreen
 import coil.compose.AsyncImage
 
 const val RECIPE_TITLE_RATIO = 0.8F
@@ -121,7 +115,7 @@ fun RecipeDisplay(
                     }
                 }
                 // Display cooking time, difficulty and servings count at the bottom
-                BottomUnexpanded(
+                BasicInformationLabel(
                     modifier = Modifier.weight(0.16f),
                     cookingTime = recipe.cookingTime,
                     difficulty = recipe.difficulty,
@@ -131,59 +125,10 @@ fun RecipeDisplay(
                 )
             }
             if (isExpanded) {
-                Divider(thickness = 0.45.dp)
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp, horizontal = 15.dp),
-                    horizontalAlignment = Alignment.Start,
-
-                ) {
-                    Text(
-                        text = "Ingredients",
-                        style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
-                    )
-                    Spacer(modifier = Modifier.size(10.dp))
-                    recipe.ingredients.forEach { ingredient ->
-                        Text(
-                            text = "• $ingredient",
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier.padding(start = 8.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(15.dp))
-                    Text(
-                        text = "Instructions",
-                        style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
-                    )
-                    Spacer(modifier = Modifier.size(10.dp))
-                    recipe.recipeSteps.forEachIndexed { index, step ->
-                        val stepText = buildAnnotatedString {
-                            withStyle(
-                                style = SpanStyle(
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp
-                                )
-                            ) {
-                                append("${index + 1}.")
-                            }
-                            withStyle(
-                                style = SpanStyle(
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 16.sp
-                                )
-                            ) {
-                                append(" $step")
-                            }
-                        }
-                        Text(
-                            text = stepText,
-                            style = MaterialTheme.typography.body1,
-                            modifier = Modifier.padding(start = 8.dp, top = 3.dp, bottom = 3.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(10.dp))
-                }
+                IngredientsAndInstructions(
+                    ingredients = recipe.ingredients,
+                    instructions = recipe.recipeSteps
+                )
             }
         }
     }
@@ -191,7 +136,7 @@ fun RecipeDisplay(
 }
 
 @Composable
-fun BottomUnexpanded(
+fun BasicInformationLabel(
     modifier: Modifier = Modifier,
     cookingTime: String,
     difficulty: String,
@@ -235,5 +180,65 @@ fun BottomUnexpanded(
                 modifier = Modifier.padding(start = 4.dp)
             )
         }
+    }
+}
+
+@Composable
+fun IngredientsAndInstructions(
+    ingredients: List<String>,
+    instructions: List<String>
+) {
+    Divider(thickness = 0.45.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 10.dp, horizontal = 15.dp),
+        horizontalAlignment = Alignment.Start,
+
+        ) {
+        Text(
+            text = "Ingredients",
+            style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+        )
+        Spacer(modifier = Modifier.size(10.dp))
+        ingredients.forEach { ingredient ->
+            Text(
+                text = "• $ingredient",
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+        Spacer(modifier = Modifier.size(15.dp))
+        Text(
+            text = "Instructions",
+            style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+        )
+        Spacer(modifier = Modifier.size(10.dp))
+        instructions.forEachIndexed { index, instruction ->
+            val stepText = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+                ) {
+                    append("${index + 1}.")
+                }
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp
+                    )
+                ) {
+                    append(" $instruction")
+                }
+            }
+            Text(
+                text = stepText,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(start = 8.dp, top = 3.dp, bottom = 3.dp)
+            )
+        }
+        Spacer(modifier = Modifier.size(10.dp))
     }
 }
