@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.imageSelection
+package ch.epfl.sdp.cook4me.ui.common
 
 import android.net.Uri
 import androidx.compose.foundation.background

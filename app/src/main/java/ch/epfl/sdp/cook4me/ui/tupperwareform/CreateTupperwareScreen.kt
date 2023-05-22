@@ -34,10 +34,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.repository.TupperwareRepository
+import ch.epfl.sdp.cook4me.ui.common.ImageSelector
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
-import ch.epfl.sdp.cook4me.ui.imageSelection.ImageSelector
 import kotlinx.coroutines.launch
 
 @Composable

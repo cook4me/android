@@ -1,5 +1,3 @@
-package ch.epfl.sdp.cook4me.ui.login
-
 import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -35,15 +33,17 @@ import ch.epfl.sdp.cook4me.ui.common.form.EmailField
 import ch.epfl.sdp.cook4me.ui.common.form.EmailState
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
+import com.google.firebase.auth.FirebaseAuthEmailException
+import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(
+fun SignUpScreen(
     modifier: Modifier = Modifier,
     accountService: AccountService = AccountService(),
-    onSuccessfulLogin: () -> Unit
+    onSuccessfulSignUp: () -> Unit,
+    viewModel: SignUpViewModel,
 ) {
     val context = LocalContext.current
     val emailState = remember { EmailState(context.getString(R.string.invalid_email_message)) }
@@ -56,27 +56,27 @@ fun LoginScreen(
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    BasicToolbar(stringResource(R.string.sign_in_screen_top_bar_message))
-
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
             Column(
                 modifier = modifier
+                    .testTag(stringResource(R.string.sign_up_screen_tag))
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .verticalScroll(rememberScrollState())
-                    .padding(padding)
-                    .testTag(stringResource(R.string.login_screen_tag)),
-                verticalArrangement = Arrangement.Center,
+                    .padding(padding),
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                BasicToolbar(stringResource(R.string.sign_up_screen_top_bar_message))
                 EmailField(
                     emailState.text,
                     emailState.showErrors(),
                     { emailState.text = it },
                     Modifier
                         .fieldModifier()
+                        .testTag(stringResource(R.string.tag_email))
                         .onFocusChanged {
                             emailState.onFocusChange(it.isFocused)
                         }
@@ -87,15 +87,17 @@ fun LoginScreen(
                     { passwordState.text = it },
                     Modifier
                         .fieldModifier()
+                        .testTag(stringResource(R.string.tag_password))
                         .onFocusChanged {
                             passwordState.onFocusChange(it.isFocused)
                         }
                 )
                 LoadingButton(
-                    R.string.sign_in_screen_sign_in_button,
+                    R.string.btn_continue,
                     Modifier
                         .fillMaxWidth()
-                        .padding(16.dp, 8.dp),
+                        .padding(16.dp, 8.dp)
+                        .testTag(stringResource(id = R.string.btn_continue)),
                     inProgress
                 ) {
                     emailState.enableShowErrors()
@@ -110,25 +112,30 @@ fun LoginScreen(
                         } else {
                             try {
                                 inProgress = true
-                                accountService.authenticate(emailState.text, passwordState.text)
-                                onSuccessfulLogin()
-                            } catch (e: FirebaseAuthInvalidUserException) {
-                                inProgress = false
+                                if (!accountService.isValidEmail(email = emailState.text)) {
+                                    throw FirebaseAuthEmailException("email", "isMalFormed")
+                                }
+                                if (!accountService.isValidPassword(password = passwordState.text)) {
+                                    throw FirebaseAuthException("password", "isMalFormed")
+                                }
+                                viewModel.addPassword(password = passwordState.text)
+                                viewModel.addEmail(email = emailState.text)
+                                onSuccessfulSignUp()
+                            } catch (e: FirebaseAuthEmailException) {
                                 scaffoldState
                                     .snackbarHostState
-                                    .showSnackbar(context.getString(R.string.sign_in_screen_non_exist_user))
+                                    .showSnackbar(context.getString(R.string.sign_up_screen_invalid_email))
                                 Log.d(
-                                    context.getString(R.string.sign_in_screen_non_exist_user),
+                                    context.getString(R.string.sign_up_screen_invalid_email),
                                     e.stackTraceToString()
                                 )
-                            } catch (e: FirebaseAuthInvalidCredentialsException) {
-                                inProgress = false
+                            } catch (e: FirebaseAuthException) {
                                 scaffoldState
                                     .snackbarHostState
-                                    .showSnackbar(context.getString(R.string.sign_in_screen_wrong_password))
+                                    .showSnackbar(context.getString(R.string.sign_up_screen_invalid_password))
                                 inProgress = false
                                 Log.d(
-                                    context.getString(R.string.sign_in_screen_wrong_password),
+                                    context.getString(R.string.sign_up_screen_invalid_password),
                                     e.stackTraceToString()
                                 )
                             }
@@ -140,11 +147,6 @@ fun LoginScreen(
     )
 }
 
-private fun Modifier.fieldModifier(): Modifier =
-    this
-        .fillMaxWidth()
-        .padding(16.dp, 4.dp)
-
 @Composable
 private fun BasicToolbar(title: String) {
     TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
@@ -153,3 +155,8 @@ private fun BasicToolbar(title: String) {
 @Composable
 private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
     if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
+
+private fun Modifier.fieldModifier(): Modifier =
+    this
+        .fillMaxWidth()
+        .padding(16.dp, 4.dp)
