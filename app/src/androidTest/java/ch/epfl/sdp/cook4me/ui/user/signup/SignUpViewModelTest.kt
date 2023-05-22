@@ -28,7 +28,7 @@ private const val ALLERGIES = "gluten"
 private const val BIO = "I love cooking"
 private const val EMAIL = "donald.duck@epfl.ch"
 @RunWith(AndroidJUnit4::class)
- class SignUpViewModelTest {
+class SignUpViewModelTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
@@ -143,7 +143,7 @@ private const val EMAIL = "donald.duck@epfl.ch"
         signUpViewModel.addPassword(PASSWORD)
 
         // create onSignUpFailure and onSignUpSuccess
-        var isSignUpFailed = false
+        var isSignUpFailed: Boolean
         var isSignUpSuccess = false
 
         // 1. signup
@@ -172,4 +172,4 @@ private const val EMAIL = "donald.duck@epfl.ch"
             isSignUpFailed
         }
     }
- }
+}
