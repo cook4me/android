@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.tupperwareform
+package ch.epfl.sdp.cook4me.ui.tupperware.form
 
 import androidx.compose.runtime.Composable
 import ch.epfl.sdp.cook4me.permissions.PermissionManager

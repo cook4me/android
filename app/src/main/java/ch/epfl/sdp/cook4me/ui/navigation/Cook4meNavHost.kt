@@ -26,8 +26,8 @@ import ch.epfl.sdp.cook4me.ui.event.form.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
 import ch.epfl.sdp.cook4me.ui.recipe.CreateRecipeScreen
 import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeFeed
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
-import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
+import ch.epfl.sdp.cook4me.ui.tupperware.form.CreateTupperwarePermissionWrapper
+import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
 import ch.epfl.sdp.cook4me.ui.user.LoginScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
