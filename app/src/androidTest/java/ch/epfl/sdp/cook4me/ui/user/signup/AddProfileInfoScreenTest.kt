@@ -23,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -62,7 +64,7 @@ class AddProfileInfoScreenTest {
     }
 
     @Test
-    fun testTextFieldsInput() {
+    fun completeSignUpFlowTest() {
         // Set up the test
         val username = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
         val favFood = composeTestRule.activity.getString(R.string.tag_favoriteDish)
@@ -139,10 +141,10 @@ class AddProfileInfoScreenTest {
         }
 
         // check if the profile was stored correctly
-        assert(profileViewModel.profile.value.name == USERNAME_INPUT)
-        assert(profileViewModel.profile.value.favoriteDish == FAVFOOD_INPUT)
-        assert(profileViewModel.profile.value.allergies == ALLERGIES_INPUT)
-        assert(profileViewModel.profile.value.bio == BIO_INPUT)
+        assertThat(profileViewModel.profile.value.name, `is`(USERNAME_INPUT))
+        assertThat(profileViewModel.profile.value.favoriteDish, `is`(FAVFOOD_INPUT))
+        assertThat(profileViewModel.profile.value.allergies, `is`(ALLERGIES_INPUT))
+        assertThat(profileViewModel.profile.value.bio, `is`(BIO_INPUT))
 
         runBlocking {
             // check that the user is created
