@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.EventFormService
-import ch.epfl.sdp.cook4me.ui.eventform.Event
+import ch.epfl.sdp.cook4me.ui.event.form.Event
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 

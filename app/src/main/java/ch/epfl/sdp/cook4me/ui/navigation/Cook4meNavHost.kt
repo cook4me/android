@@ -15,19 +15,19 @@ import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
-import ch.epfl.sdp.cook4me.ui.challengeform.CreateChallengeScreen
+import ch.epfl.sdp.cook4me.ui.challenge.form.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
-import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
-import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.login.LoginScreen
+import ch.epfl.sdp.cook4me.ui.event.details.DetailedEventScreen
+import ch.epfl.sdp.cook4me.ui.event.form.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
-import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
-import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
-import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
-import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
-import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
+import ch.epfl.sdp.cook4me.ui.recipe.CreateRecipeScreen
+import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeFeed
+import ch.epfl.sdp.cook4me.ui.tupperware.form.CreateTupperwarePermissionWrapper
+import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
+import ch.epfl.sdp.cook4me.ui.user.LoginScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.EditProfileScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 
 @Composable
 fun Cook4MeNavHost(
@@ -78,7 +78,6 @@ fun Cook4MeNavHost(
                 onCancelClick = { navController.navigateUp() }
             )
         }
-        // the uid of event is predefined on firestore. this is just for show.
         composable(
             route = ScreenWithArgs.DetailedEventScreen.name,
             arguments = listOf(navArgument("eventId") { type = NavType.StringType })

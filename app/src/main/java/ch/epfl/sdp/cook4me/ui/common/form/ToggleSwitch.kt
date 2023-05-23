@@ -4,7 +4,9 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +47,8 @@ fun ToggleSwitch(
                     checked.value = it
                     onToggle(it)
                 },
-                modifier = Modifier.testTag("switch")
+                modifier = Modifier.testTag("switch"),
+                colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colors.primary)
             )
             Text(
                 if (checked.value) {

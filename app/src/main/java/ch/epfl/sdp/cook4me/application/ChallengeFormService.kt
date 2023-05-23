@@ -1,7 +1,7 @@
 package ch.epfl.sdp.cook4me.application
 
 import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
-import ch.epfl.sdp.cook4me.ui.challengeform.Challenge
+import ch.epfl.sdp.cook4me.ui.challenge.Challenge
 import com.google.firebase.firestore.FirebaseFirestoreException
 
 class ChallengeFormService(
