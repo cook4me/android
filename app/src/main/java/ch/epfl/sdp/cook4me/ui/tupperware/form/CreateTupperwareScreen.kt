@@ -104,7 +104,7 @@ fun CreateTupperwareScreen(
                 .weight(1f),
             onClickAddImage = { onClickAddImage() },
             onClickTakePhoto = { onClickTakePhoto() },
-            onClickImage = {},
+            onImageClick = { image = null },
             image = image,
             onCancel = onCancel,
             onSubmit = { title, description ->
@@ -122,7 +122,7 @@ private fun TupperwareForm(
     modifier: Modifier = Modifier,
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
-    onClickImage: () -> Unit = {},
+    onImageClick: () -> Unit = {},
     image: Uri?,
     onCancel: () -> Unit,
     onSubmit: (String, String) -> Unit
@@ -146,22 +146,19 @@ private fun TupperwareForm(
                 .verticalScroll(rememberScrollState())
                 .padding(10.dp)
         ) {
-            Text(
-                modifier = Modifier,
-                text = stringResource(R.string.TupCreateFormAddImage),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.h6
-            )
-            Spacer(modifier = Modifier.size(10.dp))
-            ImageSelector(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                onClickAddImage = onClickAddImage,
-                onClickTakePhoto = onClickTakePhoto,
-                onClickImage = onClickImage,
-                image = image
-            )
+            Box(
+                Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ){
+                ImageSelector(
+                    Modifier,
+                    image = image,
+                    onClickAddImage = onClickAddImage,
+                    onClickTakePhoto = onClickTakePhoto,
+                    onClickImage = onImageClick,
+                    imageSize = 250.dp
+                )
+            }
             Spacer(modifier = Modifier.size(10.dp))
             CustomDivider()
             Spacer(modifier = Modifier.size(5.dp))

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -116,11 +117,13 @@ fun CreateRecipeScreen(
         cameraLauncher.launch(uri)
     }
 
+
     Column {
         RecipeForm(
             Modifier.weight(1f),
             onClickTakePhoto = { onClickTakePhoto() },
             onClickAddImage = { onClickAddImage() },
+            onImageClick = { image = null },
             onCancelClick = onCancelClick,
             image = image,
             submitForm = { recipe ->
@@ -139,6 +142,7 @@ private fun RecipeForm(
     onClickTakePhoto: () -> Unit,
     onClickAddImage: () -> Unit,
     onCancelClick: () -> Unit = {},
+    onImageClick: () -> Unit = {},
     submitForm: (Recipe) -> Unit = {},
     image: Uri? = null,
 ) {
@@ -173,14 +177,19 @@ private fun RecipeForm(
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
-        CustomTitleText(stringResource(R.string.RecipeCreationScreenAddImageTitle))
-        ImageSelector(
-            Modifier,
-            image = image,
-            onClickAddImage = onClickAddImage,
-            onClickTakePhoto = onClickTakePhoto,
-            onClickImage = { /*TODO*/ }
-        )
+        Box(
+            Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ){
+            ImageSelector(
+                Modifier,
+                image = image,
+                onClickAddImage = onClickAddImage,
+                onClickTakePhoto = onClickTakePhoto,
+                onClickImage = onImageClick,
+                imageSize = 250.dp
+            )
+        }
         CustomDivider()
         CustomTitleText(stringResource(R.string.RecipeCreationRecipeTitle))
         CustomTextField(

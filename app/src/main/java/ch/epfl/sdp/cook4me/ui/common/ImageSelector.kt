@@ -45,7 +45,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.tupperware.form.ComposeFileProvider
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -57,17 +56,17 @@ fun ImageSelector(
     onClickTakePhoto: () -> Unit,
     onClickImage: () -> Unit,
     image: Uri?,
-    imageHeight: Dp = 200.dp,
+    imageSize: Dp = 200.dp,
 ) {
     Box(modifier = Modifier.padding(10.dp), contentAlignment = Alignment.Center) {
         if (image == null)
-            AddPictureBox(
+            AddPictureButtons(
                 onClickAddImage = onClickAddImage,
                 onClickTakePhoto = onClickTakePhoto,
-                imageHeight= imageHeight
+                imageHeight= imageSize
             )
         else
-            ImageCard(image = image, imageHeight = imageHeight, onClick = onClickImage)
+            ImageCard(image = image, imageHeight = imageSize, onClick = onClickImage)
     }
 }
 
@@ -103,7 +102,7 @@ private fun ImageCard(
                 modifier = Modifier
                     .fillMaxHeight()
                     .clickable { clicked = !clicked },
-                contentScale = ContentScale.FillBounds,
+                contentScale = ContentScale.Crop,
                 colorFilter = filter
             )
             if (clicked) {
@@ -131,7 +130,7 @@ private fun DeleteButton(modifier: Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-private fun AddPictureBox(
+private fun AddPictureButtons(
     modifier: Modifier = Modifier,
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
@@ -155,13 +154,13 @@ private fun AddPictureBox(
 @Composable
 private fun DottedRectangle(modifier: Modifier = Modifier) {
     val stroke = Stroke(
-        width = 3f,
-        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+        width = 6f,
+        pathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 10f), 0f)
     )
     Canvas(
         modifier = Modifier.fillMaxSize()
     ){
-        drawRoundRect(color = Color.Gray,style = stroke)
+        drawRoundRect(color = Color.LightGray,style = stroke)
     }
 }
 
@@ -205,7 +204,7 @@ fun PreviewSelectorWithImage() {
     var image by remember { mutableStateOf<Uri?>(null) }
 
     var imageUri by remember {
-        mutableStateOf<Uri?>(Uri.parse("android.resource://ch.epfl.sdp.cook4me/" + R.drawable.tacos_placefolder))
+        mutableStateOf<Uri?>(null)
     }
 
     val imagePicker = rememberLauncherForActivityResult(
@@ -247,6 +246,6 @@ fun PreviewSelectorWithImage() {
         onClickTakePhoto = { onClickTakePhoto() },
         onClickImage = { image = null },
         image = image,
-        imageHeight = 300.dp
+        imageSize = 250.dp
     )
 }
