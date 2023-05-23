@@ -153,14 +153,14 @@ class EditProfileScreenTest {
         composeTestRule.waitForIdle()
 
         // Check that the progress bar is displayed
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
+        composeTestRule.onNodeWithTag("Loading Screen TAG").assertExists()
 
         // Wait to be completed
         profileViewModel.isLoading.value = false
 
         // Wait for a moment to allow Compose to recompose
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("Loading Screen TAG").assertDoesNotExist()
     }
 
     @Test

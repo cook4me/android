@@ -118,13 +118,13 @@ class ProfileScreenTest {
         // Wait for a moment to allow Compose to recompose
         composeTestRule.waitForIdle()
 
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
+        composeTestRule.onNodeWithTag("Loading Screen TAG").assertExists()
 
         profileViewModel.isLoading.value = false
 
         // Wait for a moment to allow Compose to recompose
         composeTestRule.waitForIdle()
 
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("Loading Screen TAG").assertDoesNotExist()
     }
 }
