@@ -56,8 +56,6 @@ fun LoginScreen(
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    BasicToolbar(stringResource(R.string.sign_in_screen_top_bar_message))
-
     Scaffold(
         scaffoldState = scaffoldState,
         content = { padding ->
@@ -144,12 +142,3 @@ private fun Modifier.fieldModifier(): Modifier =
     this
         .fillMaxWidth()
         .padding(16.dp, 4.dp)
-
-@Composable
-private fun BasicToolbar(title: String) {
-    TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
-}
-
-@Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
-    if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
