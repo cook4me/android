@@ -10,7 +10,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
-import ch.epfl.sdp.cook4me.ui.theme.supportingOrange
 import io.getstream.chat.android.compose.ui.messages.MessagesScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
 import io.getstream.chat.android.compose.ui.theme.StreamColors
@@ -38,7 +37,8 @@ class MessagesActivity : ComponentActivity() {
                         myMessageBubble = RoundedCornerShape(16.dp),
                         otherMessageBubble = RoundedCornerShape(16.dp),
                         inputField = RectangleShape
-                    ), colors = StreamColors.defaultColors().copy(
+                    ),
+                    colors = StreamColors.defaultColors().copy(
                         errorAccent = MaterialTheme.colors.onError,
                         primaryAccent = MaterialTheme.colors.primary,
                     )
