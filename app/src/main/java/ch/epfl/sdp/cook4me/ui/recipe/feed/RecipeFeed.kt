@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
+import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
+import ch.epfl.sdp.cook4me.ui.common.PlaceholderScreen
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 import kotlinx.coroutines.launch
 
@@ -88,87 +90,34 @@ fun RecipeFeed(
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
         CreateNewItemButton(itemType = "Recipe", onClick = onCreateNewRecipe, canClick = isOnline)
-        Box(modifier = Modifier.fillMaxHeight(RECIPE_LIST_RATIO)) {
-            RecipeListScreen(
-                recipeList = if (isOrderedByTopRecipes.value) {
-                    recipeList.value.sortedByDescending { it.note }
-                } else {
-                    recipeList.value.sortedByDescending { it.recipe.creationTime }
-                },
-                recipeImages = recipeImages,
-                onNoteUpdate = { recipe, note ->
-                    // launch coroutine to update the note
-                    coroutineScope.launch {
-                        service.updateRecipeNotes(recipe, note)
-                    }
-                },
-                userVotes = userVotes.value,
-                isOnline = isOnline
-            )
-        }
-        Box(modifier = Modifier.fillMaxHeight(EMPTY_SPACE_RATIO))
-        BottomBar(
-            onButtonClicked = {
-                isOrderedByTopRecipes.value = it
+        if (isLoading.value) {
+            LoadingScreen()
+        } else if (recipeList.value.isEmpty()) {
+            PlaceholderScreen(image = R.drawable.recipe_book, text = R.string.empty_recipe_feed)
+        } else {
+            Box(modifier = Modifier.fillMaxHeight(RECIPE_LIST_RATIO)) {
+                RecipeListScreen(
+                    recipeList = if (isOrderedByTopRecipes.value) {
+                        recipeList.value.sortedByDescending { it.note }
+                    } else {
+                        recipeList.value.sortedByDescending { it.recipe.creationTime }
+                    },
+                    recipeImages = recipeImages,
+                    onNoteUpdate = { recipe, note ->
+                        // launch coroutine to update the note
+                        coroutineScope.launch {
+                            service.updateRecipeNotes(recipe, note)
+                        }
+                    },
+                    userVotes = userVotes.value,
+                    isOnline = isOnline
+                )
             }
-        )
-    }
-}
-
-/**
- * Displays a bottom bar where user can choose between top recipes or most recent recipes
- * @param onButtonClicked: callback function that is called when a button is clicked,
- * it takes a boolean as parameter, true if top recipes button is clicked, false otherwise
- */
-@Preview(showBackground = true)
-@Composable
-fun BottomBar(onButtonClicked: (Boolean) -> Unit = {}) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(50.dp)
-            .background(Color.White),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(MIDDLE_SPACE_RATIO)
-                .fillMaxHeight()
-                .align(Alignment.CenterVertically)
-                .border(1.dp, Color.Black)
-                .clickable(
-                    onClick = {
-                        onButtonClicked(true)
-                    }
-                )
-        ) {
-            Text(
-                text = stringResource(R.string.get_top_recipes),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .align(Alignment.Center)
-            )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .align(Alignment.CenterVertically)
-                .border(1.dp, Color.Black)
-                .clickable(
-                    onClick = {
-                        onButtonClicked(false)
-                    }
-                )
-        ) {
-            Text(
-                text = stringResource(R.string.get_recent_recipes),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .align(Alignment.Center)
+            Box(modifier = Modifier.fillMaxHeight(EMPTY_SPACE_RATIO))
+            BottomBar(
+                onButtonClicked = {
+                    isOrderedByTopRecipes.value = it
+                }
             )
         }
     }

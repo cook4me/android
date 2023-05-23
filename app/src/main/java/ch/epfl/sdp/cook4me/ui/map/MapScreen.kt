@@ -46,27 +46,6 @@ data class MarkerData(
     val description: String
 )
 
-val dummyMarkers = listOf(
-    MarkerData(
-        position = Locations.SATELLITE,
-        id = "satellite",
-        title = "Satellite EPFL",
-        description = "EPFL satellite campus"
-    ),
-    MarkerData(
-        position = Locations.ROLEX_LEARNING_CENTER,
-        title = "EPFL Rolex Learning Center",
-        id = "rolex_learning_center",
-        description = "EPFL library and learning center"
-    ),
-    MarkerData(
-        position = Locations.AGE_POLY,
-        title = "UNIL AgePoly",
-        id = "agepoly",
-        description = "UNIL science and research building"
-    )
-)
-
 @Composable
 fun GoogleMapView(
     modifier: Modifier = Modifier,
@@ -78,8 +57,7 @@ fun GoogleMapView(
     userLocationDisplayed: Boolean = false,
     onCreateNewEventClick: () -> Unit = {},
     onDetailedEventClick: (String) -> Unit = {},
-    isOnline: Boolean = true,
-
+    isOnline: Boolean = true
 ) {
     val loadedMarkers by mapViewModel.markers
 
@@ -117,7 +95,6 @@ fun GoogleMapView(
                 mapProperties = mapProperties.copy(mapType = it)
             }
         )
-
         Row {
             MapButton(
                 text = stringResource(R.string.EPFL),
@@ -175,7 +152,7 @@ fun GoogleMapView(
             properties = mapProperties,
             uiSettings = uiSettings,
             onMapLoaded = {
-                onMapLoaded.invoke()
+                onMapLoaded()
             },
         ) {
             loadedMarkers.map { marker ->
