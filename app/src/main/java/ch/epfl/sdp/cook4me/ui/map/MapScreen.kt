@@ -16,6 +16,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +30,7 @@ import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 import ch.epfl.sdp.cook4me.ui.map.buttons.ButtonEPFL
 import ch.epfl.sdp.cook4me.ui.map.buttons.ButtonUNIL
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
@@ -64,6 +66,7 @@ fun GoogleMapView(
     isOnline: Boolean = true,
 ) {
     val loadedMarkers by mapViewModel.markers
+    var uniLoc by remember { mutableStateOf<LatLng?>(null) }
 
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
     var mapProperties by remember {
@@ -74,9 +77,19 @@ fun GoogleMapView(
             )
         )
     }
+
+    // Add smooth animation from current position to target
+    LaunchedEffect(uniLoc) {
+        uniLoc?.let {
+            cameraPositionState.animate(
+                CameraUpdateFactory.newLatLngZoom(it, ZOOM_DEFAULT_VALUE),
+                durationMs = 1000
+            )
+        }
+    }
+
     val onClickUniversity = { uniLocation: LatLng ->
-        cameraPositionState.position =
-            CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
+        uniLoc = uniLocation
     }
     var selectedMarker by remember { mutableStateOf(findMarkerById(loadedMarkers, selectedEventId)) }
     var navigateToEvent by remember { mutableStateOf(false) }
