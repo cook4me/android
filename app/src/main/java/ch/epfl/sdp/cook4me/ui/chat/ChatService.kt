@@ -110,6 +110,7 @@ fun createChatWithPairs(
                     ContextCompat.startActivity(context, intent, null)
                 } else {
                     println("create channel failed")
+                    println("!!!!!" + result.error().message)
                 }
             }
         } else {

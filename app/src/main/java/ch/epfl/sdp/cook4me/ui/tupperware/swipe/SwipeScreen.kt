@@ -34,7 +34,6 @@ import ch.epfl.sdp.cook4me.ui.theme.supportingYellow
 import com.alexstyl.swipeablecard.Direction
 import com.alexstyl.swipeablecard.SwipeableCardState
 import com.alexstyl.swipeablecard.rememberSwipeableCardState
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 private data class TupperwareState(

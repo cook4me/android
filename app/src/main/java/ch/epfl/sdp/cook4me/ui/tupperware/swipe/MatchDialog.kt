@@ -8,12 +8,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Chat
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import ch.epfl.sdp.cook4me.BuildConfig
-import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.ui.chat.createChatWithPairs
 import ch.epfl.sdp.cook4me.ui.chat.provideChatClient
-import kotlinx.coroutines.coroutineScope
 
 // TODO: https://github.com/cook4me/android/issues/181
 @Composable
@@ -35,13 +32,12 @@ fun MatchDialog(userEmail: String?, otherUserEmail: String, onDismissRequest: ()
                                 otherUserEmail,
                                 client = provideChatClient(
                                     apiKey = BuildConfig.CHAT_API_KEY,
-                            context = context
-                            ),
-                            context = context
+                                    context = context
+                                ),
+                                context = context
                             )
                         }
-
-                              },
+                    },
                     icon = Icons.Rounded.Chat,
                     color = MaterialTheme.colors.primary
                 )
