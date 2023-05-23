@@ -131,6 +131,9 @@
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
     <!-- Chat -->
+    <string name="Too_many_connection_error_title">Connection Error</string>
+    <string name="Too_many_connection_error_message">Too many connections. Please try again later.</string>
+    <string name="ChatErrorButtonText">OK</string>
     <string name="Channel_Screen_Tag">Channel Screen test TAG</string>
 
     <!-- BottomBar -->

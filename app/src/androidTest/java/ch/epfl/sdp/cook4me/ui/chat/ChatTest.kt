@@ -7,6 +7,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.navigation.NavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
@@ -46,8 +47,9 @@ class ChatTest {
         val mockClient = mockk<ChatClient>(relaxed = true)
         val mockAccountService = mockk<AccountService>(relaxed = true)
         val screen = mutableStateOf(Unit)
+        val navController = mockk<NavController>(relaxed = true)
         composeTestRule.setContent {
-            screen.value = ChannelScreen(mockClient, mockAccountService)
+            screen.value = ChannelScreen(mockClient, mockAccountService, navController = navController)
         }
         assert(screen.value != null)
     }
@@ -56,8 +58,9 @@ class ChatTest {
     fun testChannelScreenPerformsLoading() {
         val mockClient = mockk<ChatClient>(relaxed = true)
         val mockAccountService = mockk<AccountService>(relaxed = true)
+        val navController = mockk<NavController>(relaxed = true)
         composeTestRule.setContent {
-            ChannelScreen(mockClient, mockAccountService)
+            ChannelScreen(mockClient, mockAccountService, navController = navController)
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
@@ -71,8 +74,9 @@ class ChatTest {
     fun testChannelScreenIsDisplayed() {
         val mockClient = mockk<ChatClient>(relaxed = true)
         val mockAccountService = mockk<AccountService>(relaxed = true)
+        val navController = mockk<NavController>(relaxed = true)
         composeTestRule.setContent {
-            ChannelScreen(mockClient, mockAccountService)
+            ChannelScreen(mockClient, mockAccountService, navController = navController)
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule

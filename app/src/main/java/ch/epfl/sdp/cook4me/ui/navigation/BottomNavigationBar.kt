@@ -127,5 +127,5 @@ val dropDownMenuDestinations = listOf(
     BottomNavScreen.MyTupperwares,
     BottomNavScreen.MyRecipes,
     BottomNavScreen.MyEvents,
-    BottomNavScreen.Profile,
+    BottomNavScreen.Profile
 )
