@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.SwipeService
 import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
@@ -32,6 +33,7 @@ import ch.epfl.sdp.cook4me.ui.theme.supportingYellow
 import com.alexstyl.swipeablecard.Direction
 import com.alexstyl.swipeablecard.SwipeableCardState
 import com.alexstyl.swipeablecard.rememberSwipeableCardState
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 private data class TupperwareState(
@@ -45,6 +47,7 @@ private data class TupperwareState(
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
     swipeService: SwipeService = SwipeService(),
+    accountService: AccountService = AccountService(),
     isOnline: Boolean = true,
 ) {
     val data = remember {
@@ -55,8 +58,9 @@ fun TupperwareSwipeScreen(
     val scope = rememberCoroutineScope()
     val allDone =
         states.isEmpty() || states.all { it.cardState.swipedDirection != null }
-    val openMatchDialog = remember { mutableStateOf(false) }
+    val openMatchDialog = remember { mutableStateOf(true) }
     val isLoading = remember { mutableStateOf(true) }
+    val otherUser = remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         data.value = swipeService.getAllUnswipedTupperware()
@@ -64,7 +68,7 @@ fun TupperwareSwipeScreen(
     }
 
     if (openMatchDialog.value) {
-        MatchDialog {
+        MatchDialog(accountService.userEmail, otherUser) {
             openMatchDialog.value = false
         }
     }
@@ -72,7 +76,10 @@ fun TupperwareSwipeScreen(
     suspend fun onSwipe(tupperwareId: String, direction: Direction) {
         swipeService.storeSwipeResult(tupperwareId, direction == Direction.Right)
         if (direction == Direction.Right && swipeService.isMatch(tupperwareId)) {
-            openMatchDialog.value = true
+            swipeService.getUserByTupperwareId(tupperwareId)?.let {
+                openMatchDialog.value = true
+                other.value = it
+            }
         }
     }
 

@@ -7,10 +7,17 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Chat
 import androidx.compose.runtime.Composable
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
+import kotlinx.coroutines.coroutineScope
 
 // TODO: https://github.com/cook4me/android/issues/181
 @Composable
-fun MatchDialog(onDismissRequest: () -> Unit) {
+fun MatchDialog(user: String, otherUser: String, profileImageRepository: ProfileImageRepository = ProfileImageRepository(), onDismissRequest: () -> Unit) {
+    coroutineScope {
+        val myImage = profileImageRepository.getProfile(user)
+        val otherImage = profileImageRepository.getProfile(otherUser)
+    }
+
     AlertDialog(
         onDismissRequest = onDismissRequest,
         title = {
