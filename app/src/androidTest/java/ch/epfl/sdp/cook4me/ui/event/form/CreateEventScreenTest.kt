@@ -56,6 +56,7 @@ class CreateEventScreenTest {
         coVerify { mockEventService.submitForm(match { !it.isValidEvent }) }
     }
 
+    @Test
     fun cancelButtonClickCallsOnCancel() {
         var onCancelCalled = false
         composeTestRule.setContent {
@@ -66,6 +67,7 @@ class CreateEventScreenTest {
             )
         }
 
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
         assertThat(onCancelCalled, `is`(true))
     }
