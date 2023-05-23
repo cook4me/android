@@ -32,14 +32,19 @@ import ch.epfl.sdp.cook4me.R
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String, onClickSignOut: () -> Unit) {
+fun BottomNavigationBar(
+    navigateTo: (String) -> Unit = {},
+    currentRoute: String,
+    onClickSignOut: () -> Unit,
+    isOnline: Boolean = true
+) {
     var expanded by remember { mutableStateOf(false) }
 
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background,
         elevation = 8.dp
     ) {
-        mainDestinations.forEach { screen ->
+        mainDestinations.filterNot { screen -> !isOnline && screen.title === "Chat" }.forEach { screen ->
             BottomNavigationItem(
                 modifier = Modifier.weight(1f),
                 icon = { screen.icon?.let { Icon(it, contentDescription = null) } },

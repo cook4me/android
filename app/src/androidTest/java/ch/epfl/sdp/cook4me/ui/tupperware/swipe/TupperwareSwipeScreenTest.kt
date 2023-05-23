@@ -3,9 +3,10 @@ package ch.epfl.sdp.cook4me.ui.tupperware.swipe
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,7 +21,15 @@ class TupperwareSwipeScreenTest {
         composeTestRule.setContent {
             TupperwareSwipeScreen()
         }
-        composeTestRule.onNodeWithTag(getString(R.string.tupperware_swipe_screen_tag)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(getString(R.string.swipe_alldone_placeholder)).assertIsDisplayed()
+    }
+
+    @Test
+    fun whenOfflineShouldDisplayDefaultMessage() {
+        composeTestRule.setContent {
+            TupperwareSwipeScreen(isOnline = false)
+        }
+        composeTestRule.onNodeWithStringId(R.string.to_swipe_go_online).assertIsDisplayed()
     }
 
     private fun getString(id: Int): String {

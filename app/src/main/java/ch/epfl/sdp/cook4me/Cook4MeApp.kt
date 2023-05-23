@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import ch.epfl.sdp.cook4me.permissions.ComposePermissionStatusProvider
 import ch.epfl.sdp.cook4me.permissions.NetworkCallback
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
+import ch.epfl.sdp.cook4me.ui.common.OfflineStatusIndicator
 import ch.epfl.sdp.cook4me.ui.navigation.BottomNavigationBar
 import ch.epfl.sdp.cook4me.ui.navigation.Cook4MeNavHost
 import ch.epfl.sdp.cook4me.ui.navigation.Screen
@@ -98,8 +99,14 @@ fun Cook4MeApp(
                 BottomNavigationBar(
                     navigateTo = { route -> navigateToBottomBarRoute(route) },
                     currentRoute = currentRoute().orEmpty(),
-                    onClickSignOut = { signOut() }
+                    onClickSignOut = { signOut() },
+                    isOnline = isOnline
                 )
+            }
+        },
+        topBar = {
+            if (!isOnline) {
+                OfflineStatusIndicator()
             }
         }
     ) { scaffoldPadding ->
