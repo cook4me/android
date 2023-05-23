@@ -57,10 +57,10 @@ class SignInPersistTest {
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithText("Top recipes")
+                .onAllNodesWithText(context.getString(R.string.empty_recipe_feed))
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithText("Top recipes").assertIsDisplayed()
+        composeTestRule.onNodeWithText(context.getString(R.string.empty_recipe_feed)).assertIsDisplayed()
     }
 
     @Test

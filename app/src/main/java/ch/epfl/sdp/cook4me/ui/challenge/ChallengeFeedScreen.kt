@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 
@@ -16,7 +16,7 @@ fun ChallengeFeedScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .testTag(LocalContext.current.getString(R.string.Challenge_Feed_TAG)),
+            .testTag(stringResource(R.string.Challenge_Feed_TAG)),
     ) {
         CreateNewItemButton(itemType = "Challenge", onClick = onCreateNewChallengeClick)
     }

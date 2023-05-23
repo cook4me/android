@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
@@ -47,11 +47,7 @@ fun ProfileScreen(
         contentAlignment = Alignment.Center
     ) {
         if (isLoading) {
-            CircularProgressIndicator(
-                modifier = modifier
-                    .align(Alignment.Center)
-                    .testTag("CircularProgressIndicator")
-            )
+            LoadingScreen()
         } else {
             userNameState.value = profile.name
             Column(
@@ -66,19 +62,19 @@ fun ProfileScreen(
                 )
 
                 // Textfield for the Favorite dish
-                FavoriteDishProfileScreen(
+                FavoriteDishRow(
                     profile.favoriteDish,
                     modifier,
                 )
 
                 // Textfield for the Allergies
-                AllergiesProfileScreen(
+                AllergiesRow(
                     profile.allergies,
                     modifier,
                 )
 
                 // Textfield for the bio
-                BioProfileScreen(
+                BioRow(
                     profile.bio,
                     modifier,
                 )
@@ -113,22 +109,16 @@ fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
         ) {
             Image(painter = painter, contentDescription = "")
         }
-
-        UsernameProfileScreen(name, modifier)
+        Text(
+            text = name,
+            modifier = modifier.padding(top = 8.dp, bottom = 8.dp),
+            fontWeight = FontWeight.Bold,
+        )
     }
 }
 
 @Composable
-fun UsernameProfileScreen(name: String, modifier: Modifier) {
-    Text(
-        text = name,
-        modifier = modifier.padding(top = 8.dp, bottom = 8.dp),
-        fontWeight = FontWeight.Bold,
-    )
-}
-
-@Composable
-fun FavoriteDishProfileScreen(favoriteDish: String, modifier: Modifier) {
+fun FavoriteDishRow(favoriteDish: String, modifier: Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -151,7 +141,7 @@ fun FavoriteDishProfileScreen(favoriteDish: String, modifier: Modifier) {
 }
 
 @Composable
-fun AllergiesProfileScreen(allergies: String, modifier: Modifier) {
+fun AllergiesRow(allergies: String, modifier: Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -174,7 +164,7 @@ fun AllergiesProfileScreen(allergies: String, modifier: Modifier) {
 }
 
 @Composable
-fun BioProfileScreen(bio: String, modifier: Modifier) {
+fun BioRow(bio: String, modifier: Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()

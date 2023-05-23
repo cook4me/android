@@ -17,17 +17,15 @@ import androidx.compose.ui.unit.dp
 fun CircleButton(
     onClick: () -> Unit,
     icon: ImageVector,
-    enabled: Boolean = true,
     color: Color
 ) {
     IconButton(
         modifier = Modifier
             .clip(CircleShape)
-            .background(if (enabled) color else Color.Gray)
+            .background(color)
             .size(56.dp)
-            .border(2.dp, if (enabled) color else Color.Gray, CircleShape),
+            .border(2.dp, color, CircleShape),
         onClick = onClick,
-        enabled = enabled
     ) {
         Icon(
             icon, null,

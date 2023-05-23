@@ -10,8 +10,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import ch.epfl.sdp.cook4me.R
 import kotlinx.coroutines.delay
 
@@ -35,13 +35,13 @@ fun LoadingScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .testTag(LocalContext.current.getString(R.string.Loading_Screen_Tag)),
+            .testTag(stringResource(R.string.Loading_Screen_Tag)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
 
     ) {
         Text(
-            text = "Now loading${".".repeat(loadingDots.value)}"
+            text = "${stringResource(R.string.loading_text)}${".".repeat(loadingDots.value)}"
         )
     }
 }
