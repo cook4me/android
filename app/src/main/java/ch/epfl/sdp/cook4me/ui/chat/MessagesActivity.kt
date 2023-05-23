@@ -44,7 +44,7 @@ class MessagesActivity : ComponentActivity() {
                     onHeaderActionClick = { channel ->
                         val targetMember = channel.members.find { it.user.extraData["email"] != userEmail }
                         val targetEmail = targetMember?.user?.extraData?.get("email")
-                        if (targetEmail != null) {
+                        targetEmail?.let {
                             val intent = ChatProfileActivity.getIntent(this, targetEmail as String)
                             startActivity(intent)
                         }

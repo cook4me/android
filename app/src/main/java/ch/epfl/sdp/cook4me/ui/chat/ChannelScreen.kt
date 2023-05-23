@@ -93,7 +93,10 @@ fun ChannelScreen(
                 )
             }
         } else {
-            LoadingScreen()
+            LoadingScreen()/*
+            ChatTheme() {
+                LoadingIndicator()
+            }*/
         }
     }
 }

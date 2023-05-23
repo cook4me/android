@@ -10,7 +10,7 @@ import coil.request.Disposable
 import coil.request.ImageRequest
 import coil.request.ImageResult
 
-const val PROFILE_IMAGE_PREFIX = "load profile image"
+internal const val PROFILE_IMAGE_PREFIX = "load profile image"
 
 internal class ImageLoaderDecorator(
     private val loader: ImageLoader,

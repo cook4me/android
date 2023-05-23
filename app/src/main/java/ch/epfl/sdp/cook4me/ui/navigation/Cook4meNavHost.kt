@@ -132,11 +132,9 @@ fun Cook4MeNavHost(
             arguments = listOf(navArgument("userId") { type = NavType.StringType })
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")
-            if (userId == null) {
-                ProfileScreen()
-            } else {
-                ProfileScreen(profileViewModel = ProfileViewModel(id = userId))
-            }
+            userId?.let {
+                ProfileScreen(profileViewModel = ProfileViewModel(id = it))
+            } ?: ProfileScreen()
         }
 
         composable(route = Screen.EditProfileScreen.name) {
