@@ -6,10 +6,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 import io.getstream.chat.android.compose.ui.messages.MessagesScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
+import io.getstream.chat.android.compose.ui.theme.StreamColors
 import io.getstream.chat.android.compose.ui.theme.StreamShapes
 
 // The activity to show the message screen. Couldn't have done with just
@@ -27,29 +30,27 @@ class MessagesActivity : ComponentActivity() {
         }
 
         setContent {
-            ChatTheme(
-                shapes = StreamShapes.defaultShapes().copy(
-                    avatar = RoundedCornerShape(8.dp),
-                    attachment = RoundedCornerShape(16.dp),
-                    myMessageBubble = RoundedCornerShape(16.dp),
-                    otherMessageBubble = RoundedCornerShape(16.dp),
-                    inputField = RectangleShape
-                ),
-                imageLoaderFactory = CoilImageLoaderFactory
-            ) {
-                MessagesScreen(
-                    channelId = channelId,
-                    messageLimit = 30,
-                    onBackPressed = { finish() },
-                    onHeaderActionClick = { channel ->
-                        val targetMember = channel.members.find { it.user.extraData["email"] != userEmail }
-                        val targetEmail = targetMember?.user?.extraData?.get("email")
-                        targetEmail?.let {
-                            val intent = ChatProfileActivity.getIntent(this, targetEmail as String)
-                            startActivity(intent)
-                        }
-                    }
-                )
+            Cook4meTheme {
+                ChatTheme(
+                    imageLoaderFactory = CoilImageLoaderFactory,
+                    shapes = StreamShapes.defaultShapes().copy(
+                        avatar = RoundedCornerShape(8.dp),
+                        attachment = RoundedCornerShape(16.dp),
+                        myMessageBubble = RoundedCornerShape(16.dp),
+                        otherMessageBubble = RoundedCornerShape(16.dp),
+                        inputField = RectangleShape
+                    ),
+                    colors = StreamColors.defaultColors().copy(
+                        errorAccent = MaterialTheme.colors.onError,
+                        primaryAccent = MaterialTheme.colors.primary,
+                    )
+                ) {
+                    MessagesScreen(
+                        channelId = channelId,
+                        messageLimit = 30,
+                        onBackPressed = { finish() }
+                    )
+                }
             }
         }
     }

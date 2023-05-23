@@ -2,6 +2,7 @@ package ch.epfl.sdp.cook4me.ui.chat
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +21,8 @@ import io.getstream.chat.android.client.models.Filters
 import io.getstream.chat.android.client.models.User
 import io.getstream.chat.android.compose.ui.channels.ChannelsScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
+import io.getstream.chat.android.compose.ui.theme.StreamColors
+
 
 @Composable
 fun ChannelScreen(
@@ -67,7 +70,15 @@ fun ChannelScreen(
             .testTag(context.getString(R.string.Channel_Screen_Tag))
     ) {
         if (isConnected.value) {
-            ChatTheme(imageLoaderFactory = CoilImageLoaderFactory) {
+            ChatTheme(
+                imageLoaderFactory = CoilImageLoaderFactory,
+                isInDarkMode = false,
+                colors = StreamColors.defaultColors().copy(
+                    errorAccent = MaterialTheme.colors.onError,
+                    primaryAccent = MaterialTheme.colors.primary,
+                    infoAccent = MaterialTheme.colors.secondary
+                )
+            ) {
                 ChannelsScreen(
                     filters = Filters.and(
                         Filters.eq("type", "messaging"),
@@ -93,10 +104,7 @@ fun ChannelScreen(
                 )
             }
         } else {
-            LoadingScreen()/*
-            ChatTheme() {
-                LoadingIndicator()
-            }*/
+            LoadingScreen()
         }
     }
 }
