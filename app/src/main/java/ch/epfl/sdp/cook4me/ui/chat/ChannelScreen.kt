@@ -2,13 +2,17 @@ package ch.epfl.sdp.cook4me.ui.chat
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import ch.epfl.sdp.cook4me.BuildConfig
@@ -40,6 +44,7 @@ fun ChannelScreen(
     val user = remember {
         mutableStateOf(User(id = fullName.value))
     }
+    val showErrorDialog = remember { mutableStateOf(false) }
 
     userEmail?.let { email ->
         // parsing email to get the name (user id)
@@ -59,6 +64,7 @@ fun ChannelScreen(
                 isConnected.value = true
             } else {
                 println("connection not successful")
+                showErrorDialog.value = true
             }
         }
     }
@@ -102,8 +108,26 @@ fun ChannelScreen(
                     }
                 )
             }
-        } else {
+        } else if (!showErrorDialog.value) {
             LoadingScreen()
+        } else {
+            AlertDialog(
+                onDismissRequest = {
+                    showErrorDialog.value = false
+                },
+                title = { Text(text = stringResource(id = R.string.Too_many_connection_error_title)) },
+                text = { Text(text = stringResource(id = R.string.Too_many_connection_error_message)) },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            showErrorDialog.value = false
+                            navController.navigate(Screen.RecipeFeed.name)
+                        }
+                    ) {
+                        Text(stringResource(id = R.string.ChatErrorButtonText))
+                    }
+                }
+            )
         }
     }
 }

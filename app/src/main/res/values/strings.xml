@@ -129,6 +129,9 @@
     <!-- Chat -->
     <string name="Loading_Screen_Tag">Loading Screen TAG</string>
     <string name="Channel_Screen_Tag">Channel Screen TAG</string>
+    <string name="Too_many_connection_error_title">Connection Error</string>
+    <string name="Too_many_connection_error_message">Too many connections. Please try again later.</string>
+    <string name="ChatErrorButtonText">OK</string>
 
     <!-- BottomBar -->
     <string name="bottom_bar_more_button_text">More</string>
