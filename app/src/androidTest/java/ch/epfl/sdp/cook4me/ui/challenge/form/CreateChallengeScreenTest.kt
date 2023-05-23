@@ -63,6 +63,7 @@ class CreateChallengeScreenTest {
             )
         }
 
+        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
         assertThat(onCancelCalled, `is`(true))
     }

@@ -28,10 +28,15 @@ fun PlaceholderScreen(
     ) {
         Image(
             painter = painterResource(image),
-            contentDescription = "${stringResource(text)} ${stringResource(R.string.placeholder_screen_content_description)}",
+            contentDescription = "${stringResource(text)} " +
+                stringResource(R.string.placeholder_screen_content_description),
             alpha = 0.55f,
             modifier = Modifier.fillMaxSize(fraction = 0.55f)
         )
-        Text(text = stringResource(text), fontSize = 16.sp, modifier = Modifier.alpha(alpha = 0.55f))
+        Text(
+            text = stringResource(text),
+            fontSize = 16.sp,
+            modifier = Modifier.alpha(alpha = 0.55f)
+        )
     }
 }

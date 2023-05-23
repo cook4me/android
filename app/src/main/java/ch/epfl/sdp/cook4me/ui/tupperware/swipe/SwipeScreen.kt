@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Favorite
@@ -30,6 +29,8 @@ import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.common.PlaceholderScreen
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
+import ch.epfl.sdp.cook4me.ui.theme.errorRed
+import ch.epfl.sdp.cook4me.ui.theme.supportingYellow
 import com.alexstyl.swipeablecard.Direction
 import com.alexstyl.swipeablecard.SwipeableCardState
 import com.alexstyl.swipeablecard.rememberSwipeableCardState
@@ -42,6 +43,7 @@ private data class TupperwareState(
 )
 
 // code inspired by https://github.com/alexstyl/compose-tinder-card/blob/main/app/src/main/java/com/alexstyl/swipeablecard/MainActivity.kt
+@Suppress("ComplexMethod")
 @Composable
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
@@ -59,8 +61,12 @@ fun TupperwareSwipeScreen(
     var openMatchDialog by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
-        data = swipeService.getAllUnswipedTupperware()
+    if (isOnline) {
+        LaunchedEffect(Unit) {
+            data = swipeService.getAllUnswipedTupperware()
+            isLoading = false
+        }
+    } else {
         isLoading = false
     }
 
@@ -112,7 +118,10 @@ fun TupperwareSwipeScreen(
             if (isLoading) {
                 LoadingScreen()
             } else if (allDone) {
-                PlaceholderScreen(R.drawable.food_container, R.string.swipe_alldone_placeholder)
+                PlaceholderScreen(
+                    R.drawable.food_container,
+                    if (isOnline) R.string.swipe_alldone_placeholder else R.string.to_swipe_go_online
+                )
             } else {
                 Box(
                     Modifier
@@ -145,14 +154,14 @@ fun TupperwareSwipeScreen(
                             onSwipeButtonClicked(Direction.Left)
                         },
                         icon = Icons.Rounded.Close,
-                        color = MaterialTheme.colors.onError
+                        color = errorRed
                     )
                     CircleButton(
                         onClick = {
                             onSwipeButtonClicked(Direction.Right)
                         },
                         icon = Icons.Rounded.Favorite,
-                        color = MaterialTheme.colors.secondaryVariant
+                        color = supportingYellow
                     )
                 }
             }
