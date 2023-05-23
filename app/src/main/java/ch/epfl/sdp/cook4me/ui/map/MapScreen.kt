@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
@@ -25,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
+import ch.epfl.sdp.cook4me.ui.map.buttons.ButtonEPFL
+import ch.epfl.sdp.cook4me.ui.map.buttons.ButtonUNIL
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
@@ -118,14 +122,18 @@ fun GoogleMapView(
             }
         )
 
-        Row {
-            MapButton(
-                text = stringResource(R.string.EPFL),
-                onClick = { onClickUniversity(Locations.EPFL) }
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            ButtonEPFL(
+                onClick = { onClickUniversity(Locations.EPFL) },
+                modifier = Modifier.weight(1f)
             )
-            MapButton(
-                text = stringResource(R.string.UNIL),
-                onClick = { onClickUniversity(Locations.UNIL) }
+            Spacer(modifier = Modifier.width(8.dp))
+            ButtonUNIL(
+                onClick = { onClickUniversity(Locations.UNIL) },
+                modifier = Modifier.weight(1f)
             )
         }
         Box(
