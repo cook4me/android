@@ -41,6 +41,7 @@ private data class TupperwareState(
 )
 
 // code inspired by https://github.com/alexstyl/compose-tinder-card/blob/main/app/src/main/java/com/alexstyl/swipeablecard/MainActivity.kt
+@Suppress("ComplexMethod")
 @Composable
 fun TupperwareSwipeScreen(
     onCreateNewTupperware: () -> Unit = {},
@@ -50,6 +51,7 @@ fun TupperwareSwipeScreen(
     val data = remember {
         mutableStateOf(mapOf<String, TupperwareWithImage>())
     }
+    val displayedText = remember { mutableStateOf("all done") }
     val states =
         data.value.map { TupperwareState(it.key, it.value, rememberSwipeableCardState()) }
     val scope = rememberCoroutineScope()
@@ -58,9 +60,19 @@ fun TupperwareSwipeScreen(
     val openMatchDialog = remember { mutableStateOf(false) }
     val isLoading = remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
-        data.value = swipeService.getAllUnswipedTupperware()
+    if (isOnline) {
+        LaunchedEffect(Unit) {
+            data.value = swipeService.getAllUnswipedTupperware()
+            isLoading.value = false
+        }
+    } else {
         isLoading.value = false
+    }
+
+    if (!isOnline) {
+        displayedText.value = stringResource(R.string.to_swipe_go_online)
+    } else if (allDone) {
+        displayedText.value = "All done"
     }
 
     if (openMatchDialog.value) {
@@ -118,7 +130,7 @@ fun TupperwareSwipeScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     if (allDone) {
-                        Text("all done") // TODO: https://github.com/cook4me/android/issues/185
+                        Text(displayedText.value) // TODO: https://github.com/cook4me/android/issues/185
                     } else {
                         states.forEach {
                             if (it.cardState.swipedDirection == null) {

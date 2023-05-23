@@ -160,5 +160,7 @@
     <string name="place">Place</string>
     <string name="back">Back</string>
     <string name="winner">Winner</string>
+    <string name="inform_offline_status">You are offline</string>
+    <string name="to_swipe_go_online">You are offline, to keep swiping you need to go online</string>
 
 </resources>
