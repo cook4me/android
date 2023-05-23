@@ -40,8 +40,6 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
-import ch.epfl.sdp.cook4me.ui.common.form.UserField
-import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.CoroutineScope
@@ -58,16 +56,9 @@ fun EditProfileScreen(
 ) {
     val context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
-    var username = viewModel.profile.value.name
-    var bio = viewModel.profile.value.bio
-    var favoriteDish = viewModel.profile.value.favoriteDish
-    var allergies = viewModel.profile.value.allergies
-
-    val usernameState =
-        UserNameState(
-            context.getString(R.string.invalid_username_message),
-            username,
-        )
+    val bio = viewModel.profile.value.bio
+    val favoriteDish = viewModel.profile.value.favoriteDish
+    val allergies = viewModel.profile.value.allergies
 
     val allergiesState = NonRequiredTextFieldState(allergies)
     val bioState = NonRequiredTextFieldState(bio)
@@ -136,15 +127,6 @@ fun EditProfileScreen(
                         ImageHolderProfileUpdateScreen(
                             onClickAddImage = { onClickAddImage() },
                             image = image.value,
-                        )
-                        // Textfield for the Username
-                        UserField(
-                            usernameState.text,
-                            usernameState.showErrors(),
-                            {
-                                usernameState.text = it
-                                viewModel.addUsername(it)
-                            },
                         )
 
                         // Textfield for the Favorite dish

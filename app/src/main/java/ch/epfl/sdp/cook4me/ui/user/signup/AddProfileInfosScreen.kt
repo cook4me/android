@@ -41,24 +41,21 @@ import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
-import ch.epfl.sdp.cook4me.ui.common.form.UserField
-import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
 import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
 
 @Composable
 fun AddProfileInfoScreen(
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel,
-    onSuccessfulSignUp: () -> Unit,
-    onSignUpFailure: () -> Unit
+    auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) {
     val context = LocalContext.current
-    val usernameState =
-        remember { UserNameState(context.getString(R.string.invalid_username_message)) }
+    val email = auth.currentUser?.email
+
     val favoriteDishState = remember {
         NonRequiredTextFieldState("")
     }
@@ -88,7 +85,6 @@ fun AddProfileInfoScreen(
             onResult = { uri ->
                 if (uri != null) {
                     userImage.value = uri
-                    viewModel.addProfileImage(uri)
                 }
             }
         )
@@ -117,16 +113,6 @@ fun AddProfileInfoScreen(
                     image = userImage.value,
                 )
 
-                // Textfield for the Username
-                UserField(
-                    usernameState.text,
-                    usernameState.showErrors(),
-                    {
-                        usernameState.text = it
-                        viewModel.addUsername(it)
-                    },
-                )
-
                 ProfileInfosField(
                     icon = Icons.Filled.Info,
                     preview = stringResource(id = R.string.tag_favoriteDish),
@@ -134,7 +120,6 @@ fun AddProfileInfoScreen(
                     isError = false,
                     onNewValue = {
                         favoriteDishState.text = it
-                        viewModel.addFavoriteDish(it)
                     }
                 )
 
@@ -145,7 +130,6 @@ fun AddProfileInfoScreen(
                     isError = false,
                     onNewValue = {
                         allergiesState.text = it
-                        viewModel.addAllergies(it)
                     }
                 )
 
@@ -156,7 +140,6 @@ fun AddProfileInfoScreen(
                     isError = false,
                     onNewValue = {
                         bioState.text = it
-                        viewModel.addBio(it)
                     }
                 )
 
@@ -168,26 +151,18 @@ fun AddProfileInfoScreen(
                         .testTag(stringResource(id = R.string.btn_continue)),
                     inProgress
                 ) {
-                    usernameState.enableShowErrors()
                     scope.launch {
-                        if (!usernameState.isValid) {
-                            scaffoldState.snackbarHostState.showSnackbar(usernameState.errorMessage)
-                        } else {
-                            try {
-                                inProgress = true
-                                viewModel.onSubmit(
-                                    onSignUpSuccess = onSuccessfulSignUp,
-                                    onSignUpFailure = onSignUpFailure,
-                                )
-                            } catch (e: FirebaseAuthException) {
-                                scaffoldState.snackbarHostState.showSnackbar(
-                                    context.getString(R.string.Add_profile_infos_invalid_user),
-                                )
-                                Log.d(
-                                    context.getString(R.string.Add_profile_infos_invalid_user),
-                                    e.stackTraceToString()
-                                )
-                            }
+                        try {
+                            inProgress = true
+                            //TODO
+                        } catch (e: FirebaseAuthException) {
+                            scaffoldState.snackbarHostState.showSnackbar(
+                                context.getString(R.string.Add_profile_infos_invalid_user),
+                            )
+                            Log.d(
+                                context.getString(R.string.Add_profile_infos_invalid_user),
+                                e.stackTraceToString()
+                            )
                         }
                     }
                 }
@@ -203,7 +178,7 @@ fun ImageHolder_AddProfileInfoScreen(
 ) {
     Column(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(16.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

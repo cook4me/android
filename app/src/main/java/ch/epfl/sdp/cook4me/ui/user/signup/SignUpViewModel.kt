@@ -27,10 +27,6 @@ class SignUpViewModel(
     private val _profileImage = mutableStateOf<Uri>(Uri.EMPTY)
     val profileImage: State<Uri> = _profileImage
 
-    fun addUsername(username: String) {
-        _profileState.value.name = username
-    }
-
     fun addPassword(password: String) {
         _password.value = password
     }
@@ -55,42 +51,25 @@ class SignUpViewModel(
         _profileImage.value = uri
     }
 
-    fun isValidUsername(username: String): Boolean =
-        _profileState.value.name == username // TODO better check
-
-    fun checkForm(): Boolean {
-        if (_profileState.value.name.isBlank() || _password.value.isBlank() || _profileState.value.email.isBlank()) {
-            _formError.value = false
-            return _formError.value
-        }
-        _formError.value = true
-        return _formError.value
-    }
-
     fun onSubmit(
         onSignUpSuccess: () -> Unit,
         onSignUpFailure: () -> Unit,
     ) {
-        if (_profileState.value.name.isBlank() || _password.value.isBlank() || _profileState.value.email.isBlank()) {
-            _formError.value = true
-            onSignUpFailure()
-        } else {
-            viewModelScope.launch {
-                try {
-                    accountService.register(_profileState.value.email, _password.value)
-                    if (profileImage.value != Uri.EMPTY) {
-                        profileImageRepository.add(profileImage.value)
-                    }
-                    repository.add(_profileState.value)
-                } catch (e: FirebaseAuthException) {
-                    if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
-                        onSignUpFailure()
-                    } else {
-                        throw e
-                    }
+        viewModelScope.launch {
+            try {
+                accountService.register(_profileState.value.email, _password.value)
+                if (profileImage.value != Uri.EMPTY) {
+                    profileImageRepository.add(profileImage.value)
                 }
-                onSignUpSuccess()
+                repository.add(_profileState.value)
+            } catch (e: FirebaseAuthException) {
+                if (e.errorCode == "ERROR_EMAIL_ALREADY_IN_USE") {
+                    onSignUpFailure()
+                } else {
+                    throw e
+                }
             }
+            onSignUpSuccess()
         }
     }
 }

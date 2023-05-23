@@ -36,7 +36,6 @@ fun ProfileScreen(
     },
 ) {
     val profile = profileViewModel.profile.value
-    val userNameState = rememberSaveable { mutableStateOf("") }
     val isLoading = profileViewModel.isLoading.value
     val image = profileViewModel.profileImage.value
 
@@ -53,7 +52,6 @@ fun ProfileScreen(
                     .testTag("CircularProgressIndicator")
             )
         } else {
-            userNameState.value = profile.name
             Column(
                 modifier = modifier
                     .padding(12.dp)
@@ -61,7 +59,7 @@ fun ProfileScreen(
             ) {
                 ProfileImageAndUsername(
                     image,
-                    profile.name,
+                    profile.email,
                     modifier
                 )
 

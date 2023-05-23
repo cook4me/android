@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -28,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
@@ -43,7 +46,8 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     modifier: Modifier = Modifier,
     accountService: AccountService = AccountService(),
-    onSuccessfulLogin: () -> Unit
+    onSuccessfulLogin: () -> Unit,
+    onRegisterClick: () -> Unit
 ) {
     val context = LocalContext.current
     val emailState = remember { EmailState(context.getString(R.string.invalid_email_message)) }
@@ -93,7 +97,7 @@ fun LoginScreen(
                     R.string.sign_in_screen_sign_in_button,
                     Modifier
                         .fillMaxWidth()
-                        .padding(16.dp, 8.dp),
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp),
                     inProgress
                 ) {
                     emailState.enableShowErrors()
@@ -132,6 +136,17 @@ fun LoginScreen(
                             }
                         }
                     }
+                }
+                Button(
+                    onClick = onRegisterClick,
+                    colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = MaterialTheme.colors.secondary,
+                        contentColor = MaterialTheme.colors.onSecondary
+                    ),
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)
+                ) {
+                    Text(text = stringResource(R.string.sign_in_screen_register_button), fontSize = 16.sp)
                 }
             }
         }

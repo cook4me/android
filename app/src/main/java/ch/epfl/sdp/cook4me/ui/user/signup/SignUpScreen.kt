@@ -32,29 +32,44 @@ import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.EmailField
 import ch.epfl.sdp.cook4me.ui.common.form.EmailState
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
-import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
-import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
-import com.google.firebase.auth.FirebaseAuthEmailException
-import com.google.firebase.auth.FirebaseAuthException
+import ch.epfl.sdp.cook4me.ui.common.form.PasswordState
+import ch.epfl.sdp.cook4me.ui.common.form.TextFieldState
 import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     accountService: AccountService = AccountService(),
-    onSuccessfulSignUp: () -> Unit,
-    viewModel: SignUpViewModel,
+    onSuccessfulAccountCreationAndLogin: () -> Unit
 ) {
     val context = LocalContext.current
     val emailState = remember { EmailState(context.getString(R.string.invalid_email_message)) }
     val passwordState =
-        remember { RequiredTextFieldState(context.getString(R.string.password_blank)) }
+        remember { PasswordState(context.getString(R.string.sign_up_screen_invalid_password)) }
+    val passwordAgainState =
+        remember {
+            PasswordState(
+                context.getString(R.string.sign_up_screen_password_not_identical)
+            )
+        }
+
     var inProgress by remember {
         mutableStateOf(false)
     }
 
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
+
+    suspend fun showErrorMessageAndTerminateProgress(errorMessage: String) {
+        inProgress = false
+        scaffoldState
+            .snackbarHostState
+            .showSnackbar(errorMessage)
+    }
+
+    suspend fun showErrorMessageAndTerminateProgress(stateWithError: TextFieldState) {
+        showErrorMessageAndTerminateProgress(stateWithError.errorMessage)
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -84,13 +99,31 @@ fun SignUpScreen(
                 PasswordField(
                     passwordState.text,
                     passwordState.showErrors(),
-                    { passwordState.text = it },
+                    {
+                        passwordState.text = it
+                        passwordAgainState.isValid = true
+                    },
                     Modifier
                         .fieldModifier()
                         .testTag(stringResource(R.string.tag_password))
                         .onFocusChanged {
                             passwordState.onFocusChange(it.isFocused)
                         }
+                )
+                PasswordField(
+                    passwordAgainState.text,
+                    passwordAgainState.showErrors(),
+                    {
+                        passwordAgainState.text = it
+                        passwordState.isValid = true
+                    },
+                    Modifier
+                        .fieldModifier()
+                        .testTag(stringResource(R.string.tag_password))
+                        .onFocusChanged {
+                            passwordAgainState.onFocusChange(it.isFocused)
+                        },
+                    R.string.sign_up_screen_password_again_field
                 )
                 LoadingButton(
                     R.string.btn_continue,
@@ -102,42 +135,29 @@ fun SignUpScreen(
                 ) {
                     emailState.enableShowErrors()
                     passwordState.enableShowErrors()
+                    passwordAgainState.enableShowErrors()
                     scope.launch {
+                        inProgress = true
                         if (!emailState.isValid) {
-                            scaffoldState
-                                .snackbarHostState
-                                .showSnackbar(emailState.errorMessage)
+                            showErrorMessageAndTerminateProgress(emailState)
                         } else if (!passwordState.isValid) {
-                            scaffoldState.snackbarHostState.showSnackbar(passwordState.errorMessage)
+                            showErrorMessageAndTerminateProgress(passwordState)
+                        } else if (passwordState.text != passwordAgainState.text) {
+                            //this should actually be part of a validator class, ran out of time
+                            passwordState.isValid = false
+                            passwordAgainState.isValid = false
+                            showErrorMessageAndTerminateProgress(passwordAgainState)
+                        } else if (accountService.userAlreadyExists(emailState.text)) {
+                            emailState.isValid = false
+                            showErrorMessageAndTerminateProgress(context.getString(R.string.sign_up_screen_user_already_exists))
                         } else {
                             try {
-                                inProgress = true
-                                if (!accountService.isValidEmail(email = emailState.text)) {
-                                    throw FirebaseAuthEmailException("email", "isMalFormed")
-                                }
-                                if (!accountService.isValidPassword(password = passwordState.text)) {
-                                    throw FirebaseAuthException("password", "isMalFormed")
-                                }
-                                viewModel.addPassword(password = passwordState.text)
-                                viewModel.addEmail(email = emailState.text)
-                                onSuccessfulSignUp()
-                            } catch (e: FirebaseAuthEmailException) {
-                                scaffoldState
-                                    .snackbarHostState
-                                    .showSnackbar(context.getString(R.string.sign_up_screen_invalid_email))
-                                Log.d(
-                                    context.getString(R.string.sign_up_screen_invalid_email),
-                                    e.stackTraceToString()
-                                )
-                            } catch (e: FirebaseAuthException) {
-                                scaffoldState
-                                    .snackbarHostState
-                                    .showSnackbar(context.getString(R.string.sign_up_screen_invalid_password))
-                                inProgress = false
-                                Log.d(
-                                    context.getString(R.string.sign_up_screen_invalid_password),
-                                    e.stackTraceToString()
-                                )
+                                accountService.register(emailState.text, passwordState.text)
+                                accountService.authenticate(emailState.text, passwordState.text)
+                                onSuccessfulAccountCreationAndLogin()
+                            } catch (e: Exception) {
+                                Log.e("sign up", e.message, e)
+                                showErrorMessageAndTerminateProgress(context.getString(R.string.sign_up_screen_firebase_exception))
                             }
                         }
                     }

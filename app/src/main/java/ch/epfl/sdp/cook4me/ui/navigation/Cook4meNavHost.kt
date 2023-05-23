@@ -37,7 +37,6 @@ fun Cook4MeNavHost(
     onSuccessfulAuth: () -> Unit,
     isOnline: Boolean
 ) {
-    val signUpViewModel = remember { SignUpViewModel() }
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -84,10 +83,7 @@ fun Cook4MeNavHost(
             DetailedEventScreen(backStackEntry.arguments?.getString("eventId").orEmpty())
         }
         composable(route = Screen.SignUpScreen.name) {
-            SignUpScreen(
-                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfo.name) },
-                viewModel = signUpViewModel, // TODO Might need some additional changes
-            )
+            SignUpScreen(onSuccessfulAccountCreationAndLogin = { navController.navigate(Screen.SignUpUserInfo.name) })
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipeScreen(
@@ -102,15 +98,7 @@ fun Cook4MeNavHost(
             )
         }
         composable(route = Screen.SignUpUserInfo.name) {
-            AddProfileInfoScreen(
-                viewModel = signUpViewModel,
-                onSuccessfulSignUp = {
-                    navController.navigate(
-                        startDestination
-                    )
-                },
-                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
-            )
+            AddProfileInfoScreen()
         }
         composable(route = Screen.Login.name) {
             LoginScreen(
@@ -120,7 +108,8 @@ fun Cook4MeNavHost(
                         // This popUp blocks the user being able to go back once logged in
                         popUpTo(Screen.Login.name) { inclusive = true }
                     }
-                }
+                },
+                onRegisterClick = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
         composable(route = Screen.ProfileScreen.name) { ProfileScreen() }

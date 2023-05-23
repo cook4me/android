@@ -6,19 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.AccountService
-import ch.epfl.sdp.cook4me.application.ProfileService
-import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class ProfileViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
-    private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
     private val id: String? = null,
@@ -34,7 +30,7 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            var profile: Profile?
+            val profile: Profile?
 
             if (id != null) {
                 // if an user id is provided, use it to load the profile
@@ -49,7 +45,6 @@ class ProfileViewModel(
                 profile?.let {
                     withContext(Dispatchers.Main) {
                         _profileState.value.email = it.email
-                        _profileState.value.name = it.name
                         _profileState.value.allergies = it.allergies
                         _profileState.value.bio = it.bio
                         _profileState.value.favoriteDish = it.favoriteDish
@@ -82,10 +77,6 @@ class ProfileViewModel(
         _profileImage.value = uri
     }
 
-    fun addUsername(username: String) {
-        profile.value.name = username
-    }
-
     fun addAllergies(allergies: String) {
         profile.value.allergies = allergies
     }
@@ -99,24 +90,12 @@ class ProfileViewModel(
     }
 
     fun onSubmit(onSuccessListener: () -> Unit) {
-        if (profile.value.name.isBlank()) {
-            _formError.value = true
-        } else {
-            viewModelScope.launch {
-                runBlocking {
-                    _id?.let {
-                        isLoading.value = true
-                        service.submitForm(
-                            it, // Email as id
-                            profile.value.name,
-                            profile.value.allergies,
-                            profile.value.bio,
-                            profile.value.favoriteDish,
-                        )
-                        onSuccessListener()
-                        isLoading.value = false
-                    }
-                }
+        viewModelScope.launch {
+            _id?.let {
+                isLoading.value = true
+                repository.update(it, profile.value)
+                onSuccessListener()
+                isLoading.value = false
             }
         }
     }

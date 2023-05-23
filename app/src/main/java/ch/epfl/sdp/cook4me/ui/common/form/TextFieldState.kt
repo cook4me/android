@@ -23,7 +23,7 @@ import androidx.compose.runtime.setValue
 open class TextFieldState(
     private val validator: (String) -> Boolean = { true },
     private val errorMsg: String,
-    private val default: String = "",
+    default: String = "",
 ) : FormElementState {
     var text: String by mutableStateOf(default)
 
@@ -31,14 +31,19 @@ open class TextFieldState(
     private var displayErrors: Boolean by mutableStateOf(false)
     private var isFocused: Boolean by mutableStateOf(false)
     var isFocusedDirty: Boolean by mutableStateOf(false)
+    private var _isInvalidSetFromOutside: Boolean by mutableStateOf(false)
 
-    override val isValid: Boolean
-        get() = validator(text)
+    override var isValid: Boolean
+        get() = !_isInvalidSetFromOutside && validator(text)
+        set(value) {
+            _isInvalidSetFromOutside = !value
+        }
 
     override val errorMessage: String
         get() = errorMsg
 
     fun onFocusChange(focused: Boolean) {
+        _isInvalidSetFromOutside = false
         isFocused = focused
         if (focused) isFocusedDirty = true
         if (!isFocused && isFocusedDirty) {
@@ -53,18 +58,18 @@ open class TextFieldState(
     override fun showErrors() = !isValid && displayErrors
 }
 
-class NonRequiredTextFieldState(default: String = "",) : TextFieldState(
+class NonRequiredTextFieldState(default: String = "") : TextFieldState(
     { true },
     default
 )
 
-class RequiredTextFieldState(errorMsg: String, default: String = "",) : TextFieldState(
+class RequiredTextFieldState(errorMsg: String, default: String = "") : TextFieldState(
     { it.isNotBlank() },
     errorMsg,
     default
 )
 
-class EmailState(errorMsg: String, default: String = "",) : TextFieldState(
+class EmailState(errorMsg: String, default: String = "") : TextFieldState(
     {
         it.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(it).matches()
     },
@@ -72,10 +77,20 @@ class EmailState(errorMsg: String, default: String = "",) : TextFieldState(
     default,
 )
 
-class UserNameState(errorMsg: String, default: String = "",) : TextFieldState(
-    {
-        it.isNotBlank() // TODO
-    },
+const val MIN_PASSWORD_LENGTH = 6
+
+class PasswordState(errorMsg: String, default: String = "") : TextFieldState(
+    { it.isNotBlank() && it.length >= MIN_PASSWORD_LENGTH },
     errorMsg,
-    default,
+    default
 )
+
+class PasswordConfirmState(otherValue: String, errorMsg: String, default: String = "") :
+    TextFieldState(
+        { it != otherValue },
+        errorMsg,
+        default
+    )
+
+
+
