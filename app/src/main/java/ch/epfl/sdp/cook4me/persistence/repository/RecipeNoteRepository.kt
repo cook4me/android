@@ -67,12 +67,7 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
      * if there was an error while reading, the id will be -1
      */
     suspend fun retrieveAllRecipeNotes(useOnlyCache: Boolean = false): Map<String, Int> {
-        val source = if (useOnlyCache) {
-            println("Using cache only")
-            Source.CACHE
-        } else {
-            Source.DEFAULT
-        }
+        val source = if (useOnlyCache) Source.CACHE else Source.DEFAULT
         val result = store.collection(RECIPE_NOTE_PATH).get(source).await()
         return result.map { it.get("id").toString() }.zip(result.map { it.getLong("note")?.toInt() ?: 0 }).toMap()
     }

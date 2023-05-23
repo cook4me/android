@@ -16,11 +16,7 @@ suspend inline fun <reified A : Any> FirebaseFirestore.getAllObjectsFromCollecti
     collectionPath: String,
     useOnlyCache: Boolean = false
 ): Map<String, A> {
-    val source = if (useOnlyCache) {
-        Source.CACHE
-    } else {
-        Source.DEFAULT
-    }
+    val source = if (useOnlyCache) Source.CACHE else Source.DEFAULT
     val result = collection(collectionPath).get(source).await()
     return result.map { it.id }.zip(result.toObjects(A::class.java)).toMap()
 }
