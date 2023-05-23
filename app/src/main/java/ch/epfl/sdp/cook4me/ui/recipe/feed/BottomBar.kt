@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
 
-
 /**
  * Displays a bottom bar where user can choose between top recipes or most recent recipes
  * @param onButtonClicked: callback function that is called when a button is clicked,
