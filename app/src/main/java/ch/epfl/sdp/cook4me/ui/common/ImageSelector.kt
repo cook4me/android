@@ -86,6 +86,7 @@ private fun ImageCard(
             setToScale(scaleFactor, scaleFactor, scaleFactor, 1f)
         })
     else null
+
     Card(
         modifier = modifier
             .size(imageHeight)
@@ -93,35 +94,39 @@ private fun ImageCard(
         elevation = 10.dp,
         shape = RoundedCornerShape(8.dp)
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(image)
-                .build(),
-            contentDescription = "Selected Image",
-            modifier = Modifier
-                .fillMaxHeight()
-                .clickable { clicked = !clicked },
-            contentScale = ContentScale.FillHeight,
-            colorFilter = filter
-        )
-        if (clicked) {
-            DeleteButton(onClick)
+        Box(contentAlignment = Alignment.Center) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(image)
+                    .build(),
+                contentDescription = "Selected Image",
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .clickable { clicked = !clicked },
+                contentScale = ContentScale.FillHeight,
+                colorFilter = filter
+            )
+            if (clicked) {
+                DeleteButton(Modifier.align(Alignment.Center), onClick)
+            }
         }
     }
 }
 
 @Composable
-private fun DeleteButton(onClick: () -> Unit) {
-    IconButton(
-        onClick = onClick,
-        modifier = Modifier.size(60.dp).padding(16.dp),
-    ) {
-        Icon(
-            modifier = Modifier.size(60.dp),
-            imageVector = Icons.Outlined.Delete,
-            contentDescription = null,
-            tint = Color.Red
-        )
+private fun DeleteButton(modifier: Modifier, onClick: () -> Unit) {
+    Box(modifier.size(60.dp)){
+        IconButton(
+            onClick = onClick,
+            modifier = Modifier,
+        ) {
+            Icon(
+                modifier = Modifier.size(60.dp),
+                imageVector = Icons.Outlined.Delete,
+                contentDescription = null,
+                tint = Color.Red
+            )
+        }
     }
 }
 
