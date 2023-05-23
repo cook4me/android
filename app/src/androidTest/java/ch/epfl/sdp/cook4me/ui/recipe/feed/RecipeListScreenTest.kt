@@ -5,6 +5,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
@@ -52,7 +53,6 @@ class RecipeListScreenTest {
             cookingTime = "10 min",
             ingredients = listOf("ingredient1", "ingredient2"),
         )
-        val ingredients = "Ingredients: \n ${mockRecipe.ingredients.map{s -> "\t - $s"}.joinToString("\n")}"
         val mockList = listOf(
             RecipeNote(recipeId = "id1", recipe = mockRecipe, note = 1),
             RecipeNote(recipeId = "id2", recipe = Recipe(name = "Test recipe 2", cookingTime = "20 min"), note = 2)
@@ -69,8 +69,8 @@ class RecipeListScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithText(ingredients).assertDoesNotExist()
+        composeTestRule.onNodeWithText("Instructions").assertDoesNotExist()
         composeTestRule.onNodeWithText("Test recipe").performClick()
-        composeTestRule.onNodeWithText(ingredients).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Instructions").performScrollTo().assertIsDisplayed()
     }
 }

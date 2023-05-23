@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.common.button.AddButton
 import ch.epfl.sdp.cook4me.ui.common.filters.FilterButton
@@ -33,6 +34,7 @@ fun ChallengeFeedScreen(
     val query = searchViewModel.query
     val challenges = searchViewModel.challenges
     val isLoading = searchViewModel.isLoading
+    val currentUser = AccountService().getCurrentUser()
 
     LaunchedEffect(Unit) {
         searchViewModel.loadNewData()
@@ -68,10 +70,12 @@ fun ChallengeFeedScreen(
                 Spacer(modifier = Modifier.size(5.dp))
                 LazyColumn(modifier = Modifier.weight(1f)) {
                     items(challenges) {
+                        val challenge = it.second
                         ChallengeItem(
-                            challengeName = it.second.name,
-                            creatorName = it.second.creator,
-                            participantCount = it.second.participants.size,
+                            challengeName = challenge.name,
+                            creatorName = challenge.creator,
+                            participantCount = challenge.participants.size,
+                            joined = challenge.participants.containsKey(currentUser?.email),
                             onClick = { onChallengeClick(it.first) }
                         )
                     }

@@ -16,7 +16,6 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.matchListWithoutOrder
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
 import ch.epfl.sdp.cook4me.registryOwnerFactory
@@ -87,7 +86,7 @@ class RecipeCreationScenarioTest {
             runBlocking {
                 mockRecipeRepository.add(
                     expectedRecipe,
-                    matchListWithoutOrder(testUri)
+                    testUri
                 )
             }
         }

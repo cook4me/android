@@ -15,16 +15,15 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers
 import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.contains
-import org.hamcrest.Matchers.containsInAnyOrder
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.File
 
-private const val USER_NAME = "donald.fudging.duck@epfl.ch"
+private const val USER = "donald.fudging.duck@epfl.ch"
 private const val PASSWORD = "123456"
 
 @ExperimentalCoroutinesApi
@@ -33,63 +32,50 @@ class RecipeRepositoryTest {
     private val store: FirebaseFirestore = setupFirestore()
     private val storage: FirebaseStorage = setupFirebaseStorage()
     private val auth: FirebaseAuth = setupFirebaseAuth()
-    private val recipeRepository: RecipeRepository = RecipeRepository(store, storage, auth)
+    private val recipeRepo: RecipeRepository =
+        RecipeRepository(store, storage, auth)
 
     @Before
-    fun setUp() {
+    fun setup() {
         runBlocking {
-            auth.createUserWithEmailAndPassword(USER_NAME, PASSWORD).await()
-            auth.signInWithEmailAndPassword(USER_NAME, PASSWORD).await()
+            auth.createUserWithEmailAndPassword(USER, PASSWORD).await()
+            auth.signInWithEmailAndPassword(USER, PASSWORD).await()
         }
     }
 
     @After
-    fun cleanUp() {
+    fun cleanup() {
         runBlocking {
-            recipeRepository.deleteAll()
-            auth.signInWithEmailAndPassword(USER_NAME, PASSWORD).await()
+            recipeRepo.deleteAll()
+            auth.signInWithEmailAndPassword(USER, PASSWORD).await()
             auth.currentUser?.delete()?.await()
         }
     }
 
     @Test
-    fun storeNewRecipes() = runTest {
-        val files = generateTempFiles(3)
-        val urls = files.map { Uri.fromFile(it) }
-        val newEntry1 = Recipe(name = "newEntry1", user = USER_NAME)
-        val newEntry2 = Recipe(name = "newEntry2", user = USER_NAME)
-        recipeRepository.add(newEntry1, urls[0])
-        recipeRepository.add(newEntry2, urls[1])
-        val allRecipes = recipeRepository.getAll()
-        assertThat(allRecipes.values, containsInAnyOrder(newEntry1, newEntry2))
-        val folderContent = getUserFolder().listAll().await()
-        assertThat(folderContent.prefixes.count(), `is`(2))
+    fun storeAndGetNewRecipeTest() = runTest {
+        val files = generateTempFiles(2)
+        val ids = recipeRepo.addMultipleTestRecipes(files)
+        ids.zip(files).forEachIndexed { i, data ->
+            val actualRecipe = recipeRepo.getById(data.first)
+            val actualRecipeImage = recipeRepo.getRecipeImage(data.first)
+            assertThat(actualRecipe, `is`(Matchers.notNullValue()))
+            assertThat(actualRecipeImage, `is`(Matchers.notNullValue()))
+            actualRecipe?.let {
+                assertThat(it.name, `is`("$i"))
+                assertThat(it.user, `is`(auth.currentUser?.email))
+            }
+            actualRecipeImage?.let {
+                assertThat(it, `is`(data.second.readBytes()))
+            }
+        }
     }
 
-    @Test
-    fun deleteRecipe() = runTest {
-        val file = generateTempFiles(1)
-        val url = Uri.fromFile(file.first())
-        val newEntry1 = Recipe(name = "newEntry1", user = USER_NAME)
-        val id = recipeRepository.add(newEntry1, url)
-        recipeRepository.delete(id ?: error("should never happen"))
-        val recipes = recipeRepository.getAll()
-        assertThat(recipes.isEmpty(), `is`(true))
-        val images = getUserFolder().listAll().await()
-        assertThat(images.prefixes.isEmpty(), `is`(true))
-    }
-
-    @Test
-    fun getRecipeById() = runTest {
-        val file = generateTempFiles(1)
-        val url = Uri.fromFile(file.first())
-        recipeRepository.add(Recipe(name = "newEntry1"), url)
-        recipeRepository.add(Recipe(name = "newEntry2"), url)
-        recipeRepository.add(Recipe(name = "newEntry3"), url)
-        val allRecipes = recipeRepository.getAll()
-        val actual = recipeRepository.getById(allRecipes.keys.first())
-        assertThat(actual, `is`(allRecipes.values.first()))
-    }
-
-    private fun getUserFolder() = storage.reference.child("images/$USER_NAME/recipes")
+    private suspend fun RecipeRepository.addMultipleTestRecipes(files: List<File>) =
+        files.mapIndexed { i, file ->
+            add(
+                Recipe(name = i.toString()),
+                Uri.fromFile(file)
+            )
+        }
 }

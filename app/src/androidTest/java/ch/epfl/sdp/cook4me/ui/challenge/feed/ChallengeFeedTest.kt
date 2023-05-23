@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.challengefeed
+package ch.epfl.sdp.cook4me.ui.challenge.feed
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.mutableStateListOf
@@ -9,8 +9,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
-import ch.epfl.sdp.cook4me.ui.challenge.feed.ChallengeFeedScreen
-import ch.epfl.sdp.cook4me.ui.challenge.feed.SearchViewModel
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.every

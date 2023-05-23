@@ -119,7 +119,7 @@ class SearchViewModel(
         val ret = when (_chosenSortOption.value) {
             "By Name" -> list.sortedBy { it.second.name }
             "By Date" -> list.sortedBy { it.second.dateTime.time.time }
-            "By Participant Count" -> list.sortedBy { it.second.participants.size }
+            "By Participant Count" -> list.sortedByDescending { it.second.participants.size }
             else -> list
         }
         return ret
