@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
-import ch.epfl.sdp.cook4me.ui.event.form.Event
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 

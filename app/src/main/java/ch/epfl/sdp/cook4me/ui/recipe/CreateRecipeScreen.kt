@@ -126,7 +126,7 @@ fun CreateRecipeScreen(
             images = images,
             submitForm = { recipe ->
                 scope.launch {
-                    repository.add(recipe, images)
+                    repository.add(recipe, images.firstOrNull())
                     onSuccessfulSubmit()
                 }
             }

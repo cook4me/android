@@ -25,7 +25,15 @@ class RecipeListScreenTest {
             RecipeNote(recipeId = "id2", recipe = Recipe(name = "Test recipe 2", cookingTime = "20 min"), note = 2)
         )
         composeTestRule.setContent {
-            RecipeListScreen(recipeList = mockList, onNoteUpdate = { _, _ -> }, userVotes = emptyMap())
+            RecipeListScreen(
+                recipeList = mockList,
+                recipeImages = mapOf(
+                    "id1" to null,
+                    "id2" to null,
+                ),
+                onNoteUpdate = { _, _ -> },
+                userVotes = emptyMap()
+            )
         }
 
         composeTestRule.onNodeWithText("Test recipe 1").assertIsDisplayed()
@@ -50,7 +58,15 @@ class RecipeListScreenTest {
             RecipeNote(recipeId = "id2", recipe = Recipe(name = "Test recipe 2", cookingTime = "20 min"), note = 2)
         )
         composeTestRule.setContent {
-            RecipeListScreen(recipeList = mockList, onNoteUpdate = { _, _ -> }, userVotes = emptyMap())
+            RecipeListScreen(
+                recipeList = mockList,
+                recipeImages = mapOf(
+                    "id1" to null,
+                    "id2" to null,
+                ),
+                onNoteUpdate = { _, _ -> },
+                userVotes = emptyMap()
+            )
         }
 
         composeTestRule.onNodeWithText(ingredients).assertDoesNotExist()

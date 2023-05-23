@@ -20,7 +20,7 @@ class RecipeDisplayTest {
     fun defaultRecipeDisplayIsDisplayed() {
         val recipe = Recipe(name = "Test recipe", cookingTime = "10 min")
         composeTestRule.setContent {
-            RecipeDisplay(recipe = recipe, note = 1)
+            RecipeDisplay(recipe = recipe, note = 1, image = null)
         }
 
         composeTestRule.onNodeWithText("Test recipe").assertIsDisplayed()

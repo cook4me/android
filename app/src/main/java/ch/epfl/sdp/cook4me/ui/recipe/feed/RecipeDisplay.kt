@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.recipe.feed
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -36,8 +36,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
-const val RECIPE_TITLE_RATIO = 0.8F
+private const val CARD_ASPECT_RATIO = 1.1f
+const val IMAGE_RATIO = 0.84f
+const val INFORMATION_ROW_RATIO = 1 - IMAGE_RATIO
 
 /**
  * Displays a single recipe
@@ -51,7 +54,7 @@ const val RECIPE_TITLE_RATIO = 0.8F
 fun RecipeDisplay(
     recipe: Recipe,
     note: Int,
-    image: Uri,
+    image: ByteArray?,
     onNoteUpdate: (Int) -> Unit = {},
     userVote: Int = 0,
     canClick: Boolean = true,
@@ -66,14 +69,14 @@ fun RecipeDisplay(
         Column(
             Modifier.clickable(enabled = canClick, onClick = onClick)
         ) {
-            Column (modifier = Modifier.aspectRatio(1.1f)) {
+            Column(modifier = Modifier.aspectRatio(CARD_ASPECT_RATIO)) {
                 Box(
                     modifier = Modifier
-                        .weight(0.84f)
+                        .weight(IMAGE_RATIO)
                 ) {
                     // Use AsyncImage to load the image
                     AsyncImage(
-                        model = image.toString(),
+                        model = ImageRequest.Builder(LocalContext.current).data(image).build(),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
@@ -86,7 +89,7 @@ fun RecipeDisplay(
                             .background(
                                 brush = Brush.verticalGradient(
                                     colors = listOf(Color.Transparent, Color.Black),
-                                    startY = 0.6f
+                                    startY = 20f,
                                 )
                             )
                     )
@@ -116,12 +119,10 @@ fun RecipeDisplay(
                 }
                 // Display cooking time, difficulty and servings count at the bottom
                 BasicInformationLabel(
-                    modifier = Modifier.weight(0.16f),
+                    modifier = Modifier.weight(INFORMATION_ROW_RATIO),
                     cookingTime = recipe.cookingTime,
                     difficulty = recipe.difficulty,
                     servingsCount = recipe.servings,
-                    likes = note,
-                    onNoteUpdate = onNoteUpdate
                 )
             }
             if (isExpanded) {
@@ -132,7 +133,6 @@ fun RecipeDisplay(
             }
         }
     }
-
 }
 
 @Composable
@@ -141,8 +141,6 @@ fun BasicInformationLabel(
     cookingTime: String,
     difficulty: String,
     servingsCount: Int,
-    likes: Int,
-    onNoteUpdate: (Int) -> Unit,
 ) {
     val resizeFactor = 1f
     val textStyle = MaterialTheme.typography.body1.copy(
@@ -159,7 +157,11 @@ fun BasicInformationLabel(
     ) {
         // Cooking time
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Filled.AccessTime, contentDescription = "Cooking Time", modifier = Modifier.size(24.dp * resizeFactor))
+            Icon(
+                Icons.Filled.AccessTime,
+                contentDescription = "Cooking Time",
+                modifier = Modifier.size(24.dp * resizeFactor)
+            )
             Text(
                 text = cookingTime,
                 style = textStyle,
@@ -195,7 +197,7 @@ fun IngredientsAndInstructions(
             .padding(vertical = 10.dp, horizontal = 15.dp),
         horizontalAlignment = Alignment.Start,
 
-        ) {
+    ) {
         Text(
             text = "Ingredients",
             style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)

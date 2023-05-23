@@ -1,14 +1,10 @@
 package ch.epfl.sdp.cook4me.ui.recipe.feed
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.outlined.ThumbDown
@@ -29,7 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
  */
 @Preview(showBackground = true)
 @Composable
-fun VoteIcon(modifier:Modifier = Modifier, counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int = 0, canClick: Boolean = true) {
+fun VoteIcon(
+    modifier: Modifier = Modifier,
+    counterValue: Int = 0,
+    onChange: (Int) -> Unit = {},
+    userVote: Int = 0,
+    canClick: Boolean = true
+) {
     val upvote = remember { mutableStateOf(userVote == 1) }
     val downvote = remember { mutableStateOf(userVote == -1) }
     val notPressedColor = Color.White

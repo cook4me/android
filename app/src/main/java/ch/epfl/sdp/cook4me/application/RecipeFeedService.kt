@@ -61,4 +61,6 @@ class RecipeFeedService(
         }
         return recipeNoteRepository.retrieveAllUserVotes(userId)
     }
+
+    suspend fun getRecipeImage(id: String) = recipeRepository.getRecipeImage(id)
 }

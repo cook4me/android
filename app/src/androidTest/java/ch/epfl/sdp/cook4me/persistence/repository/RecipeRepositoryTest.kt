@@ -58,8 +58,8 @@ class RecipeRepositoryTest {
         val urls = files.map { Uri.fromFile(it) }
         val newEntry1 = Recipe(name = "newEntry1", user = USER_NAME)
         val newEntry2 = Recipe(name = "newEntry2", user = USER_NAME)
-        recipeRepository.add(newEntry1, urls)
-        recipeRepository.add(newEntry2, urls.drop(1))
+        recipeRepository.add(newEntry1, urls[0])
+        recipeRepository.add(newEntry2, urls[1])
         val allRecipes = recipeRepository.getAll()
         assertThat(allRecipes.values, containsInAnyOrder(newEntry1, newEntry2))
         val folderContent = getUserFolder().listAll().await()
@@ -68,10 +68,10 @@ class RecipeRepositoryTest {
 
     @Test
     fun deleteRecipe() = runTest {
-        val file = generateTempFiles(2)
-        val urls = file.map { Uri.fromFile(it) }
+        val file = generateTempFiles(1)
+        val url = Uri.fromFile(file.first())
         val newEntry1 = Recipe(name = "newEntry1", user = USER_NAME)
-        val id = recipeRepository.add(newEntry1, urls)
+        val id = recipeRepository.add(newEntry1, url)
         recipeRepository.delete(id ?: error("should never happen"))
         val recipes = recipeRepository.getAll()
         assertThat(recipes.isEmpty(), `is`(true))
@@ -80,32 +80,12 @@ class RecipeRepositoryTest {
     }
 
     @Test
-    fun updateExistingRecipeKeepOnlyRecentRecipe() = runTest {
-        val entryToBeUpdated = Recipe(name = "entryToBeUpdated")
-        recipeRepository.add(entryToBeUpdated)
-        val allRecipesBeforeUpdate = recipeRepository.getAll()
-        val updatedEntry = entryToBeUpdated.copy(name = "updated")
-        recipeRepository.update(allRecipesBeforeUpdate.keys.first(), updatedEntry)
-        val allRecipesAfterUpdate = recipeRepository.getAll()
-        assertThat(allRecipesAfterUpdate.values, contains(updatedEntry))
-        assertThat(allRecipesAfterUpdate.values, not(contains(entryToBeUpdated)))
-    }
-
-    @Test
-    fun getRecipeByName() = runTest {
-        val expectedRecipe = Recipe(name = "newEntry1", difficulty = "Hard", user = USER_NAME)
-        recipeRepository.add(expectedRecipe)
-        recipeRepository.add(Recipe(name = "newEntry2"))
-        recipeRepository.add(Recipe(name = "newEntry3"))
-        val actual = recipeRepository.getRecipeByName("newEntry1")
-        assertThat(actual, `is`(expectedRecipe))
-    }
-
-    @Test
     fun getRecipeById() = runTest {
-        recipeRepository.add(Recipe(name = "newEntry1"))
-        recipeRepository.add(Recipe(name = "newEntry2"))
-        recipeRepository.add(Recipe(name = "newEntry3"))
+        val file = generateTempFiles(1)
+        val url = Uri.fromFile(file.first())
+        recipeRepository.add(Recipe(name = "newEntry1"), url)
+        recipeRepository.add(Recipe(name = "newEntry2"), url)
+        recipeRepository.add(Recipe(name = "newEntry3"), url)
         val allRecipes = recipeRepository.getAll()
         val actual = recipeRepository.getById(allRecipes.keys.first())
         assertThat(actual, `is`(allRecipes.values.first()))

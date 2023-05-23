@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -54,13 +55,26 @@ fun RecipeFeed(
         mutableStateOf(listOf<RecipeNote>())
     }
 
+    val recipeImages = remember { mutableStateMapOf<String, ByteArray?>() }
+
     val userVotes = remember {
         mutableStateOf(mapOf<String, Int>())
     }
+    val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
+        isLoading.value = true
         userVotes.value = service.getRecipePersonalVotes()
         recipeList.value = service.getRecipesWithNotes()
+        isLoading.value = false
+        if (isOnline) {
+            recipeList.value.forEach {
+                val id = it.recipeId
+                recipeImages.putIfAbsent(id, service.getRecipeImage(id))
+            }
+        } else {
+            recipeImages.putAll(recipeList.value.map { it.recipeId to null })
+        }
     }
 
     val coroutineScope = rememberCoroutineScope()
@@ -81,6 +95,7 @@ fun RecipeFeed(
                 } else {
                     recipeList.value.sortedByDescending { it.recipe.creationTime }
                 },
+                recipeImages = recipeImages,
                 onNoteUpdate = { recipe, note ->
                     // launch coroutine to update the note
                     coroutineScope.launch {
