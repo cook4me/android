@@ -54,6 +54,9 @@
     <string name="ButtonRowDone">Done</string>
     <string name="TupCreateBlank">Field can\'t be left blank</string>
 
+    <!-- SwipeScreen -->
+    <string name="swipe_alldone_placeholder">all done</string>
+
     <!-- AddressInput   -->
     <string name="address_default_question">What is the location?</string>
     <string name="street_address_label">Street address</string>
@@ -101,6 +104,7 @@
     <!-- recipe feed -->
     <string name="get_top_recipes">Top recipes</string>
     <string name="get_recent_recipes">Most recent recipes</string>
+    <string name="empty_recipe_feed">no recipe yet</string>
 
     <!-- tests -->
     <string name="label">label</string>
@@ -114,7 +118,7 @@
     <string name="sign_up_screen_invalid_email">Email invalid</string>
     <string name="sign_up_screen_invalid_password">Password invalid</string>
     <string name="invalid_username_message">This username is not valid</string>
-    <string name="Add_profile_infos_top_bar_message">Add your user informations</string>
+    <string name="Add_profile_infos_top_bar_message">Add your user information</string>
     <string name="Add_profile_infos_invalid_user">Email invalid</string>
     <string name="TAG_USER_FIELD">UserField</string>
     <string name="sign_up_screen_tag">sign up screen</string>
@@ -127,8 +131,7 @@
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
     <!-- Chat -->
-    <string name="Loading_Screen_Tag">Loading Screen TAG</string>
-    <string name="Channel_Screen_Tag">Channel Screen TAG</string>
+    <string name="Channel_Screen_Tag">Channel Screen test TAG</string>
 
     <!-- BottomBar -->
     <string name="bottom_bar_more_button_text">More</string>
@@ -148,6 +151,7 @@
     <string name="join">Join</string>
     <string name="challenge_finished">This challenge has already taken place</string>
     <string name="vote">Vote for other participants</string>
+    <string name="empty_challenge_list">no challenge yet</string>
 
     <!-- Voting Screen --> voteScreenTitle
     <string name="voteScreenTitle">Vote for best participants</string>
@@ -160,5 +164,9 @@
     <string name="place">Place</string>
     <string name="back">Back</string>
     <string name="winner">Winner</string>
+
+    <!-- Loading Screen -->
+    <string name="loading_text">Now loading</string>
+    <string name="Loading_Screen_Tag">Loading Screen test tag</string>
 
 </resources>

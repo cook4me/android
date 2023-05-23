@@ -7,15 +7,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -26,6 +28,7 @@ import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.SwipeService
 import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
+import ch.epfl.sdp.cook4me.ui.common.PlaceholderScreen
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 import com.alexstyl.swipeablecard.Direction
 import com.alexstyl.swipeablecard.SwipeableCardState
@@ -45,32 +48,32 @@ fun TupperwareSwipeScreen(
     swipeService: SwipeService = SwipeService(),
     isOnline: Boolean = true,
 ) {
-    val data = remember {
+    var data by remember {
         mutableStateOf(mapOf<String, TupperwareWithImage>())
     }
     val states =
-        data.value.map { TupperwareState(it.key, it.value, rememberSwipeableCardState()) }
+        data.map { TupperwareState(it.key, it.value, rememberSwipeableCardState()) }
     val scope = rememberCoroutineScope()
     val allDone =
         states.isEmpty() || states.all { it.cardState.swipedDirection != null }
-    val openMatchDialog = remember { mutableStateOf(false) }
-    val isLoading = remember { mutableStateOf(true) }
+    var openMatchDialog by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        data.value = swipeService.getAllUnswipedTupperware()
-        isLoading.value = false
+        data = swipeService.getAllUnswipedTupperware()
+        isLoading = false
     }
 
-    if (openMatchDialog.value) {
+    if (openMatchDialog) {
         MatchDialog {
-            openMatchDialog.value = false
+            openMatchDialog = false
         }
     }
 
     suspend fun onSwipe(tupperwareId: String, direction: Direction) {
         swipeService.storeSwipeResult(tupperwareId, direction == Direction.Right)
         if (direction == Direction.Right && swipeService.isMatch(tupperwareId)) {
-            openMatchDialog.value = true
+            openMatchDialog = true
         }
     }
 
@@ -106,8 +109,10 @@ fun TupperwareSwipeScreen(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            if (isLoading.value) {
+            if (isLoading) {
                 LoadingScreen()
+            } else if (allDone) {
+                PlaceholderScreen(R.drawable.food_container, R.string.swipe_alldone_placeholder)
             } else {
                 Box(
                     Modifier
@@ -115,45 +120,41 @@ fun TupperwareSwipeScreen(
                         .weight(weight = 0.87f),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (allDone) {
-                        Text("all done") // TODO: https://github.com/cook4me/android/issues/185
-                    } else {
-                        states.forEach {
-                            if (it.cardState.swipedDirection == null) {
-                                TupperwareCard(
-                                    it.cardState,
-                                    it.data
-                                ) { direction ->
-                                    scope.launch {
-                                        onSwipe(it.id, direction)
-                                    }
+                    states.forEach {
+                        if (it.cardState.swipedDirection == null) {
+                            TupperwareCard(
+                                it.cardState,
+                                it.data
+                            ) { direction ->
+                                scope.launch {
+                                    onSwipe(it.id, direction)
                                 }
                             }
                         }
                     }
                 }
-            }
-            Row(
-                Modifier
-                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
-                    .weight(weight = 0.13f)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                CircleButton(
-                    onClick = {
-                        onSwipeButtonClicked(Direction.Left)
-                    },
-                    enabled = !allDone,
-                    icon = Icons.Rounded.Close
-                )
-                CircleButton(
-                    onClick = {
-                        onSwipeButtonClicked(Direction.Right)
-                    },
-                    enabled = !allDone,
-                    icon = Icons.Rounded.Favorite
-                )
+                Row(
+                    Modifier
+                        .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                        .weight(weight = 0.13f)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    CircleButton(
+                        onClick = {
+                            onSwipeButtonClicked(Direction.Left)
+                        },
+                        icon = Icons.Rounded.Close,
+                        color = MaterialTheme.colors.onError
+                    )
+                    CircleButton(
+                        onClick = {
+                            onSwipeButtonClicked(Direction.Right)
+                        },
+                        icon = Icons.Rounded.Favorite,
+                        color = MaterialTheme.colors.secondaryVariant
+                    )
+                }
             }
         }
     }

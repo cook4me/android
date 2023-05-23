@@ -8,51 +8,25 @@
         errorLine2="                           ^">
         <location
             file="src/main/res/values/strings.xml"
-            line="108"
+            line="112"
             column="28"/>
     </issue>
 
     <issue
         id="UnusedResources"
-        message="The resource `R.string.label` appears to be unused"
-        errorLine1="    &lt;string name=&quot;label&quot;>label&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~">
+        message="The resource `R.drawable.crossing_knives` appears to be unused">
         <location
-            file="src/main/res/values/strings.xml"
-            line="106"
-            column="13"/>
+            file="src/main/res/drawable-nodpi/crossing_knives.png"/>
     </issue>
 
     <issue
         id="UnusedResources"
-        message="The resource `R.string.question` appears to be unused"
-        errorLine1="    &lt;string name=&quot;question&quot;>question&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~~">
+        message="The resource `R.string.empty_challenge_list` appears to be unused"
+        errorLine1="    &lt;string name=&quot;empty_challenge_list&quot;>no challenge yet&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/res/values/strings.xml"
-            line="107"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.option1` appears to be unused"
-        errorLine1="    &lt;string name=&quot;option1&quot;>option1&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="108"
-            column="13"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
-        message="The resource `R.string.option2` appears to be unused"
-        errorLine1="    &lt;string name=&quot;option2&quot;>option2&lt;/string>"
-        errorLine2="            ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/res/values/strings.xml"
-            line="109"
+            line="154"
             column="13"/>
     </issue>
 
