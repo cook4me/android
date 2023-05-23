@@ -23,7 +23,6 @@ import io.getstream.chat.android.compose.ui.channels.ChannelsScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
 import io.getstream.chat.android.compose.ui.theme.StreamColors
 
-
 @Composable
 fun ChannelScreen(
     client: ChatClient = provideChatClient(
