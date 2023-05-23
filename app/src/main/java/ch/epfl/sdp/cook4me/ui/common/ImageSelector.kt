@@ -103,7 +103,7 @@ private fun ImageCard(
                 modifier = Modifier
                     .fillMaxHeight()
                     .clickable { clicked = !clicked },
-                contentScale = ContentScale.FillHeight,
+                contentScale = ContentScale.FillBounds,
                 colorFilter = filter
             )
             if (clicked) {
