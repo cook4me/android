@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import ch.epfl.sdp.cook4me.R
 
 @Composable
 fun PlaceholderScreen(
@@ -27,7 +28,7 @@ fun PlaceholderScreen(
     ) {
         Image(
             painter = painterResource(image),
-            contentDescription = "${stringResource(text)} placeholder screen",
+            contentDescription = "${stringResource(text)} ${stringResource(R.string.placeholder_screen_content_description)}",
             alpha = 0.55f,
             modifier = Modifier.fillMaxSize(fraction = 0.55f)
         )

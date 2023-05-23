@@ -169,4 +169,7 @@
     <string name="loading_text">Now loading</string>
     <string name="Loading_Screen_Tag">Loading Screen test tag</string>
 
+    <!-- Placeholder Screen -->
+    <string name="placeholder_screen_content_description">placeholder screen</string>
+
 </resources>
