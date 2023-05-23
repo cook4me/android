@@ -18,7 +18,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,7 +45,7 @@ fun CreateTupperwareScreen(
     onSuccessfulSubmit: () -> Unit,
     repository: TupperwareRepository = TupperwareRepository()
 ) {
-    val images = remember { mutableStateListOf<Uri>() }
+    var image by remember { mutableStateOf<Uri?>(null) }
 
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -56,7 +55,7 @@ fun CreateTupperwareScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             if (uri != null) {
-                images.add(uri)
+                image = uri
             }
         }
     )
@@ -66,7 +65,7 @@ fun CreateTupperwareScreen(
         onResult = { success ->
             imageUri?.let {
                 if (success) {
-                    images.add(it)
+                    image = it
                 }
             }
         }
@@ -106,11 +105,11 @@ fun CreateTupperwareScreen(
             onClickAddImage = { onClickAddImage() },
             onClickTakePhoto = { onClickTakePhoto() },
             onClickImage = {},
-            images,
+            image = image,
             onCancel = onCancel,
             onSubmit = { title, description ->
                 scope.launch {
-                    repository.add(title, description, images.first())
+                    image?.let { repository.add(title, description, it) }
                     onSuccessfulSubmit()
                 }
             }
@@ -124,7 +123,7 @@ private fun TupperwareForm(
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
     onClickImage: () -> Unit = {},
-    images: List<Uri>,
+    image: Uri?,
     onCancel: () -> Unit,
     onSubmit: (String, String) -> Unit
 ) {
@@ -161,7 +160,7 @@ private fun TupperwareForm(
                 onClickAddImage = onClickAddImage,
                 onClickTakePhoto = onClickTakePhoto,
                 onClickImage = onClickImage,
-                images = images
+                image = image
             )
             Spacer(modifier = Modifier.size(10.dp))
             CustomDivider()

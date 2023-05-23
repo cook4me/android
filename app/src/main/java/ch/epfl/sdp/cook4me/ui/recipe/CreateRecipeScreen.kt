@@ -21,7 +21,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -78,7 +77,7 @@ fun CreateRecipeScreen(
     onCancelClick: () -> Unit = {},
     onSuccessfulSubmit: () -> Unit = {}
 ) {
-    val images = remember { mutableStateListOf<Uri>() }
+    var image by remember { mutableStateOf<Uri?>(null) }
     val scope = rememberCoroutineScope()
 
     var imageUri by remember {
@@ -89,7 +88,7 @@ fun CreateRecipeScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             if (uri != null) {
-                images.add(uri)
+                image = uri
             }
         }
     )
@@ -99,7 +98,7 @@ fun CreateRecipeScreen(
         onResult = { success ->
             imageUri?.let {
                 if (success) {
-                    images.add(it)
+                    image = it
                 }
             }
         }
@@ -123,10 +122,10 @@ fun CreateRecipeScreen(
             onClickTakePhoto = { onClickTakePhoto() },
             onClickAddImage = { onClickAddImage() },
             onCancelClick = onCancelClick,
-            images = images,
+            image = image,
             submitForm = { recipe ->
                 scope.launch {
-                    repository.add(recipe, images.firstOrNull())
+                    repository.add(recipe, image)
                     onSuccessfulSubmit()
                 }
             }
@@ -141,7 +140,7 @@ private fun RecipeForm(
     onClickAddImage: () -> Unit,
     onCancelClick: () -> Unit = {},
     submitForm: (Recipe) -> Unit = {},
-    images: List<Uri> = listOf(),
+    image: Uri? = null,
 ) {
     var inProgress by remember {
         mutableStateOf(false)
@@ -177,7 +176,7 @@ private fun RecipeForm(
         CustomTitleText(stringResource(R.string.RecipeCreationScreenAddImageTitle))
         ImageSelector(
             Modifier,
-            images = images,
+            image = image,
             onClickAddImage = onClickAddImage,
             onClickTakePhoto = onClickTakePhoto,
             onClickImage = { /*TODO*/ }
