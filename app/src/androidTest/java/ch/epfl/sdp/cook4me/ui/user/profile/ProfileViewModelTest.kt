@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
@@ -35,7 +36,7 @@ class ProfileViewModelTest {
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(storage, auth)
     private val repository: ProfileRepository = ProfileRepository(store)
     private var userImage: Uri =
-        Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_launcher_foreground")
+        Uri.parse("android.resource://ch.epfl.sdp.cook4me/" + R.drawable.ic_user)
     private val user = Profile(
         email = USERNAME,
         name = "Donald",

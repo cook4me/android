@@ -27,6 +27,8 @@ import ch.epfl.sdp.cook4me.application.SwipeService
 import ch.epfl.sdp.cook4me.persistence.model.TupperwareWithImage
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
+import ch.epfl.sdp.cook4me.ui.theme.errorRed
+import ch.epfl.sdp.cook4me.ui.theme.supportingYellow
 import com.alexstyl.swipeablecard.Direction
 import com.alexstyl.swipeablecard.SwipeableCardState
 import com.alexstyl.swipeablecard.rememberSwipeableCardState
@@ -145,14 +147,16 @@ fun TupperwareSwipeScreen(
                         onSwipeButtonClicked(Direction.Left)
                     },
                     enabled = !allDone,
-                    icon = Icons.Rounded.Close
+                    icon = Icons.Rounded.Close,
+                    color = errorRed
                 )
                 CircleButton(
                     onClick = {
                         onSwipeButtonClicked(Direction.Right)
                     },
                     enabled = !allDone,
-                    icon = Icons.Rounded.Favorite
+                    icon = Icons.Rounded.Favorite,
+                    color = supportingYellow
                 )
             }
         }
