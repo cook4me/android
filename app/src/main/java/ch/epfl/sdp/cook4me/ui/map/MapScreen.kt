@@ -50,27 +50,6 @@ data class MarkerData(
     val description: String
 )
 
-val dummyMarkers = listOf(
-    MarkerData(
-        position = Locations.SATELLITE,
-        id = "satellite",
-        title = "Satellite EPFL",
-        description = "EPFL satellite campus"
-    ),
-    MarkerData(
-        position = Locations.ROLEX_LEARNING_CENTER,
-        title = "EPFL Rolex Learning Center",
-        id = "rolex_learning_center",
-        description = "EPFL library and learning center"
-    ),
-    MarkerData(
-        position = Locations.AGE_POLY,
-        title = "UNIL AgePoly",
-        id = "agepoly",
-        description = "UNIL science and research building"
-    )
-)
-
 @Composable
 fun GoogleMapView(
     modifier: Modifier = Modifier,

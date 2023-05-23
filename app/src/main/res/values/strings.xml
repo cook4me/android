@@ -10,10 +10,6 @@
     <string name="selected_time_text">Selected Time: </string>
     <string name="select_time_button">Select Time</string>
 
-    <!--  MainLocations  -->
-    <string name="EPFL">EPFL</string>
-    <string name="UNIL">UNIL</string>
-
     <!--  CreateEventScreen  -->
     <string name="ask_event_name">Name of the event?</string>
     <string name="ask_event_description">Description of the event?</string>
