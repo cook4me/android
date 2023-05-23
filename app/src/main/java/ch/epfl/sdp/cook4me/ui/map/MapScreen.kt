@@ -62,7 +62,6 @@ fun GoogleMapView(
     onCreateNewEventClick: () -> Unit = {},
     onDetailedEventClick: (String) -> Unit = {},
     isOnline: Boolean = true,
-
 ) {
     val loadedMarkers by mapViewModel.markers
 
@@ -79,9 +78,7 @@ fun GoogleMapView(
         cameraPositionState.position =
             CameraPosition.fromLatLngZoom(uniLocation, ZOOM_DEFAULT_VALUE)
     }
-
     var selectedMarker by remember { mutableStateOf(findMarkerById(loadedMarkers, selectedEventId)) }
-
     var navigateToEvent by remember { mutableStateOf(false) }
 
     Column(
@@ -95,12 +92,6 @@ fun GoogleMapView(
             onClick = onCreateNewEventClick,
             canClick = isOnline
         )
-        MapTypeControls(
-            onMapTypeClick = {
-                mapProperties = mapProperties.copy(mapType = it)
-            }
-        )
-
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
