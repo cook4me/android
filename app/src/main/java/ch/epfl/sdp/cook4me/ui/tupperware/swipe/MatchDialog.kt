@@ -1,5 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.tupperware.swipe
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
@@ -7,16 +8,16 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Chat
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import ch.epfl.sdp.cook4me.BuildConfig
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
+import ch.epfl.sdp.cook4me.ui.chat.createChatWithPairs
+import ch.epfl.sdp.cook4me.ui.chat.provideChatClient
 import kotlinx.coroutines.coroutineScope
 
 // TODO: https://github.com/cook4me/android/issues/181
 @Composable
-fun MatchDialog(user: String, otherUser: String, profileImageRepository: ProfileImageRepository = ProfileImageRepository(), onDismissRequest: () -> Unit) {
-    coroutineScope {
-        val myImage = profileImageRepository.getProfile(user)
-        val otherImage = profileImageRepository.getProfile(otherUser)
-    }
+fun MatchDialog(userEmail: String?, otherUserEmail: String, onDismissRequest: () -> Unit, context: Context) {
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
@@ -26,7 +27,24 @@ fun MatchDialog(user: String, otherUser: String, profileImageRepository: Profile
         text = {
             Column {
                 Text("Here is a text ")
-                CircleButton(onClick = { /*TODO*/ }, icon = Icons.Rounded.Chat, color = MaterialTheme.colors.primary)
+                CircleButton(
+                    onClick = {
+                        userEmail?.let {
+                            createChatWithPairs(
+                                userEmail,
+                                otherUserEmail,
+                                client = provideChatClient(
+                                    apiKey = BuildConfig.CHAT_API_KEY,
+                            context = context
+                            ),
+                            context = context
+                            )
+                        }
+
+                              },
+                    icon = Icons.Rounded.Chat,
+                    color = MaterialTheme.colors.primary
+                )
             }
         },
         buttons = {}

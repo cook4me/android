@@ -19,6 +19,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -60,7 +61,9 @@ fun TupperwareSwipeScreen(
         states.isEmpty() || states.all { it.cardState.swipedDirection != null }
     val openMatchDialog = remember { mutableStateOf(true) }
     val isLoading = remember { mutableStateOf(true) }
-    val otherUser = remember { mutableStateOf("") }
+    val userEmail = accountService.getCurrentUserWithEmail()
+    val otherUserEmail = remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         data.value = swipeService.getAllUnswipedTupperware()
@@ -68,9 +71,14 @@ fun TupperwareSwipeScreen(
     }
 
     if (openMatchDialog.value) {
-        MatchDialog(accountService.userEmail, otherUser) {
-            openMatchDialog.value = false
-        }
+        MatchDialog(
+            userEmail = userEmail,
+            otherUserEmail = otherUserEmail.value,
+            context = context,
+            onDismissRequest = {
+                openMatchDialog.value = false
+            }
+        )
     }
 
     suspend fun onSwipe(tupperwareId: String, direction: Direction) {
@@ -78,7 +86,7 @@ fun TupperwareSwipeScreen(
         if (direction == Direction.Right && swipeService.isMatch(tupperwareId)) {
             swipeService.getUserByTupperwareId(tupperwareId)?.let {
                 openMatchDialog.value = true
-                other.value = it
+                otherUserEmail.value = it
             }
         }
     }
