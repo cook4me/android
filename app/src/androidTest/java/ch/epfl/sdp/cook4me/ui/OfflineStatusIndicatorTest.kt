@@ -17,7 +17,7 @@ class OfflineStatusIndicatorTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun assertDefaultInformationIsDisplayed(){
+    fun assertDefaultInformationIsDisplayed() {
         composeTestRule.setContent {
             OfflineStatusIndicator()
         }

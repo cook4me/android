@@ -11,12 +11,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
- class TupperwareSwipeScreenTest {
+class TupperwareSwipeScreenTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun whenOfflineShouldDisplayDefaultMessage(){
+    fun whenOfflineShouldDisplayDefaultMessage() {
         composeTestRule.setContent {
             TupperwareSwipeScreen(isOnline = false)
         }
@@ -34,4 +34,4 @@ import org.junit.runner.RunWith
 //    private fun getString(id: Int): String {
 //        return composeTestRule.activity.getString(id)
 //    }
- }
+}
