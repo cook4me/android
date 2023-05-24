@@ -172,7 +172,6 @@
     <string name="to_swipe_go_online">You are offline, to keep swiping you need to go online</string>
 
     <!-- Loading Screen -->
-    <string name="loading_text">Now loading</string>
     <string name="Loading_Screen_Tag">Loading Screen test tag</string>
 
     <!-- Placeholder Screen -->
