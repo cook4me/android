@@ -19,9 +19,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -72,6 +74,8 @@ fun CreateChallengeScreen(
 
     val userEmail = accountService.getCurrentUserWithEmail()
     userEmail?.let { challenge.value = challenge.value.copy(creator = userEmail) }
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -118,7 +122,6 @@ fun CreateChallengeScreen(
                 onDoneClick()
             }
         )
-        Text(text = endMsg.value)
     }
 }
 
