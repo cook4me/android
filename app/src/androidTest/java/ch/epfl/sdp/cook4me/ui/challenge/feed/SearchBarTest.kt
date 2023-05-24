@@ -7,12 +7,13 @@ import androidx.compose.ui.test.isNotFocused
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.text.input.ImeAction
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 import junit.framework.TestCase.assertEquals
 import org.hamcrest.Matchers.`is`
@@ -37,7 +38,7 @@ class SearchBarTest {
                 )
             }
         }
-        composeTestRule.onNodeWithText("Search...").assertExists()
+        composeTestRule.onNodeWithStringId(R.string.searchbar_placeholder_text).assertExists()
         composeTestRule.onNodeWithContentDescription("Search Icon").assertDoesNotExist()
     }
 
@@ -57,7 +58,7 @@ class SearchBarTest {
             }
         }
 
-        composeTestRule.onNodeWithText("Search...").performTextInput("Hello")
+        composeTestRule.onNodeWithStringId(R.string.searchbar_placeholder_text).performTextInput("Hello")
         assertEquals(searchText, "Hello")
     }
 
@@ -79,7 +80,7 @@ class SearchBarTest {
                 )
             }
         }
-        composeTestRule.onNodeWithText("Search...").performTextInput("Hello")
+        composeTestRule.onNodeWithStringId(R.string.searchbar_placeholder_text).performTextInput("Hello")
         composeTestRule.onNode(hasImeAction(ImeAction.Search)).performImeAction()
 
         assertThat(searchClicked, `is`(true))
