@@ -75,7 +75,11 @@ fun Cook4MeNavHost(
             MapPermissionWrapper(
                 permissionStatusProvider = permissionProvider,
                 onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
+                onDetailedEventClick = {
+                        eventId ->
+                    navController.navigate(
+                        ScreenWithArgs.DetailedEventScreen.createRoute(eventId)
+                    ) },
                 isOnline = isOnline
             )
         }
