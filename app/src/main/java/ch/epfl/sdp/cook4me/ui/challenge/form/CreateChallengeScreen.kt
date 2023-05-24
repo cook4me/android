@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -40,6 +41,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
 import com.google.firebase.firestore.GeoPoint
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
@@ -77,51 +79,62 @@ fun CreateChallengeScreen(
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(10.dp)
-    ) {
-        InputField(
-            question = R.string.ask_challenge_name,
-            value = challenge.value.name,
-            onValueChange = { challenge.value = challenge.value.copy(name = it) }
-        )
-        InputField(
-            question = R.string.ask_challenge_description,
-            value = challenge.value.description,
-            onValueChange = { challenge.value = challenge.value.copy(description = it) }
-        )
-        CookingGenreDropdown(
-            initialSelectedGenre = challenge.value.type,
-            onSelectedGenreChanged = { challenge.value = challenge.value.copy(type = it) }
-        )
-        DatePicker(
-            initialDate = Calendar.getInstance(),
-            onDateChange = { updateDate(it) }
-        )
-        TimePicker(
-            onTimeChanged = { updateTime(it) }
-        )
-        LocationPicker(
-            modifier = Modifier.height(400.dp),
-            onLocationPicked = {
-                challenge.value = challenge.value.copy(latLng = GeoPoint(it.latitude, it.longitude))
-            }
-        )
-        FormButtons(
-            onCancelText = R.string.ButtonRowCancel,
-            onSaveText = R.string.ButtonRowDone,
-            onCancelClick = onCancelClick,
-            onSaveClick = {
-                // call suspend function
-                runBlocking {
-                    endMsg.value = challengeFormService.submitForm(challenge.value) ?: "Challenge created!"
+    Scaffold(
+        modifier = Modifier.padding(10.dp),
+        scaffoldState = scaffoldState,
+        bottomBar = {
+            FormButtons(
+                onCancelText = R.string.ButtonRowCancel,
+                onSaveText = R.string.ButtonRowDone,
+                onCancelClick = onCancelClick,
+                onSaveClick = {
+                    // call suspend function
+                    scope.launch {
+                        endMsg.value = challengeFormService.submitForm(challenge.value) ?: ""
+                        if (endMsg.value.isNotBlank()) {
+                            scaffoldState.snackbarHostState.showSnackbar(endMsg.value)
+                        } else {
+                            onDoneClick()
+                        }
+                    }
                 }
-                onDoneClick()
-            }
-        )
+            )
+        }
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(it)
+        ) {
+            InputField(
+                question = R.string.ask_challenge_name,
+                value = challenge.value.name,
+                onValueChange = { challenge.value = challenge.value.copy(name = it) }
+            )
+            InputField(
+                question = R.string.ask_challenge_description,
+                value = challenge.value.description,
+                onValueChange = { challenge.value = challenge.value.copy(description = it) }
+            )
+            CookingGenreDropdown(
+                initialSelectedGenre = challenge.value.type,
+                onSelectedGenreChanged = { challenge.value = challenge.value.copy(type = it) }
+            )
+            DatePicker(
+                initialDate = Calendar.getInstance(),
+                onDateChange = { updateDate(it) }
+            )
+            TimePicker(
+                onTimeChanged = { updateTime(it) }
+            )
+            LocationPicker(
+                modifier = Modifier.height(400.dp),
+                onLocationPicked = {
+                    challenge.value = challenge.value.copy(latLng = GeoPoint(it.latitude, it.longitude))
+                }
+            )
+        }
     }
 }
 
