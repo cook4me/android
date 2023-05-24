@@ -113,7 +113,8 @@ fun BulletPointTextField(
     onValueChange: (String) -> Unit,
     separators: Sequence<String> = GenericSeparators.BulletSeparator,
     contentDescription: String,
-    shape: Shape = defaultShape
+    shape: Shape = defaultShape,
+    isError: Boolean = false
 ) {
     fun textFormatter(text: String): String {
         return text.trimStart()
@@ -133,7 +134,8 @@ fun BulletPointTextField(
         placeholder = placeholder,
         visualTransformation = ListVisualTransformation(separators),
         contentDescription = contentDescription,
-        shape = shape
+        shape = shape,
+        isError = isError
     )
 }
 

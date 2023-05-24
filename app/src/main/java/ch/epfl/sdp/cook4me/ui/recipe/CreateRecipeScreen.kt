@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +20,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +46,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.CustomTitleText
 import ch.epfl.sdp.cook4me.ui.common.form.DropDownMenuWithTitle
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.FormState
+import ch.epfl.sdp.cook4me.ui.common.form.FormTitle
 import ch.epfl.sdp.cook4me.ui.common.form.GenericSeparators
 import ch.epfl.sdp.cook4me.ui.common.form.ImageFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
@@ -79,7 +83,7 @@ fun CreateRecipeScreen(
     onCancelClick: () -> Unit = {},
     onSuccessfulSubmit: () -> Unit = {}
 ) {
-    var imageState by remember { mutableStateOf(ImageFieldState()) }
+    var imageState by remember { mutableStateOf(ImageFieldState("Recipe needs an image")) }
     val scope = rememberCoroutineScope()
 
     var imageUri by remember {
@@ -90,7 +94,7 @@ fun CreateRecipeScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             if (uri != null) {
-                imageState = uri
+                imageState.image = uri
             }
         }
     )
@@ -100,7 +104,7 @@ fun CreateRecipeScreen(
         onResult = { success ->
             imageUri?.let {
                 if (success) {
-                    imageState = it
+                    imageState.image = it
                 }
             }
         }
@@ -124,12 +128,12 @@ fun CreateRecipeScreen(
             Modifier.weight(1f),
             onClickTakePhoto = { onClickTakePhoto() },
             onClickAddImage = { onClickAddImage() },
-            onImageClick = { imageState = null },
+            onImageClick = { imageState.image = null },
             onCancelClick = onCancelClick,
-            image = imageState,
+            imageState = imageState,
             submitForm = { recipe ->
                 scope.launch {
-                    repository.add(recipe, imageState)
+                    repository.add(recipe, imageState.image)
                     onSuccessfulSubmit()
                 }
             }
@@ -145,21 +149,21 @@ private fun RecipeForm(
     onCancelClick: () -> Unit = {},
     onImageClick: () -> Unit = {},
     submitForm: (Recipe) -> Unit = {},
-    image: Uri? = null,
+    imageState: ImageFieldState,
 ) {
     var inProgress by remember {
         mutableStateOf(false)
     }
     val context = LocalContext.current
-    val recipeNameState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
-    val ingredientsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
-    val preparationStepsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
-    val servingsState = remember { RequiredTextFieldState(context.getString(R.string.TupCreateBlank)) }
+    val recipeNameState = remember { RequiredTextFieldState("Recipe needs a name") }
+    val ingredientsState = remember { RequiredTextFieldState("Recipe needs ingredients") }
+    val preparationStepsState = remember { RequiredTextFieldState("Recipe needs instructions") }
+    val servingsState = remember { RequiredTextFieldState("Recipe needs a number of servings") }
     val cookingTimeState = remember {
-        RequiredTextFieldState(context.getString(R.string.TupCreateBlank), cookingTimeOptions.first())
+        RequiredTextFieldState("Recipe needs a cooking time", cookingTimeOptions.first())
     }
     val difficultyState = remember {
-        RequiredTextFieldState(context.getString(R.string.TupCreateBlank), difficultyOptions.first())
+        RequiredTextFieldState("Recipe needs a difficulty", difficultyOptions.first())
     }
     val form = FormState(
         recipeNameState,
@@ -168,105 +172,136 @@ private fun RecipeForm(
         servingsState,
         cookingTimeState,
         difficultyState,
+        imageState,
     )
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = modifier
-            .testTag(stringResource(R.string.create_recipe_screen_tag))
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        Box(
-            Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ){
-            ImageSelector(
-                Modifier,
-                image = image,
-                onClickAddImage = onClickAddImage,
-                onClickTakePhoto = onClickTakePhoto,
-                onClickImage = onImageClick,
-                imageSize = 250.dp,
-                isError = false
-            )
-        }
-        CustomDivider()
-        CustomTitleText(stringResource(R.string.RecipeCreationRecipeTitle))
-        CustomTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = recipeNameState.text,
-            contentDescription = stringResource(R.string.RecipeNameTextFieldDesc),
-            onValueChange = {
-                recipeNameState.text = it
+    @Composable
+    fun BottomBar() {
+        FormButtons(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp),
+            isLoading = inProgress,
+            onCancelText = R.string.ButtonRowCancel,
+            onSaveText = R.string.ButtonRowDone,
+            onCancelClick = onCancelClick,
+            onSaveClick = {
+                form.enableShowErrors()
+                if (form.isValid) {
+                    inProgress = true
+                    submitForm(
+                        Recipe(
+                            name = recipeNameState.text,
+                            ingredients = ingredientsState.text.lines().filter { it.isNotBlank() },
+                            recipeSteps = preparationStepsState.text.lines().filter { it.isNotBlank() },
+                            servings = servingsState.text.toInt(),
+                            difficulty = difficultyState.text,
+                            cookingTime = cookingTimeState.text,
+                        )
+                    )
+                } else {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(form.getFirstError())
+                    }
+                }
             },
-            singleLine = true,
-            shape = RoundedCornerShape(8.dp),
-            placeholder = { Text(stringResource(R.string.RecipeNameTextFieldPlaceholder)) }
-        )
-        CustomDivider()
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            CustomTitleText(stringResource(R.string.RecipeCreationIngredientsTitle))
-            Spacer(Modifier.size(15.dp))
-            ServingsEntry(value = servingsState.text, onValueChange = { servingsState.text = it })
-        }
-        BulletPointTextField(
-            modifier = Modifier.fillMaxWidth(),
-            onValueChange = { ingredientsState.text = it },
-            placeholder = { Text(stringResource(R.string.ingredientsTextFieldPlaceholder)) },
-            contentDescription = stringResource(R.string.ingredientsTextFieldContentDesc)
-        )
-        CustomDivider()
-        CustomTitleText(stringResource(R.string.RecipePreparationTitle))
-        Row {
-            CookingTimeEntry(
-                onValueChange = { cookingTimeState.text = it },
-                value = cookingTimeState.text,
-            )
-            DifficultyEntry(
-                onValueChange = { difficultyState.text = it },
-                value = difficultyState.text,
-            )
-        }
-        BulletPointTextField(
-            onValueChange = { preparationStepsState.text = it },
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(text = stringResource(R.string.RecipeStepsTextFieldPlaceholder)) },
-            separators = GenericSeparators.EnumeratedList,
-            contentDescription = stringResource(R.string.RecipeStepsTextFieldDesc)
         )
     }
-    FormButtons(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp),
-        isLoading = inProgress,
-        onCancelText = R.string.ButtonRowCancel,
-        onSaveText = R.string.ButtonRowDone,
-        onCancelClick = onCancelClick,
-        onSaveClick = {
-            form.enableShowErrors()
-            if (form.isValid) {
-                inProgress = true
-                submitForm(
-                    Recipe(
-                        name = recipeNameState.text,
-                        ingredients = ingredientsState.text.lines().filter { it.isNotBlank() },
-                        recipeSteps = preparationStepsState.text.lines().filter { it.isNotBlank() },
-                        servings = servingsState.text.toInt(),
-                        difficulty = difficultyState.text,
-                        cookingTime = cookingTimeState.text,
-                    )
+
+    @Composable
+    fun RecipeFields(paddingValues: PaddingValues) {
+        Column(
+            modifier = modifier
+                .testTag(stringResource(R.string.create_recipe_screen_tag))
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            FormTitle(modifier = Modifier.padding(10.dp),title = "Create a Recipe")
+            Box(
+                Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ){
+                ImageSelector(
+                    Modifier,
+                    image = imageState.image,
+                    onClickAddImage = onClickAddImage,
+                    onClickTakePhoto = onClickTakePhoto,
+                    onClickImage = onImageClick,
+                    imageSize = 250.dp,
+                    isError = imageState.showErrors()
                 )
-            } else {
-                Log.d("Debug", "Error in form")
             }
-        },
-    )
+            //CustomDivider()
+            CustomTitleText(stringResource(R.string.RecipeCreationRecipeTitle))
+            CustomTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = recipeNameState.text,
+                contentDescription = stringResource(R.string.RecipeNameTextFieldDesc),
+                onValueChange = {
+                    recipeNameState.text = it
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(8.dp),
+                placeholder = { Text(stringResource(R.string.RecipeNameTextFieldPlaceholder)) },
+                isError = recipeNameState.showErrors()
+            )
+            //CustomDivider()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CustomTitleText(stringResource(R.string.RecipeCreationIngredientsTitle))
+                Spacer(Modifier.size(15.dp))
+                ServingsEntry(
+                    value = servingsState.text,
+                    onValueChange = { servingsState.text = it },
+                    isError = servingsState.showErrors()
+                )
+            }
+            BulletPointTextField(
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = { ingredientsState.text = it },
+                placeholder = { Text(stringResource(R.string.ingredientsTextFieldPlaceholder)) },
+                contentDescription = stringResource(R.string.ingredientsTextFieldContentDesc),
+                isError = ingredientsState.showErrors()
+            )
+            //CustomDivider()
+            CustomTitleText(stringResource(R.string.RecipePreparationTitle))
+            Row {
+                CookingTimeEntry(
+                    onValueChange = { cookingTimeState.text = it },
+                    value = cookingTimeState.text,
+                )
+                DifficultyEntry(
+                    onValueChange = { difficultyState.text = it },
+                    value = difficultyState.text,
+                )
+            }
+            BulletPointTextField(
+                onValueChange = { preparationStepsState.text = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text(text = stringResource(R.string.RecipeStepsTextFieldPlaceholder)) },
+                separators = GenericSeparators.EnumeratedList,
+                contentDescription = stringResource(R.string.RecipeStepsTextFieldDesc),
+                isError = preparationStepsState.showErrors()
+            )
+        }
+    }
+
+    Scaffold(
+        modifier = Modifier.padding(10.dp),
+        scaffoldState = scaffoldState,
+        bottomBar = {
+            BottomBar()
+        }
+    ) {
+        RecipeFields(it)
+    }
+
 }
 
 @Composable
@@ -274,6 +309,7 @@ fun ServingsEntry(
     value: String,
     modifier: Modifier = Modifier,
     onValueChange: (String) -> Unit = {},
+    isError: Boolean,
 ) {
     Row(
         modifier = modifier,
@@ -297,7 +333,8 @@ fun ServingsEntry(
                     it.takeWhile { c -> c.isDigit() }.take(2)
                 )
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            isError = isError
         )
     }
 }
