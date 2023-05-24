@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.recipe
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -51,7 +50,6 @@ import ch.epfl.sdp.cook4me.ui.common.form.GenericSeparators
 import ch.epfl.sdp.cook4me.ui.common.form.ImageFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.tupperware.form.ComposeFileProvider
-import ch.epfl.sdp.cook4me.ui.tupperware.form.CustomDivider
 import kotlinx.coroutines.launch
 
 private val cornerSize = 8.dp
@@ -121,7 +119,6 @@ fun CreateRecipeScreen(
         imageUri = uri
         cameraLauncher.launch(uri)
     }
-
 
     Column {
         RecipeForm(
@@ -220,11 +217,11 @@ private fun RecipeForm(
                 .padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            FormTitle(modifier = Modifier.padding(10.dp),title = "Create a Recipe")
+            FormTitle(modifier = Modifier.padding(10.dp), title = "Create a Recipe")
             Box(
                 Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 ImageSelector(
                     Modifier,
                     image = imageState.image,
@@ -235,7 +232,7 @@ private fun RecipeForm(
                     isError = imageState.showErrors()
                 )
             }
-            //CustomDivider()
+            // CustomDivider()
             CustomTitleText(stringResource(R.string.RecipeCreationRecipeTitle))
             CustomTextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -249,7 +246,7 @@ private fun RecipeForm(
                 placeholder = { Text(stringResource(R.string.RecipeNameTextFieldPlaceholder)) },
                 isError = recipeNameState.showErrors()
             )
-            //CustomDivider()
+            // CustomDivider()
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -269,7 +266,7 @@ private fun RecipeForm(
                 contentDescription = stringResource(R.string.ingredientsTextFieldContentDesc),
                 isError = ingredientsState.showErrors()
             )
-            //CustomDivider()
+            // CustomDivider()
             CustomTitleText(stringResource(R.string.RecipePreparationTitle))
             Row {
                 CookingTimeEntry(
@@ -299,7 +296,6 @@ private fun RecipeForm(
     ) {
         RecipeFields(it)
     }
-
 }
 
 @Composable

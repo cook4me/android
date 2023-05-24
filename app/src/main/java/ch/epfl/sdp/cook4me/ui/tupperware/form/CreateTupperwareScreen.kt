@@ -51,7 +51,9 @@ fun CreateTupperwareScreen(
     repository: TupperwareRepository = TupperwareRepository()
 ) {
     val context = LocalContext.current
-    val imageState by remember { mutableStateOf(ImageFieldState(context.getString(R.string.tupperware_field_image_error))) }
+    val imageState by remember {
+        mutableStateOf(ImageFieldState(context.getString(R.string.tupperware_field_image_error)))
+    }
 
     var imageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -76,7 +78,7 @@ fun CreateTupperwareScreen(
             }
         }
     )
-    
+
     val scope = rememberCoroutineScope()
 
     fun onClickAddImage() {
@@ -160,7 +162,7 @@ private fun TupperwareForm(
                 }
             )
         }
-    ) { it ->
+    ) {
         Box(
             modifier = modifier.padding(it)
         ) {

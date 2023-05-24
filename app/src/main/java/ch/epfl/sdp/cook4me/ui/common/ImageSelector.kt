@@ -45,6 +45,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
+private const val SCALE_FACTOR = 0.4f
+private val STROKE = Stroke(
+    width = 6f,
+    pathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 10f), 0f)
+)
+
 @Composable
 fun ImageSelector(
     modifier: Modifier = Modifier,
@@ -56,18 +62,18 @@ fun ImageSelector(
     imageSize: Dp = 200.dp,
 ) {
     Box(modifier = Modifier.fillMaxWidth().padding(10.dp), contentAlignment = Alignment.Center) {
-        if (image == null)
+        if (image == null) {
             AddPictureButtons(
                 onClickAddImage = onClickAddImage,
                 onClickTakePhoto = onClickTakePhoto,
-                imageHeight= imageSize,
+                imageHeight = imageSize,
                 isError = isError
             )
-        else
+        } else {
             ImageCard(image = image, imageHeight = imageSize, onClick = onClickImage)
+        }
     }
 }
-
 
 @Composable
 private fun ImageCard(
@@ -77,12 +83,15 @@ private fun ImageCard(
     onClick: () -> Unit
 ) {
     var clicked by remember { mutableStateOf(false) }
-    val scaleFactor = 0.4f
-    val filter = if (clicked)
-        ColorFilter.colorMatrix(ColorMatrix().apply {
-            setToScale(scaleFactor, scaleFactor, scaleFactor, 1f)
-        })
-    else null
+    val filter = if (clicked) {
+        ColorFilter.colorMatrix(
+            ColorMatrix().apply {
+                setToScale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR, 1f)
+            }
+        )
+    } else {
+        null
+    }
 
     Card(
         modifier = modifier
@@ -112,7 +121,7 @@ private fun ImageCard(
 
 @Composable
 private fun DeleteButton(modifier: Modifier, onClick: () -> Unit) {
-    Box(modifier.size(60.dp)){
+    Box(modifier.size(60.dp)) {
         IconButton(
             onClick = onClick,
             modifier = Modifier,
@@ -154,14 +163,10 @@ private fun AddPictureButtons(
 
 @Composable
 private fun DottedRectangle(modifier: Modifier = Modifier, color: Color) {
-    val stroke = Stroke(
-        width = 6f,
-        pathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 10f), 0f)
-    )
     Canvas(
         modifier = Modifier.fillMaxSize()
-    ){
-        drawRoundRect(color = color,style = stroke)
+    ) {
+        drawRoundRect(color = color, style = STROKE)
     }
 }
 
@@ -179,11 +184,10 @@ private fun AddPhotoButton(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = Color.White//MaterialTheme.colors.onSurface
+            tint = Color.White // MaterialTheme.colors.onSurface
         )
     }
 }
-
 
 @Composable
 private fun AddPictureFromGalleryButton(

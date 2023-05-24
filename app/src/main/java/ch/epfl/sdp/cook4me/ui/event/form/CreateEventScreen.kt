@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -30,7 +29,6 @@ import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 /**
@@ -105,7 +103,7 @@ fun CreateEventScreen(
                 value = event.value.description,
                 onValueChange = { event.value = event.value.copy(description = it) }
             )
-            //AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
+            // AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
             IntegerSlider(
                 text = R.string.ask_event_number_participants, min = 2, max = 16,
                 onValueChange = { event.value = event.value.copy(maxParticipants = it) },

@@ -42,7 +42,6 @@ import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
 /**
