@@ -80,6 +80,7 @@ fun createChatWithPairs(
     userEmail: String,
     targetEmail: String,
     client: ChatClient,
+    context: Context
 ) {
     // parsing email to get the name (user id)
     val namePartsUser = userEmail.split("@")[0].replace(".", "")
@@ -104,14 +105,9 @@ fun createChatWithPairs(
                 extraData = extraData,
             ).enqueue { result ->
                 if (result.isSuccess) {
-                    // if channel successfully created, go to the message screen
-                    // when there already exists a channel between the two users,
-                    // the result is still successful, and therefore jumping
-                    // to the message screen
                     val channel = result.data()
-                    // do nothing now
-                        /*val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
-                        ContextCompat.startActivity(context, intent, null)*/
+                        val intent = MessagesActivity.getIntent(context, channelId = channel.cid, userEmail = userEmail)
+                        ContextCompat.startActivity(context, intent, null)
                 } else {
                     println("create channel failed")
                 }

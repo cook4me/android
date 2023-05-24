@@ -178,5 +178,8 @@
     <!-- Placeholder Screen -->
     <string name="placeholder_screen_content_description">placeholder screen</string>
 
+    <!-- Match Dialogue -->
+    <string name="match_dialogue_title">It\'s a match!</string>
+
 
 </resources>
