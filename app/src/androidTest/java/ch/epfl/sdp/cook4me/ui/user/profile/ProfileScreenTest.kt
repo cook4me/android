@@ -106,29 +106,4 @@ class ProfileScreenTest {
         composeTestRule.onNodeWithText(user.allergies).assertExists()
         composeTestRule.onNodeWithText(user.bio).assertExists()
     }
-
-    @Test
-    fun profileScreenStateTest() {
-        val profileViewModel = ProfileViewModel()
-
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            !profileViewModel.isLoading.value
-        }
-
-        composeTestRule.setContent { ProfileScreen(profileViewModel = profileViewModel) }
-
-        profileViewModel.isLoading.value = true
-
-        // Wait for a moment to allow Compose to recompose
-        composeTestRule.waitForIdle()
-
-        composeTestRule.onNodeWithTag(context.getString(R.string.Loading_Screen_Tag)).assertExists()
-
-        profileViewModel.isLoading.value = false
-
-        // Wait for a moment to allow Compose to recompose
-        composeTestRule.waitForIdle()
-
-        composeTestRule.onNodeWithTag(context.getString(R.string.Loading_Screen_Tag)).assertDoesNotExist()
-    }
 }

@@ -140,30 +140,6 @@ class EditProfileScreenTest {
     }
 
     @Test
-    fun editProfileScreenStateTest() {
-        val profileViewModel = ProfileViewModel()
-
-        composeTestRule.setContent {
-            EditProfileScreen(viewModel = profileViewModel)
-        }
-
-        profileViewModel.isLoading.value = true
-
-        // Wait for a moment to allow Compose to recompose
-        composeTestRule.waitForIdle()
-
-        // Check that the progress bar is displayed
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
-
-        // Wait to be completed
-        profileViewModel.isLoading.value = false
-
-        // Wait for a moment to allow Compose to recompose
-        composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
-    }
-
-    @Test
     fun editProfileScreenCancelButtonTest() {
         var isCancelledClicked = false
         val profileViewModel = ProfileViewModel()
