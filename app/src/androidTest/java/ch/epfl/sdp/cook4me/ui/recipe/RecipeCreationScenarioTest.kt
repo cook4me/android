@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -64,8 +65,8 @@ class RecipeCreationScenarioTest {
         }
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc))
             .performTextInput(expectedRecipe.name)
-        composeTestRule.onNodeWithTag("AddImage").performClick()
-        composeTestRule.waitUntilDisplayed(hasTestTag("image"))
+        composeTestRule.onNodeWithTag("Add From Gallery Button").performClick()
+        composeTestRule.waitUntilDisplayed(hasContentDescription("Selected Image"))
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc))
             .performTextInput(expectedRecipe.servings.toString())
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc))

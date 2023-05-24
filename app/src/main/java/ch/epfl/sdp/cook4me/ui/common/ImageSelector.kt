@@ -188,7 +188,11 @@ private fun AddPhotoButton(
 private fun AddPictureFromGalleryButton(
     onClick: () -> Unit,
 ) {
-    AddPhotoButton(modifier = Modifier, onClick = onClick, icon = Icons.Default.AddPhotoAlternate)
+    AddPhotoButton(
+        modifier = Modifier.testTag("Add From Gallery Button"),
+        onClick = onClick,
+        icon = Icons.Default.AddPhotoAlternate
+    )
 }
 
 @Composable
@@ -196,56 +200,4 @@ private fun TakePictureButton(
     onClick: () -> Unit,
 ) {
     AddPhotoButton(modifier = Modifier, onClick = onClick, icon = Icons.Default.AddAPhoto)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewSelectorWithImage() {
-    var image by remember { mutableStateOf<Uri?>(null) }
-
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
-
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent(),
-        onResult = { uri ->
-            if (uri != null) {
-                Log.d("ImageSelector", uri.toString())
-                image = uri
-            }
-        }
-    )
-
-    val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = { success ->
-            imageUri?.let {
-                if (success) {
-                    image = it
-                }
-            }
-        }
-    )
-
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-
-    fun onClickAddImage() {
-        imagePicker.launch("image/*")
-    }
-
-    fun onClickTakePhoto() {
-        val uri = ComposeFileProvider.getImageUri(context)
-        imageUri = uri
-        cameraLauncher.launch(uri)
-    }
-
-    ImageSelector(
-        onClickAddImage = { onClickAddImage() },
-        onClickTakePhoto = { onClickTakePhoto() },
-        onClickImage = { image = null },
-        image = image,
-        imageSize = 250.dp
-    )
 }
