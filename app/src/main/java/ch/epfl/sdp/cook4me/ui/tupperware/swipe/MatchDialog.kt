@@ -20,8 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.Chat
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,7 +41,7 @@ import ch.epfl.sdp.cook4me.ui.chat.createChatWithPairs
 import ch.epfl.sdp.cook4me.ui.chat.provideChatClient
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 
 @Suppress("MagicNumber")
 @Composable
@@ -50,11 +52,15 @@ fun MatchDialog(
     onDismissRequest: () -> Unit,
     profileImageRepository: ProfileImageRepository = ProfileImageRepository()
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val imageOfMe = remember { mutableStateOf<Uri>(Uri.EMPTY) }
     val other = remember { mutableStateOf<Uri>(Uri.EMPTY) }
-    runBlocking {
-        imageOfMe.value = profileImageRepository.getProfile(user)
-        other.value = profileImageRepository.getProfile(otherUser)
+
+    LaunchedEffect(key1 = user, key2 = otherUser) {
+        coroutineScope.launch {
+            imageOfMe.value = profileImageRepository.getProfile(user)
+            other.value = profileImageRepository.getProfile(otherUser)
+        }
     }
 
     AlertDialog(
