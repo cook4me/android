@@ -93,7 +93,6 @@ fun TupperwareSwipeScreen(
                 otherUser = it
                 openMatchDialog = true
             }
-
         }
     }
 

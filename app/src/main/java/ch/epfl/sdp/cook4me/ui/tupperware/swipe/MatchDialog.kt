@@ -2,16 +2,22 @@ package ch.epfl.sdp.cook4me.ui.tupperware.swipe
 
 import android.content.Context
 import android.net.Uri
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.Chat
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -21,31 +27,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.BuildConfig
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.ui.chat.createChatWithPairs
 import ch.epfl.sdp.cook4me.ui.chat.provideChatClient
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.runBlocking
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.rounded.Cancel
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import ch.epfl.sdp.cook4me.R
 
-// TODO: https://github.com/cook4me/android/issues/181
+@Suppress("MagicNumber")
 @Composable
 fun MatchDialog(
     user: String,
@@ -61,7 +57,6 @@ fun MatchDialog(
         other.value = profileImageRepository.getProfile(otherUser)
     }
 
-
     AlertDialog(
         modifier = Modifier
             .fillMaxWidth(0.95f)
@@ -76,7 +71,7 @@ fun MatchDialog(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.primary,
                     fontSize = 30.sp,
-                            modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp)
                 )
                 Row(
                     modifier = Modifier
@@ -99,7 +94,7 @@ fun MatchDialog(
                     )
                     Image(
                         painter = painterResource(R.drawable.cheers),
-                        contentDescription = "Loading icon",
+                        contentDescription = "Cheers icon",
                         modifier = Modifier.weight(1.5f) // Takes up 1/5 of the Row width
                     )
                     AsyncImage(
@@ -149,11 +144,4 @@ fun MatchDialog(
         },
         buttons = {}
     )
-
-
-
-
-
-
-
 }

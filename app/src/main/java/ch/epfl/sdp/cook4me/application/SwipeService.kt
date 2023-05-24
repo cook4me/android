@@ -29,7 +29,6 @@ class SwipeService(
     suspend fun getMatchedUser(tupperwareId: String): String? =
         tupperwareRepository.getById(tupperwareId)?.user
 
-
     suspend fun getAllUnswipedTupperware(): Map<String, TupperwareWithImage> =
         try {
             val email = auth.currentUser?.email

@@ -106,8 +106,8 @@ fun createChatWithPairs(
             ).enqueue { result ->
                 if (result.isSuccess) {
                     val channel = result.data()
-                        val intent = MessagesActivity.getIntent(context, channelId = channel.cid, userEmail = userEmail)
-                        ContextCompat.startActivity(context, intent, null)
+                    val intent = MessagesActivity.getIntent(context, channelId = channel.cid, userEmail = userEmail)
+                    ContextCompat.startActivity(context, intent, null)
                 } else {
                     println("create channel failed")
                 }
