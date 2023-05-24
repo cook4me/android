@@ -22,6 +22,7 @@ class MessagesActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val channelId = intent.getStringExtra(KEY_CHANNEL_ID)
+        val userEmail = intent.getStringExtra(KEY_USER_EMAIL)
 
         if (channelId == null) {
             finish()
@@ -31,6 +32,7 @@ class MessagesActivity : ComponentActivity() {
         setContent {
             Cook4meTheme {
                 ChatTheme(
+                    imageLoaderFactory = CoilImageLoaderFactory,
                     shapes = StreamShapes.defaultShapes().copy(
                         avatar = RoundedCornerShape(8.dp),
                         attachment = RoundedCornerShape(16.dp),
@@ -54,10 +56,12 @@ class MessagesActivity : ComponentActivity() {
     }
     companion object {
         private const val KEY_CHANNEL_ID = "channelId"
+        private const val KEY_USER_EMAIL = "userEmail"
 
-        fun getIntent(context: Context, channelId: String): Intent =
+        fun getIntent(context: Context, channelId: String, userEmail: String?): Intent =
             Intent(context, MessagesActivity::class.java).apply {
                 putExtra(KEY_CHANNEL_ID, channelId)
+                putExtra(KEY_USER_EMAIL, userEmail)
             }
     }
 }

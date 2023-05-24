@@ -23,9 +23,6 @@
     <string name="ask_challenge_description">Description of the challenge?</string>
     <string name="ask_challenge_type">Cooking genre: </string>
 
-    <!-- Challenge Feed Screen -->
-    <string name="Challenge_Feed_TAG">Challenge Feed TAG</string>
-
     <!-- CreateNewItemButton -->
     <string name="create_new_item_type">Create a new</string>
     <string name="event">Event</string>
@@ -49,6 +46,9 @@
     <string name="ButtonRowCancel">Cancel</string>
     <string name="ButtonRowDone">Done</string>
     <string name="TupCreateBlank">Field can\'t be left blank</string>
+
+    <!-- SwipeScreen -->
+    <string name="swipe_alldone_placeholder">all done</string>
 
     <!-- AddressInput   -->
     <string name="address_default_question">What is the location?</string>
@@ -97,6 +97,7 @@
     <!-- recipe feed -->
     <string name="get_top_recipes">Top recipes</string>
     <string name="get_recent_recipes">Most recent recipes</string>
+    <string name="empty_recipe_feed">no recipe yet</string>
 
     <!-- tests -->
     <string name="label">label</string>
@@ -110,7 +111,7 @@
     <string name="sign_up_screen_invalid_email">Email invalid</string>
     <string name="sign_up_screen_invalid_password">Password invalid</string>
     <string name="invalid_username_message">This username is not valid</string>
-    <string name="Add_profile_infos_top_bar_message">Add your user informations</string>
+    <string name="Add_profile_infos_top_bar_message">Add your user information</string>
     <string name="Add_profile_infos_invalid_user">Email invalid</string>
     <string name="TAG_USER_FIELD">UserField</string>
     <string name="sign_up_screen_tag">sign up screen</string>
@@ -123,8 +124,10 @@
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
     <!-- Chat -->
-    <string name="Loading_Screen_Tag">Loading Screen TAG</string>
-    <string name="Channel_Screen_Tag">Channel Screen TAG</string>
+    <string name="Too_many_connection_error_title">Connection Error</string>
+    <string name="Too_many_connection_error_message">Too many connections. Please try again later.</string>
+    <string name="ChatErrorButtonText">OK</string>
+    <string name="Channel_Screen_Tag">Channel Screen test TAG</string>
 
     <!-- BottomBar -->
     <string name="bottom_bar_more_button_text">More</string>
@@ -143,7 +146,12 @@
     <!--Challenges-->
     <string name="join">Join</string>
     <string name="challenge_finished">This challenge has already taken place</string>
+    <string name="filter_button_text">Filter by</string>
     <string name="vote">Vote for other participants</string>
+    <string name="empty_challenge_list">no challenge yet</string>
+    <string name="filter_title_filterscreen">Filter by</string>
+    <string name="sort_title_filterscreen">Sort by</string>
+    <string name="searchbar_placeholder_text">Search…</string>
 
     <!-- Voting Screen --> voteScreenTitle
     <string name="voteScreenTitle">Vote for best participants</string>
@@ -156,5 +164,15 @@
     <string name="place">Place</string>
     <string name="back">Back</string>
     <string name="winner">Winner</string>
+    <string name="inform_offline_status">You are offline</string>
+    <string name="to_swipe_go_online">You are offline, to keep swiping you need to go online</string>
+
+    <!-- Loading Screen -->
+    <string name="Loading_Screen_Tag">Loading Screen test tag</string>
+    <string name="Loading_Screen_Text">Wait a sec!</string>
+
+    <!-- Placeholder Screen -->
+    <string name="placeholder_screen_content_description">placeholder screen</string>
+
 
 </resources>
