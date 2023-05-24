@@ -44,6 +44,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.DropDownMenuWithTitle
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.FormState
 import ch.epfl.sdp.cook4me.ui.common.form.GenericSeparators
+import ch.epfl.sdp.cook4me.ui.common.form.ImageFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.tupperware.form.ComposeFileProvider
 import ch.epfl.sdp.cook4me.ui.tupperware.form.CustomDivider
@@ -78,7 +79,7 @@ fun CreateRecipeScreen(
     onCancelClick: () -> Unit = {},
     onSuccessfulSubmit: () -> Unit = {}
 ) {
-    var image by remember { mutableStateOf<Uri?>(null) }
+    var imageState by remember { mutableStateOf(ImageFieldState()) }
     val scope = rememberCoroutineScope()
 
     var imageUri by remember {
@@ -89,7 +90,7 @@ fun CreateRecipeScreen(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
             if (uri != null) {
-                image = uri
+                imageState = uri
             }
         }
     )
@@ -99,7 +100,7 @@ fun CreateRecipeScreen(
         onResult = { success ->
             imageUri?.let {
                 if (success) {
-                    image = it
+                    imageState = it
                 }
             }
         }
@@ -123,12 +124,12 @@ fun CreateRecipeScreen(
             Modifier.weight(1f),
             onClickTakePhoto = { onClickTakePhoto() },
             onClickAddImage = { onClickAddImage() },
-            onImageClick = { image = null },
+            onImageClick = { imageState = null },
             onCancelClick = onCancelClick,
-            image = image,
+            image = imageState,
             submitForm = { recipe ->
                 scope.launch {
-                    repository.add(recipe, image)
+                    repository.add(recipe, imageState)
                     onSuccessfulSubmit()
                 }
             }
@@ -187,7 +188,8 @@ private fun RecipeForm(
                 onClickAddImage = onClickAddImage,
                 onClickTakePhoto = onClickTakePhoto,
                 onClickImage = onImageClick,
-                imageSize = 250.dp
+                imageSize = 250.dp,
+                isError = false
             )
         }
         CustomDivider()

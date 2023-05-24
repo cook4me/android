@@ -1,9 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.common
 
 import android.net.Uri
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,10 +40,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import ch.epfl.sdp.cook4me.ui.tupperware.form.ComposeFileProvider
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
@@ -55,15 +51,17 @@ fun ImageSelector(
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
     onClickImage: () -> Unit,
+    isError: Boolean,
     image: Uri?,
     imageSize: Dp = 200.dp,
 ) {
-    Box(modifier = Modifier.padding(10.dp), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier.fillMaxWidth().padding(10.dp), contentAlignment = Alignment.Center) {
         if (image == null)
             AddPictureButtons(
                 onClickAddImage = onClickAddImage,
                 onClickTakePhoto = onClickTakePhoto,
-                imageHeight= imageSize
+                imageHeight= imageSize,
+                isError = isError
             )
         else
             ImageCard(image = image, imageHeight = imageSize, onClick = onClickImage)
@@ -135,9 +133,12 @@ private fun AddPictureButtons(
     onClickAddImage: () -> Unit,
     onClickTakePhoto: () -> Unit,
     imageHeight: Dp = 200.dp,
+    isError: Boolean,
 ) {
-    Box(modifier = modifier.size(imageHeight), contentAlignment = Alignment.Center) {
-        DottedRectangle(modifier)
+    val color = if (isError) MaterialTheme.colors.error else Color.LightGray
+
+    Box(modifier = modifier.height(imageHeight), contentAlignment = Alignment.Center) {
+        DottedRectangle(modifier, color = color)
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             //
             Row(
@@ -152,7 +153,7 @@ private fun AddPictureButtons(
 }
 
 @Composable
-private fun DottedRectangle(modifier: Modifier = Modifier) {
+private fun DottedRectangle(modifier: Modifier = Modifier, color: Color) {
     val stroke = Stroke(
         width = 6f,
         pathEffect = PathEffect.dashPathEffect(floatArrayOf(15f, 10f), 0f)
@@ -160,7 +161,7 @@ private fun DottedRectangle(modifier: Modifier = Modifier) {
     Canvas(
         modifier = Modifier.fillMaxSize()
     ){
-        drawRoundRect(color = Color.LightGray,style = stroke)
+        drawRoundRect(color = color,style = stroke)
     }
 }
 
