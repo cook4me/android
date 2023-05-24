@@ -2,6 +2,7 @@ package ch.epfl.sdp.cook4me.ui.navigation
 
 import AddProfileInfoScreen
 import SignUpScreen
+import VoteWrapper
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -14,7 +15,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
-import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
+import ch.epfl.sdp.cook4me.ui.challenge.details.ChallengeDetailedScreen
+import ch.epfl.sdp.cook4me.ui.challenge.feed.ChallengeFeedScreen
+import ch.epfl.sdp.cook4me.ui.challenge.feed.FilterScreen
+import ch.epfl.sdp.cook4me.ui.challenge.feed.SearchViewModel
 import ch.epfl.sdp.cook4me.ui.challenge.form.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.event.details.DetailedEventScreen
@@ -40,6 +44,7 @@ fun Cook4MeNavHost(
     isOnline: Boolean
 ) {
     val signUpViewModel = remember { SignUpViewModel() }
+    val searchViewModel = remember { SearchViewModel() }
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -79,6 +84,7 @@ fun Cook4MeNavHost(
                 onCancelClick = { navController.navigateUp() }
             )
         }
+        // the uid of event is predefined on firestore. this is just for show.
         composable(
             route = ScreenWithArgs.DetailedEventScreen.name,
             arguments = listOf(navArgument("eventId") { type = NavType.StringType })
@@ -153,16 +159,50 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.CreateChallengeScreen.name) {
             CreateChallengeScreen(
-                onCancelClick = {
-                    navController.navigate(
-                        Screen.ChallengeFeedScreen.name
-                    )
-                }
+                onCancelClick = { navController.navigateUp() },
+                onDoneClick = { navController.navigateUp() }
             )
         }
         composable(route = Screen.ChallengeFeedScreen.name) {
             ChallengeFeedScreen(
-                onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) }
+                onChallengeClick = { challengeId ->
+                    navController.navigate(
+                        ScreenWithArgs.DetailedChallengeScreen.createRoute(challengeId)
+                    )
+                },
+                onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) },
+                onFilterClick = { navController.navigate(route = Screen.FilterScreen.name) },
+                searchViewModel = searchViewModel
+            )
+        }
+        composable(route = Screen.FilterScreen.name) {
+            FilterScreen(
+                onCancelClick = { navController.navigateUp() },
+                onDoneClick = { navController.navigateUp() },
+                viewModel = searchViewModel
+            )
+        }
+        composable(
+            route = ScreenWithArgs.DetailedChallengeScreen.name,
+            arguments = listOf(navArgument("challengeId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            ChallengeDetailedScreen(
+                challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty(),
+                onVote = { challengeId ->
+                    navController.navigate(
+                        ScreenWithArgs.ChallengeVotingScreen.createRoute(challengeId)
+                    )
+                },
+            )
+        }
+        composable(
+            route = ScreenWithArgs.ChallengeVotingScreen.name,
+            arguments = listOf(navArgument("challengeId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            VoteWrapper(
+                challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty(),
+                onBack = { navController.navigateUp() },
+                currentUser = "daniel.bucher@epfl.ch"
             )
         }
     }
@@ -184,4 +224,5 @@ enum class Screen {
     ChatScreen,
     ChallengeFeedScreen,
     CreateChallengeScreen,
+    FilterScreen,
 }

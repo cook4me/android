@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.persistence.repository
 
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -20,5 +21,9 @@ class ChallengeRepository(private val store: FirebaseFirestore = FirebaseFiresto
     suspend fun update(id: String, challenge: Challenge) =
         store.updateObjectInCollection(id, challenge, COLLECTION_PATH)
 
+    suspend fun getAll() = store.getAllObjectsFromCollection(COLLECTION_PATH, ::transformToChallenge)
+
     suspend fun deleteAll() = store.deleteAllDocumentsFromCollection(COLLECTION_PATH)
+
+    private fun transformToChallenge(snapshot: DocumentSnapshot) = Challenge(snapshot.data ?: emptyMap())
 }

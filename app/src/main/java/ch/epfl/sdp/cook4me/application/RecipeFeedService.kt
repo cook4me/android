@@ -62,4 +62,6 @@ class RecipeFeedService(
         }
         return recipeNoteRepository.retrieveAllUserVotes(userId, useOnlyCache = !isOnline)
     }
+
+    suspend fun getRecipeImage(id: String) = recipeRepository.getRecipeImage(id)
 }
