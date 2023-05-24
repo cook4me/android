@@ -128,6 +128,9 @@
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
     <!-- Chat -->
+    <string name="Too_many_connection_error_title">Connection Error</string>
+    <string name="Too_many_connection_error_message">Too many connections. Please try again later.</string>
+    <string name="ChatErrorButtonText">OK</string>
     <string name="Channel_Screen_Tag">Channel Screen test TAG</string>
 
     <!-- BottomBar -->
@@ -150,6 +153,9 @@
     <string name="filter_button_text">Filter by</string>
     <string name="vote">Vote for other participants</string>
     <string name="empty_challenge_list">no challenge yet</string>
+    <string name="filter_title_filterscreen">Filter by</string>
+    <string name="sort_title_filterscreen">Sort by</string>
+    <string name="searchbar_placeholder_text">Search…</string>
 
     <!-- Voting Screen --> voteScreenTitle
     <string name="voteScreenTitle">Vote for best participants</string>
@@ -171,5 +177,6 @@
 
     <!-- Placeholder Screen -->
     <string name="placeholder_screen_content_description">placeholder screen</string>
+
 
 </resources>

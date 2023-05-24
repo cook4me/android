@@ -24,7 +24,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.R
 
 @Composable
 fun FilterScreen(
@@ -91,7 +93,7 @@ fun FilterUI(
         )
 
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "Filter by", style = MaterialTheme.typography.h5)
+            Text(text = stringResource(R.string.filter_title_filterscreen), style = MaterialTheme.typography.h5)
             filterCategories.forEach { category ->
                 FilterCategory(
                     category = category.key,
@@ -103,7 +105,7 @@ fun FilterUI(
                 )
             }
             // Divider(thickness = 0.5.dp, color = Color.Black)
-            Text(text = "Sort by", style = MaterialTheme.typography.h5)
+            Text(text = stringResource(R.string.sort_title_filterscreen), style = MaterialTheme.typography.h5)
             sortOptions.forEach { sortOption ->
                 SortCategory(
                     sortOption = sortOption,

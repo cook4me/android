@@ -28,10 +28,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 
 private val CORNER_SIZE = 15.dp
@@ -84,7 +86,7 @@ fun SearchBar(
                 decorationBox = { innerTextField ->
                     if (text.isBlank() && !isFocused.value) {
                         Text(
-                            text = "Search...",
+                            text = stringResource(R.string.searchbar_placeholder_text),
                             color = TextFieldDefaults.outlinedTextFieldColors()
                                 .placeholderColor(enabled = true).value,
                             modifier = Modifier.padding(start = 8.dp),

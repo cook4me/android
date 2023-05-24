@@ -28,7 +28,6 @@ class ChallengeDetailedViewModel : ViewModel() {
     private val currentUserMail = firebaseAuth.currentUser?.email
 
     suspend fun fetchChallenge(challengeId: String) {
-        Log.d("Debug", "challengeId = $challengeId")
         val challenge = challengeFormService.getChallengeWithId(challengeId)
 
         if (challenge?.participants?.get(currentUserMail) != null) {

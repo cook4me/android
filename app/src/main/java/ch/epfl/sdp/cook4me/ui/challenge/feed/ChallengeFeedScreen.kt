@@ -30,15 +30,15 @@ fun ChallengeFeedScreen(
     onChallengeClick: (String) -> Unit = {},
     onFilterClick: () -> Unit = {},
     searchViewModel: SearchViewModel = remember { SearchViewModel() },
+    accountService: AccountService = AccountService(),
 ) {
     val query = searchViewModel.query
     val challenges = searchViewModel.challenges
     val isLoading = searchViewModel.isLoading
-    val currentUser = AccountService().getCurrentUser()
+    val currentUser = accountService.getCurrentUser()
 
     LaunchedEffect(Unit) {
         searchViewModel.loadNewData()
-        Log.d("Challenge", "Load new data")
     }
 
     Box(

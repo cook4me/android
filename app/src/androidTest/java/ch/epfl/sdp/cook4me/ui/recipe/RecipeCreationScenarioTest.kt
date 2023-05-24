@@ -26,6 +26,7 @@ import io.mockk.confirmVerified
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -83,7 +84,7 @@ class RecipeCreationScenarioTest {
             .performTextInput(expectedRecipe.recipeSteps.reduce { x, y -> "$x\n$y" })
         composeTestRule.onNodeWithText("Done").performClick()
         verify {
-            runBlocking {
+            runTest {
                 mockRecipeRepository.add(
                     expectedRecipe,
                     testUri
