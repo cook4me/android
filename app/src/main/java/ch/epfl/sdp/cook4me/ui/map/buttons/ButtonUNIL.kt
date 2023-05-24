@@ -17,7 +17,7 @@ fun ButtonUNIL(
     Button(
         onClick = onClick,
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray.copy(blue = 1.0f))
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
     ) {
         Image(
             painter = painterResource(id = R.drawable.logo_unil),

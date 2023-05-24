@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -34,12 +38,11 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.MarkerInfoWindowContent
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 
 private const val ZOOM_DEFAULT_VALUE = 15f
-private const val MAP_SCREEN_PROPORTION = 0.8f
 
 data class MarkerData(
     val position: LatLng,
@@ -88,12 +91,12 @@ fun GoogleMapView(
         uniLoc = uniLocation
     }
     var selectedMarker by remember { mutableStateOf(findMarkerById(loadedMarkers, selectedEventId)) }
-    var navigateToEvent by remember { mutableStateOf(false) }
+    // var navigateToEvent by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .fillMaxSize()
+            .padding(16.dp)
             .testTag(stringResource(R.string.event_screen_tag))
     ) {
         CreateNewItemButton(
@@ -101,85 +104,101 @@ fun GoogleMapView(
             onClick = onCreateNewEventClick,
             canClick = isOnline
         )
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            ButtonEPFL(
-                onClick = { onClickUniversity(Locations.EPFL) },
-                modifier = Modifier.weight(1f)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            ButtonUNIL(
-                onClick = { onClickUniversity(Locations.UNIL) },
-                modifier = Modifier.weight(1f)
-            )
-        }
+        Spacer(modifier = Modifier.height(16.dp))
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(1 - MAP_SCREEN_PROPORTION)
-                .padding(start = 16.dp, end = 16.dp)
+                .weight(1f)
         ) {
-            Row {
-                selectedMarker?.let { marker ->
-                    Column {
-                        Text(
-                            text = "Location: ${marker.title}",
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize(),
+                    cameraPositionState = cameraPositionState,
+                    properties = mapProperties,
+                    uiSettings = uiSettings,
+                    onMapLoaded = {
+                        onMapLoaded.invoke()
+                    },
+                ) {
+                    loadedMarkers.map { marker ->
+                        val markerState = rememberMarkerState(position = marker.position)
+                        Marker(
+                            state = markerState,
+                            onClick = {
+                                selectedMarker = marker
+                                false
+                            }
                         )
-                        if (navigateToEvent) {
+                    }
+                    content()
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = 8.dp, start = 8.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.width(250.dp)
+                ) {
+                    ButtonEPFL(
+                        onClick = { onClickUniversity(Locations.EPFL) },
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    ButtonUNIL(
+                        onClick = { onClickUniversity(Locations.UNIL) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+
+            selectedMarker?.let { marker ->
+                Card(
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = 4.dp,
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                    ) {
+                        Text(
+                            text = marker.title,
+                            style = MaterialTheme.typography.h6,
+                            color = MaterialTheme.colors.primary,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = marker.description,
+                            style = MaterialTheme.typography.body1,
+                            color = MaterialTheme.colors.onSecondary,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                if (selectedMarker is MarkerData) {
+                                    val eventId = (selectedMarker as MarkerData).id
+                                    onDetailedEventClick(eventId)
+                                }
+                            }
+                        ) {
                             Text(
-                                text = "Navigate to event with id: ${marker.id}",
+                                text = "Explore event",
+                                style = MaterialTheme.typography.button,
+                                color = MaterialTheme.colors.onSecondary
                             )
                         }
                     }
-                    Button(
-                        modifier = modifier.padding(4.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MaterialTheme.colors.onPrimary,
-                            contentColor = MaterialTheme.colors.primary
-                        ),
-                        onClick = {
-                            navigateToEvent = !navigateToEvent
-                            if (selectedMarker is MarkerData) {
-                                val eventId = (selectedMarker as MarkerData).id
-                                onDetailedEventClick(eventId)
-                            }
-                        }
-                    ) {
-                        Text(text = "Explore event", style = MaterialTheme.typography.body1)
-                    }
-                }
-                Text(
-                    text = "Select an event"
-                )
-            }
-        }
-        GoogleMap(
-            modifier = modifier
-                .fillMaxHeight(MAP_SCREEN_PROPORTION),
-            cameraPositionState = cameraPositionState,
-            properties = mapProperties,
-            uiSettings = uiSettings,
-            onMapLoaded = {
-                onMapLoaded.invoke()
-            },
-        ) {
-            loadedMarkers.map { marker ->
-                val markerState = rememberMarkerState(position = marker.position)
-                MarkerInfoWindowContent(
-                    state = markerState,
-                    title = marker.title,
-                    onClick = {
-                        selectedMarker = marker
-                        false
-                    },
-                    tag = marker.title,
-                ) {
-                    Text(marker.description)
                 }
             }
-            content()
         }
     }
 }
