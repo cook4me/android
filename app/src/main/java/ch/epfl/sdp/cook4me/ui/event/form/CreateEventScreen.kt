@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -26,6 +29,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
 import com.google.firebase.firestore.GeoPoint
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.Calendar
 
@@ -60,63 +64,75 @@ fun CreateEventScreen(
     val userEmail = accountService.getCurrentUserWithEmail()
     userEmail?.let { event.value = event.value.copy(id = userEmail) }
 
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(10.dp)
-            .testTag(stringResource(R.string.create_event_screen_tag))
-    ) {
-        InputField(
-            question = R.string.ask_event_name,
-            value = event.value.name,
-            onValueChange = { event.value = event.value.copy(name = it) }
-        )
-        InputField(
-            question = R.string.ask_event_description,
-            value = event.value.description,
-            onValueChange = { event.value = event.value.copy(description = it) }
-        )
-        AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
-        IntegerSlider(
-            text = R.string.ask_event_number_participants, min = 2, max = 16,
-            onValueChange = { event.value = event.value.copy(maxParticipants = it) },
-            modifier = Modifier.fillMaxWidth()
-        )
-        ToggleSwitch(
-            question = R.string.ask_event_visibility,
-            answerChecked = R.string.event_visibility_everyone,
-            answerUnchecked = R.string.event_visibility_subscriber_only,
-            onToggle = {
-                event.value = event.value.copy(isPrivate = it)
-            }
-        )
-        DatePicker(
-            initialDate = Calendar.getInstance(),
-            onDateChange = { updateDate(it) }
-        )
-        TimePicker(
-            onTimeChanged = { updateTime(it) }
-        )
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
-        LocationPicker(
-            modifier = Modifier.height(400.dp),
-            onLocationPicked = {
-                event.value = event.value.copy(latLng = GeoPoint(it.latitude, it.longitude))
-            }
-        )
-
-        FormButtons(
-            onCancelText = R.string.ButtonRowCancel,
-            onSaveText = R.string.ButtonRowDone,
-            onCancelClick = onCancelClick,
-            onSaveClick = {
-                // call suspend function
-                runBlocking {
-                    endMsg.value = eventService.submitForm(event.value) ?: "Event created!"
+    Scaffold(
+        modifier = Modifier.padding(10.dp),
+        scaffoldState = scaffoldState,
+        bottomBar = {
+            FormButtons(
+                onCancelText = R.string.ButtonRowCancel,
+                onSaveText = R.string.ButtonRowDone,
+                onCancelClick = onCancelClick,
+                onSaveClick = {
+                    // call suspend function
+                    scope.launch {
+                        endMsg.value = eventService.submitForm(event.value) ?: ""
+                        println(endMsg.value)
+                        if (endMsg.value.isNotBlank()) {
+                            scaffoldState.snackbarHostState.showSnackbar(endMsg.value)
+                        }
+                    }
                 }
-            }
-        )
-        Text(text = endMsg.value)
+            )
+        }
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(it)
+                .testTag(stringResource(R.string.create_event_screen_tag))
+        ) {
+            InputField(
+                question = R.string.ask_event_name,
+                value = event.value.name,
+                onValueChange = { event.value = event.value.copy(name = it) }
+            )
+            InputField(
+                question = R.string.ask_event_description,
+                value = event.value.description,
+                onValueChange = { event.value = event.value.copy(description = it) }
+            )
+            //AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
+            IntegerSlider(
+                text = R.string.ask_event_number_participants, min = 2, max = 16,
+                onValueChange = { event.value = event.value.copy(maxParticipants = it) },
+                modifier = Modifier.fillMaxWidth()
+            )
+            ToggleSwitch(
+                question = R.string.ask_event_visibility,
+                answerChecked = R.string.event_visibility_everyone,
+                answerUnchecked = R.string.event_visibility_subscriber_only,
+                onToggle = {
+                    event.value = event.value.copy(isPrivate = it)
+                }
+            )
+            DatePicker(
+                initialDate = Calendar.getInstance(),
+                onDateChange = { updateDate(it) }
+            )
+            TimePicker(
+                onTimeChanged = { updateTime(it) }
+            )
+
+            LocationPicker(
+                modifier = Modifier.height(400.dp),
+                onLocationPicked = {
+                    event.value = event.value.copy(latLng = GeoPoint(it.latitude, it.longitude))
+                }
+            )
+        }
     }
 }

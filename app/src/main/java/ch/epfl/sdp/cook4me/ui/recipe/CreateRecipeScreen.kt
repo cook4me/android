@@ -295,9 +295,7 @@ private fun RecipeForm(
     Scaffold(
         modifier = Modifier.padding(10.dp),
         scaffoldState = scaffoldState,
-        bottomBar = {
-            BottomBar()
-        }
+        bottomBar = { BottomBar() }
     ) {
         RecipeFields(it)
     }
