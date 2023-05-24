@@ -107,11 +107,3 @@ fun SearchBar(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun SearchBarPreview() {
-    Cook4meTheme {
-        SearchBar(text = "", onTextChange = {})
-    }
-}
