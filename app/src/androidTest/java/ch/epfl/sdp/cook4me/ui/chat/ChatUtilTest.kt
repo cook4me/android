@@ -12,6 +12,7 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -20,6 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
+@ExperimentalCoroutinesApi
 class ChatUtilTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -37,13 +39,13 @@ class ChatUtilTest {
     fun executeLoadsFromRepositoryWhenPrefixMatches() = runTest {
         val prefixedData = "$PROFILE_IMAGE_PREFIX:123"
         val profileImage = "imageData"
-        val mockRequest = ImageRequest.Builder(mockk(relaxed = true), context=context)
+        val mockRequest = ImageRequest.Builder(mockk(relaxed = true), context = context)
             .data(prefixedData)
             .build()
         val mockResult = SuccessResult(
             drawable = mockk(relaxed = true),
             request = mockRequest,
-        dataSource = mockk(relaxed = true)
+            dataSource = mockk(relaxed = true)
         )
 
         coEvery { mockRepo.getProfile("123") } returns Uri.EMPTY
@@ -57,7 +59,7 @@ class ChatUtilTest {
     @Test
     fun executeLoadsNormallyWhenPrefixDoesNotMatch() = runTest {
         val notPrefixedData = "123"
-        val mockRequest = ImageRequest.Builder(mockk(relaxed = true),context=context)
+        val mockRequest = ImageRequest.Builder(mockk(relaxed = true), context = context)
             .data(notPrefixedData)
             .build()
         val mockResult = SuccessResult(
@@ -72,6 +74,4 @@ class ChatUtilTest {
 
         Assert.assertEquals(mockResult, result)
     }
-
-
 }
