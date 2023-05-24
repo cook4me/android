@@ -1,11 +1,9 @@
-package ch.epfl.sdp.cook4me.ui.challengefeed
+package ch.epfl.sdp.cook4me.ui.challenge.feed
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
-import ch.epfl.sdp.cook4me.ui.challenge.feed.ChallengeItem
 import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 import org.junit.Rule
 import org.junit.Test
@@ -23,6 +21,7 @@ class ChallengeItemTest {
                     challengeName = "Challenge 1",
                     creatorName = "Creator 1",
                     participantCount = 10,
+                    joined = false
                 )
             }
         }
@@ -33,23 +32,19 @@ class ChallengeItemTest {
     }
 
     @Test
-    fun testChallengeItemClick() {
-        var clicked = false
-
+    fun whenUserHasJoinedChallengeJoinedShouldBeDisplayed() {
         composeTestRule.setContent {
             Cook4meTheme {
                 ChallengeItem(
                     challengeName = "Challenge 1",
                     creatorName = "Creator 1",
                     participantCount = 10,
-                    onClick = { clicked = true }
+                    onClick = {},
+                    joined = true
                 )
             }
         }
 
-        composeTestRule.onNodeWithText("Challenge 1").performClick()
-
-        // Check that the item was clicked
-        assert(clicked)
+        composeTestRule.onNodeWithText("JOINED").assertExists()
     }
 }

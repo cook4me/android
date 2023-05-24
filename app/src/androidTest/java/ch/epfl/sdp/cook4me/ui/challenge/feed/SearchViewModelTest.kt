@@ -1,8 +1,7 @@
-package ch.epfl.sdp.cook4me.ui.challengefeed
+package ch.epfl.sdp.cook4me.ui.challenge.feed
 
 import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
-import ch.epfl.sdp.cook4me.ui.challenge.feed.SearchViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

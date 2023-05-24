@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,20 +17,19 @@ import androidx.compose.ui.unit.dp
 fun CircleButton(
     onClick: () -> Unit,
     icon: ImageVector,
-    enabled: Boolean = true
+    color: Color
 ) {
     IconButton(
         modifier = Modifier
             .clip(CircleShape)
-            .background(if (enabled) MaterialTheme.colors.primary else Color.Gray)
+            .background(color)
             .size(56.dp)
-            .border(2.dp, if (enabled) MaterialTheme.colors.primary else Color.Gray, CircleShape),
+            .border(2.dp, color, CircleShape),
         onClick = onClick,
-        enabled = enabled
     ) {
         Icon(
             icon, null,
-            tint = MaterialTheme.colors.onPrimary
+            tint = Color.White
         )
     }
 }

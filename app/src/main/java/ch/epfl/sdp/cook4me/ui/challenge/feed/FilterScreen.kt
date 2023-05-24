@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -25,8 +24,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.R
 
 @Composable
 fun FilterScreen(
@@ -93,7 +93,7 @@ fun FilterUI(
         )
 
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "Filter by", style = MaterialTheme.typography.h5)
+            Text(text = stringResource(R.string.filter_title_filterscreen), style = MaterialTheme.typography.h5)
             filterCategories.forEach { category ->
                 FilterCategory(
                     category = category.key,
@@ -104,8 +104,8 @@ fun FilterUI(
                     onFilterOptionClick = onFilterOptionSelect
                 )
             }
-            Divider(thickness = 0.5.dp, color = Color.Black)
-            Text(text = "Sort by", style = MaterialTheme.typography.h5)
+            // Divider(thickness = 0.5.dp, color = Color.Black)
+            Text(text = stringResource(R.string.sort_title_filterscreen), style = MaterialTheme.typography.h5)
             sortOptions.forEach { sortOption ->
                 SortCategory(
                     sortOption = sortOption,

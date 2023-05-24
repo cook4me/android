@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.challenge.feed
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.common.button.AddButton
 import ch.epfl.sdp.cook4me.ui.common.filters.FilterButton
@@ -29,14 +29,15 @@ fun ChallengeFeedScreen(
     onChallengeClick: (String) -> Unit = {},
     onFilterClick: () -> Unit = {},
     searchViewModel: SearchViewModel = remember { SearchViewModel() },
+    accountService: AccountService = AccountService(),
 ) {
     val query = searchViewModel.query
     val challenges = searchViewModel.challenges
     val isLoading = searchViewModel.isLoading
+    val currentUser = accountService.getCurrentUser()
 
     LaunchedEffect(Unit) {
         searchViewModel.loadNewData()
-        Log.d("Challenge", "Load new data")
     }
 
     Box(
@@ -68,10 +69,12 @@ fun ChallengeFeedScreen(
                 Spacer(modifier = Modifier.size(5.dp))
                 LazyColumn(modifier = Modifier.weight(1f)) {
                     items(challenges) {
+                        val challenge = it.second
                         ChallengeItem(
-                            challengeName = it.second.name,
-                            creatorName = it.second.creator,
-                            participantCount = it.second.participants.size,
+                            challengeName = challenge.name,
+                            creatorName = challenge.creator,
+                            participantCount = challenge.participants.size,
+                            joined = challenge.participants.containsKey(currentUser?.email),
                             onClick = { onChallengeClick(it.first) }
                         )
                     }

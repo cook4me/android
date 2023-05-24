@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun ChallengeItem(
@@ -29,6 +30,7 @@ fun ChallengeItem(
     challengeName: String,
     creatorName: String,
     participantCount: Int,
+    joined: Boolean,
     onClick: () -> Unit = {},
 ) {
     Card(
@@ -54,6 +56,15 @@ fun ChallengeItem(
                     text = "by $creatorName",
                     style = MaterialTheme.typography.body2,
                     color = Color.Gray
+                )
+            }
+            if (joined) {
+                Text(
+                    text = "JOINED",
+                    style = MaterialTheme.typography.h6.copy(fontSize = 18.sp),
+                    color = Color.LightGray,
+                    fontWeight =
+                    FontWeight.Normal
                 )
             }
             Box(

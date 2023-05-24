@@ -35,7 +35,6 @@ class ProfileViewModel(
     init {
         viewModelScope.launch {
             var profile: Profile?
-
             if (id != null) {
                 // if an user id is provided, use it to load the profile
                 _id = id

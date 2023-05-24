@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
 import ch.epfl.sdp.cook4me.ui.challenge.details.ChallengeDetailedScreen
 import ch.epfl.sdp.cook4me.ui.challenge.feed.ChallengeFeedScreen
@@ -30,6 +31,7 @@ import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
 import ch.epfl.sdp.cook4me.ui.user.LoginScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.ProfileViewModel
 import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 
 @Composable
@@ -103,6 +105,7 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
+                service = RecipeFeedService(isOnline = isOnline),
                 onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) },
                 isOnline = isOnline
             )
@@ -130,6 +133,18 @@ fun Cook4MeNavHost(
             )
         }
         composable(route = Screen.ProfileScreen.name) { ProfileScreen() }
+        // changing the profile screen to take an id as an argument(email)
+        // if nothing is passed, it will show the current user's profile
+        composable(
+            route = "${Screen.ProfileScreen.name}/{userId}",
+            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")
+            userId?.let {
+                ProfileScreen(profileViewModel = ProfileViewModel(id = it))
+            } ?: ProfileScreen()
+        }
+
         composable(route = Screen.EditProfileScreen.name) {
             EditProfileScreen(
                 onCancelListener = { navController.navigate(Screen.ProfileScreen.name) },
@@ -139,6 +154,7 @@ fun Cook4MeNavHost(
         composable(route = Screen.ChatScreen.name) {
             ChannelScreen(
                 onBackListener = { navController.navigate(Screen.RecipeFeed.name) },
+                navController = navController
             )
         }
         composable(route = Screen.CreateChallengeScreen.name) {

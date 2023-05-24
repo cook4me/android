@@ -1,5 +1,5 @@
 
-package ch.epfl.sdp.cook4me.ui.challengefeed
+package ch.epfl.sdp.cook4me.ui.challenge.feed
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.mutableStateListOf
@@ -11,7 +11,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import ch.epfl.sdp.cook4me.ui.challenge.feed.FilterUI
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

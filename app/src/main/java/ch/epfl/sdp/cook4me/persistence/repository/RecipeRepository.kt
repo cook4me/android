@@ -34,8 +34,8 @@ class RecipeRepository(
     suspend fun getById(id: String): Recipe? =
         store.getObjectByIdFromCollection(id, COLLECTION_PATH)
 
-    suspend fun getAll() =
-        store.getAllObjectsFromCollection<Recipe>(COLLECTION_PATH)
+    suspend fun getAll(useOnlyCache: Boolean = false) =
+        store.getAllObjectsFromCollection<Recipe>(COLLECTION_PATH, useOnlyCache = useOnlyCache)
 
     suspend fun getRecipeImage(id: String) =
         try {
