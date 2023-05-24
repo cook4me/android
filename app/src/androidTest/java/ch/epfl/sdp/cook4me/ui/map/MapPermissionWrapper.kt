@@ -29,7 +29,7 @@ class TestMapPermissionWrapper {
             )
         }
 
-        composeTestRule.onNodeWithText("EPFL").assertIsDisplayed() // Map is shown
+        composeTestRule.onNodeWithText("Create a new Event").assertIsDisplayed() // Map is shown
     }
 
     @Test
