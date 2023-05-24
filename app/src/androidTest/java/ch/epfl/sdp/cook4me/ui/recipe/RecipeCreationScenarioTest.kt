@@ -16,7 +16,6 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.matchListWithoutOrder
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
 import ch.epfl.sdp.cook4me.registryOwnerFactory
@@ -26,7 +25,7 @@ import ch.epfl.sdp.cook4me.waitUntilExists
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -84,10 +83,10 @@ class RecipeCreationScenarioTest {
             .performTextInput(expectedRecipe.recipeSteps.reduce { x, y -> "$x\n$y" })
         composeTestRule.onNodeWithText("Done").performClick()
         verify {
-            runBlocking {
+            runTest {
                 mockRecipeRepository.add(
                     expectedRecipe,
-                    matchListWithoutOrder(testUri)
+                    testUri
                 )
             }
         }

@@ -44,7 +44,7 @@ class EditProfileScreenTest {
     private val repository: ProfileRepository = ProfileRepository(store)
 
     private var userImage: Uri =
-        Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_launcher_foreground")
+        Uri.parse("android.resource://ch.epfl.sdp.cook4me/" + R.drawable.ic_user)
     private val user = Profile(
         email = "donald.duck@epfl.ch",
         name = "Donald",

@@ -1,16 +1,19 @@
 package ch.epfl.sdp.cook4me.ui.recipe.feed
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.outlined.ThumbDown
+import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -22,10 +25,16 @@ import androidx.compose.ui.tooling.preview.Preview
  */
 @Preview(showBackground = true)
 @Composable
-fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int = 0, canClick: Boolean = true) {
+fun VoteIcon(
+    modifier: Modifier = Modifier,
+    counterValue: Int = 0,
+    onChange: (Int) -> Unit = {},
+    userVote: Int = 0,
+    canClick: Boolean = true
+) {
     val upvote = remember { mutableStateOf(userVote == 1) }
     val downvote = remember { mutableStateOf(userVote == -1) }
-    val notPressedColor = Color.Black
+    val notPressedColor = Color.White
     val pressedColor = Color.Red
     val localCounterValue = remember { mutableStateOf(counterValue) }
 
@@ -57,19 +66,20 @@ fun VoteIcon(counterValue: Int = 0, onChange: (Int) -> Unit = {}, userVote: Int 
             buttonPressed.value = true
         }
     }
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    val thumbsUp = if (upvote.value) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp
+    val thumbsDown = if (downvote.value) Icons.Filled.ThumbDown else Icons.Outlined.ThumbDown
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = { onVote(true) }, enabled = canClick) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowUp,
+                imageVector = thumbsUp,
                 contentDescription = "Upvote",
                 tint = if (upvote.value) pressedColor else notPressedColor
             )
         }
-        Text(text = localCounterValue.value.toString())
+        Text(text = localCounterValue.value.toString(), color = notPressedColor)
         IconButton(onClick = { onVote(false) }, enabled = canClick) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowDown,
+                imageVector = thumbsDown,
                 contentDescription = "Downvote",
                 tint = if (downvote.value) pressedColor else notPressedColor
             )
