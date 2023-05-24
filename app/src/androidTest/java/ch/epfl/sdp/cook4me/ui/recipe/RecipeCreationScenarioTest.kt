@@ -25,7 +25,6 @@ import ch.epfl.sdp.cook4me.waitUntilExists
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
