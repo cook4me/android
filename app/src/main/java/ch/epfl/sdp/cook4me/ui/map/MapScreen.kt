@@ -26,12 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.common.button.CreateNewItemButton
 import ch.epfl.sdp.cook4me.ui.map.buttons.ButtonEPFL
 import ch.epfl.sdp.cook4me.ui.map.buttons.ButtonUNIL
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
@@ -54,7 +56,6 @@ data class MarkerData(
 @Composable
 fun GoogleMapView(
     modifier: Modifier = Modifier,
-    cameraPositionState: CameraPositionState = rememberCameraPositionState(),
     onMapLoaded: () -> Unit = {},
     content: @Composable () -> Unit = {},
     mapViewModel: MapViewModel = MapViewModel(),
@@ -64,6 +65,10 @@ fun GoogleMapView(
     onDetailedEventClick: (String) -> Unit = {},
     isOnline: Boolean = true,
 ) {
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(Locations.EPFL, ZOOM_DEFAULT_VALUE)
+    }
+
     val loadedMarkers by mapViewModel.markers
     var uniLoc by remember { mutableStateOf<LatLng?>(null) }
 
@@ -156,44 +161,68 @@ fun GoogleMapView(
                     )
                 }
             }
-
-            selectedMarker?.let { marker ->
-                Card(
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = 4.dp,
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
+            if (selectedMarker != null) {
+                selectedMarker?.let { marker ->
+                    Card(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = 4.dp,
                     ) {
-                        Text(
-                            text = marker.title,
-                            style = MaterialTheme.typography.h6,
-                            color = MaterialTheme.colors.primary,
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = marker.description,
-                            style = MaterialTheme.typography.body1,
-                            color = MaterialTheme.colors.onSecondary,
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                if (selectedMarker is MarkerData) {
-                                    val eventId = (selectedMarker as MarkerData).id
-                                    onDetailedEventClick(eventId)
-                                }
-                            }
+                        Column(
+                            modifier = Modifier.padding(16.dp),
                         ) {
                             Text(
-                                text = "Explore event",
-                                style = MaterialTheme.typography.button,
-                                color = MaterialTheme.colors.onSecondary
+                                text = marker.title,
+                                style = MaterialTheme.typography.h6,
+                                color = MaterialTheme.colors.primary,
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = marker.description,
+                                style = MaterialTheme.typography.body1,
+                                color = MaterialTheme.colors.onSecondary,
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    if (selectedMarker is MarkerData) {
+                                        val eventId = (selectedMarker as MarkerData).id
+                                        onDetailedEventClick(eventId)
+                                    }
+                                }
+                            ) {
+                                Text(
+                                    text = "Explore event",
+                                    style = MaterialTheme.typography.button,
+                                    color = MaterialTheme.colors.onSecondary
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                ) {
+                    Card(
+                        modifier = Modifier.padding(16.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        elevation = 4.dp,
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "Select an event",
+                                style = MaterialTheme.typography.body1,
+                                color = MaterialTheme.colors.onSecondary,
+                                textAlign = TextAlign.Center
                             )
                         }
                     }
