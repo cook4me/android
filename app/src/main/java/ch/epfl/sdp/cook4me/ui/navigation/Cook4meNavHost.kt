@@ -31,7 +31,6 @@ import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
 import ch.epfl.sdp.cook4me.ui.user.LoginScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.user.profile.ProfileViewModel
 import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 
 @Composable
@@ -140,9 +139,7 @@ fun Cook4MeNavHost(
             arguments = listOf(navArgument("userId") { type = NavType.StringType })
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")
-            userId?.let {
-                ProfileScreen(profileViewModel = ProfileViewModel(id = it))
-            } ?: ProfileScreen()
+            ProfileScreen(userId = userId)
         }
 
         composable(route = Screen.EditProfileScreen.name) {

@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.user.profile
 
 import android.net.Uri
+import android.net.Uri.EMPTY
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,9 +16,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -25,20 +28,42 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    profileViewModel: ProfileViewModel = remember {
-        ProfileViewModel()
-    },
+    userId: String? = null,
+    profileRepository: ProfileRepository = ProfileRepository(),
+    profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
+    accountService: AccountService = AccountService(),
 ) {
-    val profile = profileViewModel.profile.value
-    val userNameState = rememberSaveable { mutableStateOf("") }
-    val isLoading = profileViewModel.isLoading.value
-    val image = profileViewModel.profileImage.value
+    var profile by remember { mutableStateOf(Profile()) }
+    var isLoading by remember { mutableStateOf(true) }
+    var image by remember { mutableStateOf(EMPTY) }
+
+    LaunchedEffect(Unit) {
+        var email: String? = null
+        try {
+            email = userId ?: accountService.getCurrentUserWithEmail()
+        } catch (e: Exception) {
+            println("Error getting current user email ${e.message}")
+        }
+        email?.let {
+            try {
+                profile = profileRepository.getById(it) ?: Profile()
+                image = profileImageRepository.getProfile(it)
+            } catch (e: Exception) {
+                println("Error getting profile ${e.message}")
+            }
+            isLoading = false
+        }
+    }
 
     Box(
         modifier = modifier
@@ -49,7 +74,6 @@ fun ProfileScreen(
         if (isLoading) {
             LoadingScreen()
         } else {
-            userNameState.value = profile.name
             Column(
                 modifier = modifier
                     .padding(12.dp)
