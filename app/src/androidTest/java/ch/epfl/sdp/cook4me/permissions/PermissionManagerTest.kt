@@ -48,7 +48,7 @@ class PermissionManagerTest {
         }
 
         composeTestRule.onNodeWithText("Request permissions").assertExists()
-        composeTestRule.onNodeWithText("The following permissions are important: TestPermission1, TestPermission2. Please grant all of them for the app to function properly.").assertExists()
+        composeTestRule.onNodeWithText("The following permissions are important: Testpermission1, Testpermission2. Please grant all of them for the app to function properly.").assertExists()
     }
 
     @Test
@@ -112,7 +112,7 @@ class PermissionManagerTest {
             }
         }
 
-        val expectedText = "The following permissions will grant a better experience in the app: camera, location."
+        val expectedText = "The following permissions will grant a better experience in the app: Camera, Location."
         composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
     }
 
@@ -128,7 +128,7 @@ class PermissionManagerTest {
             }
         }
 
-        val expectedText = "The following permissions are important: camera, location. Please grant all of them for the app to function properly."
+        val expectedText = "The following permissions are important: Camera, Location. Please grant all of them for the app to function properly."
         composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
     }
 
@@ -144,7 +144,7 @@ class PermissionManagerTest {
             }
         }
 
-        val expectedText = "The location permission will grant a better experience in the app"
+        val expectedText = "The Location permission will grant a better experience in the app"
         composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
     }
 
@@ -160,7 +160,7 @@ class PermissionManagerTest {
             }
         }
 
-        val expectedText = "The camera permission is important. Please grant it for the app to function properly."
+        val expectedText = "The Camera permission is important. Please grant it for the app to function properly."
         composeTestRule.onNodeWithText(expectedText).assertIsDisplayed()
     }
 
