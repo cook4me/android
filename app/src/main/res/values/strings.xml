@@ -10,18 +10,16 @@
     <string name="selected_time_text">Selected Time: </string>
     <string name="select_time_button">Select Time</string>
 
-    <!--  MainLocations  -->
-    <string name="EPFL">EPFL</string>
-    <string name="UNIL">UNIL</string>
-
     <!--  CreateEventScreen  -->
     <string name="ask_event_name">Name of the event</string>
     <string name="ask_event_description">Description of the event</string>
     <string name="ask_event_number_participants">Number of people</string>
+    <string name="select_event">Select an event</string>
+    <string name="explore_event">Explore event</string>
 
     <!--  CreateChallengeScreen  -->
-    <string name="ask_challenge_name">Name of the challenge</string>
-    <string name="ask_challenge_description">Description of the challenge</string>
+    <string name="ask_challenge_name">Name of the challenge?</string>
+    <string name="ask_challenge_description">Description of the challenge?</string>
     <string name="ask_challenge_type">Cooking genre: </string>
 
     <!-- CreateNewItemButton -->
@@ -47,6 +45,10 @@
     <string name="ButtonRowCancel">Cancel</string>
     <string name="ButtonRowDone">Done</string>
     <string name="TupCreateBlank">Field can\'t be left blank</string>
+    <string name="tupperware_field_description_error">Description cannot be blank</string>
+    <string name="tupperware_field_name_error">Name cannot be blank</string>
+    <string name="tupperware_field_image_error">Tupperware needs an image</string>
+
 
     <!-- SwipeScreen -->
     <string name="swipe_alldone_placeholder">all done</string>
@@ -174,9 +176,9 @@
 
     <!-- Placeholder Screen -->
     <string name="placeholder_screen_content_description">placeholder screen</string>
-    <string name="tupperware_field_description_error">Description cannot be blank</string>
-    <string name="tupperware_field_name_error">Name cannot be blank</string>
-    <string name="tupperware_field_image_error">Tupperware needs an image</string>
+
+    <!-- Match Dialogue -->
+    <string name="match_dialogue_title">It\'s a match!</string>
 
 
 </resources>

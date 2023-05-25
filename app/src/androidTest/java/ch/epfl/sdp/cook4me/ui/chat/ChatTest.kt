@@ -107,6 +107,7 @@ class ChatTest {
             "someemail",
             "someotheremail",
             client = mockClient,
+            context = context
         )
         assert(createFunc != null)
         assert(createPairFunc != null)
