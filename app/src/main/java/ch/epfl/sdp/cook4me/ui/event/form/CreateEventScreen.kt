@@ -23,7 +23,6 @@ import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
-import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.runBlocking
@@ -77,19 +76,10 @@ fun CreateEventScreen(
             value = event.value.description,
             onValueChange = { event.value = event.value.copy(description = it) }
         )
-        AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
         IntegerSlider(
             text = R.string.ask_event_number_participants, min = 2, max = 16,
             onValueChange = { event.value = event.value.copy(maxParticipants = it) },
             modifier = Modifier.fillMaxWidth()
-        )
-        ToggleSwitch(
-            question = R.string.ask_event_visibility,
-            answerChecked = R.string.event_visibility_everyone,
-            answerUnchecked = R.string.event_visibility_subscriber_only,
-            onToggle = {
-                event.value = event.value.copy(isPrivate = it)
-            }
         )
         DatePicker(
             initialDate = Calendar.getInstance(),
