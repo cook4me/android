@@ -52,13 +52,13 @@ fun MatchDialog(
     profileImageRepository: ProfileImageRepository = ProfileImageRepository()
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val imageOfMe = remember { mutableStateOf<Uri>(Uri.EMPTY) }
-    val other = remember { mutableStateOf<Uri>(Uri.EMPTY) }
+    val userProfileImage = remember { mutableStateOf<Uri>(Uri.EMPTY) }
+    val otherUserProfileImage = remember { mutableStateOf<Uri>(Uri.EMPTY) }
 
-    LaunchedEffect(key1 = user, key2 = otherUser) {
+    LaunchedEffect(Unit) {
         coroutineScope.launch {
-            imageOfMe.value = profileImageRepository.getProfile(user)
-            other.value = profileImageRepository.getProfile(otherUser)
+            userProfileImage.value = profileImageRepository.getProfile(user)
+            otherUserProfileImage.value = profileImageRepository.getProfile(otherUser)
         }
     }
 
@@ -87,7 +87,7 @@ fun MatchDialog(
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(imageOfMe.value)
+                            .data(userProfileImage.value)
                             .build(),
                         contentDescription = "image",
                         contentScale = ContentScale.Crop, // Crop the image to fill its bounds
@@ -104,7 +104,7 @@ fun MatchDialog(
                     )
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(other.value)
+                            .data(otherUserProfileImage.value)
                             .build(),
                         contentDescription = "image",
                         contentScale = ContentScale.Crop, // Crop the image to fill its bounds

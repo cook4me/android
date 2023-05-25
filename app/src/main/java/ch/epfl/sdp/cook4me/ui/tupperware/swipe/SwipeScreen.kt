@@ -80,7 +80,7 @@ fun TupperwareSwipeScreen(
             MatchDialog(
                 user = it,
                 otherUser = otherUser,
-                context = context,
+                context = context, // chat service requires context to start a chat
                 onDismissRequest = { openMatchDialog = false }
             )
         }
