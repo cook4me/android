@@ -90,7 +90,7 @@ fun ProfileInfosField(
     OutlinedTextField(
         singleLine = true,
         modifier = modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = 8.dp)
             .testTag(preview)
             .semantics { if (isError) stateDescription = "Error" },
         value = value,
@@ -113,7 +113,7 @@ fun BiosField(
     OutlinedTextField(
         singleLine = false,
         modifier = modifier
-            .padding(vertical = 16.dp)
+            .padding(vertical = 8.dp)
             .fillMaxHeight()
             .testTag(preview)
             .semantics { if (isError) stateDescription = "Error" },

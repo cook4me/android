@@ -18,6 +18,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -121,42 +122,39 @@ fun AddProfileInfoScreen(
                     image = userImage,
                 )
 
-                ProfileInfosField(
-                    icon = Icons.Filled.Info,
-                    preview = stringResource(id = R.string.tag_favoriteDish),
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp),
                     value = favoriteDishState.text,
                     isError = false,
-                    onNewValue = {
-                        favoriteDishState.text = it
-                    }
-                )
+                    placeholder = { Text(stringResource(id = R.string.tag_favoriteDish)) },
+                    onValueChange = { favoriteDishState.text = it })
 
-                ProfileInfosField(
-                    icon = Icons.Filled.Info,
-                    preview = stringResource(id = R.string.tag_allergies),
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp),
                     value = allergiesState.text,
                     isError = false,
-                    onNewValue = {
-                        allergiesState.text = it
-                    }
-                )
+                    placeholder = { Text(stringResource(id = R.string.tag_allergies)) },
+                    onValueChange = { allergiesState.text = it })
 
-                BiosField(
-                    icon = Icons.Filled.Info,
-                    preview = stringResource(id = R.string.tag_bio),
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp),
                     value = bioState.text,
                     isError = false,
-                    onNewValue = {
-                        bioState.text = it
-                    }
-                )
+                    placeholder = { Text(stringResource(id = R.string.tag_bio)) },
+                    onValueChange = { bioState.text = it })
 
                 LoadingButton(
-                    R.string.btn_continue,
+                    R.string.add_profile_finish,
                     Modifier
                         .fillMaxWidth()
-                        .padding(16.dp, 8.dp)
-                        .testTag(stringResource(id = R.string.btn_continue)),
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                        .testTag(stringResource(id = R.string.add_profile_info_screen_tag)),
                     inProgress
                 ) {
                     scope.launch {
@@ -194,7 +192,7 @@ fun AddProfileInfoScreen(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
                     Text(text = stringResource(R.string.add_profile_skip_step), fontSize = 16.sp)
                 }
