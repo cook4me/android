@@ -28,11 +28,9 @@ class EventFormServiceTest {
             name = "name",
             description = "description",
             dateTime = dateTime,
-            location = "location",
             maxParticipants = 10,
             participants = listOf("participant1", "participant2"),
             id = "id",
-            isPrivate = true,
             creator = "creator"
         )
         coEvery { mockEventRepository.add(match { event.isValidEvent }) } returns "someId"

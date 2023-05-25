@@ -20,11 +20,9 @@ class EventTest {
             name = "name",
             description = "description",
             dateTime = dateTime,
-            location = "location",
             maxParticipants = 10,
             participants = listOf("participant1", "participant2"),
             id = "id",
-            isPrivate = true,
             creator = "creator"
         )
     }
@@ -73,7 +71,7 @@ class EventTest {
 
     @Test
     fun eventWithEmptyLocationIsInvalid() {
-        event = event.copy(location = "")
+        event = event
         assert(!event.isValidEvent)
         val errorMsg = "Location is empty"
         assertEquals(errorMsg, event.eventProblem)
