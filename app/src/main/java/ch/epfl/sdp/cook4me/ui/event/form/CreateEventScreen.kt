@@ -77,7 +77,6 @@ fun CreateEventScreen(
             value = event.value.description,
             onValueChange = { event.value = event.value.copy(description = it) }
         )
-        AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
         IntegerSlider(
             text = R.string.ask_event_number_participants, min = 2, max = 16,
             onValueChange = { event.value = event.value.copy(maxParticipants = it) },
