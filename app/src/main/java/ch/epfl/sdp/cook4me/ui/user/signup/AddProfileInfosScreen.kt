@@ -45,6 +45,7 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
+import ch.epfl.sdp.cook4me.ui.user.signup.SecondOptionButton
 import ch.epfl.sdp.cook4me.ui.user.signup.Toolbar
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -178,19 +179,10 @@ fun AddProfileInfoScreen(
                             }
                         }
                     }
-                    Button(
-                        onClick = onSkipClick,
-                        colors =
-                        ButtonDefaults.buttonColors(
-                            backgroundColor = MaterialTheme.colors.secondary,
-                            contentColor = MaterialTheme.colors.onSecondary
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        Text(text = stringResource(R.string.add_profile_skip_step), fontSize = 16.sp)
-                    }
+                    SecondOptionButton(
+                        R.string.add_profile_skip_step,
+                        onSkipClick
+                    )
                 }
             }
         }

@@ -35,6 +35,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.EmailField
 import ch.epfl.sdp.cook4me.ui.common.form.EmailState
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
 import ch.epfl.sdp.cook4me.ui.common.form.RequiredTextFieldState
+import ch.epfl.sdp.cook4me.ui.user.signup.SecondOptionButton
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.launch
@@ -134,17 +135,10 @@ fun LoginScreen(
                         }
                     }
                 }
-                Button(
-                    onClick = onRegisterClick,
-                    colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colors.secondary,
-                        contentColor = MaterialTheme.colors.onSecondary
-                    ),
-                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)
-                ) {
-                    Text(text = stringResource(R.string.sign_in_screen_register_button), fontSize = 16.sp)
-                }
+                SecondOptionButton(
+                    R.string.sign_in_screen_register_button,
+                    onRegisterClick
+                )
             }
         }
     )
