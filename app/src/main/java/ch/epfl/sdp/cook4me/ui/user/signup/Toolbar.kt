@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 fun Toolbar(title: String) {
     TopAppBar(
         title = {
-          Text(title, Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+            Text(title, Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
         },
     )
 }

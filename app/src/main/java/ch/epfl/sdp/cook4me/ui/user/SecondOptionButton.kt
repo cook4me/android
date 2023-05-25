@@ -1,4 +1,4 @@
-package ch.epfl.sdp.cook4me.ui.user.signup
+package ch.epfl.sdp.cook4me.ui.user
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth

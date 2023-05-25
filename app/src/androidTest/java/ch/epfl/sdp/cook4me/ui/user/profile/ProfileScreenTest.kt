@@ -1,13 +1,11 @@
 package ch.epfl.sdp.cook4me.ui.user.profile
 
-import android.content.Context
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
