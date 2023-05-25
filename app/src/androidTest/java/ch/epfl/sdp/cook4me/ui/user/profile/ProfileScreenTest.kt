@@ -1,32 +1,32 @@
 package ch.epfl.sdp.cook4me.ui.user.profile
 //
-//import android.net.Uri
-//import androidx.activity.ComponentActivity
-//import androidx.compose.ui.test.junit4.createAndroidComposeRule
-//import androidx.test.ext.junit.runners.AndroidJUnit4
-//import ch.epfl.sdp.cook4me.R
-//import ch.epfl.sdp.cook4me.application.AccountService
-//import ch.epfl.sdp.cook4me.persistence.model.Profile
-//import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
-//import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
-//import ch.epfl.sdp.cook4me.setupFirebaseAuth
-//import ch.epfl.sdp.cook4me.setupFirebaseStorage
-//import ch.epfl.sdp.cook4me.setupFirestore
-//import com.google.firebase.auth.FirebaseAuth
-//import com.google.firebase.firestore.FirebaseFirestore
-//import com.google.firebase.storage.FirebaseStorage
-//import kotlinx.coroutines.runBlocking
-//import kotlinx.coroutines.tasks.await
-//import org.junit.After
-//import org.junit.Before
-//import org.junit.Rule
-//import org.junit.runner.RunWith
+// import android.net.Uri
+// import androidx.activity.ComponentActivity
+// import androidx.compose.ui.test.junit4.createAndroidComposeRule
+// import androidx.test.ext.junit.runners.AndroidJUnit4
+// import ch.epfl.sdp.cook4me.R
+// import ch.epfl.sdp.cook4me.application.AccountService
+// import ch.epfl.sdp.cook4me.persistence.model.Profile
+// import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
+// import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
+// import ch.epfl.sdp.cook4me.setupFirebaseAuth
+// import ch.epfl.sdp.cook4me.setupFirebaseStorage
+// import ch.epfl.sdp.cook4me.setupFirestore
+// import com.google.firebase.auth.FirebaseAuth
+// import com.google.firebase.firestore.FirebaseFirestore
+// import com.google.firebase.storage.FirebaseStorage
+// import kotlinx.coroutines.runBlocking
+// import kotlinx.coroutines.tasks.await
+// import org.junit.After
+// import org.junit.Before
+// import org.junit.Rule
+// import org.junit.runner.RunWith
 //
-//private const val USERNAME = "donald.duck@epfl.ch"
-//private const val PASSWORD = "123456"
+// private const val USERNAME = "donald.duck@epfl.ch"
+// private const val PASSWORD = "123456"
 //
-//@RunWith(AndroidJUnit4::class)
-//class ProfileScreenTest {
+// @RunWith(AndroidJUnit4::class)
+// class ProfileScreenTest {
 //    @get:Rule
 //    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 //
@@ -65,7 +65,7 @@ package ch.epfl.sdp.cook4me.ui.user.profile
 //        }
 //    }
 
-    // TODO: Fix me
+// TODO: Fix me
 //    @Test
 //    fun profileInfoIsDisplayed() {
 //        composeTestRule.setContent {
@@ -83,4 +83,4 @@ package ch.epfl.sdp.cook4me.ui.user.profile
 //        composeTestRule.onNodeWithText(user.bio).assertExists()
 //        composeTestRule.onNodeWithText(user.favoriteDish).assertExists()
 //    }
-}
+// }
