@@ -32,6 +32,7 @@ fun ChallengeFeedScreen(
     onFilterClick: () -> Unit = {},
     searchViewModel: SearchViewModel = remember { SearchViewModel() },
     accountService: AccountService = AccountService(),
+    isOnline: Boolean = true,
 ) {
     val query = searchViewModel.query
     val challenges = searchViewModel.challenges
@@ -85,6 +86,8 @@ fun ChallengeFeedScreen(
                 }
             }
         }
-        AddButton(modifier = Modifier.padding(16.dp), onClick = onCreateNewChallengeClick)
+        if (isOnline) {
+            AddButton(modifier = Modifier.padding(16.dp), onClick = onCreateNewChallengeClick)
+        }
     }
 }

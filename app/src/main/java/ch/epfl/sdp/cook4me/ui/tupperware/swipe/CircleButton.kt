@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -24,7 +25,8 @@ fun CircleButton(
             .clip(CircleShape)
             .background(color)
             .size(56.dp)
-            .border(2.dp, color, CircleShape),
+            .border(2.dp, color, CircleShape)
+            .testTag("CircleButton"),
         onClick = onClick,
     ) {
         Icon(

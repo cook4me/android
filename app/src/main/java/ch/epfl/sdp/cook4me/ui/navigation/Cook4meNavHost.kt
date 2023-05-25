@@ -176,7 +176,8 @@ fun Cook4MeNavHost(
                 },
                 onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) },
                 onFilterClick = { navController.navigate(route = Screen.FilterScreen.name) },
-                searchViewModel = searchViewModel
+                searchViewModel = searchViewModel,
+                isOnline = isOnline
             )
         }
         composable(route = Screen.FilterScreen.name) {
@@ -197,6 +198,7 @@ fun Cook4MeNavHost(
                         ScreenWithArgs.ChallengeVotingScreen.createRoute(challengeId)
                     )
                 },
+                isOnline = isOnline
             )
         }
         composable(
