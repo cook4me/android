@@ -7,9 +7,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import ch.epfl.sdp.cook4me.waitUntilExists
-import ch.epfl.sdp.cook4me.R
 import org.hamcrest.Matchers.`is`
 import org.junit.Rule
 import org.junit.Test
@@ -85,4 +85,4 @@ class NavigationBarTest {
     fun navigateToProfileFromDropDownMenu() {
         navigateToXFromDropDownMenu(BottomNavScreen.Profile)
     }
- }
+}

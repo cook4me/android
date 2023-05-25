@@ -61,7 +61,6 @@ fun RecipeDisplay(
     isExpanded: Boolean = true,
     onClick: () -> Unit = {}
 ) {
-
     Card(
         modifier = Modifier,
         elevation = 5.dp,
