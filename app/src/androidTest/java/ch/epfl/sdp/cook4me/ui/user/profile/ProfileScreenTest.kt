@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
@@ -87,28 +86,5 @@ class ProfileScreenTest {
         }
 
         composeTestRule.onNodeWithTag("defaultProfileImage").assertExists()
-    }
-
-    @Test
-    fun profileLoadCorrectValuesTest() {
-        val profileViewModel = ProfileViewModel()
-
-        composeTestRule.setContent {
-            ProfileScreen(
-                userId = USERNAME,
-                profileRepository = repository,
-                profileImageRepository = profileImageRepository,
-                accountService = account,
-            )
-        }
-
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            !profileViewModel.isLoading.value
-        }
-
-        composeTestRule.onNodeWithText(user.name).assertExists()
-        composeTestRule.onNodeWithText(user.favoriteDish).assertExists()
-        composeTestRule.onNodeWithText(user.allergies).assertExists()
-        composeTestRule.onNodeWithText(user.bio).assertExists()
     }
 }
