@@ -123,25 +123,22 @@ fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
 
     Column(
         modifier = modifier
-            .padding(8.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
+        Text(
+            text = name,
+            fontWeight = FontWeight.Bold,
+        )
         Card(
             shape = CircleShape,
             modifier = modifier
-                .padding(8.dp)
-                .size(100.dp)
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                .size(200.dp)
                 .testTag(stringResource(R.string.tag_defaultProfileImage))
         ) {
             Image(painter = painter, contentDescription = "")
         }
-        Text(
-            text = name,
-            modifier = modifier.padding(top = 8.dp, bottom = 8.dp),
-            fontWeight = FontWeight.Bold,
-        )
     }
 }
 
@@ -156,7 +153,7 @@ fun FavoriteDishRow(favoriteDish: String, modifier: Modifier) {
         Text(
             text = stringResource(R.string.tag_favoriteDish),
             modifier = modifier
-                .width(100.dp)
+                .width(120.dp)
                 .padding(top = 8.dp, bottom = 8.dp),
             fontWeight = FontWeight.Bold,
         )

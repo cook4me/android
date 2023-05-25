@@ -123,6 +123,11 @@ fun MatchDialog(
                         .fillMaxWidth()
                 ) {
                     CircleButton(
+                        onClick = { onDismissRequest() },
+                        icon = Icons.Rounded.Cancel,
+                        color = MaterialTheme.colors.primary
+                    )
+                    CircleButton(
                         onClick = {
                             createChatWithPairs(
                                 userEmail = user,
@@ -136,11 +141,6 @@ fun MatchDialog(
                             onDismissRequest()
                         },
                         icon = Icons.Rounded.Chat,
-                        color = MaterialTheme.colors.primary
-                    )
-                    CircleButton(
-                        onClick = { onDismissRequest() },
-                        icon = Icons.Rounded.Cancel,
                         color = MaterialTheme.colors.primary
                     )
                 }
