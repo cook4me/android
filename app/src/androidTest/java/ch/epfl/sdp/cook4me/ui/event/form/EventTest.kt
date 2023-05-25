@@ -40,12 +40,10 @@ class EventTest {
             Name: name
             Description: description
             Date: 01/01/2000 at 00:00
-            Location: location
             Max participants: 10
             Participants: [participant1, participant2]
             Creator: creator
             Id: id
-            Is private: true
             Latitude-Longitude: GeoPoint{latitude=0.0,longitude=0.0}"""
         // remove all the spaces
         expected = expected.replace("\\s".toRegex(), "")
@@ -66,14 +64,6 @@ class EventTest {
         event = event.copy(description = "")
         assert(!event.isValidEvent)
         val errorMsg = "Description is empty"
-        assertEquals(errorMsg, event.eventProblem)
-    }
-
-    @Test
-    fun eventWithEmptyLocationIsInvalid() {
-        event = event
-        assert(!event.isValidEvent)
-        val errorMsg = "Location is empty"
         assertEquals(errorMsg, event.eventProblem)
     }
 
