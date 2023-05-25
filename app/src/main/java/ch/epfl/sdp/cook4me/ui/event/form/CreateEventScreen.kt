@@ -22,6 +22,7 @@ import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.EventFormService
 import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
+import ch.epfl.sdp.cook4me.ui.common.form.FormTitle
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
@@ -93,6 +94,7 @@ fun CreateEventScreen(
                 .padding(it)
                 .testTag(stringResource(R.string.create_event_screen_tag))
         ) {
+            FormTitle(modifier = Modifier.padding(top = 15.dp, bottom = 20.dp), title = "Create an Event")
             InputField(
                 question = R.string.ask_event_name,
                 value = event.value.name,
@@ -108,14 +110,6 @@ fun CreateEventScreen(
                 text = R.string.ask_event_number_participants, min = 2, max = 16,
                 onValueChange = { event.value = event.value.copy(maxParticipants = it) },
                 modifier = Modifier.fillMaxWidth()
-            )
-            ToggleSwitch(
-                question = R.string.ask_event_visibility,
-                answerChecked = R.string.event_visibility_everyone,
-                answerUnchecked = R.string.event_visibility_subscriber_only,
-                onToggle = {
-                    event.value = event.value.copy(isPrivate = it)
-                }
             )
             DatePicker(
                 initialDate = Calendar.getInstance(),

@@ -31,7 +31,7 @@ fun IntegerSlider(
     val valueChosen = remember { mutableStateOf(min) }
     FieldTitle(
         text = "${stringResource(text)}: ${valueChosen.value}",
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier.padding(),
     )
     Slider(
         value = valueChosen.value.toFloat(),
