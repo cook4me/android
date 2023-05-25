@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,7 @@ fun BottomNavigationBar(
                 if (currentRoute == screen.route) { { Text(screen.title) } } else null
 
             BottomNavigationItem(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(1f).testTag(screen.title),
                 icon = { screen.icon?.let { Icon(painterResource(id = it), contentDescription = null) } },
                 label = label,
                 selected = currentRoute == screen.route,
