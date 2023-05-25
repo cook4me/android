@@ -20,7 +20,6 @@ import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
 import ch.epfl.sdp.cook4me.registryOwnerFactory
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
-import ch.epfl.sdp.cook4me.waitUntilDisplayed
 import ch.epfl.sdp.cook4me.waitUntilExists
 import io.mockk.confirmVerified
 import io.mockk.mockk
