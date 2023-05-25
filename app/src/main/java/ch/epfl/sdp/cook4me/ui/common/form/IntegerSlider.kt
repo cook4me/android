@@ -29,8 +29,8 @@ fun IntegerSlider(
     onValueChange: (Int) -> Unit
 ) {
     val valueChosen = remember { mutableStateOf(min) }
-    Text(
-        text = "${stringResource(text)}:${valueChosen.value}",
+    FieldTitle(
+        text = "${stringResource(text)}: ${valueChosen.value}",
         modifier = Modifier.padding(horizontal = 16.dp),
     )
     Slider(

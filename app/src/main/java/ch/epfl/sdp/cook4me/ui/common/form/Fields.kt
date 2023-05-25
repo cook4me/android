@@ -142,3 +142,12 @@ fun PasswordField(value: String, isError: Boolean, onNewValue: (String) -> Unit,
         visualTransformation = PasswordVisualTransformation()
     )
 }
+
+@Composable
+fun FieldTitle(modifier: Modifier = Modifier, text: String) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MaterialTheme.typography.h6.copy(fontSize = 18.sp)
+    )
+}
