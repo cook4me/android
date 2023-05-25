@@ -35,7 +35,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.persistence.model.Recipe
-import ch.epfl.sdp.cook4me.ui.recipeFeed.VoteIcon
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
