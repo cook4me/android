@@ -31,9 +31,8 @@ class SignInUITest {
     @Test
     fun uiIsDisplayed() {
         composeTestRule.setContent {
-            LoginScreen {}
+            LoginScreen({}, {})
         }
-        composeTestRule.onNodeWithStringId(R.string.sign_in_screen_top_bar_message).assertIsDisplayed()
         composeTestRule.onNodeWithTag(TEST_TAG_EMAIL_FIELD).assertIsDisplayed()
         composeTestRule.onNodeWithTag(TEST_TAG_PASSWORD_FIELD).assertIsDisplayed()
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).assertIsDisplayed()
@@ -42,7 +41,7 @@ class SignInUITest {
     @Test
     fun invalidEmailTriggersInvalidEmailMessageBar() {
         composeTestRule.setContent {
-            LoginScreen {}
+            LoginScreen({}, {})
         }
         composeTestRule.onNodeWithTag(TEST_TAG_EMAIL_FIELD).performTextInput(INVALID_EMAIL)
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()
@@ -52,7 +51,7 @@ class SignInUITest {
     @Test
     fun validEmailWithBlankPasswordTriggersBlankPasswordMessageBar() {
         composeTestRule.setContent {
-            LoginScreen {}
+            LoginScreen({}, {})
         }
         composeTestRule.onNodeWithTag(TEST_TAG_EMAIL_FIELD).performTextInput(VALID_EMAIL)
         composeTestRule.onNodeWithStringId(R.string.sign_in_screen_sign_in_button).performClick()

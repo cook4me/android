@@ -6,8 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.epfl.sdp.cook4me.application.AccountService
-import ch.epfl.sdp.cook4me.application.ProfileService
-import ch.epfl.sdp.cook4me.application.ProfileServiceWithRepository
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
@@ -18,8 +16,8 @@ import kotlinx.coroutines.withContext
 
 class ProfileViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
-    private val service: ProfileService = ProfileServiceWithRepository(),
     private val accountService: AccountService = AccountService(),
+    private val profileRepository: ProfileRepository = ProfileRepository(),
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
     private val id: String? = null,
     onFailure: () -> Unit = {},
@@ -105,13 +103,7 @@ class ProfileViewModel(
                 runBlocking {
                     _id?.let {
                         isLoading.value = true
-                        service.submitForm(
-                            it, // Email as id
-                            profile.value.name,
-                            profile.value.allergies,
-                            profile.value.bio,
-                            profile.value.favoriteDish,
-                        )
+                        profileRepository.update(profile.value.email, profile.value)
                         onSuccessListener()
                         isLoading.value = false
                     }

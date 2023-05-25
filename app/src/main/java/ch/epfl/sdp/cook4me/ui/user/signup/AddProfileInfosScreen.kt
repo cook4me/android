@@ -3,7 +3,6 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,12 +14,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,35 +26,39 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
-import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
-import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
-import ch.epfl.sdp.cook4me.ui.common.form.UserField
-import ch.epfl.sdp.cook4me.ui.common.form.UserNameState
-import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
+import ch.epfl.sdp.cook4me.ui.user.SecondOptionButton
+import ch.epfl.sdp.cook4me.ui.user.signup.Toolbar
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
+
+const val PLACEHOLDER_URI = "android.resource://ch.epfl.sdp.cook4me/" + R.drawable.ic_user
 
 @Composable
 fun AddProfileInfoScreen(
+    onAddingSuccess: () -> Unit,
+    onSkipClick: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel,
-    onSuccessfulSignUp: () -> Unit,
-    onSignUpFailure: () -> Unit
+    accountService: AccountService = AccountService(),
+    profileRepository: ProfileRepository = ProfileRepository(),
+    profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
 ) {
     val context = LocalContext.current
-    val usernameState =
-        remember { UserNameState(context.getString(R.string.invalid_username_message)) }
+    val name = remember {
+        NonRequiredTextFieldState("")
+    }
     val favoriteDishState = remember {
         NonRequiredTextFieldState("")
     }
@@ -68,10 +68,10 @@ fun AddProfileInfoScreen(
     val bioState = remember {
         NonRequiredTextFieldState("")
     }
-    val userImage = remember {
+    var userImage by remember {
         mutableStateOf<Uri>(
             // get Uri from R.drawable.ic_user
-            Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+            Uri.parse(PLACEHOLDER_URI)
         )
     }
 
@@ -87,8 +87,7 @@ fun AddProfileInfoScreen(
             contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
                 if (uri != null) {
-                    userImage.value = uri
-                    viewModel.addProfileImage(uri)
+                    userImage = uri
                 }
             }
         )
@@ -110,86 +109,85 @@ fun AddProfileInfoScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                BasicToolbar(stringResource(R.string.Add_profile_infos_top_bar_message))
+                Toolbar(stringResource(R.string.Add_profile_infos_top_bar_message))
 
-                ImageHolder_AddProfileInfoScreen(
-                    onClickAddImage = { onClickAddImage() },
-                    image = userImage.value,
-                )
+                Column(Modifier.padding(vertical = 16.dp)) {
+                    ImageHolder_AddProfileInfoScreen(
+                        onClickAddImage = { onClickAddImage() },
+                        image = userImage,
+                    )
 
-                // Textfield for the Username
-                UserField(
-                    usernameState.text,
-                    usernameState.showErrors(),
-                    {
-                        usernameState.text = it
-                        viewModel.addUsername(it)
-                    },
-                )
+                    OutlinedTextField(
+                        modifier = Modifier.fieldModifier(),
+                        value = name.text,
+                        isError = false,
+                        placeholder = { Text(stringResource(id = R.string.add_profile_name)) },
+                        onValueChange = { name.text = it }
+                    )
 
-                ProfileInfosField(
-                    icon = Icons.Filled.Info,
-                    preview = stringResource(id = R.string.tag_favoriteDish),
-                    value = favoriteDishState.text,
-                    isError = false,
-                    onNewValue = {
-                        favoriteDishState.text = it
-                        viewModel.addFavoriteDish(it)
-                    }
-                )
+                    OutlinedTextField(
+                        modifier = Modifier.fieldModifier(),
+                        value = favoriteDishState.text,
+                        isError = false,
+                        placeholder = { Text(stringResource(id = R.string.add_profile_favoriteDish)) },
+                        onValueChange = { favoriteDishState.text = it }
+                    )
 
-                ProfileInfosField(
-                    icon = Icons.Filled.Info,
-                    preview = stringResource(id = R.string.tag_allergies),
-                    value = allergiesState.text,
-                    isError = false,
-                    onNewValue = {
-                        allergiesState.text = it
-                        viewModel.addAllergies(it)
-                    }
-                )
+                    OutlinedTextField(
+                        modifier = Modifier.fieldModifier(),
+                        value = allergiesState.text,
+                        isError = false,
+                        placeholder = { Text(stringResource(id = R.string.add_profile_allergies)) },
+                        onValueChange = { allergiesState.text = it }
+                    )
 
-                BiosField(
-                    icon = Icons.Filled.Info,
-                    preview = stringResource(id = R.string.tag_bio),
-                    value = bioState.text,
-                    isError = false,
-                    onNewValue = {
-                        bioState.text = it
-                        viewModel.addBio(it)
-                    }
-                )
+                    OutlinedTextField(
+                        modifier = Modifier.fieldModifier(),
+                        value = bioState.text,
+                        isError = false,
+                        placeholder = { Text(stringResource(id = R.string.add_profile_bio)) },
+                        onValueChange = { bioState.text = it }
+                    )
 
-                LoadingButton(
-                    R.string.btn_continue,
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp, 8.dp)
-                        .testTag(stringResource(id = R.string.btn_continue)),
-                    inProgress
-                ) {
-                    usernameState.enableShowErrors()
-                    scope.launch {
-                        if (!usernameState.isValid) {
-                            scaffoldState.snackbarHostState.showSnackbar(usernameState.errorMessage)
-                        } else {
+                    LoadingButton(
+                        R.string.add_profile_finish,
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                            .testTag(stringResource(id = R.string.add_profile_info_screen_tag)),
+                        inProgress
+                    ) {
+                        scope.launch {
+                            inProgress = true
                             try {
-                                inProgress = true
-                                viewModel.onSubmit(
-                                    onSignUpSuccess = onSuccessfulSignUp,
-                                    onSignUpFailure = onSignUpFailure,
-                                )
-                            } catch (e: FirebaseAuthException) {
-                                scaffoldState.snackbarHostState.showSnackbar(
-                                    context.getString(R.string.Add_profile_infos_invalid_user),
-                                )
-                                Log.d(
-                                    context.getString(R.string.Add_profile_infos_invalid_user),
-                                    e.stackTraceToString()
-                                )
+                                accountService.getCurrentUser()?.email?.let {
+                                    profileRepository.add(
+                                        Profile(
+                                            it,
+                                            name.text,
+                                            allergiesState.text,
+                                            bioState.text,
+                                            favoriteDishState.text
+                                        )
+                                    )
+                                    if (userImage.toString() != PLACEHOLDER_URI) {
+                                        profileImageRepository.add(userImage)
+                                    }
+                                }
+                                onAddingSuccess()
+                            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                                inProgress = false
+                                Log.e("add profile infos", e.message, e)
+                                scaffoldState
+                                    .snackbarHostState
+                                    .showSnackbar(context.getString(R.string.add_profile_infos_error))
                             }
                         }
                     }
+                    SecondOptionButton(
+                        R.string.add_profile_skip_step,
+                        onSkipClick
+                    )
                 }
             }
         }
@@ -203,7 +201,7 @@ fun ImageHolder_AddProfileInfoScreen(
 ) {
     Column(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(16.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -239,11 +237,7 @@ fun Image_AddProfileInfoScreen(
     )
 }
 
-@Composable
-private fun BasicToolbar(title: String) {
-    TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
-}
-
-@Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
-    if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
+private fun Modifier.fieldModifier(): Modifier =
+    this
+        .fillMaxWidth()
+        .padding(start = 16.dp, end = 16.dp, top = 8.dp)

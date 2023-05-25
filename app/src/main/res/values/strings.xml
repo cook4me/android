@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Cook4Me</string>
 
-
     <!--  DatePicker  -->
     <string name="selected_date_text">Selected Date: </string>
     <string name="select_date_button">Select Date</string>
@@ -57,8 +56,8 @@
     <string name="zip_code_label">Zip code</string>
 
     <!-- Login Screen -->
-    <string name="sign_in_screen_top_bar_message">Enter your login details</string>
     <string name="sign_in_screen_sign_in_button">Sign in</string>
+    <string name="sign_in_screen_register_button">Register</string>
     <string name="invalid_email_message">Invalid email!</string>
     <string name="password_blank">Password cannot be blank!</string>
     <string name="sign_in_screen_non_exist_user">User does not seem to exist!</string>
@@ -70,6 +69,7 @@
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
     <string name="tag_bio">Bio</string>
+    <string name="invalid_username_message">This username is not valid</string>
     <string name="tag_defaultProfileImage">defaultProfileImage</string>
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
@@ -107,14 +107,22 @@
     <!-- Signup -->
     <string name="btn_continue">continue</string>
     <string name="sign_up_screen_top_bar_message">Enter Email and Password</string>
-    <string name="sign_up_screen_invalid_email">Email invalid</string>
+    <string name="sign_up_screen_password_not_identical">Passwords fields don\'t match</string>
+    <string name="sign_up_screen_user_already_exists">User already exists</string>
+    <string name="sign_up_screen_firebase_exception">Request was not successful, please try again</string>
+    <string name="sign_up_screen_password_again_field">Repeat password</string>
+    <string name="Add_profile_infos_top_bar_message">Add your profile information</string>
     <string name="sign_up_screen_invalid_password">Password invalid</string>
-    <string name="invalid_username_message">This username is not valid</string>
-    <string name="Add_profile_infos_top_bar_message">Add your user information</string>
-    <string name="Add_profile_infos_invalid_user">Email invalid</string>
-    <string name="TAG_USER_FIELD">UserField</string>
+    <string name="add_profile_infos_error">Something went wrong, please try again or skip the step</string>
+    <string name="add_profile_finish">Finish</string>
+    <string name="add_profile_skip_step">Skip step</string>
     <string name="sign_up_screen_tag">sign up screen</string>
     <string name="add_profile_info_screen_tag">add profile info screen</string>
+    <string name="add_profile_name">What is your name?</string>
+    <string name="add_profile_allergies">Do you have any allergies?</string>
+    <string name="add_profile_favoriteDish">What is your favorite dish?</string>
+    <string name="add_profile_bio">Tell us something about you</string>
+    <string name="TAG_USER_FIELD">UserField</string>
 
     <!-- Permission -->
     <string name="permission_message_singular">The %1\$s permission is important. Please grant it for the app to function properly.</string>

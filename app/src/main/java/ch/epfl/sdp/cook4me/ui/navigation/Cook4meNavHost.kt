@@ -31,7 +31,6 @@ import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
 import ch.epfl.sdp.cook4me.ui.user.LoginScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 
 @Composable
 fun Cook4MeNavHost(
@@ -42,7 +41,6 @@ fun Cook4MeNavHost(
     onSuccessfulAuth: () -> Unit,
     isOnline: Boolean
 ) {
-    val signUpViewModel = remember { SignUpViewModel() }
     val searchViewModel = remember { SearchViewModel() }
     NavHost(
         modifier = modifier,
@@ -95,10 +93,7 @@ fun Cook4MeNavHost(
             DetailedEventScreen(backStackEntry.arguments?.getString("eventId").orEmpty())
         }
         composable(route = Screen.SignUpScreen.name) {
-            SignUpScreen(
-                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfo.name) },
-                viewModel = signUpViewModel, // TODO Might need some additional changes
-            )
+            SignUpScreen(onSuccessfulAccountCreationAndLogin = { navController.navigate(Screen.SignUpUserInfo.name) })
         }
         composable(route = Screen.CreateRecipeScreen.name) {
             CreateRecipePermissionWrapper(
@@ -116,13 +111,8 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.SignUpUserInfo.name) {
             AddProfileInfoScreen(
-                viewModel = signUpViewModel,
-                onSuccessfulSignUp = {
-                    navController.navigate(
-                        startDestination
-                    )
-                },
-                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
+                onAddingSuccess = { navController.navigate(Screen.RecipeFeed.name) },
+                onSkipClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
         composable(route = Screen.Login.name) {
@@ -133,7 +123,8 @@ fun Cook4MeNavHost(
                         // This popUp blocks the user being able to go back once logged in
                         popUpTo(Screen.Login.name) { inclusive = true }
                     }
-                }
+                },
+                onRegisterClick = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
         composable(route = Screen.ProfileScreen.name) { ProfileScreen() }

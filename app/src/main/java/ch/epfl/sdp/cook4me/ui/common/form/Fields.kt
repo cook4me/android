@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -52,17 +53,25 @@ fun InputField(
             onValueChange,
             isError = isError,
             label = { label?.let { Text(stringResource(id = it)) } },
-            modifier = modifier.fillMaxWidth().semantics { if (isError) stateDescription = "Error" }
+            modifier = modifier
+                .fillMaxWidth()
+                .semantics { if (isError) stateDescription = "Error" }
         )
     }
 }
 
 @Composable
-fun EmailField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+fun EmailField(
+    value: String,
+    isError: Boolean,
+    onNewValue: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     OutlinedTextField(
         singleLine = true,
         modifier = modifier
-            .testTag(stringResource(R.string.TAG_EMAIL_FIELD)).semantics { if (isError) stateDescription = "Error" },
+            .testTag(stringResource(R.string.TAG_EMAIL_FIELD))
+            .semantics { if (isError) stateDescription = "Error" },
         value = value,
         onValueChange = { onNewValue(it) },
         isError = isError,
@@ -97,7 +106,9 @@ fun ProfileInfosField(
     OutlinedTextField(
         singleLine = true,
         modifier = modifier
-            .testTag(preview).semantics { if (isError) stateDescription = "Error" },
+            .padding(vertical = 8.dp)
+            .testTag(preview)
+            .semantics { if (isError) stateDescription = "Error" },
         value = value,
         onValueChange = { onNewValue(it) },
         isError = false,
@@ -118,8 +129,10 @@ fun BiosField(
     OutlinedTextField(
         singleLine = false,
         modifier = modifier
+            .padding(vertical = 8.dp)
             .fillMaxHeight()
-            .testTag(preview).semantics { if (isError) stateDescription = "Error" },
+            .testTag(preview)
+            .semantics { if (isError) stateDescription = "Error" },
         value = value,
         onValueChange = { onNewValue(it) },
         isError = false,
@@ -129,14 +142,21 @@ fun BiosField(
 }
 
 @Composable
-fun PasswordField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+fun PasswordField(
+    value: String,
+    isError: Boolean,
+    onNewValue: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    @StringRes text: Int? = null
+) {
     OutlinedTextField(
         modifier = modifier
-            .testTag(stringResource(R.string.TAG_PASSWORD_FIELD)).semantics { if (isError) stateDescription = "Error" },
+            .testTag(stringResource(R.string.TAG_PASSWORD_FIELD))
+            .semantics { if (isError) stateDescription = "Error" },
         value = value,
         onValueChange = { onNewValue(it) },
         isError = isError,
-        placeholder = { Text(text = "Password") },
+        placeholder = { Text(text = text?.let { stringResource(text) } ?: "Password") },
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = PasswordVisualTransformation()

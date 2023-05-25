@@ -89,16 +89,6 @@ class AccountServiceTest {
     }
 
     @Test
-    fun accountServicePermitsValidEmail() {
-        assertThat(accountService.isValidEmail(VALID_EMAIL), `is`(true))
-    }
-
-    @Test
-    fun accountServiceDeclinesInvalidEmail() {
-        assertThat(accountService.isValidEmail(INVALID_EMAIL), `is`(false))
-    }
-
-    @Test
     fun accountServicePermitsSignedUpUser() = runTest {
         accountService.authenticate(USERNAME, PASSWORD)
         assertThat(auth.currentUser?.email, `is`(USERNAME))
