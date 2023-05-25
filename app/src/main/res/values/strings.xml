@@ -38,7 +38,6 @@
     <string name="detailed_event_create_chat">Chat with event owner</string>
 
     <!-- CreateTupperwareScreen -->
-    <string name="image_selector_add_image">+</string>
     <string name="TupCreateFormAddImage">Add Images</string>
     <string name="TupCreateFormTupName">Tupperware Name</string>
     <string name="TupCreateFormDesc">Description</string>
