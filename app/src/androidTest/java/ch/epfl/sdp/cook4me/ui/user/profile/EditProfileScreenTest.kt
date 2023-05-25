@@ -44,10 +44,9 @@ class EditProfileScreenTest {
     private val repository: ProfileRepository = ProfileRepository(store)
 
     private var userImage: Uri =
-        Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_launcher_foreground")
+        Uri.parse("android.resource://ch.epfl.sdp.cook4me/" + R.drawable.ic_user)
     private val user = Profile(
         email = "donald.duck@epfl.ch",
-        name = "Donald",
         allergies = "Hazelnut",
         bio = "I am a duck",
         favoriteDish = "Spaghetti",
@@ -78,7 +77,6 @@ class EditProfileScreenTest {
         val profileViewModel = ProfileViewModel()
 
         // Set up the test and wait for the screen to be loaded
-        val usernameTag = composeTestRule.activity.getString(R.string.TAG_USER_FIELD)
         val favFoodTag = composeTestRule.activity.getString(R.string.tag_favoriteDish)
         val allergiesTag = composeTestRule.activity.getString(R.string.tag_allergies)
         val bioTag = composeTestRule.activity.getString(R.string.tag_bio)
@@ -87,7 +85,6 @@ class EditProfileScreenTest {
         // This test does not work because of some issue not finding the text fields
         // after the clearence of the text fields this happends on connected test
         // but not when the test is run on its own
-        val usernameInput = "ronald"
         val favoriteDishInput = "Butterbeer"
         val allergiesInput = "Snails"
         val bioInput = "I'm just the friend of harry"
@@ -109,19 +106,17 @@ class EditProfileScreenTest {
         composeTestRule.waitForIdle()
 
         // Clear fields
-        composeTestRule.onNodeWithTag(usernameTag).performTextClearance()
         composeTestRule.onNodeWithTag(favFoodTag).performTextClearance()
         composeTestRule.onNodeWithTag(bioTag).performTextClearance()
         composeTestRule.onNodeWithTag(allergiesTag).performTextClearance()
 
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithTag(usernameTag)
+                .onAllNodesWithTag(favFoodTag)
                 .fetchSemanticsNodes().size == 1
         }
 
         // Set input
-        composeTestRule.onNodeWithTag(usernameTag).performTextInput(usernameInput)
         composeTestRule.onNodeWithTag(favFoodTag).performTextInput(favoriteDishInput)
         composeTestRule.onNodeWithTag(allergiesTag).performTextInput(allergiesInput)
         composeTestRule.onNodeWithTag(bioTag).performTextInput(bioInput)
@@ -130,37 +125,12 @@ class EditProfileScreenTest {
         composeTestRule.waitForIdle()
 
         // Verify that the text fields display the correct values
-        composeTestRule.onNodeWithText(usernameInput).assertExists()
         composeTestRule.onNodeWithText(favoriteDishInput).assertExists()
         composeTestRule.onNodeWithText(allergiesInput).assertExists()
         composeTestRule.onNodeWithText(bioInput).assertExists()
 
         // Click on the save button
         composeTestRule.onNodeWithStringId(R.string.btn_save).performClick()
-    }
-
-    @Test
-    fun editProfileScreenStateTest() {
-        val profileViewModel = ProfileViewModel()
-
-        composeTestRule.setContent {
-            EditProfileScreen(viewModel = profileViewModel)
-        }
-
-        profileViewModel.isLoading.value = true
-
-        // Wait for a moment to allow Compose to recompose
-        composeTestRule.waitForIdle()
-
-        // Check that the progress bar is displayed
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertExists()
-
-        // Wait to be completed
-        profileViewModel.isLoading.value = false
-
-        // Wait for a moment to allow Compose to recompose
-        composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag("CircularProgressIndicator").assertDoesNotExist()
     }
 
     @Test

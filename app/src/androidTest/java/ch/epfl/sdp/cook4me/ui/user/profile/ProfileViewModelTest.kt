@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
@@ -15,6 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -35,10 +38,9 @@ class ProfileViewModelTest {
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(storage, auth)
     private val repository: ProfileRepository = ProfileRepository(store)
     private var userImage: Uri =
-        Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_launcher_foreground")
+        Uri.parse("android.resource://ch.epfl.sdp.cook4me/" + R.drawable.ic_user)
     private val user = Profile(
         email = USERNAME,
-        name = "Donald",
         allergies = "Hazelnut",
         bio = "I am a duck",
         favoriteDish = "Spaghetti",
@@ -73,12 +75,11 @@ class ProfileViewModelTest {
             !profileViewModel.isLoading.value
         }
 
-        assert(profileViewModel.profile.value.name == user.name)
-        assert(profileViewModel.profile.value.allergies == user.allergies)
-        assert(profileViewModel.profile.value.favoriteDish == user.favoriteDish)
-        assert(profileViewModel.profile.value.bio == user.bio)
-        assert(profileViewModel.profile.value.email == user.email)
-        assert(profileViewModel.profileImage.value == userImage)
+        assertThat(profileViewModel.profile.value.allergies, `is`(user.allergies))
+        assertThat(profileViewModel.profile.value.favoriteDish, `is`(user.favoriteDish))
+        assertThat(profileViewModel.profile.value.bio, `is`(user.bio))
+        assertThat(profileViewModel.profile.value.email, `is`(user.email))
+        assertThat(profileViewModel.profileImage.value, `is`(userImage))
 
         // create onSignUpFailure and onSignUpSuccess
         var isUpdateSuccess = false
@@ -88,7 +89,6 @@ class ProfileViewModelTest {
             onSuccessListener = { isUpdateSuccess = true }
         )
 
-        profileViewModel.addUsername(user.name)
         profileViewModel.addAllergies(user.allergies)
         profileViewModel.addFavoriteDish(user.favoriteDish)
         profileViewModel.addBio(user.bio)

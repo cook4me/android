@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.application
 
-import android.util.Patterns
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -33,7 +32,9 @@ class AccountService(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     suspend fun userAlreadyExists(email: String): Boolean {
         val signInMethods = auth.fetchSignInMethodsForEmail(email).await()
-        return (signInMethods.signInMethods?.size ?: 0) > 0
+        return signInMethods.signInMethods?.size?.let {
+            it > 0
+        } ?: false
     }
 
     suspend fun register(email: String, password: String): AuthResult =

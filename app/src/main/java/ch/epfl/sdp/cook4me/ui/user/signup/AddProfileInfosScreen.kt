@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -36,26 +38,32 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.persistence.model.Profile
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
+import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
-import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
+
+const val PLACEHOLDER_URI = "android.resource://ch.epfl.sdp.cook4me/" + R.drawable.ic_user
 
 @Composable
 fun AddProfileInfoScreen(
+    onAddingSuccess: () -> Unit,
+    onSkipClick: () -> Unit,
     modifier: Modifier = Modifier,
-    auth: FirebaseAuth = FirebaseAuth.getInstance()
+    accountService: AccountService = AccountService(),
+    profileRepository: ProfileRepository = ProfileRepository(),
+    profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
 ) {
     val context = LocalContext.current
-    val email = auth.currentUser?.email
-
     val favoriteDishState = remember {
         NonRequiredTextFieldState("")
     }
@@ -65,10 +73,10 @@ fun AddProfileInfoScreen(
     val bioState = remember {
         NonRequiredTextFieldState("")
     }
-    val userImage = remember {
+    var userImage by remember {
         mutableStateOf<Uri>(
             // get Uri from R.drawable.ic_user
-            Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/ic_user")
+            Uri.parse(PLACEHOLDER_URI)
         )
     }
 
@@ -84,7 +92,7 @@ fun AddProfileInfoScreen(
             contract = ActivityResultContracts.GetContent(),
             onResult = { uri ->
                 if (uri != null) {
-                    userImage.value = uri
+                    userImage = uri
                 }
             }
         )
@@ -110,7 +118,7 @@ fun AddProfileInfoScreen(
 
                 ImageHolder_AddProfileInfoScreen(
                     onClickAddImage = { onClickAddImage() },
-                    image = userImage.value,
+                    image = userImage,
                 )
 
                 ProfileInfosField(
@@ -152,19 +160,33 @@ fun AddProfileInfoScreen(
                     inProgress
                 ) {
                     scope.launch {
-                        try {
                             inProgress = true
-                            //TODO
-                        } catch (e: FirebaseAuthException) {
-                            scaffoldState.snackbarHostState.showSnackbar(
-                                context.getString(R.string.Add_profile_infos_invalid_user),
-                            )
-                            Log.d(
-                                context.getString(R.string.Add_profile_infos_invalid_user),
-                                e.stackTraceToString()
-                            )
-                        }
+                            try {
+                                accountService.getCurrentUser()?.email?.let {
+                                    profileRepository.add(Profile(it, allergiesState.text, bioState.text, favoriteDishState.text))
+                                    if (userImage.toString() != PLACEHOLDER_URI) {
+                                        profileImageRepository.add(userImage)
+                                    }
+                                }
+                                onAddingSuccess()
+                            } catch (e: Exception) {
+                                inProgress = false
+                                scaffoldState
+                                    .snackbarHostState
+                                    .showSnackbar(context.getString(R.string.add_profile_infos_error))
+                            }
                     }
+                }
+                Button(
+                    onClick = onSkipClick,
+                    colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = MaterialTheme.colors.secondary,
+                        contentColor = MaterialTheme.colors.onSecondary
+                    ),
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)
+                ) {
+                    Text(text = stringResource(R.string.add_profile_skip_step), fontSize = 16.sp)
                 }
             }
         }

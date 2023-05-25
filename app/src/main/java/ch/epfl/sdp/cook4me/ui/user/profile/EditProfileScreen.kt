@@ -18,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -37,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
+import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
@@ -93,11 +93,7 @@ fun EditProfileScreen(
             .testTag(stringResource(R.string.edit_profile_screen_tag))
     ) {
         if (isLoading) {
-            CircularProgressIndicator(
-                modifier = modifier
-                    .align(Alignment.Center)
-                    .testTag("CircularProgressIndicator")
-            )
+            LoadingScreen()
         } else {
             // Way to force the values to be updated after loading the profile
             if (firstExecution) {

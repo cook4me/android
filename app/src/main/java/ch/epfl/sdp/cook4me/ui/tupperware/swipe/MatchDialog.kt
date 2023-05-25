@@ -2,6 +2,7 @@ package ch.epfl.sdp.cook4me.ui.tupperware.swipe
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.AlertDialog
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Chat
@@ -18,7 +19,7 @@ fun MatchDialog(onDismissRequest: () -> Unit) {
         text = {
             Column {
                 Text("Here is a text ")
-                CircleButton(onClick = { /*TODO*/ }, icon = Icons.Rounded.Chat)
+                CircleButton(onClick = { /*TODO*/ }, icon = Icons.Rounded.Chat, color = MaterialTheme.colors.primary)
             }
         },
         buttons = {}

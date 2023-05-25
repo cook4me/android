@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Cook4Me</string>
 
-
     <!--  DatePicker  -->
     <string name="selected_date_text">Selected Date: </string>
     <string name="select_date_button">Select Date</string>
@@ -27,9 +26,6 @@
     <string name="ask_challenge_description">Description of the challenge?</string>
     <string name="ask_challenge_type">Cooking genre: </string>
 
-    <!-- Challenge Feed Screen -->
-    <string name="Challenge_Feed_TAG">Challenge Feed TAG</string>
-
     <!-- CreateNewItemButton -->
     <string name="create_new_item_type">Create a new</string>
     <string name="event">Event</string>
@@ -54,6 +50,9 @@
     <string name="ButtonRowDone">Done</string>
     <string name="TupCreateBlank">Field can\'t be left blank</string>
 
+    <!-- SwipeScreen -->
+    <string name="swipe_alldone_placeholder">all done</string>
+
     <!-- AddressInput   -->
     <string name="address_default_question">What is the location?</string>
     <string name="street_address_label">Street address</string>
@@ -61,7 +60,6 @@
     <string name="zip_code_label">Zip code</string>
 
     <!-- Login Screen -->
-    <string name="sign_in_screen_top_bar_message">Enter your login details</string>
     <string name="sign_in_screen_sign_in_button">Sign in</string>
     <string name="sign_in_screen_register_button">Register</string>
     <string name="invalid_email_message">Invalid email!</string>
@@ -102,6 +100,7 @@
     <!-- recipe feed -->
     <string name="get_top_recipes">Top recipes</string>
     <string name="get_recent_recipes">Most recent recipes</string>
+    <string name="empty_recipe_feed">no recipe yet</string>
 
     <!-- tests -->
     <string name="label">label</string>
@@ -112,15 +111,15 @@
     <!-- Signup -->
     <string name="btn_continue">continue</string>
     <string name="sign_up_screen_top_bar_message">Enter Email and Password</string>
-    <string name="sign_up_screen_invalid_email">Email invalid</string>
-    <string name="sign_up_screen_invalid_password">Password needs to be at least 6 characters long</string>
     <string name="sign_up_screen_password_not_identical">Passwords fields don\'t match</string>
     <string name="sign_up_screen_user_already_exists">User already exists</string>
     <string name="sign_up_screen_firebase_exception">Request was not successful, please try again</string>
     <string name="sign_up_screen_password_again_field">Repeat password</string>
     <string name="Add_profile_infos_top_bar_message">Add your profile information</string>
+    <string name="sign_up_screen_invalid_password">Password invalid</string>
     <string name="Add_profile_infos_invalid_user">Email invalid</string>
-    <string name="TAG_USER_FIELD">UserField</string>
+    <string name="add_profile_infos_error">Something went wrong, please try again or skip the step</string>
+    <string name="add_profile_skip_step">Skip step</string>
     <string name="sign_up_screen_tag">sign up screen</string>
     <string name="add_profile_info_screen_tag">add profile info screen</string>
 
@@ -131,8 +130,10 @@
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
     <!-- Chat -->
-    <string name="Loading_Screen_Tag">Loading Screen TAG</string>
-    <string name="Channel_Screen_Tag">Channel Screen TAG</string>
+    <string name="Too_many_connection_error_title">Connection Error</string>
+    <string name="Too_many_connection_error_message">Too many connections. Please try again later.</string>
+    <string name="ChatErrorButtonText">OK</string>
+    <string name="Channel_Screen_Tag">Channel Screen test TAG</string>
 
     <!-- BottomBar -->
     <string name="bottom_bar_more_button_text">More</string>
@@ -151,7 +152,12 @@
     <!--Challenges-->
     <string name="join">Join</string>
     <string name="challenge_finished">This challenge has already taken place</string>
+    <string name="filter_button_text">Filter by</string>
     <string name="vote">Vote for other participants</string>
+    <string name="empty_challenge_list">no challenge yet</string>
+    <string name="filter_title_filterscreen">Filter by</string>
+    <string name="sort_title_filterscreen">Sort by</string>
+    <string name="searchbar_placeholder_text">Search…</string>
 
     <!-- Voting Screen --> voteScreenTitle
     <string name="voteScreenTitle">Vote for best participants</string>
@@ -164,5 +170,15 @@
     <string name="place">Place</string>
     <string name="back">Back</string>
     <string name="winner">Winner</string>
+    <string name="inform_offline_status">You are offline</string>
+    <string name="to_swipe_go_online">You are offline, to keep swiping you need to go online</string>
+
+    <!-- Loading Screen -->
+    <string name="Loading_Screen_Tag">Loading Screen test tag</string>
+    <string name="Loading_Screen_Text">Wait a sec!</string>
+
+    <!-- Placeholder Screen -->
+    <string name="placeholder_screen_content_description">placeholder screen</string>
+
 
 </resources>

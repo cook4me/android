@@ -6,10 +6,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.ui.theme.Cook4meTheme
 import io.getstream.chat.android.compose.ui.messages.MessagesScreen
 import io.getstream.chat.android.compose.ui.theme.ChatTheme
+import io.getstream.chat.android.compose.ui.theme.StreamColors
 import io.getstream.chat.android.compose.ui.theme.StreamShapes
 
 // The activity to show the message screen. Couldn't have done with just
@@ -19,6 +22,7 @@ class MessagesActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val channelId = intent.getStringExtra(KEY_CHANNEL_ID)
+        val userEmail = intent.getStringExtra(KEY_USER_EMAIL)
 
         if (channelId == null) {
             finish()
@@ -26,29 +30,38 @@ class MessagesActivity : ComponentActivity() {
         }
 
         setContent {
-            ChatTheme(
-                shapes = StreamShapes.defaultShapes().copy(
-                    avatar = RoundedCornerShape(8.dp),
-                    attachment = RoundedCornerShape(16.dp),
-                    myMessageBubble = RoundedCornerShape(16.dp),
-                    otherMessageBubble = RoundedCornerShape(16.dp),
-                    inputField = RectangleShape
-                )
-            ) {
-                MessagesScreen(
-                    channelId = channelId,
-                    messageLimit = 30,
-                    onBackPressed = { finish() }
-                )
+            Cook4meTheme {
+                ChatTheme(
+                    imageLoaderFactory = CoilImageLoaderFactory,
+                    shapes = StreamShapes.defaultShapes().copy(
+                        avatar = RoundedCornerShape(8.dp),
+                        attachment = RoundedCornerShape(16.dp),
+                        myMessageBubble = RoundedCornerShape(16.dp),
+                        otherMessageBubble = RoundedCornerShape(16.dp),
+                        inputField = RectangleShape
+                    ),
+                    colors = StreamColors.defaultColors().copy(
+                        errorAccent = MaterialTheme.colors.onError,
+                        primaryAccent = MaterialTheme.colors.primary,
+                    )
+                ) {
+                    MessagesScreen(
+                        channelId = channelId,
+                        messageLimit = 30,
+                        onBackPressed = { finish() }
+                    )
+                }
             }
         }
     }
     companion object {
         private const val KEY_CHANNEL_ID = "channelId"
+        private const val KEY_USER_EMAIL = "userEmail"
 
-        fun getIntent(context: Context, channelId: String): Intent =
+        fun getIntent(context: Context, channelId: String, userEmail: String?): Intent =
             Intent(context, MessagesActivity::class.java).apply {
                 putExtra(KEY_CHANNEL_ID, channelId)
+                putExtra(KEY_USER_EMAIL, userEmail)
             }
     }
 }

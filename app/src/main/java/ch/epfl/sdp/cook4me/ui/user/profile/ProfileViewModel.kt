@@ -21,7 +21,6 @@ class ProfileViewModel(
     onFailure: () -> Unit = {},
 ) : ViewModel() {
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
-    private val _formError = mutableStateOf(false)
     val isLoading = mutableStateOf(true) // not private for testing
     private val _profileState = mutableStateOf(Profile())
     val profile = _profileState
@@ -30,8 +29,7 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            val profile: Profile?
-
+            var profile: Profile?
             if (id != null) {
                 // if an user id is provided, use it to load the profile
                 _id = id

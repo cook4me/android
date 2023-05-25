@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.navigation
 
-import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.hasTestTag
@@ -12,7 +11,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.TestPermissionStatusProvider
 import ch.epfl.sdp.cook4me.persistence.model.Profile
@@ -39,16 +37,13 @@ class Cook4MeNavHostTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    //
     private val auth: FirebaseAuth = setupFirebaseAuth()
     private val store: FirebaseFirestore = setupFirestore()
     private val profileRepository: ProfileRepository = ProfileRepository(store)
-    private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
     private lateinit var navController: NavHostController
 
     val testProfile = Profile(
         email = "jean.valejean@epfl.ch",
-        name = "Jean Valejean",
         allergies = "reading and writing",
         bio = "I am miserable!",
         favoriteDish = "Bread"

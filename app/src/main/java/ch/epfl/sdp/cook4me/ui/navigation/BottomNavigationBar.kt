@@ -32,14 +32,19 @@ import ch.epfl.sdp.cook4me.R
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String, onClickSignOut: () -> Unit) {
+fun BottomNavigationBar(
+    navigateTo: (String) -> Unit = {},
+    currentRoute: String,
+    onClickSignOut: () -> Unit,
+    isOnline: Boolean = true
+) {
     var expanded by remember { mutableStateOf(false) }
 
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background,
         elevation = 8.dp
     ) {
-        mainDestinations.forEach { screen ->
+        mainDestinations.filterNot { screen -> !isOnline && screen.title === "Chat" }.forEach { screen ->
             BottomNavigationItem(
                 modifier = Modifier.weight(1f),
                 icon = { screen.icon?.let { Icon(it, contentDescription = null) } },
@@ -108,6 +113,12 @@ sealed class ScreenWithArgs(val name: String) {
     object DetailedEventScreen : ScreenWithArgs("detailed_event_screen/{eventId}") {
         fun createRoute(eventId: String) = "detailed_event_screen/$eventId"
     }
+    object DetailedChallengeScreen : ScreenWithArgs("detailed_challenge_screen/{challengeId}") {
+        fun createRoute(challengeId: String) = "detailed_challenge_screen/$challengeId"
+    }
+    object ChallengeVotingScreen : ScreenWithArgs("challenge_voting_screen/{challengeId}") {
+        fun createRoute(challengeId: String) = "challenge_voting_screen/$challengeId"
+    }
 }
 
 val mainDestinations = listOf(
@@ -122,5 +133,5 @@ val dropDownMenuDestinations = listOf(
     BottomNavScreen.MyTupperwares,
     BottomNavScreen.MyRecipes,
     BottomNavScreen.MyEvents,
-    BottomNavScreen.Profile,
+    BottomNavScreen.Profile
 )

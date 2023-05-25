@@ -91,6 +91,3 @@ class PasswordConfirmState(otherValue: String, errorMsg: String, default: String
         errorMsg,
         default
     )
-
-
-

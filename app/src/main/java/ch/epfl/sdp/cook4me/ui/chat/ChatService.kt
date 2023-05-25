@@ -53,7 +53,7 @@ fun createChatWithEmail(
                         // to the message screen
                         val channel = result.data()
                         // starting the message activity
-                        val intent = MessagesActivity.getIntent(context, channelId = channel.cid)
+                        val intent = MessagesActivity.getIntent(context, channelId = channel.cid, userEmail = userEmail)
                         ContextCompat.startActivity(context, intent, null)
                     } else {
                         println("create channel failed")

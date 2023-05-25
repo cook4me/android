@@ -42,6 +42,7 @@ class RecipeFeedTest {
     @Test
     fun defaultRecipeFeedIsCorrectlyDisplayed() {
         coEvery { mockRecipeFeedService.getRecipesWithNotes() } returns mockList
+        coEvery { mockRecipeFeedService.getRecipeImage(any()) } coAnswers { null }
         composeTestRule.setContent {
             RecipeFeed(mockRecipeFeedService)
         }

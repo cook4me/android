@@ -143,21 +143,25 @@ fun SignUpScreen(
                         } else if (!passwordState.isValid) {
                             showErrorMessageAndTerminateProgress(passwordState)
                         } else if (passwordState.text != passwordAgainState.text) {
-                            //this should actually be part of a validator class, ran out of time
+                            // this should actually be part of a validator class, ran out of time
                             passwordState.isValid = false
                             passwordAgainState.isValid = false
                             showErrorMessageAndTerminateProgress(passwordAgainState)
                         } else if (accountService.userAlreadyExists(emailState.text)) {
                             emailState.isValid = false
-                            showErrorMessageAndTerminateProgress(context.getString(R.string.sign_up_screen_user_already_exists))
+                            showErrorMessageAndTerminateProgress(
+                                context.getString(R.string.sign_up_screen_user_already_exists)
+                            )
                         } else {
                             try {
                                 accountService.register(emailState.text, passwordState.text)
                                 accountService.authenticate(emailState.text, passwordState.text)
                                 onSuccessfulAccountCreationAndLogin()
-                            } catch (e: Exception) {
+                            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                                 Log.e("sign up", e.message, e)
-                                showErrorMessageAndTerminateProgress(context.getString(R.string.sign_up_screen_firebase_exception))
+                                showErrorMessageAndTerminateProgress(
+                                    context.getString(R.string.sign_up_screen_firebase_exception)
+                                )
                             }
                         }
                     }
