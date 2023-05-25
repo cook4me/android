@@ -160,21 +160,29 @@ fun AddProfileInfoScreen(
                     inProgress
                 ) {
                     scope.launch {
-                            inProgress = true
-                            try {
-                                accountService.getCurrentUser()?.email?.let {
-                                    profileRepository.add(Profile(it, allergiesState.text, bioState.text, favoriteDishState.text))
-                                    if (userImage.toString() != PLACEHOLDER_URI) {
-                                        profileImageRepository.add(userImage)
-                                    }
+                        inProgress = true
+                        try {
+                            accountService.getCurrentUser()?.email?.let {
+                                profileRepository.add(
+                                    Profile(
+                                        it,
+                                        allergiesState.text,
+                                        bioState.text,
+                                        favoriteDishState.text
+                                    )
+                                )
+                                if (userImage.toString() != PLACEHOLDER_URI) {
+                                    profileImageRepository.add(userImage)
                                 }
-                                onAddingSuccess()
-                            } catch (e: Exception) {
-                                inProgress = false
-                                scaffoldState
-                                    .snackbarHostState
-                                    .showSnackbar(context.getString(R.string.add_profile_infos_error))
                             }
+                            onAddingSuccess()
+                        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                            inProgress = false
+                            Log.e("add profile infos", e.message, e)
+                            scaffoldState
+                                .snackbarHostState
+                                .showSnackbar(context.getString(R.string.add_profile_infos_error))
+                        }
                     }
                 }
                 Button(
@@ -184,7 +192,9 @@ fun AddProfileInfoScreen(
                         backgroundColor = MaterialTheme.colors.secondary,
                         contentColor = MaterialTheme.colors.onSecondary
                     ),
-                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp)
                 ) {
                     Text(text = stringResource(R.string.add_profile_skip_step), fontSize = 16.sp)
                 }

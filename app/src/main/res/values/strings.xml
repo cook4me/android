@@ -117,7 +117,6 @@
     <string name="sign_up_screen_password_again_field">Repeat password</string>
     <string name="Add_profile_infos_top_bar_message">Add your profile information</string>
     <string name="sign_up_screen_invalid_password">Password invalid</string>
-    <string name="Add_profile_infos_invalid_user">Email invalid</string>
     <string name="add_profile_infos_error">Something went wrong, please try again or skip the step</string>
     <string name="add_profile_skip_step">Skip step</string>
     <string name="sign_up_screen_tag">sign up screen</string>
