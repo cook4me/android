@@ -7,11 +7,13 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
@@ -51,11 +53,12 @@ class TupperwareCreationScenarioTest {
                 CreateTupperwareScreen({}, {}, mockTupperwareRepository)
             }
         }
-        composeTestRule.onNodeWithTag("AddImage").performClick()
-        composeTestRule.waitUntilDisplayed(hasTestTag("image"))
-        composeTestRule.onNodeWithTag("image", useUnmergedTree = true).assertIsDisplayed()
-        composeTestRule.onNodeWithTag("title").performTextInput(expectedTitle)
+        composeTestRule.onNodeWithTag("Add From Gallery Button").performClick()
+        composeTestRule.waitUntilDisplayed(hasContentDescription("Selected Image"))
+        composeTestRule.onNodeWithContentDescription("Selected Image", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("title").performScrollTo().performTextInput(expectedTitle)
         composeTestRule.onNodeWithTag("description")
+            .performScrollTo()
             .performTextInput(expectedDescription)
         composeTestRule.onNodeWithText("Done").performClick()
         verify {
@@ -75,8 +78,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.setContent {
             CreateTupperwareScreen({}, {})
         }
-        composeTestRule.onNodeWithText(text = "Description").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("description").assertIsDisplayed()
+        composeTestRule.onNodeWithText(text = "Description").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -86,15 +88,6 @@ class TupperwareCreationScenarioTest {
         }
         composeTestRule.onNodeWithText(text = "Tupperware Name").assertIsDisplayed()
         composeTestRule.onNodeWithTag("title").assertIsDisplayed()
-    }
-
-    @Test
-    fun headerIsDisplayed() {
-
-        composeTestRule.setContent {
-            CreateTupperwareScreen({}, {})
-        }
-        composeTestRule.onNodeWithText(text = "Header").assertIsDisplayed()
     }
 
     @Test
@@ -116,10 +109,11 @@ class TupperwareCreationScenarioTest {
                 CreateTupperwareScreen({}, {})
             }
         }
-        composeTestRule.onNodeWithTag("AddImage").performClick()
-        composeTestRule.waitUntilDisplayed(hasTestTag("image"))
-        composeTestRule.onNodeWithTag("image", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Add From Gallery Button").performClick()
+        composeTestRule.waitUntilDisplayed(hasContentDescription("Selected Image"))
+        composeTestRule.onNodeWithContentDescription("Selected Image", useUnmergedTree = true).assertIsDisplayed()
         composeTestRule.onNodeWithTag("description")
+            .performScrollTo()
             .performTextInput("Yeah the photo is not lying it's not good...")
         composeTestRule.onNodeWithText("Done").performClick()
         composeTestRule.onAllNodes(textFieldWithErrorMatcher)[0].assertExists()
@@ -133,9 +127,9 @@ class TupperwareCreationScenarioTest {
                 CreateTupperwareScreen({}, {})
             }
         }
-        composeTestRule.onNodeWithTag("AddImage").performClick()
-        composeTestRule.waitUntilDisplayed(hasTestTag("image"))
-        composeTestRule.onNodeWithTag("image", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Add From Gallery Button").performClick()
+        composeTestRule.waitUntilDisplayed(hasContentDescription("Selected Image"))
+        composeTestRule.onNodeWithContentDescription("Selected Image", useUnmergedTree = true).assertIsDisplayed()
 
         composeTestRule.onNodeWithTag("title").performTextInput("Pizza")
         composeTestRule.onNodeWithText("Done").performClick()
@@ -150,8 +144,8 @@ class TupperwareCreationScenarioTest {
                 CreateTupperwareScreen({}, {})
             }
         }
-        composeTestRule.onNodeWithTag("AddImage").performClick()
-        composeTestRule.waitUntilDisplayed(hasTestTag("image"))
-        composeTestRule.onNodeWithTag("image", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Add From Gallery Button").performClick()
+        composeTestRule.waitUntilDisplayed(hasContentDescription("Selected Image"))
+        composeTestRule.onNodeWithContentDescription("Selected Image", useUnmergedTree = true).assertIsDisplayed()
     }
 }

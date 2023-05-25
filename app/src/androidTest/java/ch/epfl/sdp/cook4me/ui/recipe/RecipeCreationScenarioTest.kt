@@ -4,8 +4,9 @@ import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -20,7 +21,6 @@ import ch.epfl.sdp.cook4me.persistence.model.Recipe
 import ch.epfl.sdp.cook4me.persistence.repository.RecipeRepository
 import ch.epfl.sdp.cook4me.registryOwnerFactory
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
-import ch.epfl.sdp.cook4me.waitUntilDisplayed
 import ch.epfl.sdp.cook4me.waitUntilExists
 import io.mockk.confirmVerified
 import io.mockk.mockk
@@ -54,6 +54,7 @@ class RecipeCreationScenarioTest {
         photos = listOf()
     )
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Test
     fun validRecipeFormIsCorrectlySubmitted() {
         composeTestRule.setContent {
@@ -64,12 +65,15 @@ class RecipeCreationScenarioTest {
         }
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc))
             .performTextInput(expectedRecipe.name)
-        composeTestRule.onNodeWithTag("AddImage").performClick()
-        composeTestRule.waitUntilDisplayed(hasTestTag("image"))
+        composeTestRule.onNodeWithTag("Add From Gallery Button").performClick()
+        composeTestRule.waitUntilExists(hasContentDescription("Selected Image"))
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc))
             .performTextInput(expectedRecipe.servings.toString())
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc))
             .performTextInput(expectedRecipe.ingredients.reduce { x, y -> "$x\n$y" })
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).performScrollTo()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc))
+            .performTextInput(expectedRecipe.recipeSteps.reduce { x, y -> "$x\n$y" })
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performScrollTo()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performClick()
         composeTestRule.waitUntilExists(hasText(expectedRecipe.difficulty))
@@ -78,9 +82,6 @@ class RecipeCreationScenarioTest {
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc)).performClick()
         composeTestRule.onNodeWithText(expectedRecipe.cookingTime).performScrollTo()
         composeTestRule.onNodeWithText(expectedRecipe.cookingTime).performClick()
-        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).performScrollTo()
-        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc))
-            .performTextInput(expectedRecipe.recipeSteps.reduce { x, y -> "$x\n$y" })
         composeTestRule.onNodeWithText("Done").performClick()
         verify {
             runTest {
@@ -98,7 +99,7 @@ class RecipeCreationScenarioTest {
         composeTestRule.setContent {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationIngredientsTitle)
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationIngredientsTitle).performScrollTo()
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).assertIsDisplayed()
     }
 
@@ -119,7 +120,7 @@ class RecipeCreationScenarioTest {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationRecipeTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationRecipeTitle).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc))
     }
 
@@ -129,7 +130,7 @@ class RecipeCreationScenarioTest {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationScreenServingsTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationScreenServingsTitle).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc))
     }
 
@@ -139,7 +140,7 @@ class RecipeCreationScenarioTest {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationCookingTimeEntryTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationCookingTimeEntryTitle).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc))
     }
 
@@ -149,7 +150,7 @@ class RecipeCreationScenarioTest {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc))
     }
 }
