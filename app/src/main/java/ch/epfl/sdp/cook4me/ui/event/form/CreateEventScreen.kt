@@ -26,7 +26,6 @@ import ch.epfl.sdp.cook4me.ui.common.form.FormTitle
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
-import ch.epfl.sdp.cook4me.ui.common.form.ToggleSwitch
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.launch
