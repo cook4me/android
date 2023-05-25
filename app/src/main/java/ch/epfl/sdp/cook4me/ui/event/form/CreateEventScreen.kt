@@ -83,14 +83,6 @@ fun CreateEventScreen(
             onValueChange = { event.value = event.value.copy(maxParticipants = it) },
             modifier = Modifier.fillMaxWidth()
         )
-        ToggleSwitch(
-            question = R.string.ask_event_visibility,
-            answerChecked = R.string.event_visibility_everyone,
-            answerUnchecked = R.string.event_visibility_subscriber_only,
-            onToggle = {
-                event.value = event.value.copy(isPrivate = it)
-            }
-        )
         DatePicker(
             initialDate = Calendar.getInstance(),
             onDateChange = { updateDate(it) }
