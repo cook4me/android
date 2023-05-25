@@ -16,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Before
@@ -43,7 +44,9 @@ class SwipeServiceTest {
     fun setUp() {
         runBlocking {
             auth.createUserWithEmailAndPassword(USER_A, PASSWORD_A).await()
+            auth.signOut()
             auth.createUserWithEmailAndPassword(USER_B, PASSWORD_B).await()
+            auth.signOut()
         }
     }
 
@@ -98,24 +101,24 @@ class SwipeServiceTest {
         }
     }
 
-//    @Test
-//    fun getAllUnswipedTupperwareAfterSwipesTest() = runTest {
-//        val filesA = generateTempFiles(5)
-//        signInWithUserA()
-//        tupperwareRepository.addMultipleTestTupperware(filesA)
-//        auth.signOut()
-//        signInWithUserB()
-//        val tupperwareBefore = swipeService.getAllUnswipedTupperware()
-//        assertThat(tupperwareBefore.keys.count(), `is`(5))
-//        tupperwareBefore.keys.take(3).forEach {
-//            swipeService.storeSwipeResult(it, false)
-//        }
-//        val tupperwareAfter = swipeService.getAllUnswipedTupperware()
-//        assertThat(
-//            tupperwareAfter.keys,
-//            containsInAnyOrder(*tupperwareBefore.keys.drop(3).toTypedArray())
-//        )
-//    }
+    @Test
+    fun getAllUnswipedTupperwareAfterSwipesTest() = runTest {
+        val filesA = generateTempFiles(5)
+        signInWithUserA()
+        tupperwareRepository.addMultipleTestTupperware(filesA)
+        auth.signOut()
+        signInWithUserB()
+        val tupperwareBefore = swipeService.getAllUnswipedTupperware()
+        assertThat(tupperwareBefore.keys.count(), `is`(5))
+        tupperwareBefore.keys.take(3).forEach {
+            swipeService.storeSwipeResult(it, false)
+        }
+        val tupperwareAfter = swipeService.getAllUnswipedTupperware()
+        assertThat(
+            tupperwareAfter.keys,
+            containsInAnyOrder(*tupperwareBefore.keys.drop(3).toTypedArray())
+        )
+    }
 
     private suspend fun signInWithUserA() =
         auth.signInWithEmailAndPassword(USER_A, PASSWORD_A).await()
