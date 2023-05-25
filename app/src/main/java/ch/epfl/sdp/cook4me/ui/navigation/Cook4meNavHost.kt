@@ -24,7 +24,7 @@ import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.event.details.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.event.form.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
-import ch.epfl.sdp.cook4me.ui.recipe.CreateRecipeScreen
+import ch.epfl.sdp.cook4me.ui.recipe.CreateRecipePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.tupperware.form.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
@@ -102,7 +102,8 @@ fun Cook4MeNavHost(
             )
         }
         composable(route = Screen.CreateRecipeScreen.name) {
-            CreateRecipeScreen(
+            CreateRecipePermissionWrapper(
+                permissionStatusProvider = permissionProvider,
                 onSuccessfulSubmit = { navController.navigateUp() },
                 onCancelClick = { navController.navigateUp() }
             )
