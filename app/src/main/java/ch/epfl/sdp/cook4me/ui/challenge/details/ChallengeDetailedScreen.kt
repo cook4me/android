@@ -46,7 +46,8 @@ import com.google.maps.android.compose.MarkerState
 fun ChallengeDetailedScreen(
     challengeViewModel: ChallengeDetailedViewModel = viewModel(),
     challengeId: String,
-    onVote: () -> Unit,
+    onVote: (String) -> Unit,
+    isOnline: Boolean = true
 ) {
     val challenge by challengeViewModel.challenge
     val isLoading by challengeViewModel.loading
@@ -180,7 +181,8 @@ fun ChallengeDetailedScreen(
                                 color = Color.Blue,
                             )
                             Button(
-                                onClick = { onVote }
+                                onClick = { onVote(challengeId) },
+                                enabled = isOnline,
                             ) {
                                 Text(stringResource(id = R.string.vote))
                             }
@@ -189,7 +191,8 @@ fun ChallengeDetailedScreen(
                     if (successMessage == null) {
                         Button(
                             modifier = Modifier.fillMaxWidth(),
-                            onClick = { joinClicked = true }
+                            onClick = { joinClicked = true },
+                            enabled = isOnline,
                         ) {
                             Text(text = stringResource(R.string.join), style = MaterialTheme.typography.button)
                         }

@@ -32,14 +32,19 @@ import ch.epfl.sdp.cook4me.R
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun BottomNavigationBar(navigateTo: (String) -> Unit = {}, currentRoute: String, onClickSignOut: () -> Unit) {
+fun BottomNavigationBar(
+    navigateTo: (String) -> Unit = {},
+    currentRoute: String,
+    onClickSignOut: () -> Unit,
+    isOnline: Boolean = true
+) {
     var expanded by remember { mutableStateOf(false) }
 
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.background,
         elevation = 8.dp
     ) {
-        mainDestinations.forEach { screen ->
+        mainDestinations.filterNot { screen -> !isOnline && screen.title === "Chat" }.forEach { screen ->
             BottomNavigationItem(
                 modifier = Modifier.weight(1f),
                 icon = { screen.icon?.let { Icon(it, contentDescription = null) } },
@@ -96,9 +101,6 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
-    object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
-    object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
     object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
     object Challenges :
         BottomNavScreen(Screen.ChallengeFeedScreen.name, Icons.Filled.Shield, "Challenges")
@@ -107,6 +109,12 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
 sealed class ScreenWithArgs(val name: String) {
     object DetailedEventScreen : ScreenWithArgs("detailed_event_screen/{eventId}") {
         fun createRoute(eventId: String) = "detailed_event_screen/$eventId"
+    }
+    object DetailedChallengeScreen : ScreenWithArgs("detailed_challenge_screen/{challengeId}") {
+        fun createRoute(challengeId: String) = "detailed_challenge_screen/$challengeId"
+    }
+    object ChallengeVotingScreen : ScreenWithArgs("challenge_voting_screen/{challengeId}") {
+        fun createRoute(challengeId: String) = "challenge_voting_screen/$challengeId"
     }
 }
 
@@ -119,8 +127,5 @@ val mainDestinations = listOf(
 )
 
 val dropDownMenuDestinations = listOf(
-    BottomNavScreen.MyTupperwares,
-    BottomNavScreen.MyRecipes,
-    BottomNavScreen.MyEvents,
-    BottomNavScreen.Profile,
+    BottomNavScreen.Profile
 )

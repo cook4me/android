@@ -1,12 +1,16 @@
 package ch.epfl.sdp.cook4me.ui.chat
 
+import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.navigation.NavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import io.getstream.chat.android.client.ChatClient
@@ -21,6 +25,9 @@ import org.junit.runner.RunWith
 class ChatTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
+    private val loadingScreenTag = context.getString(R.string.Loading_Screen_Tag)
+    private val channelScreenTag = context.getString(R.string.Channel_Screen_Tag)
 
     @Test
     fun testLoadingScreen() {
@@ -29,10 +36,10 @@ class ChatTest {
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithTag("Loading Screen TAG")
+                .onAllNodesWithTag(loadingScreenTag)
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithTag("Loading Screen TAG").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(loadingScreenTag).assertIsDisplayed()
     }
 
     @Test
@@ -40,8 +47,9 @@ class ChatTest {
         val mockClient = mockk<ChatClient>(relaxed = true)
         val mockAccountService = mockk<AccountService>(relaxed = true)
         val screen = mutableStateOf(Unit)
+        val navController = mockk<NavController>(relaxed = true)
         composeTestRule.setContent {
-            screen.value = ChannelScreen(mockClient, mockAccountService)
+            screen.value = ChannelScreen(mockClient, mockAccountService, navController = navController)
         }
         assert(screen.value != null)
     }
@@ -50,30 +58,32 @@ class ChatTest {
     fun testChannelScreenPerformsLoading() {
         val mockClient = mockk<ChatClient>(relaxed = true)
         val mockAccountService = mockk<AccountService>(relaxed = true)
+        val navController = mockk<NavController>(relaxed = true)
         composeTestRule.setContent {
-            ChannelScreen(mockClient, mockAccountService)
+            ChannelScreen(mockClient, mockAccountService, navController = navController)
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithTag("Loading Screen TAG")
+                .onAllNodesWithTag(loadingScreenTag)
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithTag("Loading Screen TAG").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(loadingScreenTag).assertIsDisplayed()
     }
 
     @Test
     fun testChannelScreenIsDisplayed() {
         val mockClient = mockk<ChatClient>(relaxed = true)
         val mockAccountService = mockk<AccountService>(relaxed = true)
+        val navController = mockk<NavController>(relaxed = true)
         composeTestRule.setContent {
-            ChannelScreen(mockClient, mockAccountService)
+            ChannelScreen(mockClient, mockAccountService, navController = navController)
         }
         composeTestRule.waitUntil(timeoutMillis = 5000) {
             composeTestRule
-                .onAllNodesWithTag("Channel Screen TAG")
+                .onAllNodesWithTag(channelScreenTag)
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithTag("Channel Screen TAG").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(channelScreenTag).assertIsDisplayed()
     }
 
     @Test
@@ -97,6 +107,7 @@ class ChatTest {
             "someemail",
             "someotheremail",
             client = mockClient,
+            context = context
         )
         assert(createFunc != null)
         assert(createPairFunc != null)

@@ -10,25 +10,17 @@
     <string name="selected_time_text">Selected Time: </string>
     <string name="select_time_button">Select Time</string>
 
-    <!--  MainLocations  -->
-    <string name="EPFL">EPFL</string>
-    <string name="UNIL">UNIL</string>
-
     <!--  CreateEventScreen  -->
-    <string name="ask_event_name">Name of the event?</string>
-    <string name="ask_event_description">Description of the event?</string>
-    <string name="ask_event_number_participants">Number of people?</string>
-    <string name="ask_event_visibility">Who can see the event</string>
-    <string name="event_visibility_everyone">Everyone</string>
-    <string name="event_visibility_subscriber_only">Subscriber only</string>
+    <string name="ask_event_name">Name of the event</string>
+    <string name="ask_event_description">Description of the event</string>
+    <string name="ask_event_number_participants">Number of people</string>
+    <string name="select_event">Select an event</string>
+    <string name="explore_event">Explore event</string>
 
     <!--  CreateChallengeScreen  -->
     <string name="ask_challenge_name">Name of the challenge?</string>
     <string name="ask_challenge_description">Description of the challenge?</string>
     <string name="ask_challenge_type">Cooking genre: </string>
-
-    <!-- Challenge Feed Screen -->
-    <string name="Challenge_Feed_TAG">Challenge Feed TAG</string>
 
     <!-- CreateNewItemButton -->
     <string name="create_new_item_type">Create a new</string>
@@ -46,13 +38,17 @@
     <string name="detailed_event_create_chat">Chat with event owner</string>
 
     <!-- CreateTupperwareScreen -->
-    <string name="image_selector_add_image">+</string>
-    <string name="TupCreateFormAddImage">Add Images</string>
     <string name="TupCreateFormTupName">Tupperware Name</string>
     <string name="TupCreateFormDesc">Description</string>
     <string name="ButtonRowCancel">Cancel</string>
     <string name="ButtonRowDone">Done</string>
-    <string name="TupCreateBlank">Field can\'t be left blank</string>
+    <string name="tupperware_field_description_error">Description cannot be blank</string>
+    <string name="tupperware_field_name_error">Name cannot be blank</string>
+    <string name="tupperware_field_image_error">Tupperware needs an image</string>
+
+
+    <!-- SwipeScreen -->
+    <string name="swipe_alldone_placeholder">all done</string>
 
     <!-- AddressInput   -->
     <string name="address_default_question">What is the location?</string>
@@ -93,7 +89,6 @@
     <string name="RecipeCreationScreenServingsTitle">Serves</string>
     <string name="RecipeCreationDifficultyTitle">Difficulty</string>
     <string name="RecipeCreationCookingTimeEntryTitle">Cooking Time</string>
-    <string name="RecipeCreationScreenAddImageTitle">Add Image</string>
     <string name="RecipeCreationCookingTimeDropDownMenuDesc">Cooking Time DropDownMenu</string>
     <string name="RecipeCreationDifficultyDropDownMenuDesc">Difficulty Drop Down Menu</string>
     <string name="RecipeCreationServingsTextFieldDesc">Servings Text Field</string>
@@ -101,6 +96,7 @@
     <!-- recipe feed -->
     <string name="get_top_recipes">Top recipes</string>
     <string name="get_recent_recipes">Most recent recipes</string>
+    <string name="empty_recipe_feed">no recipe yet</string>
 
     <!-- tests -->
     <string name="label">label</string>
@@ -114,7 +110,7 @@
     <string name="sign_up_screen_invalid_email">Email invalid</string>
     <string name="sign_up_screen_invalid_password">Password invalid</string>
     <string name="invalid_username_message">This username is not valid</string>
-    <string name="Add_profile_infos_top_bar_message">Add your user informations</string>
+    <string name="Add_profile_infos_top_bar_message">Add your user information</string>
     <string name="Add_profile_infos_invalid_user">Email invalid</string>
     <string name="TAG_USER_FIELD">UserField</string>
     <string name="sign_up_screen_tag">sign up screen</string>
@@ -127,8 +123,10 @@
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
 
     <!-- Chat -->
-    <string name="Loading_Screen_Tag">Loading Screen TAG</string>
-    <string name="Channel_Screen_Tag">Channel Screen TAG</string>
+    <string name="Too_many_connection_error_title">Connection Error</string>
+    <string name="Too_many_connection_error_message">Too many connections. Please try again later.</string>
+    <string name="ChatErrorButtonText">OK</string>
+    <string name="Channel_Screen_Tag">Channel Screen test TAG</string>
 
     <!-- BottomBar -->
     <string name="bottom_bar_more_button_text">More</string>
@@ -147,7 +145,12 @@
     <!--Challenges-->
     <string name="join">Join</string>
     <string name="challenge_finished">This challenge has already taken place</string>
+    <string name="filter_button_text">Filter by</string>
     <string name="vote">Vote for other participants</string>
+    <string name="empty_challenge_list">no challenge yet</string>
+    <string name="filter_title_filterscreen">Filter by</string>
+    <string name="sort_title_filterscreen">Sort by</string>
+    <string name="searchbar_placeholder_text">Search…</string>
 
     <!-- Voting Screen --> voteScreenTitle
     <string name="voteScreenTitle">Vote for best participants</string>
@@ -160,5 +163,18 @@
     <string name="place">Place</string>
     <string name="back">Back</string>
     <string name="winner">Winner</string>
+    <string name="inform_offline_status">You are offline</string>
+    <string name="to_swipe_go_online">You are offline, to keep swiping you need to go online</string>
+
+    <!-- Loading Screen -->
+    <string name="Loading_Screen_Tag">Loading Screen test tag</string>
+    <string name="Loading_Screen_Text">Wait a sec!</string>
+
+    <!-- Placeholder Screen -->
+    <string name="placeholder_screen_content_description">placeholder screen</string>
+
+    <!-- Match Dialogue -->
+    <string name="match_dialogue_title">It\'s a match!</string>
+
 
 </resources>

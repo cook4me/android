@@ -2,6 +2,7 @@ package ch.epfl.sdp.cook4me.ui.navigation
 
 import AddProfileInfoScreen
 import SignUpScreen
+import VoteWrapper
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -12,21 +13,26 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import ch.epfl.sdp.cook4me.application.RecipeFeedService
 import ch.epfl.sdp.cook4me.permissions.PermissionStatusProvider
-import ch.epfl.sdp.cook4me.ui.challenge.ChallengeFeedScreen
+import ch.epfl.sdp.cook4me.ui.challenge.details.ChallengeDetailedScreen
+import ch.epfl.sdp.cook4me.ui.challenge.feed.ChallengeFeedScreen
+import ch.epfl.sdp.cook4me.ui.challenge.feed.FilterScreen
+import ch.epfl.sdp.cook4me.ui.challenge.feed.SearchViewModel
 import ch.epfl.sdp.cook4me.ui.challenge.form.CreateChallengeScreen
 import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
-import ch.epfl.sdp.cook4me.ui.detailedevent.DetailedEventScreen
-import ch.epfl.sdp.cook4me.ui.eventform.CreateEventScreen
-import ch.epfl.sdp.cook4me.ui.login.LoginScreen
+import ch.epfl.sdp.cook4me.ui.event.details.DetailedEventScreen
+import ch.epfl.sdp.cook4me.ui.event.form.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
-import ch.epfl.sdp.cook4me.ui.profile.EditProfileScreen
-import ch.epfl.sdp.cook4me.ui.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.recipeFeed.RecipeFeed
-import ch.epfl.sdp.cook4me.ui.recipeform.CreateRecipeScreen
-import ch.epfl.sdp.cook4me.ui.signUp.SignUpViewModel
-import ch.epfl.sdp.cook4me.ui.tupperwareform.CreateTupperwarePermissionWrapper
-import ch.epfl.sdp.cook4me.ui.tupperwareswipe.TupperwareSwipeScreen
+import ch.epfl.sdp.cook4me.ui.recipe.CreateRecipeScreen
+import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeFeed
+import ch.epfl.sdp.cook4me.ui.tupperware.form.CreateTupperwarePermissionWrapper
+import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
+import ch.epfl.sdp.cook4me.ui.user.LoginScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.EditProfileScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
+import ch.epfl.sdp.cook4me.ui.user.profile.ProfileViewModel
+import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 
 @Composable
 fun Cook4MeNavHost(
@@ -38,6 +44,7 @@ fun Cook4MeNavHost(
     isOnline: Boolean
 ) {
     val signUpViewModel = remember { SignUpViewModel() }
+    val searchViewModel = remember { SearchViewModel() }
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -68,7 +75,11 @@ fun Cook4MeNavHost(
             MapPermissionWrapper(
                 permissionStatusProvider = permissionProvider,
                 onCreateNewEventClick = { navController.navigate(Screen.CreateEventScreen.name) },
-                onDetailedEventClick = { navController.navigate(Screen.DetailedEventScreen.name) },
+                onDetailedEventClick = { eventId ->
+                    navController.navigate(
+                        ScreenWithArgs.DetailedEventScreen.createRoute(eventId)
+                    )
+                },
                 isOnline = isOnline
             )
         }
@@ -98,6 +109,7 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.RecipeFeed.name) {
             RecipeFeed(
+                service = RecipeFeedService(isOnline = isOnline),
                 onCreateNewRecipe = { navController.navigate(Screen.CreateRecipeScreen.name) },
                 isOnline = isOnline
             )
@@ -125,6 +137,18 @@ fun Cook4MeNavHost(
             )
         }
         composable(route = Screen.ProfileScreen.name) { ProfileScreen() }
+        // changing the profile screen to take an id as an argument(email)
+        // if nothing is passed, it will show the current user's profile
+        composable(
+            route = "${Screen.ProfileScreen.name}/{userId}",
+            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")
+            userId?.let {
+                ProfileScreen(profileViewModel = ProfileViewModel(id = it))
+            } ?: ProfileScreen()
+        }
+
         composable(route = Screen.EditProfileScreen.name) {
             EditProfileScreen(
                 onCancelListener = { navController.navigate(Screen.ProfileScreen.name) },
@@ -134,20 +158,57 @@ fun Cook4MeNavHost(
         composable(route = Screen.ChatScreen.name) {
             ChannelScreen(
                 onBackListener = { navController.navigate(Screen.RecipeFeed.name) },
+                navController = navController
             )
         }
         composable(route = Screen.CreateChallengeScreen.name) {
             CreateChallengeScreen(
-                onCancelClick = {
-                    navController.navigate(
-                        Screen.ChallengeFeedScreen.name
-                    )
-                }
+                onCancelClick = { navController.navigateUp() },
+                onDoneClick = { navController.navigateUp() }
             )
         }
         composable(route = Screen.ChallengeFeedScreen.name) {
             ChallengeFeedScreen(
-                onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) }
+                onChallengeClick = { challengeId ->
+                    navController.navigate(
+                        ScreenWithArgs.DetailedChallengeScreen.createRoute(challengeId)
+                    )
+                },
+                onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) },
+                onFilterClick = { navController.navigate(route = Screen.FilterScreen.name) },
+                searchViewModel = searchViewModel,
+                isOnline = isOnline
+            )
+        }
+        composable(route = Screen.FilterScreen.name) {
+            FilterScreen(
+                onCancelClick = { navController.navigateUp() },
+                onDoneClick = { navController.navigateUp() },
+                viewModel = searchViewModel
+            )
+        }
+        composable(
+            route = ScreenWithArgs.DetailedChallengeScreen.name,
+            arguments = listOf(navArgument("challengeId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            ChallengeDetailedScreen(
+                challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty(),
+                onVote = { challengeId ->
+                    navController.navigate(
+                        ScreenWithArgs.ChallengeVotingScreen.createRoute(challengeId)
+                    )
+                },
+                isOnline = isOnline
+            )
+        }
+        composable(
+            route = ScreenWithArgs.ChallengeVotingScreen.name,
+            arguments = listOf(navArgument("challengeId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            VoteWrapper(
+                challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty(),
+                onBack = { navController.navigateUp() },
+                currentUser = "daniel.bucher@epfl.ch"
             )
         }
     }
@@ -169,4 +230,5 @@ enum class Screen {
     ChatScreen,
     ChallengeFeedScreen,
     CreateChallengeScreen,
+    FilterScreen,
 }

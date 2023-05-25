@@ -1,20 +1,22 @@
 package ch.epfl.sdp.cook4me.ui.map
 
-// import androidx.compose.foundation.layout.fillMaxSize
-// import androidx.compose.ui.Modifier
-// import androidx.compose.ui.test.assertIsDisplayed
-// import androidx.compose.ui.test.junit4.createComposeRule
-// import androidx.compose.ui.test.onNodeWithText
-// import ch.epfl.sdp.cook4me.permissions.TestPermissionStatusProvider
-// import org.junit.Rule
-// import org.junit.Test
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.TestPermissionStatusProvider
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
-// class TestMapPermissionWrapper {
-//    @get:Rule
-//    val composeTestRule = createComposeRule()
+@RunWith(AndroidJUnit4::class)
+class TestMapPermissionWrapper {
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-// TODO: Fix the tests (potentially related to the network permission)
-    /*
     @Test
     fun assertMapIsDisplayedWhenLocationIsEnabled() {
         val permissionStatusProvider = TestPermissionStatusProvider(mapOf("location" to Pair(true, false)))
@@ -22,11 +24,12 @@ package ch.epfl.sdp.cook4me.ui.map
         composeTestRule.setContent {
             MapPermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                isOnline = true,
             )
         }
 
-        composeTestRule.onNodeWithText("EPFL").assertIsDisplayed() // Map is shown
+        composeTestRule.onNodeWithText("Create a new Event").assertIsDisplayed() // Map is shown
     }
 
     @Test
@@ -37,10 +40,10 @@ package ch.epfl.sdp.cook4me.ui.map
             MapPermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
                 modifier = Modifier.fillMaxSize(),
+                isOnline = true,
             )
         }
 
         composeTestRule.onNodeWithText("The location permission will grant a better experience in the app").assertIsDisplayed()
     }
-    */
-// }
+}
