@@ -3,7 +3,7 @@ package ch.epfl.sdp.cook4me.ui.user.profile
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
@@ -68,9 +68,7 @@ class ProfileScreenTest {
     }
 
     @Test
-    fun profileImageIsDisplayedTest() {
-        val profileViewModel = ProfileViewModel()
-
+    fun profileInfoIsDisplayed() {
         composeTestRule.setContent {
             ProfileScreen(
                 userId = USERNAME,
@@ -79,11 +77,8 @@ class ProfileScreenTest {
                 accountService = account,
             )
         }
-
-        composeTestRule.waitUntil(timeoutMillis = 5000) {
-            !profileViewModel.isLoading.value
-        }
-
-        composeTestRule.onNodeWithTag("defaultProfileImage").assertExists()
+        composeTestRule.onNodeWithText(user.allergies).assertExists()
+        composeTestRule.onNodeWithText(user.bio).assertExists()
+        composeTestRule.onNodeWithText(user.favoriteDish).assertExists()
     }
 }
