@@ -22,28 +22,24 @@ class CreateRecipePermissionWrapperTest {
     @Test
     fun assertCreateRecipeIsDisplayedWhenCameraIsEnabled() {
         val permissionStatusProvider = TestPermissionStatusProvider(mapOf("camera" to Pair(true, false)))
-
         composeTestRule.setContent {
             CreateRecipePermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
                 repository = mockRecipeRepository
             )
         }
-
         composeTestRule.onNodeWithText(text = "Recipe name").performScrollTo().assertIsDisplayed()
     }
 
     @Test
     fun assertCreateRecipeIsNotDisplayedWhenCameraIsNotEnabled() {
         val permissionStatusProvider = TestPermissionStatusProvider(mapOf("camera" to Pair(false, false)))
-
         composeTestRule.setContent {
             CreateRecipePermissionWrapper(
                 permissionStatusProvider = permissionStatusProvider,
                 repository = mockRecipeRepository
             )
         }
-
         composeTestRule.onNodeWithText("The Camera permission will grant a better experience in the app")
             .assertIsDisplayed()
     }
