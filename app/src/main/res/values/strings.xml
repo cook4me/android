@@ -20,8 +20,8 @@
     <string name="ask_event_number_participants">Number of people</string>
 
     <!--  CreateChallengeScreen  -->
-    <string name="ask_challenge_name">Name of the challenge?</string>
-    <string name="ask_challenge_description">Description of the challenge?</string>
+    <string name="ask_challenge_name">Name of the challenge</string>
+    <string name="ask_challenge_description">Description of the challenge</string>
     <string name="ask_challenge_type">Cooking genre: </string>
 
     <!-- CreateNewItemButton -->

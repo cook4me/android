@@ -36,7 +36,9 @@ import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.ChallengeFormService
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
 import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
+import ch.epfl.sdp.cook4me.ui.common.form.FieldTitle
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
+import ch.epfl.sdp.cook4me.ui.common.form.FormTitle
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
@@ -106,6 +108,7 @@ fun CreateChallengeScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(it)
         ) {
+            FormTitle(modifier = Modifier.padding(bottom = 20.dp, top = 15.dp), title = "Create a Challenge")
             InputField(
                 question = R.string.ask_challenge_name,
                 value = challenge.value.name,
@@ -175,7 +178,7 @@ fun CookingGenreDropdown(
     val selectedIndex = remember { mutableStateOf(cookingGenres.indexOf(selectedGenre)) }
     val expanded = remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(text = stringResource(R.string.ask_challenge_type), modifier = Modifier.padding(end = 8.dp))
+        FieldTitle(text = stringResource(R.string.ask_challenge_type), modifier = Modifier.padding(end = 8.dp))
         Box {
             Row(
                 modifier = Modifier
@@ -184,7 +187,7 @@ fun CookingGenreDropdown(
                     .clickable { expanded.value = !expanded.value },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = cookingGenres[selectedIndex.value], modifier = Modifier.padding(end = 8.dp))
+                Text(text = cookingGenres[selectedIndex.value], modifier = Modifier.padding(4.dp))
                 Icon(
                     imageVector = Icons.Filled.ArrowDropDown,
                     contentDescription = "Dropdown arrow",

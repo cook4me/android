@@ -4,6 +4,8 @@ import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
@@ -53,6 +55,7 @@ class RecipeCreationScenarioTest {
         photos = listOf()
     )
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Test
     fun validRecipeFormIsCorrectlySubmitted() {
         composeTestRule.setContent {
@@ -71,7 +74,7 @@ class RecipeCreationScenarioTest {
             .performTextInput(expectedRecipe.ingredients.reduce { x, y -> "$x\n$y" })
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performScrollTo()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performClick()
-        composeTestRule.waitUntilExists(hasText(expectedRecipe.difficulty))
+        //composeTestRule.waitUntilExists(hasText(expectedRecipe.difficulty))
         composeTestRule.onNodeWithText(expectedRecipe.difficulty).performScrollTo()
         composeTestRule.onNodeWithText(expectedRecipe.difficulty).performClick()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc)).performClick()

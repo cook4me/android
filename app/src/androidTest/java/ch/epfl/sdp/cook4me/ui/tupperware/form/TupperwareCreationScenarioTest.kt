@@ -56,8 +56,9 @@ class TupperwareCreationScenarioTest {
         composeTestRule.onNodeWithTag("Add From Gallery Button").performClick()
         composeTestRule.waitUntilDisplayed(hasContentDescription("Selected Image"))
         composeTestRule.onNodeWithContentDescription("Selected Image", useUnmergedTree = true).assertIsDisplayed()
-        composeTestRule.onNodeWithTag("title").performTextInput(expectedTitle)
+        composeTestRule.onNodeWithTag("title").performScrollTo().performTextInput(expectedTitle)
         composeTestRule.onNodeWithTag("description")
+            .performScrollTo()
             .performTextInput(expectedDescription)
         composeTestRule.onNodeWithText("Done").performClick()
         verify {
