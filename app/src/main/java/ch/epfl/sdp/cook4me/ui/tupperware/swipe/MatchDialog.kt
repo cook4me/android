@@ -43,7 +43,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
 
-@Suppress("MagicNumber")
 @Composable
 fun MatchDialog(
     user: String,
@@ -53,70 +52,70 @@ fun MatchDialog(
     profileImageRepository: ProfileImageRepository = ProfileImageRepository()
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val imageOfMe = remember { mutableStateOf<Uri>(Uri.EMPTY) }
-    val other = remember { mutableStateOf<Uri>(Uri.EMPTY) }
+    val userProfileImage = remember { mutableStateOf<Uri>(Uri.EMPTY) }
+    val otherUserProfileImage = remember { mutableStateOf<Uri>(Uri.EMPTY) }
 
-    LaunchedEffect(key1 = user, key2 = otherUser) {
+    LaunchedEffect(Unit) {
         coroutineScope.launch {
-            imageOfMe.value = profileImageRepository.getProfile(user)
-            other.value = profileImageRepository.getProfile(otherUser)
+            userProfileImage.value = profileImageRepository.getProfile(user)
+            otherUserProfileImage.value = profileImageRepository.getProfile(otherUser)
         }
     }
 
     AlertDialog(
         modifier = Modifier
-            .fillMaxWidth(0.95f)
-            .fillMaxHeight(0.7f),
+            .fillMaxWidth(fraction = 0.95f)
+            .fillMaxHeight(fraction = 0.7f),
         onDismissRequest = onDismissRequest,
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(height = 30.dp))
                 Text(
                     text = stringResource(id = R.string.match_dialogue_title),
                     style = MaterialTheme.typography.h6,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colors.primary,
                     fontSize = 30.sp,
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(all = 16.dp)
                 )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(3f), // Takes up 3/5 of the Column height
+                        .weight(weight = 3f), // Takes up 3/5 of the Column height
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically // Center vertically
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(imageOfMe.value)
+                            .data(userProfileImage.value)
                             .build(),
                         contentDescription = "image",
                         contentScale = ContentScale.Crop, // Crop the image to fill its bounds
                         modifier = Modifier
-                            .weight(3f) // Takes up 3/5 of the Row width
-                            .aspectRatio(1f) // Ensure the image width and height are the same
+                            .weight(weight = 3f) // Takes up 3/5 of the Row width
+                            .aspectRatio(ratio = 1f) // Ensure the image width and height are the same
                             .padding(end = 8.dp) // Adds padding to separate images
                             .clip(CircleShape) // Creates a circular shape
                     )
                     Image(
                         painter = painterResource(R.drawable.cheers),
                         contentDescription = "Cheers icon",
-                        modifier = Modifier.weight(1.5f) // Takes up 1/5 of the Row width
+                        modifier = Modifier.weight(weight = 1.5f) // Takes up 1/5 of the Row width
                     )
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(other.value)
+                            .data(otherUserProfileImage.value)
                             .build(),
                         contentDescription = "image",
                         contentScale = ContentScale.Crop, // Crop the image to fill its bounds
                         modifier = Modifier
-                            .weight(3f) // Takes up 3/5 of the Row width
-                            .aspectRatio(1f) // Ensure the image width and height are the same
+                            .weight(weight = 3f) // Takes up 3/5 of the Row width
+                            .aspectRatio(ratio = 1f) // Ensure the image width and height are the same
                             .padding(start = 8.dp) // Adds padding to separate images
                             .clip(CircleShape)
                     )
                 }
-                Spacer(Modifier.height(16.dp)) // You can adjust the height as needed
+                Spacer(Modifier.height(height = 16.dp)) // You can adjust the height as needed
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceAround,
