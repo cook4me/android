@@ -195,7 +195,7 @@ fun GoogleMapView(
                                 }
                             ) {
                                 Text(
-                                    text = "Explore event",
+                                    text = stringResource(R.string.explore_event),
                                     style = MaterialTheme.typography.button,
                                     color = MaterialTheme.colors.onSecondary
                                 )
@@ -218,7 +218,7 @@ fun GoogleMapView(
                             verticalArrangement = Arrangement.Center
                         ) {
                             Text(
-                                text = "Select an event",
+                                text = stringResource(R.string.select_event),
                                 style = MaterialTheme.typography.body1,
                                 color = MaterialTheme.colors.onSecondary,
                                 textAlign = TextAlign.Center

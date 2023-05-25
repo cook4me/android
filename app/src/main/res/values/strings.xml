@@ -17,6 +17,8 @@
     <string name="ask_event_visibility">Who can see the event</string>
     <string name="event_visibility_everyone">Everyone</string>
     <string name="event_visibility_subscriber_only">Subscriber only</string>
+    <string name="select_event">Select an event</string>
+    <string name="explore_event">Explore event</string>
 
     <!--  CreateChallengeScreen  -->
     <string name="ask_challenge_name">Name of the challenge?</string>
