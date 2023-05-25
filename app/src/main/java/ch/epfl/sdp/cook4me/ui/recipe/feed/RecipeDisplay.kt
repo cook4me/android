@@ -114,7 +114,8 @@ fun RecipeDisplay(
                             counterValue = note,
                             onChange = onNoteUpdate,
                             userVote = userVote,
-                            canClick = canClick
+                            canClick = canClick,
+                            uid = recipe.hashCode()
                         )
                     }
                 }

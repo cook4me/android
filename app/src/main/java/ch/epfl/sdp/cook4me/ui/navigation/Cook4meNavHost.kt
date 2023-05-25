@@ -24,15 +24,13 @@ import ch.epfl.sdp.cook4me.ui.chat.ChannelScreen
 import ch.epfl.sdp.cook4me.ui.event.details.DetailedEventScreen
 import ch.epfl.sdp.cook4me.ui.event.form.CreateEventScreen
 import ch.epfl.sdp.cook4me.ui.map.MapPermissionWrapper
-import ch.epfl.sdp.cook4me.ui.recipe.CreateRecipeScreen
+import ch.epfl.sdp.cook4me.ui.recipe.CreateRecipePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.recipe.feed.RecipeFeed
 import ch.epfl.sdp.cook4me.ui.tupperware.form.CreateTupperwarePermissionWrapper
 import ch.epfl.sdp.cook4me.ui.tupperware.swipe.TupperwareSwipeScreen
 import ch.epfl.sdp.cook4me.ui.user.LoginScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.EditProfileScreen
 import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
-import ch.epfl.sdp.cook4me.ui.user.profile.ProfileViewModel
-import ch.epfl.sdp.cook4me.ui.user.signup.SignUpViewModel
 
 @Composable
 fun Cook4MeNavHost(
@@ -43,7 +41,6 @@ fun Cook4MeNavHost(
     onSuccessfulAuth: () -> Unit,
     isOnline: Boolean
 ) {
-    val signUpViewModel = remember { SignUpViewModel() }
     val searchViewModel = remember { SearchViewModel() }
     NavHost(
         modifier = modifier,
@@ -97,13 +94,11 @@ fun Cook4MeNavHost(
             DetailedEventScreen(backStackEntry.arguments?.getString("eventId").orEmpty())
         }
         composable(route = Screen.SignUpScreen.name) {
-            SignUpScreen(
-                onSuccessfulSignUp = { navController.navigate(Screen.SignUpUserInfo.name) },
-                viewModel = signUpViewModel, // TODO Might need some additional changes
-            )
+            SignUpScreen(onSuccessfulAccountCreationAndLogin = { navController.navigate(Screen.SignUpUserInfo.name) })
         }
         composable(route = Screen.CreateRecipeScreen.name) {
-            CreateRecipeScreen(
+            CreateRecipePermissionWrapper(
+                permissionStatusProvider = permissionProvider,
                 onSuccessfulSubmit = { navController.navigateUp() },
                 onCancelClick = { navController.navigateUp() }
             )
@@ -117,13 +112,8 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.SignUpUserInfo.name) {
             AddProfileInfoScreen(
-                viewModel = signUpViewModel,
-                onSuccessfulSignUp = {
-                    navController.navigate(
-                        startDestination
-                    )
-                },
-                onSignUpFailure = { navController.navigate(Screen.SignUpScreen.name) }
+                onAddingSuccess = { navController.navigate(Screen.RecipeFeed.name) },
+                onSkipClick = { navController.navigate(Screen.RecipeFeed.name) }
             )
         }
         composable(route = Screen.Login.name) {
@@ -134,7 +124,8 @@ fun Cook4MeNavHost(
                         // This popUp blocks the user being able to go back once logged in
                         popUpTo(Screen.Login.name) { inclusive = true }
                     }
-                }
+                },
+                onRegisterClick = { navController.navigate(Screen.SignUpScreen.name) }
             )
         }
         composable(route = Screen.ProfileScreen.name) { ProfileScreen() }
@@ -145,9 +136,7 @@ fun Cook4MeNavHost(
             arguments = listOf(navArgument("userId") { type = NavType.StringType })
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId")
-            userId?.let {
-                ProfileScreen(profileViewModel = ProfileViewModel(id = it))
-            } ?: ProfileScreen()
+            ProfileScreen(userId = userId)
         }
 
         composable(route = Screen.EditProfileScreen.name) {
@@ -177,7 +166,8 @@ fun Cook4MeNavHost(
                 },
                 onCreateNewChallengeClick = { navController.navigate(Screen.CreateChallengeScreen.name) },
                 onFilterClick = { navController.navigate(route = Screen.FilterScreen.name) },
-                searchViewModel = searchViewModel
+                searchViewModel = searchViewModel,
+                isOnline = isOnline
             )
         }
         composable(route = Screen.FilterScreen.name) {
@@ -198,6 +188,7 @@ fun Cook4MeNavHost(
                         ScreenWithArgs.ChallengeVotingScreen.createRoute(challengeId)
                     )
                 },
+                isOnline = isOnline
             )
         }
         composable(

@@ -44,6 +44,6 @@ class TestMapPermissionWrapper {
             )
         }
 
-        composeTestRule.onNodeWithText("The location permission will grant a better experience in the app").assertIsDisplayed()
+        composeTestRule.onNodeWithText("The Location permission will grant a better experience in the app").assertIsDisplayed()
     }
 }

@@ -74,7 +74,7 @@ class SignInFunctionalityTest {
     fun logInScreenValidUserWithCorrectPasswordSignInSuccessfully() {
         var wasCalled = false
         composeTestRule.setContent {
-            LoginScreen { wasCalled = true }
+            LoginScreen(onSuccessfulLogin = { wasCalled = true }, onRegisterClick = {})
         }
         composeTestRule.onNodeWithTag(TEST_TAG_EMAIL_FIELD).performTextInput(USERNAME)
         composeTestRule.onNodeWithTag(TEST_TAG_PASSWORD_FIELD).performTextInput(PASSWORD)
@@ -88,7 +88,7 @@ class SignInFunctionalityTest {
     @Test
     fun logInScreenNonExistUserSignInShowsNonExistUserMessage() {
         composeTestRule.setContent {
-            LoginScreen {}
+            LoginScreen({}, {})
         }
         composeTestRule.onNodeWithTag(TEST_TAG_EMAIL_FIELD).performTextInput("mr.nonexist@epfl.ch")
         composeTestRule.onNodeWithTag(TEST_TAG_PASSWORD_FIELD).performTextInput(PASSWORD)
@@ -99,13 +99,14 @@ class SignInFunctionalityTest {
                 .onAllNodesWithText(context.getString(R.string.sign_in_screen_non_exist_user))
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_non_exist_user)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_non_exist_user))
+            .assertIsDisplayed()
     }
 
     @Test
     fun logInScreenValidUserWithWrongPasswordShowsWrongPasswordMessage() {
         composeTestRule.setContent {
-            LoginScreen {}
+            LoginScreen({}, {})
         }
         composeTestRule.onNodeWithTag(TEST_TAG_EMAIL_FIELD).performTextInput(USERNAME)
         composeTestRule.onNodeWithTag(TEST_TAG_PASSWORD_FIELD).performTextInput("wrong password")
@@ -115,6 +116,7 @@ class SignInFunctionalityTest {
                 .onAllNodesWithText(context.getString(R.string.sign_in_screen_wrong_password))
                 .fetchSemanticsNodes().size == 1
         }
-        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_wrong_password)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(context.getString(R.string.sign_in_screen_wrong_password))
+            .assertIsDisplayed()
     }
 }
