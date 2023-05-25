@@ -38,7 +38,7 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
-import ch.epfl.sdp.cook4me.ui.user.signup.SecondOptionButton
+import ch.epfl.sdp.cook4me.ui.user.SecondOptionButton
 import ch.epfl.sdp.cook4me.ui.user.signup.Toolbar
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
