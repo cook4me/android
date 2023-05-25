@@ -34,7 +34,7 @@ class CreateTupperwarePermissionWrapperTest {
             CreateTupperwarePermissionWrapper(permissionStatusProvider = permissionStatusProvider, {}, {})
         }
 
-        composeTestRule.onNodeWithText("The camera permission will grant a better experience in the app")
+        composeTestRule.onNodeWithText("The Camera permission will grant a better experience in the app")
             .assertIsDisplayed()
     }
 }
