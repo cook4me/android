@@ -10,13 +10,7 @@ import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Shield
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,12 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
@@ -47,7 +38,8 @@ fun BottomNavigationBar(
         elevation = 8.dp
     ) {
         mainDestinations.filterNot { screen -> !isOnline && screen.title === "Chat" }.forEach { screen ->
-            val label:@Composable (() -> Unit)? = if (currentRoute == screen.route) { {Text(screen.title)} } else null
+            val label: @Composable (() -> Unit)? =
+                if (currentRoute == screen.route) { { Text(screen.title) } } else null
 
             BottomNavigationItem(
                 modifier = Modifier.weight(1f),
