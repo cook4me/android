@@ -22,8 +22,6 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,9 +44,7 @@ import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
-import ch.epfl.sdp.cook4me.ui.common.form.BiosField
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
-import ch.epfl.sdp.cook4me.ui.common.form.ProfileInfosField
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
@@ -129,7 +125,8 @@ fun AddProfileInfoScreen(
                     value = favoriteDishState.text,
                     isError = false,
                     placeholder = { Text(stringResource(id = R.string.tag_favoriteDish)) },
-                    onValueChange = { favoriteDishState.text = it })
+                    onValueChange = { favoriteDishState.text = it }
+                )
 
                 OutlinedTextField(
                     modifier = Modifier
@@ -138,7 +135,8 @@ fun AddProfileInfoScreen(
                     value = allergiesState.text,
                     isError = false,
                     placeholder = { Text(stringResource(id = R.string.tag_allergies)) },
-                    onValueChange = { allergiesState.text = it })
+                    onValueChange = { allergiesState.text = it }
+                )
 
                 OutlinedTextField(
                     modifier = Modifier
@@ -147,7 +145,8 @@ fun AddProfileInfoScreen(
                     value = bioState.text,
                     isError = false,
                     placeholder = { Text(stringResource(id = R.string.tag_bio)) },
-                    onValueChange = { bioState.text = it })
+                    onValueChange = { bioState.text = it }
+                )
 
                 LoadingButton(
                     R.string.add_profile_finish,
