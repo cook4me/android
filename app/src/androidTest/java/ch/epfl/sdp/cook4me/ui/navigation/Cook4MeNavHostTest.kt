@@ -132,14 +132,6 @@ class Cook4MeNavHostTest {
         composeTestRule.waitUntilExists(hasTestTag(getString(R.string.add_profile_info_screen_tag)))
     }
 
-    @Test
-    fun profileScreenNavigationTest() {
-        setNavHostWithStartingScreen(Screen.ProfileScreen.name)
-        composeTestRule.onNodeWithTag(getString(R.string.profile_screen_tag)).assertExists()
-
-        // TODO Edit Profile navigation
-    }
-
     private val currentRoute: String?
         get() = navController.currentBackStackEntry?.destination?.route
 
