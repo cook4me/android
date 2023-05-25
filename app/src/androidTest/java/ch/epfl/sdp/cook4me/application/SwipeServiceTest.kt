@@ -44,6 +44,7 @@ class SwipeServiceTest {
     fun setUp() {
         runBlocking {
             auth.createUserWithEmailAndPassword(USER_A, PASSWORD_A).await()
+            auth.signOut()
             auth.createUserWithEmailAndPassword(USER_B, PASSWORD_B).await()
         }
     }
