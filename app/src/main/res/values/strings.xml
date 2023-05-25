@@ -38,12 +38,10 @@
     <string name="detailed_event_create_chat">Chat with event owner</string>
 
     <!-- CreateTupperwareScreen -->
-    <string name="TupCreateFormAddImage">Add Images</string>
     <string name="TupCreateFormTupName">Tupperware Name</string>
     <string name="TupCreateFormDesc">Description</string>
     <string name="ButtonRowCancel">Cancel</string>
     <string name="ButtonRowDone">Done</string>
-    <string name="TupCreateBlank">Field can\'t be left blank</string>
     <string name="tupperware_field_description_error">Description cannot be blank</string>
     <string name="tupperware_field_name_error">Name cannot be blank</string>
     <string name="tupperware_field_image_error">Tupperware needs an image</string>
@@ -91,7 +89,6 @@
     <string name="RecipeCreationScreenServingsTitle">Serves</string>
     <string name="RecipeCreationDifficultyTitle">Difficulty</string>
     <string name="RecipeCreationCookingTimeEntryTitle">Cooking Time</string>
-    <string name="RecipeCreationScreenAddImageTitle">Add Image</string>
     <string name="RecipeCreationCookingTimeDropDownMenuDesc">Cooking Time DropDownMenu</string>
     <string name="RecipeCreationDifficultyDropDownMenuDesc">Difficulty Drop Down Menu</string>
     <string name="RecipeCreationServingsTextFieldDesc">Servings Text Field</string>
