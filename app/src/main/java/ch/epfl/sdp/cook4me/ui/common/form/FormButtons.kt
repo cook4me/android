@@ -25,9 +25,9 @@ fun FormButtons(
 ) {
     Row(
         modifier = modifier
+            .background(color = Color.White)
             .padding(16.dp)
-            .fillMaxWidth()
-            .background(color = Color.White),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         CancelButton(onCancelText, Modifier.weight(weight = 1f), onCancelClick)
