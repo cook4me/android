@@ -183,7 +183,7 @@ fun GoogleMapView(
                             Text(
                                 text = marker.description,
                                 style = MaterialTheme.typography.body1,
-                                color = MaterialTheme.colors.onSecondary,
+                                color = Color.Black,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Button(
@@ -198,7 +198,7 @@ fun GoogleMapView(
                                 Text(
                                     text = stringResource(R.string.explore_event),
                                     style = MaterialTheme.typography.button,
-                                    color = Color.Black
+                                    color = MaterialTheme.colors.onSecondary
                                 )
                             }
                         }

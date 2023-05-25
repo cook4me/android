@@ -24,7 +24,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.FormTitle
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
-import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
+import ch.epfl.sdp.cook4me.ui.common.form.MayParticipantsPicker
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
 import com.google.firebase.firestore.GeoPoint
@@ -107,8 +107,8 @@ fun CreateEventScreen(
                 onValueChange = { event.value = event.value.copy(description = it) }
             )
             // AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
-            IntegerSlider(
-                text = R.string.ask_event_number_participants, min = 2, max = 16,
+            MayParticipantsPicker(
+                textRes = R.string.ask_event_number_participants,
                 onValueChange = { event.value = event.value.copy(maxParticipants = it) },
                 modifier = Modifier.fillMaxWidth()
             )
