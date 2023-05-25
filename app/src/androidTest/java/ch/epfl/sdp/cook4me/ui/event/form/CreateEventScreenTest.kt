@@ -36,7 +36,6 @@ class CreateEventScreenTest {
         composeTestRule.onNodeWithStringId(R.string.ask_event_description).assertExists()
         composeTestRule.onNodeWithStringId(R.string.select_date_button).assertExists()
         composeTestRule.onNodeWithStringId(R.string.select_time_button).assertExists()
-
         composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).assertExists()
     }
 
