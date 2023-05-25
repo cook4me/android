@@ -12,13 +12,11 @@ data class Event(
     val name: String = "",
     val description: String = "",
     val dateTime: Calendar = Calendar.getInstance(),
-    val location: String = "",
     val latLng: GeoPoint = GeoPoint(0.0, 0.0),
     val maxParticipants: Int = 0,
     val participants: List<String> = listOf(),
     val creator: String = "",
     val id: String = "",
-    val isPrivate: Boolean = false
 ) {
     private val dateAsFormattingDate: String
         get() { // make that there is always 2 digits
@@ -36,7 +34,6 @@ data class Event(
             var errorMsg: String? = null
             if (name.isBlank()) errorMsg = "Name is empty"
             if (description.isBlank()) errorMsg = "Description is empty"
-            if (location.isBlank()) errorMsg = "Location is empty"
             if (maxParticipants < 2) errorMsg = "Max participants is less than 2"
             if (dateTime.before(Calendar.getInstance())) errorMsg = "Date is in the past"
             return errorMsg
@@ -47,8 +44,8 @@ data class Event(
 
     val eventInformation: String
         get() = "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\n" +
-            "Location: $location\n Max participants: $maxParticipants\nParticipants: $participants\n" +
-            "Creator: $creator\nId: $id\nIs private: $isPrivate\n Latitude-Longitude: $latLng"
+            "Max participants: $maxParticipants\nParticipants: $participants\n" +
+            "Creator: $creator\nId: $id\n Latitude-Longitude: $latLng"
 
     val eventDate: String
         get() = "$dateAsFormattingDate"
@@ -61,7 +58,6 @@ data class Event(
             ?.toDate()
             ?.let { calendarFromTime(it) }
             ?: Calendar.getInstance(),
-        location = map["location"] as? String ?: "",
         /*
         * map["maxParticipants"]: get the value of the key "maxParticipants" in the map
         * map["maxParticipants"] as? Long: cast the value to a Long, if it is not possible, return null
@@ -72,7 +68,6 @@ data class Event(
         participants = map["participants"] as? List<String> ?: listOf(),
         creator = map["creator"] as? String ?: "",
         id = map["id"] as? String ?: "",
-        isPrivate = map["isPrivate"] as? Boolean ?: false,
         // latLng = (map["latLng"] as? GeoPoint)?.let { Pair(it.latitude, it.longitude) } ?: Pair(0.0, 0.0),
         latLng = map["latLng"] as? GeoPoint ?: GeoPoint(0.0, 0.0)
     )

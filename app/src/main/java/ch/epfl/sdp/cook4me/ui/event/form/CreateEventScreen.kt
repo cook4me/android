@@ -42,6 +42,7 @@ fun CreateEventScreen(
     eventService: EventFormService = EventFormService(),
     accountService: AccountService = AccountService(),
     onCancelClick: () -> Unit = {},
+    onSuccessfulSubmit: () -> Unit = {},
 ) {
     val event = remember {
         mutableStateOf(Event())
@@ -77,9 +78,10 @@ fun CreateEventScreen(
                     // call suspend function
                     scope.launch {
                         endMsg.value = eventService.submitForm(event.value) ?: ""
-                        println(endMsg.value)
                         if (endMsg.value.isNotBlank()) {
                             scaffoldState.snackbarHostState.showSnackbar(endMsg.value)
+                        } else {
+                            onSuccessfulSubmit()
                         }
                     }
                 }

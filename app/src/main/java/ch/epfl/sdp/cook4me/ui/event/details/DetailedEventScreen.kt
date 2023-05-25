@@ -55,9 +55,6 @@ fun DetailedEventScreen(
                 SectionWithTitle(title = stringResource(R.string.event_description), content = event.description)
                 Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
 
-                SectionWithTitle(title = stringResource(R.string.event_location), content = event.location)
-                Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
-
                 SectionWithTitle(
                     title = stringResource(R.string.event_max_participants),
                     content = event.maxParticipants.toString()
@@ -71,10 +68,6 @@ fun DetailedEventScreen(
                     title = stringResource(R.string.event_participants),
                     content = event.participants.joinToString(separator = ", ")
                 )
-                Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
-
-                val accessibility = if (event.isPrivate) "Only Subscribers" else "Everyone"
-                SectionWithTitle(title = stringResource(R.string.event_who_can_see_event), content = accessibility)
                 Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
 
                 SectionWithTitle(title = stringResource(R.string.event_time), content = event.eventDate)
