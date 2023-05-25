@@ -101,9 +101,6 @@ sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val titl
     object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
     object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
     object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object MyTupperwares : BottomNavScreen(Screen.RecipeFeed.name, null, "My Tups")
-    object MyRecipes : BottomNavScreen(Screen.RecipeFeed.name, null, "My Recipes")
-    object MyEvents : BottomNavScreen(Screen.RecipeFeed.name, null, "My Events")
     object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
     object Challenges :
         BottomNavScreen(Screen.ChallengeFeedScreen.name, Icons.Filled.Shield, "Challenges")
@@ -130,8 +127,5 @@ val mainDestinations = listOf(
 )
 
 val dropDownMenuDestinations = listOf(
-    BottomNavScreen.MyTupperwares,
-    BottomNavScreen.MyRecipes,
-    BottomNavScreen.MyEvents,
     BottomNavScreen.Profile
 )
