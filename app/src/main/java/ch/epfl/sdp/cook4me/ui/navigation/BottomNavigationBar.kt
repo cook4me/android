@@ -24,10 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
@@ -45,10 +47,12 @@ fun BottomNavigationBar(
         elevation = 8.dp
     ) {
         mainDestinations.filterNot { screen -> !isOnline && screen.title === "Chat" }.forEach { screen ->
+            val label:@Composable (() -> Unit)? = if (currentRoute == screen.route) { {Text(screen.title)} } else null
+
             BottomNavigationItem(
                 modifier = Modifier.weight(1f),
-                icon = { screen.icon?.let { Icon(it, contentDescription = null) } },
-                label = { Text(screen.title) },
+                icon = { screen.icon?.let { Icon(painterResource(id = it), contentDescription = null) } },
+                label = label,
                 selected = currentRoute == screen.route,
                 onClick = {
                     navigateTo(screen.route)
@@ -69,7 +73,9 @@ fun BottomNavigationBar(
                 onClick = {},
             )
             ExposedDropdownMenu(
-                modifier = Modifier.exposedDropdownSize(false).width(120.dp),
+                modifier = Modifier
+                    .exposedDropdownSize(false)
+                    .width(120.dp),
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
@@ -94,16 +100,16 @@ fun BottomNavigationBar(
     }
 }
 
-sealed class BottomNavScreen(val route: String, val icon: ImageVector?, val title: String) {
+sealed class BottomNavScreen(val route: String, val icon: Int?, val title: String) {
     object Tupperwares :
-        BottomNavScreen(Screen.TupperwareSwipeScreen.name, Icons.Filled.Home, "Tups")
+        BottomNavScreen(Screen.TupperwareSwipeScreen.name, R.drawable.baseline_tupperware_24, "Tups")
 
-    object Events : BottomNavScreen(Screen.Event.name, Icons.Filled.Star, "Events")
-    object Recipes : BottomNavScreen(Screen.RecipeFeed.name, Icons.Filled.List, "Recipes")
-    object Profile : BottomNavScreen(Screen.ProfileScreen.name, Icons.Filled.Person, "Profile")
-    object Chat : BottomNavScreen(Screen.ChatScreen.name, Icons.Filled.Chat, "Chat")
+    object Events : BottomNavScreen(Screen.Event.name, R.drawable.baseline_event_24, "Events")
+    object Recipes : BottomNavScreen(Screen.RecipeFeed.name, R.drawable.baseline_menu_book_24, "Recipes")
+    object Profile : BottomNavScreen(Screen.ProfileScreen.name, null, "Profile")
+    object Chat : BottomNavScreen(Screen.ChatScreen.name, R.drawable.baseline_chat_24, "Chat")
     object Challenges :
-        BottomNavScreen(Screen.ChallengeFeedScreen.name, Icons.Filled.Shield, "Challenges")
+        BottomNavScreen(Screen.ChallengeFeedScreen.name, R.drawable.baseline_challenge_24, "Contest")
 }
 
 sealed class ScreenWithArgs(val name: String) {
