@@ -33,7 +33,7 @@ class CircleButtonTest {
     }
 
     @Test
-    fun clickingOnIconCallsOnClick(){
+    fun clickingOnIconCallsOnClick() {
         var clicked = false
         val mockIcon = ImageVector.Builder(
             defaultHeight = 1.dp,
@@ -42,7 +42,7 @@ class CircleButtonTest {
             viewportHeight = 1f
         ).build()
         composeTestRule.setContent {
-            CircleButton(onClick = {clicked = true}, icon = mockIcon, color = Color.Black)
+            CircleButton(onClick = { clicked = true }, icon = mockIcon, color = Color.Black)
         }
         composeTestRule.onNodeWithTag("CircleButton").performClick()
         assertThat(clicked, `is`(true))
