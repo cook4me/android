@@ -55,7 +55,7 @@ fun DatePicker(
         verticalAlignment = Alignment.CenterVertically
     ) {
         FieldTitle(
-            text = "${stringResource(id = R.string.selected_date_text)} ${date.value}"
+            text = "${stringResource(id = R.string.selected_date_text)}${date.value}"
         )
         Spacer(modifier = Modifier.height(8.dp))
         Button(

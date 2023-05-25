@@ -26,7 +26,7 @@ class IntegerSliderTest {
             IntegerSlider(text = R.string.label, min = 0, max = 10, onValueChange = {})
         }
 
-        composeTestRule.onNodeWithText("${getStringFromId(R.string.label)}:0").assertIsDisplayed()
+        composeTestRule.onNodeWithText("${getStringFromId(R.string.label)}: 0").assertIsDisplayed()
     }
 
     @Test
@@ -41,7 +41,7 @@ class IntegerSliderTest {
             )
         }
         // Verify initial value
-        composeTestRule.onNodeWithText("${(getStringFromId(R.string.label))}:0").assertExists()
+        composeTestRule.onNodeWithText("${(getStringFromId(R.string.label))}: 0").assertExists()
         // Drag the slider to the right
         composeTestRule.onNodeWithTag("slider").performTouchInput {
             swipeRight(
@@ -51,7 +51,7 @@ class IntegerSliderTest {
             )
         }
 
-        composeTestRule.onNodeWithText("${getStringFromId(R.string.label)}:10").assertExists()
+        composeTestRule.onNodeWithText("${getStringFromId(R.string.label)}: 10").assertExists()
         assertEquals(10, value)
     }
 

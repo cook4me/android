@@ -7,6 +7,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -70,17 +71,17 @@ class RecipeCreationScenarioTest {
             .performTextInput(expectedRecipe.servings.toString())
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc))
             .performTextInput(expectedRecipe.ingredients.reduce { x, y -> "$x\n$y" })
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).performScrollTo()
+        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc))
+            .performTextInput(expectedRecipe.recipeSteps.reduce { x, y -> "$x\n$y" })
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performScrollTo()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc)).performClick()
-        // composeTestRule.waitUntilExists(hasText(expectedRecipe.difficulty))
+        composeTestRule.waitUntilExists(hasText(expectedRecipe.difficulty))
         composeTestRule.onNodeWithText(expectedRecipe.difficulty).performScrollTo()
         composeTestRule.onNodeWithText(expectedRecipe.difficulty).performClick()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc)).performClick()
         composeTestRule.onNodeWithText(expectedRecipe.cookingTime).performScrollTo()
         composeTestRule.onNodeWithText(expectedRecipe.cookingTime).performClick()
-        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc)).performScrollTo()
-        composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeStepsTextFieldDesc))
-            .performTextInput(expectedRecipe.recipeSteps.reduce { x, y -> "$x\n$y" })
         composeTestRule.onNodeWithText("Done").performClick()
         verify {
             runTest {

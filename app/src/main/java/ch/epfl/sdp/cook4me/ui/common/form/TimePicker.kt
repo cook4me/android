@@ -49,7 +49,7 @@ fun TimePicker(
     )
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        FieldTitle(text = "${stringResource(id = R.string.selected_time_text)} ${time.value}")
+        FieldTitle(text = "${stringResource(id = R.string.selected_time_text)}${time.value}")
         Spacer(modifier = Modifier.size(8.dp))
 
         // On button click, TimePicker is

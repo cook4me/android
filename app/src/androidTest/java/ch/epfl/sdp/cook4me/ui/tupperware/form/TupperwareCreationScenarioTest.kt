@@ -113,6 +113,7 @@ class TupperwareCreationScenarioTest {
         composeTestRule.waitUntilDisplayed(hasContentDescription("Selected Image"))
         composeTestRule.onNodeWithContentDescription("Selected Image", useUnmergedTree = true).assertIsDisplayed()
         composeTestRule.onNodeWithTag("description")
+            .performScrollTo()
             .performTextInput("Yeah the photo is not lying it's not good...")
         composeTestRule.onNodeWithText("Done").performClick()
         composeTestRule.onAllNodes(textFieldWithErrorMatcher)[0].assertExists()
