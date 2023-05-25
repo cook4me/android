@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me.ui.user.profile
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
@@ -76,6 +77,9 @@ class ProfileScreenTest {
                 profileImageRepository = profileImageRepository,
                 accountService = account,
             )
+        }
+        composeTestRule.waitUntil(timeoutMillis = 5000) {
+         composeTestRule.onAllNodesWithText(user.allergies).fetchSemanticsNodes().size == 1
         }
         composeTestRule.onNodeWithText(user.allergies).assertExists()
         composeTestRule.onNodeWithText(user.bio).assertExists()
