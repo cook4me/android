@@ -33,8 +33,7 @@ fun VoteWrapper(
     var hasVoted by remember { mutableStateOf(false) }
     var scoreOfCurrentUser by remember { mutableStateOf(0) }
     var alreadyVoted by remember { mutableStateOf(false) }
-    val currentUser = accountService.getCurrentUser()?.email?:""
-
+    val currentUser = accountService.getCurrentUser()?.email ?: ""
 
     LaunchedEffect(challengeId, isLoading, isVoting, hasVoted, challengeVote) {
         if (isLoading) {
