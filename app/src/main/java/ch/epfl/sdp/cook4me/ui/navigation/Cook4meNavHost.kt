@@ -82,7 +82,8 @@ fun Cook4MeNavHost(
         }
         composable(route = Screen.CreateEventScreen.name) {
             CreateEventScreen(
-                onCancelClick = { navController.navigateUp() }
+                onCancelClick = { navController.navigateUp() },
+                onSuccessfulSubmit = { navController.navigateUp() },
             )
         }
         // the uid of event is predefined on firestore. this is just for show.
@@ -197,7 +198,6 @@ fun Cook4MeNavHost(
             VoteWrapper(
                 challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty(),
                 onBack = { navController.navigateUp() },
-                currentUser = "daniel.bucher@epfl.ch"
             )
         }
     }

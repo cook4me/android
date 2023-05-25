@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.application.ChallengeFormService
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
 import ch.epfl.sdp.cook4me.ui.challenge.addParticipant
@@ -20,8 +21,8 @@ import kotlinx.coroutines.withContext
 fun VoteWrapper(
     service: ChallengeFormService = ChallengeFormService(),
     challengeId: String,
-    currentUser: String,
     onBack: () -> Unit,
+    accountService: AccountService = AccountService()
 ) {
     val coroutineScope = rememberCoroutineScope()
     var challenge by remember { mutableStateOf<Challenge?>(null) }
@@ -32,6 +33,7 @@ fun VoteWrapper(
     var hasVoted by remember { mutableStateOf(false) }
     var scoreOfCurrentUser by remember { mutableStateOf(0) }
     var alreadyVoted by remember { mutableStateOf(false) }
+    val currentUser = accountService.getCurrentUser()?.email ?: ""
 
     LaunchedEffect(challengeId, isLoading, isVoting, hasVoted, challengeVote) {
         if (isLoading) {

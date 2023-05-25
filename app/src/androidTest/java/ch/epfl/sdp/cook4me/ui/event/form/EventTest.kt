@@ -20,11 +20,8 @@ class EventTest {
             name = "name",
             description = "description",
             dateTime = dateTime,
-            location = "location",
             maxParticipants = 10,
-            participants = listOf("participant1", "participant2"),
             id = "id",
-            isPrivate = true,
             creator = "creator"
         )
     }
@@ -42,12 +39,9 @@ class EventTest {
             Name: name
             Description: description
             Date: 01/01/2000 at 00:00
-            Location: location
             Max participants: 10
-            Participants: [participant1, participant2]
             Creator: creator
             Id: id
-            Is private: true
             Latitude-Longitude: GeoPoint{latitude=0.0,longitude=0.0}"""
         // remove all the spaces
         expected = expected.replace("\\s".toRegex(), "")
@@ -72,14 +66,6 @@ class EventTest {
     }
 
     @Test
-    fun eventWithEmptyLocationIsInvalid() {
-        event = event.copy(location = "")
-        assert(!event.isValidEvent)
-        val errorMsg = "Location is empty"
-        assertEquals(errorMsg, event.eventProblem)
-    }
-
-    @Test
     fun eventWithMaxParticipantsLessThan2IsInvalid() {
         event = event.copy(maxParticipants = 1)
         assert(!event.isValidEvent)
@@ -95,29 +81,5 @@ class EventTest {
         assert(!event.isValidEvent)
         val errorMsg = "Date is in the past"
         assertEquals(errorMsg, event.eventProblem)
-    }
-
-    @Test
-    fun addNewParticipantInNonFullEventAddsParticipant() {
-        val participant = "participant3"
-        val expected = event.copy(participants = event.participants + participant)
-        val actual = addParticipant(event, participant)
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun addExistingParticipantInNonFullEventDoesNotAddParticipant() {
-        val participant = "participant1"
-        val expected = event
-        val actual = addParticipant(event, participant)
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun addNewParticipantInFullEventDoesNotAddParticipant() {
-        val participant = "participant3"
-        val expected = event
-        val actual = addParticipant(event.copy(maxParticipants = 2), participant)
-        assertEquals(expected.copy(maxParticipants = 2), actual)
     }
 }

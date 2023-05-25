@@ -16,11 +16,8 @@ val testEvent = Event(
     name = "test event name",
     description = "test description",
     dateTime = testEventDate,
-    location = "mondstadt",
     maxParticipants = 4,
-    participants = listOf("obi.wang", "harry.potter"),
     creator = "peter griffin",
     id = "harry.potter@epfl.ch",
-    isPrivate = false,
     latLng = GeoPoint(46.52298091481133, 6.5657859621449335)
 )

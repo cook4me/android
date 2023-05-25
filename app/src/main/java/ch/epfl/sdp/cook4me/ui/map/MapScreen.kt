@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -182,7 +183,7 @@ fun GoogleMapView(
                             Text(
                                 text = marker.description,
                                 style = MaterialTheme.typography.body1,
-                                color = MaterialTheme.colors.onSecondary,
+                                color = Color.Black,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Button(
@@ -220,7 +221,7 @@ fun GoogleMapView(
                             Text(
                                 text = stringResource(R.string.select_event),
                                 style = MaterialTheme.typography.body1,
-                                color = MaterialTheme.colors.onSecondary,
+                                color = Color.Black,
                                 textAlign = TextAlign.Center
                             )
                         }

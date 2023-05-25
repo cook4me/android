@@ -28,11 +28,8 @@
     <!-- DetailedEventScreen -->
     <string name="event_name">Event name:</string>
     <string name="event_description">Event description:</string>
-    <string name="event_location">Event location:</string>
     <string name="event_max_participants">Max Participants:</string>
     <string name="event_creator">Creator:</string>
-    <string name="event_participants">Participants:</string>
-    <string name="event_who_can_see_event">Who can see the event:</string>
     <string name="event_time">Event time:</string>
     <string name="detailed_event_create_chat">Chat with event owner</string>
 

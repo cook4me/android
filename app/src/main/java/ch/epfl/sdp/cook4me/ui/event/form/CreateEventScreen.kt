@@ -24,7 +24,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.DatePicker
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.form.FormTitle
 import ch.epfl.sdp.cook4me.ui.common.form.InputField
-import ch.epfl.sdp.cook4me.ui.common.form.IntegerSlider
+import ch.epfl.sdp.cook4me.ui.common.form.MayParticipantsPicker
 import ch.epfl.sdp.cook4me.ui.common.form.TimePicker
 import ch.epfl.sdp.cook4me.ui.map.LocationPicker
 import com.google.firebase.firestore.GeoPoint
@@ -42,6 +42,7 @@ fun CreateEventScreen(
     eventService: EventFormService = EventFormService(),
     accountService: AccountService = AccountService(),
     onCancelClick: () -> Unit = {},
+    onSuccessfulSubmit: () -> Unit = {},
 ) {
     val event = remember {
         mutableStateOf(Event())
@@ -60,7 +61,7 @@ fun CreateEventScreen(
 
     // for now I just set the id as the email of the current user for the sake of functionality
     val userEmail = accountService.getCurrentUserWithEmail()
-    userEmail?.let { event.value = event.value.copy(id = userEmail) }
+    userEmail?.let { event.value = event.value.copy(id = userEmail, creator = userEmail) }
 
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -77,9 +78,10 @@ fun CreateEventScreen(
                     // call suspend function
                     scope.launch {
                         endMsg.value = eventService.submitForm(event.value) ?: ""
-                        println(endMsg.value)
                         if (endMsg.value.isNotBlank()) {
                             scaffoldState.snackbarHostState.showSnackbar(endMsg.value)
+                        } else {
+                            onSuccessfulSubmit()
                         }
                     }
                 }
@@ -105,8 +107,8 @@ fun CreateEventScreen(
                 onValueChange = { event.value = event.value.copy(description = it) }
             )
             // AddressField(onAddressChanged = { event.value = event.value.copy(location = it) })
-            IntegerSlider(
-                text = R.string.ask_event_number_participants, min = 2, max = 16,
+            MayParticipantsPicker(
+                textRes = R.string.ask_event_number_participants,
                 onValueChange = { event.value = event.value.copy(maxParticipants = it) },
                 modifier = Modifier.fillMaxWidth()
             )
