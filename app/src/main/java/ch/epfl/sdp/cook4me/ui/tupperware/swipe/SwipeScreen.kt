@@ -89,7 +89,7 @@ fun TupperwareSwipeScreen(
     suspend fun onSwipe(tupperwareId: String, direction: Direction) {
         swipeService.storeSwipeResult(tupperwareId, direction == Direction.Right)
         if (direction == Direction.Right && swipeService.isMatch(tupperwareId)) {
-            swipeService.getMatchedUser(tupperwareId)?.let {
+            swipeService.getUserByTupperwareId(tupperwareId)?.let {
                 otherUser = it
                 openMatchDialog = true
             }

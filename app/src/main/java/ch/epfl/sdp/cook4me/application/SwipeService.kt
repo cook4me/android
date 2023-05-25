@@ -19,14 +19,14 @@ class SwipeService(
     suspend fun isMatch(tupperwareId: String): Boolean {
         val email = auth.currentUser?.email
         checkNotNull(email)
-        val otherUser = getMatchedUser(tupperwareId)
+        val otherUser = getUserByTupperwareId(tupperwareId)
         checkNotNull(otherUser)
         val swipesFromOther = swipeRepository.getAllPositiveIdsByUser(otherUser)
         val ownTupperwareIds = tupperwareRepository.getAllTupperwareIdsAddedByUser(email)
         return swipesFromOther.intersect(ownTupperwareIds).isNotEmpty()
     }
 
-    suspend fun getMatchedUser(tupperwareId: String): String? =
+    suspend fun getUserByTupperwareId(tupperwareId: String): String? =
         tupperwareRepository.getById(tupperwareId)?.user
 
     suspend fun getAllUnswipedTupperware(): Map<String, TupperwareWithImage> =
