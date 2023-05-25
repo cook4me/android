@@ -138,7 +138,6 @@ fun MatchDialog(
                         icon = Icons.Rounded.Chat,
                         color = MaterialTheme.colors.primary
                     )
-                    // Add your second button here
                     CircleButton(
                         onClick = { onDismissRequest() },
                         icon = Icons.Rounded.Cancel,
