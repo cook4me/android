@@ -9,6 +9,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.not
+import org.hamcrest.Matchers.notNullValue
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,14 +32,12 @@ class ProfileRepositoryTest {
     fun storeNewProfile() = runTest {
         val newEntry1 = Profile(
             email = "id1",
-            name = "megan",
             bio = "super hot",
             allergies = "turkey",
             favoriteDish = "turkey",
         )
         val newEntry2 = Profile(
             email = "id2",
-            name = "megan",
             bio = "super hot",
             allergies = "turkey",
             favoriteDish = "turkey",
@@ -55,7 +55,6 @@ class ProfileRepositoryTest {
     fun updateExistingProfile() = runTest {
         val newEntry1 = Profile(
             email = "id1",
-            name = "megan",
             bio = "super hot",
             allergies = "turkey",
             favoriteDish = "turkey",
@@ -63,7 +62,8 @@ class ProfileRepositoryTest {
 
         profileRepository.add(newEntry1)
         val profile1 = profileRepository.getById(newEntry1.email)
-        profile1!!.name = "megan2.0"
+        assertThat(profile1, (`is`(notNullValue())))
+        profile1!!
         profileRepository.update(profile1.email, profile1)
         val profile2 = profileRepository.getById(profile1.email)
         assertThat(profile2, `is`(profile1))

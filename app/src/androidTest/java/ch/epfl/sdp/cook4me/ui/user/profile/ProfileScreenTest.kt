@@ -41,7 +41,6 @@ class ProfileScreenTest {
     private val profileImage = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/" + R.drawable.ic_user)
     private val user = Profile(
         email = USERNAME,
-        name = "Donald",
         allergies = "Hazelnut",
         bio = "I am a duck",
         favoriteDish = "Spaghetti",
