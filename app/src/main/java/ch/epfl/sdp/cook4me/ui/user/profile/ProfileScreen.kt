@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
@@ -35,6 +35,7 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import coil.compose.rememberAsyncImagePainter
 
+@Preview(showBackground = true)
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -120,12 +121,12 @@ fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
         }
     )
 
-    Row(
+    Column(
         modifier = modifier
             .padding(8.dp)
             .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Card(
             shape = CircleShape,
@@ -146,21 +147,21 @@ fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
 
 @Composable
 fun FavoriteDishRow(favoriteDish: String, modifier: Modifier) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 8.dp, end = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+            .padding(start = 40.dp, end = 8.dp),
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(R.string.tag_favoriteDish),
             modifier = modifier
                 .width(100.dp)
-                .padding(top = 8.dp, bottom = 8.dp)
+                .padding(top = 8.dp, bottom = 8.dp),
+            fontWeight = FontWeight.Bold,
         )
         Text(
-            text = favoriteDish,
+            text = "\t\t$favoriteDish",
             modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -170,21 +171,21 @@ fun FavoriteDishRow(favoriteDish: String, modifier: Modifier) {
 
 @Composable
 fun AllergiesRow(allergies: String, modifier: Modifier) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 8.dp, end = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+            .padding(start = 40.dp, end = 8.dp),
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(R.string.tag_allergies),
             modifier = modifier
                 .width(100.dp)
-                .padding(top = 8.dp, bottom = 8.dp)
+                .padding(top = 8.dp, bottom = 8.dp),
+            fontWeight = FontWeight.Bold,
         )
         Text(
-            text = allergies,
+            text = "\t\t$allergies",
             modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -194,21 +195,21 @@ fun AllergiesRow(allergies: String, modifier: Modifier) {
 
 @Composable
 fun BioRow(bio: String, modifier: Modifier) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 8.dp, end = 8.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.Center
+            .padding(start = 40.dp, end = 8.dp),
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(R.string.tag_bio),
             modifier = modifier
                 .width(100.dp)
-                .padding(top = 8.dp, bottom = 8.dp)
+                .padding(top = 8.dp, bottom = 8.dp),
+            fontWeight = FontWeight.Bold,
         )
         Text(
-            text = bio,
+            text = "\t\t$bio",
             modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
