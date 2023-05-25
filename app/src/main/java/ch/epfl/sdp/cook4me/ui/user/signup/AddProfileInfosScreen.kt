@@ -45,6 +45,7 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
+import ch.epfl.sdp.cook4me.ui.user.signup.Toolbar
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
@@ -111,89 +112,85 @@ fun AddProfileInfoScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                BasicToolbar(stringResource(R.string.Add_profile_infos_top_bar_message))
+                Toolbar(stringResource(R.string.Add_profile_infos_top_bar_message))
 
-                ImageHolder_AddProfileInfoScreen(
-                    onClickAddImage = { onClickAddImage() },
-                    image = userImage,
-                )
+                Column(Modifier.padding(vertical = 16.dp)) {
+                    ImageHolder_AddProfileInfoScreen(
+                        onClickAddImage = { onClickAddImage() },
+                        image = userImage,
+                    )
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    value = favoriteDishState.text,
-                    isError = false,
-                    placeholder = { Text(stringResource(id = R.string.tag_favoriteDish)) },
-                    onValueChange = { favoriteDishState.text = it }
-                )
+                    OutlinedTextField(
+                        modifier = Modifier.fieldModifier(),
+                        value = favoriteDishState.text,
+                        isError = false,
+                        placeholder = { Text(stringResource(id = R.string.tag_favoriteDish)) },
+                        onValueChange = { favoriteDishState.text = it }
+                    )
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    value = allergiesState.text,
-                    isError = false,
-                    placeholder = { Text(stringResource(id = R.string.tag_allergies)) },
-                    onValueChange = { allergiesState.text = it }
-                )
+                    OutlinedTextField(
+                        modifier = Modifier.fieldModifier(),
+                        value = allergiesState.text,
+                        isError = false,
+                        placeholder = { Text(stringResource(id = R.string.tag_allergies)) },
+                        onValueChange = { allergiesState.text = it }
+                    )
 
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                    value = bioState.text,
-                    isError = false,
-                    placeholder = { Text(stringResource(id = R.string.tag_bio)) },
-                    onValueChange = { bioState.text = it }
-                )
+                    OutlinedTextField(
+                        modifier = Modifier.fieldModifier(),
+                        value = bioState.text,
+                        isError = false,
+                        placeholder = { Text(stringResource(id = R.string.tag_bio)) },
+                        onValueChange = { bioState.text = it }
+                    )
 
-                LoadingButton(
-                    R.string.add_profile_finish,
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, top = 8.dp)
-                        .testTag(stringResource(id = R.string.add_profile_info_screen_tag)),
-                    inProgress
-                ) {
-                    scope.launch {
-                        inProgress = true
-                        try {
-                            accountService.getCurrentUser()?.email?.let {
-                                profileRepository.add(
-                                    Profile(
-                                        it,
-                                        allergiesState.text,
-                                        bioState.text,
-                                        favoriteDishState.text
+                    LoadingButton(
+                        R.string.add_profile_finish,
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                            .testTag(stringResource(id = R.string.add_profile_info_screen_tag)),
+                        inProgress
+                    ) {
+                        scope.launch {
+                            inProgress = true
+                            try {
+                                accountService.getCurrentUser()?.email?.let {
+                                    profileRepository.add(
+                                        Profile(
+                                            it,
+                                            allergiesState.text,
+                                            bioState.text,
+                                            favoriteDishState.text
+                                        )
                                     )
-                                )
-                                if (userImage.toString() != PLACEHOLDER_URI) {
-                                    profileImageRepository.add(userImage)
+                                    if (userImage.toString() != PLACEHOLDER_URI) {
+                                        profileImageRepository.add(userImage)
+                                    }
                                 }
+                                onAddingSuccess()
+                            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                                inProgress = false
+                                Log.e("add profile infos", e.message, e)
+                                scaffoldState
+                                    .snackbarHostState
+                                    .showSnackbar(context.getString(R.string.add_profile_infos_error))
                             }
-                            onAddingSuccess()
-                        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                            inProgress = false
-                            Log.e("add profile infos", e.message, e)
-                            scaffoldState
-                                .snackbarHostState
-                                .showSnackbar(context.getString(R.string.add_profile_infos_error))
                         }
                     }
-                }
-                Button(
-                    onClick = onSkipClick,
-                    colors =
-                    ButtonDefaults.buttonColors(
-                        backgroundColor = MaterialTheme.colors.secondary,
-                        contentColor = MaterialTheme.colors.onSecondary
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Text(text = stringResource(R.string.add_profile_skip_step), fontSize = 16.sp)
+                    Button(
+                        onClick = onSkipClick,
+                        colors =
+                        ButtonDefaults.buttonColors(
+                            backgroundColor = MaterialTheme.colors.secondary,
+                            contentColor = MaterialTheme.colors.onSecondary
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        Text(text = stringResource(R.string.add_profile_skip_step), fontSize = 16.sp)
+                    }
                 }
             }
         }
@@ -243,11 +240,8 @@ fun Image_AddProfileInfoScreen(
     )
 }
 
-@Composable
-private fun BasicToolbar(title: String) {
-    TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
-}
 
-@Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
-    if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
+private fun Modifier.fieldModifier(): Modifier =
+    this
+        .fillMaxWidth()
+        .padding(start = 16.dp, end = 16.dp, top = 8.dp)

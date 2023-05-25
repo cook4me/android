@@ -39,7 +39,6 @@ class ProfileScreenTest {
     private val storage: FirebaseStorage = setupFirebaseStorage()
     private val repository: ProfileRepository = ProfileRepository(store)
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(storage, auth)
-    private val context: Context = getInstrumentation().targetContext
     private val profileImage = Uri.parse("android.resource://ch.epfl.sdp.cook4me/drawable/" + R.drawable.ic_user)
     private val user = Profile(
         email = USERNAME,

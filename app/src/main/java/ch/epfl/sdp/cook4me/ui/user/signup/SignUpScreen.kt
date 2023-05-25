@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
@@ -34,6 +35,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.EmailState
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordState
 import ch.epfl.sdp.cook4me.ui.common.form.TextFieldState
+import ch.epfl.sdp.cook4me.ui.user.signup.Toolbar
 import kotlinx.coroutines.launch
 
 @Composable
@@ -84,84 +86,86 @@ fun SignUpScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                BasicToolbar(stringResource(R.string.sign_up_screen_top_bar_message))
-                EmailField(
-                    emailState.text,
-                    emailState.showErrors(),
-                    { emailState.text = it },
-                    Modifier
-                        .fieldModifier()
-                        .testTag(stringResource(R.string.tag_email))
-                        .onFocusChanged {
-                            emailState.onFocusChange(it.isFocused)
-                        }
-                )
-                PasswordField(
-                    passwordState.text,
-                    passwordState.showErrors(),
-                    {
-                        passwordState.text = it
-                        passwordAgainState.isValid = true
-                    },
-                    Modifier
-                        .fieldModifier()
-                        .testTag(stringResource(R.string.tag_password))
-                        .onFocusChanged {
-                            passwordState.onFocusChange(it.isFocused)
-                        }
-                )
-                PasswordField(
-                    passwordAgainState.text,
-                    passwordAgainState.showErrors(),
-                    {
-                        passwordAgainState.text = it
-                        passwordState.isValid = true
-                    },
-                    Modifier
-                        .fieldModifier()
-                        .testTag(stringResource(R.string.tag_password))
-                        .onFocusChanged {
-                            passwordAgainState.onFocusChange(it.isFocused)
+                Toolbar(stringResource(R.string.sign_up_screen_top_bar_message))
+                Column(Modifier.padding(vertical = 16.dp)) {
+                    EmailField(
+                        emailState.text,
+                        emailState.showErrors(),
+                        { emailState.text = it },
+                        Modifier
+                            .fieldModifier()
+                            .testTag(stringResource(R.string.tag_email))
+                            .onFocusChanged {
+                                emailState.onFocusChange(it.isFocused)
+                            }
+                    )
+                    PasswordField(
+                        passwordState.text,
+                        passwordState.showErrors(),
+                        {
+                            passwordState.text = it
+                            passwordAgainState.isValid = true
                         },
-                    R.string.sign_up_screen_password_again_field
-                )
-                LoadingButton(
-                    R.string.btn_continue,
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp, 8.dp)
-                        .testTag(stringResource(id = R.string.btn_continue)),
-                    inProgress
-                ) {
-                    emailState.enableShowErrors()
-                    passwordState.enableShowErrors()
-                    passwordAgainState.enableShowErrors()
-                    scope.launch {
-                        inProgress = true
-                        if (!emailState.isValid) {
-                            showErrorMessageAndTerminateProgress(emailState)
-                        } else if (!passwordState.isValid) {
-                            showErrorMessageAndTerminateProgress(passwordState)
-                        } else if (passwordState.text != passwordAgainState.text) {
-                            // this should actually be part of a validator class, ran out of time
-                            passwordState.isValid = false
-                            passwordAgainState.isValid = false
-                            showErrorMessageAndTerminateProgress(passwordAgainState)
-                        } else if (accountService.userAlreadyExists(emailState.text)) {
-                            emailState.isValid = false
-                            showErrorMessageAndTerminateProgress(
-                                context.getString(R.string.sign_up_screen_user_already_exists)
-                            )
-                        } else {
-                            try {
-                                accountService.register(emailState.text, passwordState.text)
-                                accountService.authenticate(emailState.text, passwordState.text)
-                                onSuccessfulAccountCreationAndLogin()
-                            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                                Log.e("sign up", e.message, e)
+                        Modifier
+                            .fieldModifier()
+                            .testTag(stringResource(R.string.tag_password))
+                            .onFocusChanged {
+                                passwordState.onFocusChange(it.isFocused)
+                            }
+                    )
+                    PasswordField(
+                        passwordAgainState.text,
+                        passwordAgainState.showErrors(),
+                        {
+                            passwordAgainState.text = it
+                            passwordState.isValid = true
+                        },
+                        Modifier
+                            .fieldModifier()
+                            .testTag(stringResource(R.string.tag_password))
+                            .onFocusChanged {
+                                passwordAgainState.onFocusChange(it.isFocused)
+                            },
+                        R.string.sign_up_screen_password_again_field
+                    )
+                    LoadingButton(
+                        R.string.btn_continue,
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp, 8.dp)
+                            .testTag(stringResource(id = R.string.btn_continue)),
+                        inProgress
+                    ) {
+                        emailState.enableShowErrors()
+                        passwordState.enableShowErrors()
+                        passwordAgainState.enableShowErrors()
+                        scope.launch {
+                            inProgress = true
+                            if (!emailState.isValid) {
+                                showErrorMessageAndTerminateProgress(emailState)
+                            } else if (!passwordState.isValid) {
+                                showErrorMessageAndTerminateProgress(passwordState)
+                            } else if (passwordState.text != passwordAgainState.text) {
+                                // this should actually be part of a validator class, ran out of time
+                                passwordState.isValid = false
+                                passwordAgainState.isValid = false
+                                showErrorMessageAndTerminateProgress(passwordAgainState)
+                            } else if (accountService.userAlreadyExists(emailState.text)) {
+                                emailState.isValid = false
                                 showErrorMessageAndTerminateProgress(
-                                    context.getString(R.string.sign_up_screen_firebase_exception)
+                                    context.getString(R.string.sign_up_screen_user_already_exists)
                                 )
+                            } else {
+                                try {
+                                    accountService.register(emailState.text, passwordState.text)
+                                    accountService.authenticate(emailState.text, passwordState.text)
+                                    onSuccessfulAccountCreationAndLogin()
+                                } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+                                    Log.e("sign up", e.message, e)
+                                    showErrorMessageAndTerminateProgress(
+                                        context.getString(R.string.sign_up_screen_firebase_exception)
+                                    )
+                                }
                             }
                         }
                     }
@@ -170,15 +174,6 @@ fun SignUpScreen(
         }
     )
 }
-
-@Composable
-private fun BasicToolbar(title: String) {
-    TopAppBar(title = { Text(title) }, backgroundColor = toolbarColor())
-}
-
-@Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
-    if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant
 
 private fun Modifier.fieldModifier(): Modifier =
     this
