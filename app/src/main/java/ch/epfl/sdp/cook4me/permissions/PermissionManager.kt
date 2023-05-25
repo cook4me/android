@@ -1,9 +1,6 @@
 package ch.epfl.sdp.cook4me.permissions
 
 import android.content.Context
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,18 +29,15 @@ class PermissionManager(
             if (permissionsRequested) {
                 permissionStatusProvider.RequestAllPermissions()
             }
-            Column {
-                Text(
-                    getPermissionText(
-                        context,
-                        permissionStatusProvider.getRevokedPermissions(),
-                        permissionStatusProvider.shouldShowRationale()
-                    )
-                )
-                Button(onClick = { permissionsRequested = true }) {
-                    Text("Request permissions")
-                }
-            }
+            val permissionText = getPermissionText(
+                context,
+                permissionStatusProvider.getRevokedPermissions(),
+                permissionStatusProvider.shouldShowRationale()
+            )
+            PermissionRequesterScreen(
+                permissionText = permissionText,
+                onClick = { permissionsRequested = true }
+            )
         }
     }
 
@@ -60,16 +54,18 @@ class PermissionManager(
         val permissionCount = permissions.size
         if (permissionCount == 0) return ""
 
+        val formattedPermissions = permissions.map { formatPermission(it) }
+
         val permissionText = if (permissionCount == 1) {
-            String.format(permissionMessageSingular, permissions[0])
+            String.format(permissionMessageSingular, formattedPermissions[0])
         } else {
-            String.format(permissionMessagePlural, permissions.joinToString())
+            String.format(permissionMessagePlural, formattedPermissions.joinToString())
         }
 
         val permissionRecommendationText = if (permissionCount == 1) {
-            String.format(permissionMessageSingularRecommendation, permissions[0])
+            String.format(permissionMessageSingularRecommendation, formattedPermissions[0])
         } else {
-            String.format(permissionMessagePluralRecommendation, permissions.joinToString())
+            String.format(permissionMessagePluralRecommendation, formattedPermissions.joinToString())
         }
 
         return if (shouldShowRationale) {
@@ -77,5 +73,10 @@ class PermissionManager(
         } else {
             permissionRecommendationText
         }
+    }
+
+    private fun formatPermission(permission: String): String {
+        val reformatted = permission.split(".").last().replace("_", " ").lowercase()
+        return reformatted.replaceFirstChar { char -> if (char.isLowerCase()) char.uppercase() else char.toString() }
     }
 }
