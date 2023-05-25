@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me.ui.user.profile
 import android.net.Uri
 import android.net.Uri.EMPTY
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,6 +36,7 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import coil.compose.rememberAsyncImagePainter
 
+
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -52,14 +54,14 @@ fun ProfileScreen(
         try {
             email = userId ?: accountService.getCurrentUserWithEmail()
         } catch (e: Exception) {
-            println("Error getting current user email ${e.message}")
+            email = null
         }
         email?.let {
             try {
                 profile = profileRepository.getById(it) ?: Profile()
                 image = profileImageRepository.getProfile(it)
             } catch (e: Exception) {
-                println("Error getting profile ${e.message}")
+                println("Error while getting profile: $e")
             }
             isLoading = false
         }
@@ -76,13 +78,13 @@ fun ProfileScreen(
         } else {
             Column(
                 modifier = modifier
-                    .padding(12.dp)
-                    .fillMaxHeight()
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ProfileImageAndUsername(
                     image,
                     profile.name,
-                    modifier
+                    modifier,
                 )
 
                 // Textfield for the Favorite dish
@@ -122,7 +124,8 @@ fun ProfileImageAndUsername(userImage: Uri, name: String, modifier: Modifier) {
         modifier = modifier
             .padding(8.dp)
             .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Card(
             shape = CircleShape,
@@ -147,7 +150,8 @@ fun FavoriteDishRow(favoriteDish: String, modifier: Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(R.string.tag_favoriteDish),
@@ -170,7 +174,8 @@ fun AllergiesRow(allergies: String, modifier: Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(R.string.tag_allergies),
@@ -193,7 +198,8 @@ fun BioRow(bio: String, modifier: Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp),
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.Center
     ) {
         Text(
             text = stringResource(R.string.tag_bio),
