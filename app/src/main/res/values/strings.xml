@@ -73,6 +73,7 @@
     <string name="tag_allergies">Allergies</string>
     <string name="tag_favoriteDish">Favorite dish</string>
     <string name="tag_bio">Bio</string>
+    <string name="invalid_username_message">This username is not valid</string>
     <string name="tag_defaultProfileImage">defaultProfileImage</string>
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
@@ -122,6 +123,11 @@
     <string name="add_profile_skip_step">Skip step</string>
     <string name="sign_up_screen_tag">sign up screen</string>
     <string name="add_profile_info_screen_tag">add profile info screen</string>
+    <string name="add_profile_name">What is your name?</string>
+    <string name="add_profile_allergies">Do you have any allergies?</string>
+    <string name="add_profile_favoriteDish">What is your favorite dish?</string>
+    <string name="add_profile_bio">Tell us something about you</string>
+    <string name="TAG_USER_FIELD">UserField</string>
 
     <!-- Permission -->
     <string name="permission_message_singular">The %1\$s permission is important. Please grant it for the app to function properly.</string>

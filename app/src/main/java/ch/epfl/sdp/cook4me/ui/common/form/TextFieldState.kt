@@ -85,9 +85,10 @@ class PasswordState(errorMsg: String, default: String = "") : TextFieldState(
     default
 )
 
-class PasswordConfirmState(otherValue: String, errorMsg: String, default: String = "") :
-    TextFieldState(
-        { it != otherValue },
-        errorMsg,
-        default
-    )
+class UserNameState(errorMsg: String, default: String = "",) : TextFieldState(
+    {
+        it.isNotBlank()
+    },
+    errorMsg,
+    default,
+)

@@ -14,6 +14,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -75,6 +76,20 @@ fun EmailField(
         isError = isError,
         placeholder = { Text("Email") },
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
+    )
+}
+
+@Composable
+fun UserField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+    OutlinedTextField(
+        singleLine = true,
+        modifier = modifier
+            .testTag(stringResource(R.string.TAG_USER_FIELD)).semantics { if (isError) stateDescription = "Error" },
+        value = value,
+        onValueChange = { onNewValue(it) },
+        isError = isError,
+        placeholder = { Text("Username") },
+        leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "Username") }
     )
 }
 

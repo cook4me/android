@@ -53,7 +53,7 @@ fun ProfileScreen(
             ) {
                 ProfileImageAndUsername(
                     image,
-                    profile.email,
+                    profile.name,
                     modifier
                 )
 

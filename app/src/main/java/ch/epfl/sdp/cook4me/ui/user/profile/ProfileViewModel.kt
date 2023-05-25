@@ -11,16 +11,19 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class ProfileViewModel(
     private val repository: ProfileRepository = ProfileRepository(),
     private val accountService: AccountService = AccountService(),
+    private val profileRepository: ProfileRepository = ProfileRepository(),
     private val profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
     private val id: String? = null,
     onFailure: () -> Unit = {},
 ) : ViewModel() {
     private var _id = accountService.getCurrentUserWithEmail() // Email as id
+    private val _formError = mutableStateOf(false)
     val isLoading = mutableStateOf(true) // not private for testing
     private val _profileState = mutableStateOf(Profile())
     val profile = _profileState
@@ -43,6 +46,7 @@ class ProfileViewModel(
                 profile?.let {
                     withContext(Dispatchers.Main) {
                         _profileState.value.email = it.email
+                        _profileState.value.name = it.name
                         _profileState.value.allergies = it.allergies
                         _profileState.value.bio = it.bio
                         _profileState.value.favoriteDish = it.favoriteDish
@@ -75,6 +79,10 @@ class ProfileViewModel(
         _profileImage.value = uri
     }
 
+    fun addUsername(username: String) {
+        profile.value.name = username
+    }
+
     fun addAllergies(allergies: String) {
         profile.value.allergies = allergies
     }
@@ -88,12 +96,18 @@ class ProfileViewModel(
     }
 
     fun onSubmit(onSuccessListener: () -> Unit) {
-        viewModelScope.launch {
-            _id?.let {
-                isLoading.value = true
-                repository.update(it, profile.value)
-                onSuccessListener()
-                isLoading.value = false
+        if (profile.value.name.isBlank()) {
+            _formError.value = true
+        } else {
+            viewModelScope.launch {
+                runBlocking {
+                    _id?.let {
+                        isLoading.value = true
+                        profileRepository.update(profile.value.email, profile.value)
+                        onSuccessListener()
+                        isLoading.value = false
+                    }
+                }
             }
         }
     }
