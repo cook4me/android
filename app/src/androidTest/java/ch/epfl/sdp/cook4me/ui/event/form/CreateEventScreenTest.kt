@@ -4,7 +4,6 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.EventFormService
@@ -47,7 +46,6 @@ class CreateEventScreenTest {
         }
 
         coEvery { mockEventService.submitForm(match { !it.isValidEvent }) } returns "error"
-        composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performClick()
         composeTestRule.waitUntilExists(hasText("error"))
         coVerify { mockEventService.submitForm(match { !it.isValidEvent }) }
@@ -64,7 +62,6 @@ class CreateEventScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
         assertThat(onCancelCalled, `is`(true))
     }

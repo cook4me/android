@@ -21,7 +21,6 @@ class MapViewModel(
         viewModelScope.launch {
             val events = eventService.retrieveAllEvents()
             val markers = eventsToMarkers(events)
-            println(markers)
             _markers.value = markers
             _isLoading.value = false
         }
