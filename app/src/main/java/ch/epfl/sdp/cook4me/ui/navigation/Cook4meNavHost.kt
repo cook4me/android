@@ -206,7 +206,6 @@ fun Cook4MeNavHost(
             VoteWrapper(
                 challengeId = backStackEntry.arguments?.getString("challengeId").orEmpty(),
                 onBack = { navController.navigateUp() },
-                currentUser = "daniel.bucher@epfl.ch"
             )
         }
     }
