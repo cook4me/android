@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,7 +35,6 @@ import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
 import coil.compose.rememberAsyncImagePainter
 
-
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -51,12 +49,14 @@ fun ProfileScreen(
 
     LaunchedEffect(Unit) {
         var email: String? = null
+        @Suppress("TooGenericExceptionCaught")
         try {
             email = userId ?: accountService.getCurrentUserWithEmail()
         } catch (e: Exception) {
-            email = null
+            println("Error while getting current user: $e")
         }
         email?.let {
+            @Suppress("TooGenericExceptionCaught")
             try {
                 profile = profileRepository.getById(it) ?: Profile()
                 image = profileImageRepository.getProfile(it)

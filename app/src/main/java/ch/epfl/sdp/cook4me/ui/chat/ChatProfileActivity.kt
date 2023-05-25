@@ -14,7 +14,6 @@ import ch.epfl.sdp.cook4me.ui.user.profile.ProfileScreen
 class ChatProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val id = intent.getStringExtra(EXTRA_PROFILE_ID) ?: ""
         setContent {
             Cook4meTheme() {
                 ProfileScreen()
