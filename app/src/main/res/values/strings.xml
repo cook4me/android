@@ -9,17 +9,12 @@
     <string name="selected_time_text">Selected Time: </string>
     <string name="select_time_button">Select Time</string>
 
-    <!--  MainLocations  -->
-    <string name="EPFL">EPFL</string>
-    <string name="UNIL">UNIL</string>
-
     <!--  CreateEventScreen  -->
-    <string name="ask_event_name">Name of the event?</string>
-    <string name="ask_event_description">Description of the event?</string>
-    <string name="ask_event_number_participants">Number of people?</string>
-    <string name="ask_event_visibility">Who can see the event</string>
-    <string name="event_visibility_everyone">Everyone</string>
-    <string name="event_visibility_subscriber_only">Subscriber only</string>
+    <string name="ask_event_name">Name of the event</string>
+    <string name="ask_event_description">Description of the event</string>
+    <string name="ask_event_number_participants">Number of people</string>
+    <string name="select_event">Select an event</string>
+    <string name="explore_event">Explore event</string>
 
     <!--  CreateChallengeScreen  -->
     <string name="ask_challenge_name">Name of the challenge?</string>
@@ -42,13 +37,14 @@
     <string name="detailed_event_create_chat">Chat with event owner</string>
 
     <!-- CreateTupperwareScreen -->
-    <string name="image_selector_add_image">+</string>
-    <string name="TupCreateFormAddImage">Add Images</string>
     <string name="TupCreateFormTupName">Tupperware Name</string>
     <string name="TupCreateFormDesc">Description</string>
     <string name="ButtonRowCancel">Cancel</string>
     <string name="ButtonRowDone">Done</string>
-    <string name="TupCreateBlank">Field can\'t be left blank</string>
+    <string name="tupperware_field_description_error">Description cannot be blank</string>
+    <string name="tupperware_field_name_error">Name cannot be blank</string>
+    <string name="tupperware_field_image_error">Tupperware needs an image</string>
+
 
     <!-- SwipeScreen -->
     <string name="swipe_alldone_placeholder">all done</string>
@@ -93,7 +89,6 @@
     <string name="RecipeCreationScreenServingsTitle">Serves</string>
     <string name="RecipeCreationDifficultyTitle">Difficulty</string>
     <string name="RecipeCreationCookingTimeEntryTitle">Cooking Time</string>
-    <string name="RecipeCreationScreenAddImageTitle">Add Image</string>
     <string name="RecipeCreationCookingTimeDropDownMenuDesc">Cooking Time DropDownMenu</string>
     <string name="RecipeCreationDifficultyDropDownMenuDesc">Difficulty Drop Down Menu</string>
     <string name="RecipeCreationServingsTextFieldDesc">Servings Text Field</string>
@@ -134,6 +129,7 @@
     <string name="permission_message_plural">The following permissions are important: %1\$s. Please grant all of them for the app to function properly.</string>
     <string name="permission_message_singular_recommendation">The %1\$s permission will grant a better experience in the app</string>
     <string name="permission_message_plural_recommendation">The following permissions will grant a better experience in the app: %1\$s.</string>
+    <string name="request_permissions">Request permissions</string>
 
     <!-- Chat -->
     <string name="Too_many_connection_error_title">Connection Error</string>
@@ -185,6 +181,9 @@
 
     <!-- Placeholder Screen -->
     <string name="placeholder_screen_content_description">placeholder screen</string>
+
+    <!-- Match Dialogue -->
+    <string name="match_dialogue_title">It\'s a match!</string>
 
 
 </resources>

@@ -54,7 +54,7 @@ fun DatePicker(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
+        FieldTitle(
             text = "${stringResource(id = R.string.selected_date_text)}${date.value}"
         )
         Spacer(modifier = Modifier.height(8.dp))

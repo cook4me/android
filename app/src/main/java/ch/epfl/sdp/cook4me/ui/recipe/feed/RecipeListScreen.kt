@@ -3,12 +3,15 @@ package ch.epfl.sdp.cook4me.ui.recipe.feed
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.persistence.model.RecipeNote
+import kotlinx.coroutines.launch
 
 /**
  * Displays a scrollable list of recipes
@@ -25,8 +28,11 @@ fun RecipeListScreen(
     recipeImages: Map<String, ByteArray?>
 ) {
     val expandedRecipe = remember { mutableStateOf<Int?>(null) }
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
     LazyColumn(
         modifier = Modifier,
+        state = listState,
         contentPadding = PaddingValues(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -39,7 +45,12 @@ fun RecipeListScreen(
                 onNoteUpdate = { note -> onNoteUpdate(recipeList[index].recipeId, note) },
                 userVote = userVotes[recipeId] ?: 0,
                 canClick = isOnline,
-                onClick = { expandedRecipe.value = if (expandedRecipe.value == index) null else index },
+                onClick = {
+                    expandedRecipe.value = if (expandedRecipe.value == index) null else index
+                    scope.launch {
+                        listState.animateScrollToItem(index = index)
+                    }
+                },
                 isExpanded = expandedRecipe.value == index
             )
         }
