@@ -46,7 +46,6 @@ class CreateChallengeScreenTest {
         }
 
         coEvery { mockChallengeService.submitForm(match { !it.isValidChallenge }) } returns "error"
-        composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performClick()
         composeTestRule.waitUntilExists(hasText("error"))
         coVerify { mockChallengeService.submitForm(match { !it.isValidChallenge }) }
@@ -63,7 +62,6 @@ class CreateChallengeScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
         assertThat(onCancelCalled, `is`(true))
     }

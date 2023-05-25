@@ -35,7 +35,6 @@ class CreateEventScreenTest {
 
         composeTestRule.onNodeWithStringId(R.string.ask_event_name).assertExists()
         composeTestRule.onNodeWithStringId(R.string.ask_event_description).assertExists()
-        composeTestRule.onNodeWithStringId(R.string.address_default_question).assertExists()
         composeTestRule.onNodeWithStringId(R.string.ask_event_visibility).assertExists()
         composeTestRule.onNodeWithStringId(R.string.select_date_button).assertExists()
         composeTestRule.onNodeWithStringId(R.string.select_time_button).assertExists()
@@ -50,7 +49,6 @@ class CreateEventScreenTest {
         }
 
         coEvery { mockEventService.submitForm(match { !it.isValidEvent }) } returns "error"
-        composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.ButtonRowDone).performClick()
         composeTestRule.waitUntilExists(hasText("error"))
         coVerify { mockEventService.submitForm(match { !it.isValidEvent }) }
@@ -67,7 +65,6 @@ class CreateEventScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithStringId(R.string.btn_cancel).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.btn_cancel).performClick()
         assertThat(onCancelCalled, `is`(true))
     }

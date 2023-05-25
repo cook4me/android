@@ -1,6 +1,7 @@
 package ch.epfl.sdp.cook4me.ui.common.form
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.ui.common.button.CancelButton
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
@@ -24,7 +26,8 @@ fun FormButtons(
     Row(
         modifier = modifier
             .padding(16.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .background(color = Color.White),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         CancelButton(onCancelText, Modifier.weight(weight = 1f), onCancelClick)

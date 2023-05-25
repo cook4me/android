@@ -65,7 +65,7 @@ class RecipeCreationScenarioTest {
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc))
             .performTextInput(expectedRecipe.name)
         composeTestRule.onNodeWithTag("Add From Gallery Button").performClick()
-        composeTestRule.waitUntilDisplayed(hasContentDescription("Selected Image"))
+        composeTestRule.waitUntilExists(hasContentDescription("Selected Image"))
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc))
             .performTextInput(expectedRecipe.servings.toString())
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc))
@@ -98,7 +98,7 @@ class RecipeCreationScenarioTest {
         composeTestRule.setContent {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationIngredientsTitle)
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationIngredientsTitle).performScrollTo()
         composeTestRule.onNodeWithContentDescription(getString(R.string.ingredientsTextFieldContentDesc)).assertIsDisplayed()
     }
 
@@ -119,7 +119,7 @@ class RecipeCreationScenarioTest {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationRecipeTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationRecipeTitle).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeNameTextFieldDesc))
     }
 
@@ -129,7 +129,7 @@ class RecipeCreationScenarioTest {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationScreenServingsTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationScreenServingsTitle).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationServingsTextFieldDesc))
     }
 
@@ -139,7 +139,7 @@ class RecipeCreationScenarioTest {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationCookingTimeEntryTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationCookingTimeEntryTitle).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationCookingTimeDropDownMenuDesc))
     }
 
@@ -149,7 +149,7 @@ class RecipeCreationScenarioTest {
             CreateRecipeScreen(repository = mockRecipeRepository)
         }
 
-        composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(R.string.RecipeCreationDifficultyTitle).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(getString(R.string.RecipeCreationDifficultyDropDownMenuDesc))
     }
 }
