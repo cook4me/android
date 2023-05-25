@@ -14,7 +14,6 @@ data class Event(
     val dateTime: Calendar = Calendar.getInstance(),
     val latLng: GeoPoint = GeoPoint(0.0, 0.0),
     val maxParticipants: Int = 0,
-    val participants: List<String> = listOf(),
     val creator: String = "",
     val id: String = "",
 ) {
@@ -44,7 +43,7 @@ data class Event(
 
     val eventInformation: String
         get() = "Name: $name\nDescription: $description\nDate: $dateAsFormattingDate\n" +
-            "Max participants: $maxParticipants\nParticipants: $participants\n" +
+            "Max participants: $maxParticipants\n" +
             "Creator: $creator\nId: $id\n Latitude-Longitude: $latLng"
 
     val eventDate: String
@@ -65,30 +64,12 @@ data class Event(
         * (map["maxParticipants"] as? Long)?.toInt() ?: 0 : provide a default value if the value is null (0)
         * */
         maxParticipants = (map["maxParticipants"] as? Long)?.toInt() ?: 0,
-        participants = map["participants"] as? List<String> ?: listOf(),
         creator = map["creator"] as? String ?: "",
         id = map["id"] as? String ?: "",
         // latLng = (map["latLng"] as? GeoPoint)?.let { Pair(it.latitude, it.longitude) } ?: Pair(0.0, 0.0),
         latLng = map["latLng"] as? GeoPoint ?: GeoPoint(0.0, 0.0)
     )
 }
-
-/**
- * Adds a participant to the event (if the event is not full)
- * @param event the event to add the participant to
- * @param participant the participant to add
- * @return the event with the participant added
- */
-fun addParticipant(event: Event, participant: String): Event =
-    if (event.participants.size < event.maxParticipants) {
-        if (!event.participants.contains(participant)) {
-            event.copy(participants = event.participants + participant)
-        } else {
-            event
-        }
-    } else {
-        event
-    }
 
 private fun calendarFromTime(date: Date): Calendar {
     val calendar = Calendar.getInstance()

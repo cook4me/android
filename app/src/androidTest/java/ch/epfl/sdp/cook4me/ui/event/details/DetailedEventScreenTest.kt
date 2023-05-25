@@ -75,12 +75,6 @@ class DetailedEventScreenTest {
         composeTestRule.onNodeWithText("4").performScrollTo()
         composeTestRule.onNodeWithText("4").assertIsDisplayed()
 
-        val testEventParticipants = testEvent.participants.joinToString(separator = ", ")
-        composeTestRule.onNodeWithStringId(R.string.event_participants).performScrollTo()
-        composeTestRule.onNodeWithStringId(R.string.event_participants).assertIsDisplayed()
-        composeTestRule.onNodeWithText(testEventParticipants).performScrollTo()
-        composeTestRule.onNodeWithText(testEventParticipants).assertIsDisplayed()
-
         composeTestRule.onNodeWithStringId(R.string.event_time).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.event_time).assertIsDisplayed()
         composeTestRule.onNodeWithText(testEvent.eventDate).performScrollTo()

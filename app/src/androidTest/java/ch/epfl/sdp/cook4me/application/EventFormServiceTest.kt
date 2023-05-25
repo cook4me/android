@@ -29,7 +29,6 @@ class EventFormServiceTest {
             description = "description",
             dateTime = dateTime,
             maxParticipants = 10,
-            participants = listOf("participant1", "participant2"),
             id = "id",
             creator = "creator"
         )

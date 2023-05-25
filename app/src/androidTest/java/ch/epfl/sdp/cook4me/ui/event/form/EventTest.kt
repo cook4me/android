@@ -21,7 +21,6 @@ class EventTest {
             description = "description",
             dateTime = dateTime,
             maxParticipants = 10,
-            participants = listOf("participant1", "participant2"),
             id = "id",
             creator = "creator"
         )
@@ -41,7 +40,6 @@ class EventTest {
             Description: description
             Date: 01/01/2000 at 00:00
             Max participants: 10
-            Participants: [participant1, participant2]
             Creator: creator
             Id: id
             Latitude-Longitude: GeoPoint{latitude=0.0,longitude=0.0}"""
@@ -83,29 +81,5 @@ class EventTest {
         assert(!event.isValidEvent)
         val errorMsg = "Date is in the past"
         assertEquals(errorMsg, event.eventProblem)
-    }
-
-    @Test
-    fun addNewParticipantInNonFullEventAddsParticipant() {
-        val participant = "participant3"
-        val expected = event.copy(participants = event.participants + participant)
-        val actual = addParticipant(event, participant)
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun addExistingParticipantInNonFullEventDoesNotAddParticipant() {
-        val participant = "participant1"
-        val expected = event
-        val actual = addParticipant(event, participant)
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun addNewParticipantInFullEventDoesNotAddParticipant() {
-        val participant = "participant3"
-        val expected = event
-        val actual = addParticipant(event.copy(maxParticipants = 2), participant)
-        assertEquals(expected.copy(maxParticipants = 2), actual)
     }
 }

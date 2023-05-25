@@ -64,10 +64,6 @@ fun DetailedEventScreen(
                 SectionWithTitle(title = stringResource(R.string.event_creator), content = event.creator)
                 Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
 
-                SectionWithTitle(
-                    title = stringResource(R.string.event_participants),
-                    content = event.participants.joinToString(separator = ", ")
-                )
                 Divider(color = MaterialTheme.colors.secondary, thickness = 1.dp)
 
                 SectionWithTitle(title = stringResource(R.string.event_time), content = event.eventDate)
