@@ -53,8 +53,7 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
         if (userVoteDoc != null) {
             val oldVote = userVoteDoc.getLong("note")?.toInt() ?: 0
             if (oldVote + userVote < -1 || oldVote + userVote > 1) {
-                // user has already voted on other device and try to vote again
-                // do nothing
+                // user has already voted on other device and try to vote again, do nothing
                 return
             }
             userVoteDoc.reference.update("note", oldVote + userVote).await()
