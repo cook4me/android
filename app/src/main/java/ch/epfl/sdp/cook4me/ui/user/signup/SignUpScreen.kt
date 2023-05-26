@@ -29,7 +29,7 @@ import ch.epfl.sdp.cook4me.ui.common.form.EmailState
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordState
 import ch.epfl.sdp.cook4me.ui.common.form.TextFieldState
-import ch.epfl.sdp.cook4me.ui.user.signup.Toolbar
+import ch.epfl.sdp.cook4me.ui.common.Toolbar
 import kotlinx.coroutines.launch
 
 @Composable
