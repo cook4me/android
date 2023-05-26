@@ -82,4 +82,13 @@ class RecipeNoteRepositoryTest {
         val userVote = recipeNoteRepository.retrieveAllUserVotes("user")["recipeId"]
         assertThat(userVote, `is`(0))
     }
+
+    @Test
+    fun tryToUpdateTwiceSameRecipeNoteDoesNothingSecondTime() = runTest{
+        recipeNoteRepository.addRecipeNote("recipeId", 1)
+        recipeNoteRepository.updateRecipeNote("recipeId", 2, "user", 1)
+        recipeNoteRepository.updateRecipeNote("recipeId", 2, "user", 1)
+        val userVote = recipeNoteRepository.retrieveAllUserVotes("user")["recipeId"]
+        assertThat(userVote, `is`(1))
+    }
 }
