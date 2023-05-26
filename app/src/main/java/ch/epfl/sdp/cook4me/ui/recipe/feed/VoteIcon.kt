@@ -35,6 +35,7 @@ fun VoteIcon(
     canClick: Boolean = true,
     uid: Int = 0
 ) {
+    println("Vote icon (param: counterValue=$counterValue, userVote=$userVote, canClick=$canClick, uid=$uid)")
     val uidRem = remember { mutableStateOf(uid) }
     val upvote = remember { mutableStateOf(userVote == 1) }
     val downvote = remember { mutableStateOf(userVote == -1) }
