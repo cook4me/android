@@ -106,10 +106,10 @@
     <string name="sign_up_screen_top_bar_message">Enter Email and Password</string>
     <string name="sign_up_screen_password_not_identical">Passwords fields don\'t match</string>
     <string name="sign_up_screen_user_already_exists">User already exists</string>
+    <string name="sign_up_screen_password_too_short">Password needs to be at least 6 characters long</string>
     <string name="sign_up_screen_firebase_exception">Request was not successful, please try again</string>
     <string name="sign_up_screen_password_again_field">Repeat password</string>
     <string name="Add_profile_infos_top_bar_message">Add your profile information</string>
-    <string name="sign_up_screen_invalid_password">Password invalid</string>
     <string name="add_profile_infos_error">Something went wrong, please try again or skip the step</string>
     <string name="add_profile_finish">Finish</string>
     <string name="add_profile_skip_step">Skip step</string>

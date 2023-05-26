@@ -41,7 +41,7 @@ fun SignUpScreen(
     val context = LocalContext.current
     val emailState = remember { EmailState(context.getString(R.string.invalid_email_message)) }
     val passwordState =
-        remember { PasswordState(context.getString(R.string.sign_up_screen_invalid_password)) }
+        remember { PasswordState(context.getString(R.string.sign_up_screen_password_too_short)) }
     val passwordAgainState =
         remember {
             PasswordState(
