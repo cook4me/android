@@ -27,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
-import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 import ch.epfl.sdp.cook4me.ui.common.Toolbar
+import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 
 private const val MIN_STAR = 1
 private const val MAX_STAR = 5

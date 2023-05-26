@@ -41,6 +41,8 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 
+const val ZOOM = 15f
+
 @Suppress("This Expression is unused")
 @Composable
 fun ChallengeDetailedScreen(
@@ -149,7 +151,7 @@ fun ChallengeDetailedScreen(
                         .fillMaxWidth()
                         .height(300.dp),
                     cameraPositionState = CameraPositionState(
-                        CameraPosition.fromLatLngZoom(position, 15f)
+                        CameraPosition.fromLatLngZoom(position, ZOOM)
                     )
                 ) {
                     val markerState = MarkerState(position = position)
