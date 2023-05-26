@@ -84,7 +84,7 @@ class RecipeNoteRepositoryTest {
     }
 
     @Test
-    fun tryToUpdateTwiceSameRecipeNoteDoesNothingSecondTime() = runTest{
+    fun tryToUpdateTwiceSameRecipeNoteDoesNothingSecondTime() = runTest {
         recipeNoteRepository.addRecipeNote("recipeId", 1)
         recipeNoteRepository.updateRecipeNote("recipeId", 2, "user", 1)
         recipeNoteRepository.updateRecipeNote("recipeId", 2, "user", 1)
