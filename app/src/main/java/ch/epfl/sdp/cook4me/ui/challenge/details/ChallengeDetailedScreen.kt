@@ -41,7 +41,9 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 
-@Suppress("MagicNumber", "This Expression is unused")
+const val ZOOM = 15f
+
+@Suppress("This Expression is unused")
 @Composable
 fun ChallengeDetailedScreen(
     challengeViewModel: ChallengeDetailedViewModel = viewModel(),
@@ -149,7 +151,7 @@ fun ChallengeDetailedScreen(
                         .fillMaxWidth()
                         .height(300.dp),
                     cameraPositionState = CameraPositionState(
-                        CameraPosition.fromLatLngZoom(position, 15f)
+                        CameraPosition.fromLatLngZoom(position, ZOOM)
                     )
                 ) {
                     val markerState = MarkerState(position = position)
@@ -168,7 +170,7 @@ fun ChallengeDetailedScreen(
                     errorMessage?.let {
                         Text(
                             text = it,
-                            color = Color.Red,
+                            color = MaterialTheme.colors.onError,
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
@@ -178,7 +180,7 @@ fun ChallengeDetailedScreen(
                         ) {
                             Text(
                                 text = it,
-                                color = Color.Blue,
+                                color = Color.Black,
                             )
                             Button(
                                 onClick = { onVote(challengeId) },

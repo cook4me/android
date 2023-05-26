@@ -23,13 +23,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.ui.common.Toolbar
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.EmailField
 import ch.epfl.sdp.cook4me.ui.common.form.EmailState
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordField
 import ch.epfl.sdp.cook4me.ui.common.form.PasswordState
 import ch.epfl.sdp.cook4me.ui.common.form.TextFieldState
-import ch.epfl.sdp.cook4me.ui.user.signup.Toolbar
 import kotlinx.coroutines.launch
 
 @Composable
