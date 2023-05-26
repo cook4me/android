@@ -9,7 +9,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
 import ch.epfl.sdp.cook4me.setupFirebaseAuth
@@ -18,15 +20,13 @@ import ch.epfl.sdp.cook4me.setupFirestore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-import ch.epfl.sdp.cook4me.R
-import ch.epfl.sdp.cook4me.persistence.model.Profile
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
 private const val VALID_USER = "valid.user@epfl.ch"
 private const val VALID_PASSWORD = "123456"
@@ -57,7 +57,8 @@ class AddProfileTest {
                 profileRepository = profileRepository,
                 profileImageRepository = profileImageRepository,
                 onAddingSuccess = { successAddProfileInfoCalled = true },
-                onSkipClick = {})
+                onSkipClick = {}
+            )
         }
         val name = "Name"
         val someDish = "Some dish"

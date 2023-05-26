@@ -12,18 +12,18 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import ch.epfl.sdp.cook4me.setupFirebaseAuth
-import com.google.firebase.auth.FirebaseAuth
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
+import ch.epfl.sdp.cook4me.setupFirebaseAuth
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
 private const val VALID_USER = "valid.user@epfl.ch"
 private const val VALID_PASSWORD = "123456"
@@ -54,7 +54,6 @@ class SignUpScreenTest {
             SignUpScreen(accountService = accountService) { successSignUpCalled = true }
         }
     }
-
 
     @Test
     fun invalidEmailTest() {
@@ -98,7 +97,6 @@ class SignUpScreenTest {
         fillInFormAndTrySubmitting(VALID_USER, VALID_PASSWORD + 1, VALID_PASSWORD)
         assertSnackbarMessage(R.string.sign_up_screen_password_not_identical)
     }
-
 
     @Test
     fun passwordFieldsDontMatchCorrectFirstTest() {
