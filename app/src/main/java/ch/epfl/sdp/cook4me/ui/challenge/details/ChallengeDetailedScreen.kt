@@ -185,6 +185,7 @@ fun ChallengeDetailedScreen(
                             )
                             Button(
                                 onClick = { onVote(challengeId) },
+                                // to vote event must be finished and have at least 2 participants
                                 enabled = isOnline && challenge?.dateTime?.before(Calendar.getInstance()) == true &&
                                     challenge?.participants?.size ?: 0 > 1,
                             ) {
