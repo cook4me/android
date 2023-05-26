@@ -153,6 +153,7 @@
     <string name="challenge_finished">This challenge has already taken place</string>
     <string name="filter_button_text">Filter by</string>
     <string name="vote">Vote for other participants</string>
+    <string name="see_votes">See results</string>
     <string name="empty_challenge_list">no challenge yet</string>
     <string name="filter_title_filterscreen">Filter by</string>
     <string name="sort_title_filterscreen">Sort by</string>

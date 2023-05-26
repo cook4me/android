@@ -40,6 +40,7 @@ import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
+import java.util.Calendar
 
 const val ZOOM = 15f
 
@@ -55,6 +56,8 @@ fun ChallengeDetailedScreen(
     val isLoading by challengeViewModel.loading
     val successMessage by challengeViewModel.successMessage
     val errorMessage by challengeViewModel.errorMessage
+
+    val hasVoted = challenge?.participantIsVoted?.get(challengeViewModel.currentUserMailOrNull) ?: false
 
     var joinClicked by remember { mutableStateOf(false) }
 
@@ -184,9 +187,15 @@ fun ChallengeDetailedScreen(
                             )
                             Button(
                                 onClick = { onVote(challengeId) },
-                                enabled = isOnline,
+                                // to vote event must be finished and have at least 2 participants
+                                enabled = isOnline && challenge?.dateTime?.before(Calendar.getInstance()) == true &&
+                                    challenge?.participants?.size ?: 0 > 1,
                             ) {
-                                Text(stringResource(id = R.string.vote))
+                                if (hasVoted) {
+                                    Text(stringResource(id = R.string.see_votes))
+                                } else {
+                                    Text(stringResource(id = R.string.vote))
+                                }
                             }
                         }
                     }
@@ -194,7 +203,7 @@ fun ChallengeDetailedScreen(
                         Button(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = { joinClicked = true },
-                            enabled = isOnline,
+                            enabled = isOnline && challenge?.dateTime?.after(Calendar.getInstance()) == true,
                         ) {
                             Text(text = stringResource(R.string.join), style = MaterialTheme.typography.button)
                         }
