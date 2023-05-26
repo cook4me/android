@@ -12,6 +12,8 @@ import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
 import ch.epfl.sdp.cook4me.setupFirebaseAuth
 import ch.epfl.sdp.cook4me.setupFirestore
 import ch.epfl.sdp.cook4me.ui.challenge.testChallenge
+import ch.epfl.sdp.cook4me.R
+import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -107,5 +109,22 @@ class ChallengeDetailedScreenTest {
         composeTestRule.onNodeWithText("harry.potter@epfl.ch").assertIsDisplayed()
         composeTestRule.onNodeWithText("0").assertIsDisplayed()
         composeTestRule.onNodeWithText("Vote for other participants").assertIsDisplayed()
+    }
+
+    @Test
+    fun ifAlreadyVotedDisplaySeeResultsButton(){
+        val votedChallenge = testChallenge.copy(participants = mapOf("John" to 1, "Jane" to 2, USERNAME to 0))
+            .copy(participantIsVoted = mapOf(USERNAME to true))
+        runBlocking {
+            challengeId = challengeRepository.add(votedChallenge)
+        }
+        composeTestRule.setContent {
+            ChallengeDetailedScreen(
+                challengeId = challengeId,
+                onVote = {},
+            )
+        }
+
+        composeTestRule.onNodeWithStringId(R.string.see_votes).assertIsDisplayed()
     }
 }
