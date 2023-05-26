@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 private const val COLLECTION_PATH = "recipes"
 private const val STORAGE_BASE_PATH = "/images/recipes"
-private const val ONE_MEGABYTE: Long = 1024 * 1024
+private const val TEN_MEGABYTES: Long = 10 * 1024 * 1024
 
 class RecipeRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
@@ -40,7 +40,7 @@ class RecipeRepository(
     suspend fun getRecipeImage(id: String) =
         try {
             withContext(Dispatchers.IO) {
-                val bytes = getImageReference(id).getBytes(ONE_MEGABYTE).await()
+                val bytes = getImageReference(id).getBytes(TEN_MEGABYTES).await()
                 bytes
             }
         } catch (e: StorageException) {

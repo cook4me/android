@@ -1,7 +1,6 @@
 package ch.epfl.sdp.cook4me.ui.challenge.ranking
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,18 +14,16 @@ import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
+import ch.epfl.sdp.cook4me.ui.common.Toolbar
 
 private const val INCREMENT = 1
 private const val MAX = 3
@@ -42,7 +39,7 @@ fun RankingScreen(
     val sortedParticipants = challenge.participants.toList().sortedByDescending { it.second }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        BasicToolbar(stringResource(R.string.rankingScreenTitle))
+        Toolbar(stringResource(R.string.rankingScreenTitle))
 
         LazyColumn(
             modifier = Modifier
@@ -143,26 +140,3 @@ fun ParticipantScoreRow(index: Int, participant: String, score: Int, isWinner: B
         )
     }
 }
-
-@Composable
-private fun BasicToolbar(title: String) {
-    TopAppBar(
-        modifier = Modifier.fillMaxWidth(),
-        backgroundColor = toolbarColor()
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
-            )
-        }
-    }
-}
-
-@Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
-    if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant

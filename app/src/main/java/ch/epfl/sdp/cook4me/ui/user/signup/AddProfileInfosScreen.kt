@@ -36,10 +36,10 @@ import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.persistence.model.Profile
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileImageRepository
 import ch.epfl.sdp.cook4me.persistence.repository.ProfileRepository
+import ch.epfl.sdp.cook4me.ui.common.Toolbar
 import ch.epfl.sdp.cook4me.ui.common.button.LoadingButton
 import ch.epfl.sdp.cook4me.ui.common.form.NonRequiredTextFieldState
 import ch.epfl.sdp.cook4me.ui.user.SecondOptionButton
-import ch.epfl.sdp.cook4me.ui.user.signup.Toolbar
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
@@ -56,6 +56,9 @@ fun AddProfileInfoScreen(
     profileImageRepository: ProfileImageRepository = ProfileImageRepository(),
 ) {
     val context = LocalContext.current
+    val name = remember {
+        NonRequiredTextFieldState("")
+    }
     val favoriteDishState = remember {
         NonRequiredTextFieldState("")
     }
@@ -116,9 +119,17 @@ fun AddProfileInfoScreen(
 
                     OutlinedTextField(
                         modifier = Modifier.fieldModifier(),
+                        value = name.text,
+                        isError = false,
+                        placeholder = { Text(stringResource(id = R.string.add_profile_name)) },
+                        onValueChange = { name.text = it }
+                    )
+
+                    OutlinedTextField(
+                        modifier = Modifier.fieldModifier(),
                         value = favoriteDishState.text,
                         isError = false,
-                        placeholder = { Text(stringResource(id = R.string.tag_favoriteDish)) },
+                        placeholder = { Text(stringResource(id = R.string.add_profile_favoriteDish)) },
                         onValueChange = { favoriteDishState.text = it }
                     )
 
@@ -126,7 +137,7 @@ fun AddProfileInfoScreen(
                         modifier = Modifier.fieldModifier(),
                         value = allergiesState.text,
                         isError = false,
-                        placeholder = { Text(stringResource(id = R.string.tag_allergies)) },
+                        placeholder = { Text(stringResource(id = R.string.add_profile_allergies)) },
                         onValueChange = { allergiesState.text = it }
                     )
 
@@ -134,7 +145,7 @@ fun AddProfileInfoScreen(
                         modifier = Modifier.fieldModifier(),
                         value = bioState.text,
                         isError = false,
-                        placeholder = { Text(stringResource(id = R.string.tag_bio)) },
+                        placeholder = { Text(stringResource(id = R.string.add_profile_bio)) },
                         onValueChange = { bioState.text = it }
                     )
 
@@ -153,6 +164,7 @@ fun AddProfileInfoScreen(
                                     profileRepository.add(
                                         Profile(
                                             it,
+                                            name.text,
                                             allergiesState.text,
                                             bioState.text,
                                             favoriteDishState.text

@@ -18,8 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.application.AccountService
 import ch.epfl.sdp.cook4me.ui.common.LoadingScreen
+import ch.epfl.sdp.cook4me.ui.common.PlaceholderScreen
 import ch.epfl.sdp.cook4me.ui.common.button.AddButton
 import ch.epfl.sdp.cook4me.ui.common.filters.FilterButton
 
@@ -30,6 +32,7 @@ fun ChallengeFeedScreen(
     onFilterClick: () -> Unit = {},
     searchViewModel: SearchViewModel = remember { SearchViewModel() },
     accountService: AccountService = AccountService(),
+    isOnline: Boolean = true,
 ) {
     val query = searchViewModel.query
     val challenges = searchViewModel.challenges
@@ -65,6 +68,8 @@ fun ChallengeFeedScreen(
             }
             if (isLoading.value) {
                 LoadingScreen()
+            } else if (challenges.isEmpty()) {
+                PlaceholderScreen(image = R.drawable.crossing_knives, text = R.string.empty_challenge_list)
             } else {
                 Spacer(modifier = Modifier.size(5.dp))
                 LazyColumn(modifier = Modifier.weight(1f)) {
@@ -81,6 +86,8 @@ fun ChallengeFeedScreen(
                 }
             }
         }
-        AddButton(modifier = Modifier.padding(16.dp), onClick = onCreateNewChallengeClick)
+        if (isOnline) {
+            AddButton(modifier = Modifier.padding(16.dp), onClick = onCreateNewChallengeClick)
+        }
     }
 }

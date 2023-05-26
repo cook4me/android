@@ -41,12 +41,15 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 
-@Suppress("MagicNumber", "This Expression is unused")
+const val ZOOM = 15f
+
+@Suppress("This Expression is unused")
 @Composable
 fun ChallengeDetailedScreen(
     challengeViewModel: ChallengeDetailedViewModel = viewModel(),
     challengeId: String,
     onVote: (String) -> Unit,
+    isOnline: Boolean = true
 ) {
     val challenge by challengeViewModel.challenge
     val isLoading by challengeViewModel.loading
@@ -148,7 +151,7 @@ fun ChallengeDetailedScreen(
                         .fillMaxWidth()
                         .height(300.dp),
                     cameraPositionState = CameraPositionState(
-                        CameraPosition.fromLatLngZoom(position, 15f)
+                        CameraPosition.fromLatLngZoom(position, ZOOM)
                     )
                 ) {
                     val markerState = MarkerState(position = position)
@@ -167,7 +170,7 @@ fun ChallengeDetailedScreen(
                     errorMessage?.let {
                         Text(
                             text = it,
-                            color = Color.Red,
+                            color = MaterialTheme.colors.onError,
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
@@ -177,10 +180,11 @@ fun ChallengeDetailedScreen(
                         ) {
                             Text(
                                 text = it,
-                                color = Color.Blue,
+                                color = Color.Black,
                             )
                             Button(
-                                onClick = { onVote(challengeId) }
+                                onClick = { onVote(challengeId) },
+                                enabled = isOnline,
                             ) {
                                 Text(stringResource(id = R.string.vote))
                             }
@@ -189,7 +193,8 @@ fun ChallengeDetailedScreen(
                     if (successMessage == null) {
                         Button(
                             modifier = Modifier.fillMaxWidth(),
-                            onClick = { joinClicked = true }
+                            onClick = { joinClicked = true },
+                            enabled = isOnline,
                         ) {
                             Text(text = stringResource(R.string.join), style = MaterialTheme.typography.button)
                         }

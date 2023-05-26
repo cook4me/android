@@ -67,7 +67,7 @@ fun RecipeDisplay(
         shape = RoundedCornerShape(10.dp)
     ) {
         Column(
-            Modifier.clickable(enabled = canClick, onClick = onClick)
+            Modifier.clickable(onClick = onClick)
         ) {
             Column(modifier = Modifier.aspectRatio(CARD_ASPECT_RATIO)) {
                 Box(
@@ -113,7 +113,9 @@ fun RecipeDisplay(
                             modifier = Modifier,
                             counterValue = note,
                             onChange = onNoteUpdate,
-                            userVote = userVote
+                            userVote = userVote,
+                            canClick = canClick,
+                            uid = recipe.hashCode()
                         )
                     }
                 }

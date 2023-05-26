@@ -1,6 +1,5 @@
 package ch.epfl.sdp.cook4me.ui.challenge.vote
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -24,17 +22,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.challenge.Challenge
+import ch.epfl.sdp.cook4me.ui.common.Toolbar
 import ch.epfl.sdp.cook4me.ui.common.form.FormButtons
 
-private const val MINSTAR = 1
-private const val MAXSTAR = 5
+private const val MIN_STAR = 1
+private const val MAX_STAR = 5
 
 @Composable
 fun VotingScreen(
@@ -51,7 +48,7 @@ fun VotingScreen(
     }
 
     Column {
-        BasicToolbar(stringResource(R.string.voteScreenTitle))
+        Toolbar(stringResource(R.string.voteScreenTitle))
 
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(challenge.participants.toList()) { (participant) ->
@@ -116,7 +113,7 @@ fun RatingBar(participant: String, value: Int, onValueChange: (Int) -> Unit) {
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(horizontal = 1.dp)
         ) {
-            for (i in MINSTAR..MAXSTAR) {
+            for (i in MIN_STAR..MAX_STAR) {
                 IconButton(
                     onClick = {
                         if (selectedValue == i) {
@@ -149,26 +146,3 @@ fun RatingBar(participant: String, value: Int, onValueChange: (Int) -> Unit) {
         }
     }
 }
-
-@Composable
-private fun BasicToolbar(title: String) {
-    TopAppBar(
-        modifier = Modifier.fillMaxWidth(),
-        backgroundColor = toolbarColor()
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
-            )
-        }
-    }
-}
-
-@Composable
-private fun toolbarColor(darkTheme: Boolean = isSystemInDarkTheme()): Color =
-    if (darkTheme) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant

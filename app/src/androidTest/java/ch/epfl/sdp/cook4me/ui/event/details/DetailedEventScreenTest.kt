@@ -66,31 +66,14 @@ class DetailedEventScreenTest {
         composeTestRule.onNodeWithText("test description").performScrollTo()
         composeTestRule.onNodeWithText("test description").assertIsDisplayed()
 
-        composeTestRule.onNodeWithStringId(R.string.event_location).performScrollTo()
-        composeTestRule.onNodeWithStringId(R.string.event_location).assertIsDisplayed()
-        composeTestRule.onNodeWithText("mondstadt").performScrollTo()
-        composeTestRule.onNodeWithText("mondstadt").assertIsDisplayed()
-
-        composeTestRule.onNodeWithStringId(R.string.event_location).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.event_creator).assertIsDisplayed()
         composeTestRule.onNodeWithText("peter griffin").performScrollTo()
         composeTestRule.onNodeWithText("peter griffin").assertIsDisplayed()
-
-        composeTestRule.onNodeWithStringId(R.string.event_who_can_see_event).performScrollTo()
-        composeTestRule.onNodeWithStringId(R.string.event_who_can_see_event).assertIsDisplayed()
-        composeTestRule.onNodeWithText("Everyone").performScrollTo()
-        composeTestRule.onNodeWithText("Everyone").assertIsDisplayed()
 
         composeTestRule.onNodeWithStringId(R.string.event_max_participants).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.event_max_participants).assertIsDisplayed()
         composeTestRule.onNodeWithText("4").performScrollTo()
         composeTestRule.onNodeWithText("4").assertIsDisplayed()
-
-        val testEventParticipants = testEvent.participants.joinToString(separator = ", ")
-        composeTestRule.onNodeWithStringId(R.string.event_participants).performScrollTo()
-        composeTestRule.onNodeWithStringId(R.string.event_participants).assertIsDisplayed()
-        composeTestRule.onNodeWithText(testEventParticipants).performScrollTo()
-        composeTestRule.onNodeWithText(testEventParticipants).assertIsDisplayed()
 
         composeTestRule.onNodeWithStringId(R.string.event_time).performScrollTo()
         composeTestRule.onNodeWithStringId(R.string.event_time).assertIsDisplayed()

@@ -49,7 +49,7 @@ fun Cook4MeApp(
 
     val connectivityManager = LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkCallback = remember {
-        NetworkCallback()
+        NetworkCallback(connectivityManager = connectivityManager)
     }
 
     DisposableEffect(connectivityManager, networkCallback) {

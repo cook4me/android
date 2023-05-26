@@ -35,7 +35,7 @@ fun ToggleSwitch(
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(stringResource(question))
+        FieldTitle(text = stringResource(question))
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically

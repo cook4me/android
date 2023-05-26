@@ -8,12 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,6 +25,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ch.epfl.sdp.cook4me.R
 
 /**
@@ -44,8 +46,8 @@ fun InputField(
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(stringResource(question))
-        TextField(
+        Text(stringResource(question), style = MaterialTheme.typography.h6.copy(fontSize = 18.sp))
+        OutlinedTextField(
             value = value,
             onValueChange =
             onValueChange,
@@ -75,6 +77,20 @@ fun EmailField(
         isError = isError,
         placeholder = { Text("Email") },
         leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = "Email") }
+    )
+}
+
+@Composable
+fun UserField(value: String, isError: Boolean, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
+    OutlinedTextField(
+        singleLine = true,
+        modifier = modifier
+            .testTag(stringResource(R.string.TAG_USER_FIELD)).semantics { if (isError) stateDescription = "Error" },
+        value = value,
+        onValueChange = { onNewValue(it) },
+        isError = isError,
+        placeholder = { Text("Username") },
+        leadingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "Username") }
     )
 }
 
@@ -144,5 +160,14 @@ fun PasswordField(
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         visualTransformation = PasswordVisualTransformation()
+    )
+}
+
+@Composable
+fun FieldTitle(modifier: Modifier = Modifier, text: String) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = MaterialTheme.typography.h6.copy(fontSize = 18.sp)
     )
 }

@@ -3,6 +3,7 @@ package ch.epfl.sdp.cook4me.ui.map
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,18 @@ fun LocationPicker(
     var markerState by remember {
         mutableStateOf<MarkerState?>(null)
     }
+    var locationPicked by remember { mutableStateOf<LatLng?>(null) }
+
+    LaunchedEffect(locationPicked) {
+        locationPicked?.let {
+            onLocationPicked(it)
+            markerState = MarkerState(position = it)
+            cameraPositionState.animate(
+                CameraUpdateFactory.newLatLngZoom(it, ZOOM_DEFAULT_VALUE),
+                durationMs = 1000
+            )
+        }
+    }
 
     Column {
         if (markerState == null) {
@@ -38,11 +51,7 @@ fun LocationPicker(
         GoogleMap(
             modifier = modifier,
             cameraPositionState = cameraPositionState,
-            onMapClick = { latLng ->
-                onLocationPicked(latLng)
-                markerState = MarkerState(position = latLng)
-                cameraPositionState.move(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_DEFAULT_VALUE))
-            },
+            onMapClick = { latLng -> locationPicked = latLng },
         ) {
             markerState?.let { state ->
                 Marker(state = state)
