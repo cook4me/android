@@ -10,7 +10,7 @@ import kotlinx.coroutines.tasks.await
 
 private const val COLLECTION_PATH = "tupperwares"
 private const val STORAGE_BASE_PATH = "/images/tupperwares"
-private const val ONE_MEGABYTE: Long = 1024 * 1024
+private const val TEN_MEGABYTES: Long = 10 * 1024 * 1024
 
 class TupperwareRepository(
     private val store: FirebaseFirestore = FirebaseFirestore.getInstance(),
@@ -32,7 +32,7 @@ class TupperwareRepository(
     suspend fun getWithImageById(id: String): TupperwareWithImage? {
         val tupperwareInfo = getById(id)
         return tupperwareInfo?.let {
-            val bytes = getImageReference(id).getBytes(ONE_MEGABYTE).await()
+            val bytes = getImageReference(id).getBytes(TEN_MEGABYTES).await()
             TupperwareWithImage(
                 title = it.title,
                 description = it.description,
