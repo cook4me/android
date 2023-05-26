@@ -8,11 +8,11 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.persistence.repository.ChallengeRepository
 import ch.epfl.sdp.cook4me.setupFirebaseAuth
 import ch.epfl.sdp.cook4me.setupFirestore
 import ch.epfl.sdp.cook4me.ui.challenge.testChallenge
-import ch.epfl.sdp.cook4me.R
 import ch.epfl.sdp.cook4me.ui.onNodeWithStringId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -112,7 +112,7 @@ class ChallengeDetailedScreenTest {
     }
 
     @Test
-    fun ifAlreadyVotedDisplaySeeResultsButton(){
+    fun ifAlreadyVotedDisplaySeeResultsButton() {
         val votedChallenge = testChallenge.copy(participants = mapOf("John" to 1, "Jane" to 2, USERNAME to 0))
             .copy(participantIsVoted = mapOf(USERNAME to true))
         runBlocking {

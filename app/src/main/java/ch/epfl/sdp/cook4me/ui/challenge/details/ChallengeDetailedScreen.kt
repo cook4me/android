@@ -185,10 +185,10 @@ fun ChallengeDetailedScreen(
                             )
                             Button(
                                 onClick = { onVote(challengeId) },
-                                enabled = isOnline && challenge?.dateTime?.before(Calendar.getInstance()) == true
-                                        && (challenge?.participants?.size ?: 0) > 1,
+                                enabled = isOnline && challenge?.dateTime?.before(Calendar.getInstance()) == true &&
+                                    challenge?.participants?.size ?: 0 > 1,
                             ) {
-                                if (hasVoted){
+                                if (hasVoted) {
                                     Text(stringResource(id = R.string.see_votes))
                                 } else {
                                     Text(stringResource(id = R.string.vote))
