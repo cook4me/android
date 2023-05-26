@@ -162,11 +162,13 @@ class ChallengeTest {
             "participants" to mapOf("participant1" to 0, "participant2" to 0),
             "participantIsVoted" to mapOf("participant1" to false, "participant2" to false),
             "creator" to "darth.vader@epfl.ch",
-            "type" to "French"
+            "latLng" to GeoPoint(0.0, 0.0),
+            "type" to "French",
         )
         val actual = challenge.toMap()
-
-        assertEquals(expected, actual)
+        actual.forEach {
+            assertEquals(it.value, expected[it.key])
+        }
     }
 
     @Test

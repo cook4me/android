@@ -75,6 +75,7 @@ data class Challenge(
             "participants" to participants,
             "participantIsVoted" to participantIsVoted,
             "creator" to creator,
+            "latLng" to latLng,
             "type" to type
         )
 }
