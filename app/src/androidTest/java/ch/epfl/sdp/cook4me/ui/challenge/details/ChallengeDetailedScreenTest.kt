@@ -24,6 +24,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.Calendar
 
 private const val USERNAME = "harry.potter@epfl.ch"
 private const val PASSWORD = "123456"
@@ -115,6 +116,7 @@ class ChallengeDetailedScreenTest {
     fun ifAlreadyVotedDisplaySeeResultsButton() {
         val votedChallenge = testChallenge.copy(participants = mapOf("John" to 1, "Jane" to 2, USERNAME to 0))
             .copy(participantIsVoted = mapOf(USERNAME to true))
+            .copy(dateTime = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) })
         runBlocking {
             challengeId = challengeRepository.add(votedChallenge)
         }
