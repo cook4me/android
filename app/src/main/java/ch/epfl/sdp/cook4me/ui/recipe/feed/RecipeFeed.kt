@@ -97,6 +97,19 @@ fun RecipeFeed(
                     onNoteUpdate = { recipe, note ->
                         // launch coroutine to update the note
                         coroutineScope.launch {
+                            // update locally the note
+                            userVotes.value = userVotes.value.toMutableMap().apply {
+                                put(recipe, note)
+                            }
+                            recipeList.value = recipeList.value.toMutableList().apply {
+                                val modifiedRecipe = find { it.recipeId == recipe }
+                                val oldNote = modifiedRecipe?.note
+                                val newRecipe = modifiedRecipe?.copy(note = (oldNote ?: 0) + note)
+                                if (newRecipe != null) {
+                                    set(indexOf(modifiedRecipe), newRecipe)
+                                }
+                            }
+                            // update the note on the server
                             service.updateRecipeNotes(recipe, note)
                         }
                     },

@@ -46,18 +46,23 @@ class RecipeNoteRepository(private val store: FirebaseFirestore = FirebaseFirest
      * @param userVote the relative change of the vote of the user
      */
     suspend fun updateRecipeNote(id: String, note: Int, userId: String, userVote: Int) {
-        store.collection(RECIPE_NOTE_PATH).whereEqualTo("id", id).get().await()
-            .first()?.reference?.update("note", note)?.await()
         val userVoteDoc = store.collection(USER_VOTE_PATH).whereEqualTo("id", id)
             .whereEqualTo("userId", userId).get().await().firstOrNull()
 
         // if already voted, update the vote
         if (userVoteDoc != null) {
             val oldVote = userVoteDoc.getLong("note")?.toInt() ?: 0
+            if (oldVote + userVote < -1 || oldVote + userVote > 1) {
+                // user has already voted on other device and try to vote again, do nothing
+                return
+            }
             userVoteDoc.reference.update("note", oldVote + userVote).await()
         } else {
             store.collection(USER_VOTE_PATH).add(mapOf("id" to id, "userId" to userId, "note" to userVote)).await()
         }
+
+        store.collection(RECIPE_NOTE_PATH).whereEqualTo("id", id).get().await()
+            .first()?.reference?.update("note", note)?.await()
     }
 
     /**
