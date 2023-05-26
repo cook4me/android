@@ -37,6 +37,6 @@ class AccountService(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
         } ?: false
     }
 
-    suspend fun register(email: String, password: String): AuthResult =
+    suspend fun registerAndLogin(email: String, password: String): AuthResult =
         auth.createUserWithEmailAndPassword(email, password).await()
 }

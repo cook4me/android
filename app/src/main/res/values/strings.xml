@@ -71,6 +71,7 @@
     <string name="btn_save">Save</string>
     <string name="btn_cancel">Cancel</string>
     <string name="tag_password">Password</string>
+    <string name="tag_password_repeat">Repeat Password</string>
     <string name="tag_email">Email</string>
 
     <!-- Recipe Screen -->

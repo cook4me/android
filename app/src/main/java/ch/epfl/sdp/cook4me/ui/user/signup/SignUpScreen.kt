@@ -116,7 +116,7 @@ fun SignUpScreen(
                         },
                         Modifier
                             .fieldModifier()
-                            .testTag(stringResource(R.string.tag_password))
+                            .testTag(stringResource(R.string.tag_password_repeat))
                             .onFocusChanged {
                                 passwordAgainState.onFocusChange(it.isFocused)
                             },
@@ -151,7 +151,7 @@ fun SignUpScreen(
                                 )
                             } else {
                                 try {
-                                    accountService.register(emailState.text, passwordState.text)
+                                    accountService.registerAndLogin(emailState.text, passwordState.text)
                                     accountService.authenticate(emailState.text, passwordState.text)
                                     onSuccessfulAccountCreationAndLogin()
                                 } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {

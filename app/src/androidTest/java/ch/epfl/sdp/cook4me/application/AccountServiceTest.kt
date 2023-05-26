@@ -57,7 +57,7 @@ class AccountServiceTest {
 
     @Test
     fun accountServiceRegistersValidUser() = runTest {
-        accountService.register(VALID_EMAIL, PASSWORD)
+        accountService.registerAndLogin(VALID_EMAIL, PASSWORD)
         accountService.authenticate(VALID_EMAIL, PASSWORD)
         assertThat(auth.currentUser?.email, `is`(VALID_EMAIL))
         auth.currentUser?.delete()?.await()
@@ -67,20 +67,20 @@ class AccountServiceTest {
     fun accountServiceRefusesToRegisterInvalidEmail() =
         // Don't use runTest, because we already use runBlocking
         assertThrowsAsync {
-            accountService.register("mrinvalid", PASSWORD)
+            accountService.registerAndLogin("mrinvalid", PASSWORD)
         }
 
     @Test
     fun accountServiceRefusesToRegisterWeakPassword() =
         assertThrowsAsync {
-            accountService.register("validemail@epfl.ch", "126")
+            accountService.registerAndLogin("validemail@epfl.ch", "126")
         }
 
     @Test
     fun accountServiceRefusesToRegisterExistingUser() {
         assertThrowsAsync {
-            accountService.register("validemail@epfl.ch", "123456")
-            accountService.register("validemail@epfl.ch", "123456")
+            accountService.registerAndLogin("validemail@epfl.ch", "123456")
+            accountService.registerAndLogin("validemail@epfl.ch", "123456")
         }
         runBlocking {
             accountService.authenticate("validemail@epfl.ch", "123456")
