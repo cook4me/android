@@ -45,7 +45,7 @@ fun BottomNavigationBar(
             BottomNavigationItem(
                 modifier = Modifier.weight(1f).testTag(screen.title),
                 icon = { screen.icon?.let { Icon(painterResource(id = it), contentDescription = null) } },
-                label = label,
+                label = null,
                 selected = currentRoute == screen.route,
                 onClick = {
                     navigateTo(screen.route)
