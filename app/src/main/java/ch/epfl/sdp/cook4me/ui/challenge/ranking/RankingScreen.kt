@@ -27,7 +27,7 @@ import ch.epfl.sdp.cook4me.ui.common.Toolbar
 
 private const val INCREMENT = 1
 private const val MAX = 3
-private const val WIDTH_SCORE = 0.7f
+private const val WIDTH_SCORE = 0.8f
 private const val WIDTH_PARTICIPANT = 3f
 private const val WIDTH_PLACE = 1f
 
