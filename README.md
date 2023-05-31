@@ -5,6 +5,9 @@
 
 An app for epfl students to enhance their food experience
 
+[![Video Icon](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/svgs/solid/video.svg)]([(https://www.youtube.com/watch?v=cYBsuNbfd0g)])
+
+
 ## Team
 
 |  Name           | Github | Email |
