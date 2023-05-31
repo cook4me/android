@@ -5,6 +5,8 @@
 
 An app for epfl students to enhance their food experience
 
+[![Video of the APP]](https://www.youtube.com/watch?v=cYBsuNbfd0g)
+
 ## Team
 
 |  Name           | Github | Email |
